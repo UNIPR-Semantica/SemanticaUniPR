@@ -1,0 +1,353 @@
+\documentclass[a4paper, 10pt]{article} % Prepara un documento per carta A4 con un bel font grande
+
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+%\usepackage[italian]{babel} % Adatta Latex alle convenzioni tipogafiche italiane
+\usepackage[utf8]{inputenc} % Consente l'uso dei caratteri accentati italiani
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{listings}
+\usepackage{stmaryrd}
+\usepackage{amssymb}
+\usepackage{vmargin}
+\usepackage{hyperref}
+\usepackage{makeidx}
+\hypersetup{colorlinks=true, urlcolor=blue, linkcolor=blue}
+
+\setmarginsrb{25mm}{10mm}{25mm}{10mm}{0mm}{10mm}{0mm}{10mm} 
+%{<leftmargin>}{<topmargin>}{<rightmargin>}{<bottommargin>}{<headheight>}{<headsep>}{<footheight>}{<footskip>}
+
+
+
+\begin{document}
+
+\frenchspacing % Forza Latex ad una spaziatura uniforme, invece di lasciare più spazio alla fine dei
+% punti fermi come da convenzione inglese
+
+\title{Semantica dei Linguaggi di Programmazione}
+\author{Amerigo Mancino, Valentino Marano}
+\date{31/10/2014}
+
+\maketitle % Produce il titolo a partire dai comandi \title, \author e \date
+
+\tableofcontents
+\newpage
+
+\section{Definizioni}
+
+\theoremstyle{definition}
+\newtheorem{definizione}{Definizione}
+
+\subsection{Ordinamento Parziale}
+\begin{definizione}[Ordinamento Parziale]
+  Un insieme S dotato della relazione binaria $\preceq$ $\subseteq$ S $\times$ S\\
+  è un \emph{Ordinamento Parziale}, o PO, se valgono le seguenti:
+  \begin{itemize}
+  \item (Riflessività) $ \forall x \in S : x \preceq x $
+  \item (Transitività) $ \forall x,y,z \in S : x \preceq y \land y \preceq z $ allora $ x \preceq z $
+  \item (Antisimmetria) $ \forall x,y \in S : x \preceq y \land y \preceq x $ allora $ x = y $
+  \end{itemize}
+\end{definizione}
+
+\
+\subsection{Ordinamento Totale}
+\begin{definizione}[Ordinamento Totale]
+  Un insieme S dotato della relazione binaria $\preceq$ $\subseteq$ S $\times$ S\\
+  è un \emph{Ordinamento Totale} se valgono le seguenti:
+  \begin{itemize}
+  \item (Riflessività) $ \forall x \in S : x \preceq x $
+  \item (Transitività) $ \forall x,y,z \in S : x \preceq y \land y \preceq z $ allora $ x \preceq z $
+  \item (Antisimmetria) $ \forall x,y \in S : x \preceq y \land y \preceq x $ allora $ x = y $
+  \item (Totalità) $ \forall x,y \in S$, $ x \preceq y \vee y \preceq x $
+  \end{itemize}
+\end{definizione}
+
+\
+\subsection{Catena}
+\begin{definizione}[Catena]
+  Un insieme numerabile (cioé tale che la sua cardinalità sia minore o uguale ad $\aleph_0 $) e totalmente ordinato si dice \emph{Catena}, ossia:
+  $$ Chain(X) \Longleftrightarrow (\forall x,y \in X : x \preceq y \vee y \preceq x) \land |X| \leq \aleph_0 \ $$
+\end{definizione}
+
+\
+\subsection{Upper Bound}
+\begin{definizione}[Upper Bound]
+  Sia (S,$\preceq$) un PO e T$\subseteq$ S. Si dice che $u \in S$ è un \emph{Upper Bound} o \emph{Maggiorante} di T se e solo se $ \forall x \in T : x \preceq u $.
+\end{definizione}
+
+\
+\subsection{Least Upper Bound}
+\begin{definizione}[Least Upper Bound]
+  Sia (S,$\preceq$) un PO e T$\subseteq$ S. Si dice che $u \in S$ è un \emph{Least Upper Bound} o \emph{Minimo dei Maggioranti} di T se e solo se $$( \forall x \in T : x \preceq u ) \land (\forall u' \in S : \forall y \in T : y \preceq u' \Rightarrow u \preceq u') $$.
+\end{definizione}
+
+\
+\subsection{CPO}
+\begin{definizione}[CPO]
+  Un \emph{Ordinamento Parziale Completo} è un insieme (S,$\preceq$) se ha un elemento minimo ed ogni sua catena ha un least upper bound.
+\end{definizione}
+
+\
+\subsection{Funzioni monotone e continue}
+\begin{definizione}
+  Siano (S,$\preceq$) e (T,$\sqsubseteq$) due CPO e sia $ f:S\rightarrow T$. Allora:
+  \begin{itemize}
+  \item $f$ è \emph{monotona} $\Leftrightarrow \forall x,y \in S :
+    x \preceq y \Rightarrow f(x) \sqsubseteq f(y)$
+  \item $f$ è \emph{continua} $\Leftrightarrow \forall X \subseteq S : Chain(X) \Rightarrow (\exists$ $lub$ $f(X) \land f(lub$ $X) = lub$ $f(X))$
+  \end{itemize}
+\end{definizione}
+
+\newpage
+\section{Esercizi sui CPO}
+
+\theoremstyle{definition}
+\newtheorem{esercizio}{Esercizio}
+
+\
+\subsection{Unicità lub}
+\begin{esercizio}[Unicità lub]
+  Sia (S, $\preceq$) un PO, sia T $\subseteq$ S $\Rightarrow$ ($\exists$ $lub$ $T$ $\Rightarrow lub$ $T$ è unico)
+\end{esercizio}
+\begin{proof}
+  \begin{center}
+    Siano u,u' $\in$ S due lub di T\\
+    $\Downarrow$\\
+    $(\forall x \in T : x \preceq u) \land \forall u' \in S :
+    (\forall x' \in T : x' \preceq u') : u \preceq u'$
+  \end{center}
+  Ma anche:
+  \begin{center}
+    $(\forall x \in T : x \preceq u') \land \forall u \in S :
+    (\forall x' \in T : x' \preceq u) : u' \preceq u$\\
+    $\Downarrow$\\
+    $u \preceq u' \land u' \preceq u \Rightarrow u = u'$
+  \end{center}
+\end{proof}
+
+\
+\subsection{Se il lub appartiene a un insieme è il massimo}
+\begin{esercizio}[Se $lub$ $T$ $\in$ $T$ $\Rightarrow$ $lub$ $T$ $=$ $max$ $T$]
+  Sia $(S, \preceq)$ un ordinamento parziale, sia $T \subseteq S$ e sia 
+  $u \in S$ $lub$ $T$ $\Rightarrow (u \in T \Rightarrow u = max$ $T)$
+\end{esercizio}
+\begin{proof}
+  $\forall x \in T : x \preceq u \land u \in T \Rightarrow \not \exists y \in T : y \succeq u \Rightarrow u = max$ $T$
+\end{proof}
+
+\
+\subsection{$(ST, \sqsubseteq)$ è un CPO}
+\begin{esercizio}[$(ST, \sqsubseteq)$ è un CPO]
+  Sia ST l'insieme degli \emph{State Transformer} e
+  \begin{center}
+    sia $\sqsubseteq$ $\subseteq ST \times ST :
+    \forall f,g \in ST : f \sqsubseteq g \Longleftrightarrow \forall s \in \sum :
+    f(s)\downarrow \Rightarrow f(s) = g(s)$\\
+    $\Downarrow$\\
+    $(ST, \sqsubseteq)$ è un \emph{CPO}
+  \end{center}
+  \begin{proof}
+    Sia $\bot \in ST : \forall s \in \sum : \bot(s)\uparrow$ $\Rightarrow$ $\forall f \in ST : \bot \sqsubseteq f \Rightarrow \bot = min$ $ST $\\
+    Sia I $\subseteq \mathbb{N} : C = \left\{a_i\right\}_{i \in I} \Rightarrow$ se $|I| < \aleph_0 \Rightarrow$ il lub è l'elemento massimo nella catena.\\
+    Se |I| = $\aleph_0$ definisco $\forall x \in \sum : f_l(x) = 
+    \begin{cases} 
+      f_h(x) & \text{se } \exists h \in I : f_h(x)\downarrow
+      \\ 
+      \uparrow & \text{altrimenti} 
+    \end{cases} $
+    \begin{center}
+      $\Downarrow$\\
+      $u = lub$ $C$ $\Longleftrightarrow (\forall i \in I : f_i \sqsubseteq u) \land (\forall u' \in ST : (\forall j \in I : f_j \sqsubseteq u') \Rightarrow u \sqsubseteq u')$\\
+      Sia $i \in I : \forall s \in \sum : f_i(s)\downarrow$ $\Rightarrow (u(s)\downarrow \land u(s)=f_i(s))$\\
+      Sia $s \in \sum : u(s)\downarrow$ $\Rightarrow (\exists k \in I : f_k(s)\downarrow \land f_k(s)=u(s))$\\
+      $\forall j \in I : f_j \sqsubseteq f_l \Rightarrow f_l =$ $lub$ $C$ \\
+      $(ST, \sqsubseteq)$ ha minimo e ogni sua catena ha lub $\Rightarrow (ST, \sqsubseteq)$ è un \emph{CPO}
+    \end{center}
+  \end{proof}
+\end{esercizio}
+
+\
+\subsection{$f$  continua $\Rightarrow$ $f$  monotona}
+\begin{esercizio}[$f$  continua $\Rightarrow$ $f$  monotona]
+  Siano $(S, \preceq)$ e $(T, \sqsubseteq)$ due CPO e sia $f: S \rightarrow T $
+  \begin{center}
+    $\Downarrow$\\
+    $(f$ $continua \Rightarrow f$ $monotona)$
+  \end{center}    
+  \begin{proof}
+    Siano $x,y \in S : x \preceq y \Rightarrow $ definiamo $X = \left\{x,y\right\}$. Siamo sicuri che vale $Chain(X)$ per come è stato definito l'insieme $\Rightarrow lub$ $X = y \land \exists lub$ $f(X) \land f(y) = lub$ $f(x)$ $\Rightarrow$ $f(x) \sqsubseteq f(y) \Rightarrow f$ è monotona.
+  \end{proof}
+\end{esercizio}
+
+\newpage
+\subsection{f monotona $\Arrownot \Rightarrow$ f continua}
+\begin{esercizio}[f monotona $\Arrownot \Rightarrow$ f continua]
+  Siano $(S, \preceq)$ e $(T, \sqsubseteq)$ due CPO e sia $f: S \rightarrow T$
+  \begin{center}
+    $\Downarrow$\\
+    $(f$ $monotona \Arrownot \Rightarrow f$ $continua)$
+  \end{center}
+  \begin{proof}
+    Scegliamo un controesempio con $(\mathbb{N} \cup \infty, \leq)$ e $(\left\{0,1\right\},\leq)$ e
+    \begin{center}
+      $f: \mathbb{N} \cup \infty \rightarrow \left\{0,1\right\} \lambda x.$
+      $\begin{cases}
+        0 & \text{ se } x \in \mathbb{N}
+        \\
+        1 & \text{ se } x = \infty
+      \end{cases}
+      $
+    \end{center}
+    $\mathbb{N} \subseteq \mathbb{N} \cup \left\{\infty\right\} \land Chain(\mathbb{N}) \Rightarrow lub$ $f(\mathbb{N}) = lub$ $\left\{0\right\}$ ma $f(lub$ $\mathbb{N}) = f(\infty) = 1$
+  \end{proof}
+\end{esercizio}
+
+\
+\subsection{L'immagine di una catena è una catena}
+\begin{esercizio}
+  Siano $(X, \sqsubseteq_X)$ e $(Y, \sqsubseteq_Y)$ due PO e sia $f: X \rightarrow Y$ monotona
+  \begin{center}
+    $\Downarrow$\\
+    $(\forall C \subseteq X : Chain(C) \Rightarrow Chain(f(C))$
+  \end{center}
+  \begin{proof}
+    Sia $I \subseteq \mathbb{N} : C = \left\{a_i\right\}_{i \in I} \subseteq X \Rightarrow f(C) = \left\{f(a_i) | i \in I\right\} \Rightarrow |f(C)| \leq |I| \leq |\mathbb{N}| \Rightarrow f(C)$ è numerabile.\\
+    Siano $i,j \in I \Rightarrow $
+    \begin{itemize}
+      \setlength{\itemindent}{20mm}
+    \item $i \leq j \Rightarrow a_i \sqsubseteq_X a_j \Rightarrow f(a_i) \sqsubseteq_Y f(a_j)$
+    \item $j \leq i \Rightarrow a_j \sqsubseteq_X a_i \Rightarrow f(a_j) \sqsubseteq_Y f(a_i)$
+    \end{itemize}
+    $\Rightarrow \forall i,j \in I : f(a_i) \sqsubseteq_Y f(a_j) \lor f(a_j) \sqsubseteq_Y f(a_j) \Rightarrow Chain(f(C))$
+  \end{proof}
+\end{esercizio}
+
+\
+\subsection{Composizione di funzioni continue}
+\begin{esercizio}[Composizione di funzioni continue]
+  Siano $ (A, \sqsubseteq_A), \; (B, \sqsubseteq_B) \; e \; (D, \sqsubseteq_D) $ dei CPO e siano $ f: A \rightarrow B $ e $ g: B \rightarrow D $ funzioni continue $ \Rightarrow g \circ f : A \rightarrow D $ è continua.
+  \begin{proof}
+    Sia $C \subseteq A : Chain(C) \Rightarrow \exists lub \; f(C) \land lub \; f(C) = f(lub \; C)$.
+    Dall'esercizio precedente sappiamo che: 
+    \begin{center}
+      $ Chain(f(C)) \Rightarrow (\exists lub \; g(f(C)) \land g(lub \; f(C)) = lub \; g(f(C))) $\\
+      $ \Rightarrow g \circ f(lub \; C) = g(f(lub \; C)) = g(lub \; f(C)) = lub \; g(f(C)) = lub \; g \circ f(C) $\\
+      $ \Rightarrow g \circ f$ è continua.
+    \end{center}
+  \end{proof}
+\end{esercizio}
+\newpage
+
+\section{Continuità del comando While}
+Il comando $ while\; B\; do\; C $ è continuo.
+
+\begin{proof}
+
+  Il comando $$\emph{C}\llbracket while\; B\; do\; C \rrbracket $$ è riconducibile a:
+  $$ \emph{C}\llbracket if\; B\; then\; (C;\; while\; B\; do\; C)\; else\; skip \rrbracket = $$
+  $$ = cond( \emph{B}\llbracket B \rrbracket\; ,\; seq(\emph{C}\llbracket C \rrbracket , C \llbracket \\ while\; B\; do\; C \rrbracket , id ) $$
+  $$ = cond( \emph{B}\llbracket B \rrbracket\;, \emph{C}\llbracket while\; B\; do\; C \rrbracket \circ \emph{C}\llbracket C \rrbracket , id) $$
+
+  Ora sia:
+  $$ f = cond(B \llbracket B \rrbracket , f \circ C \llbracket C \rrbracket , id) $$
+  E sia:
+  $ f = F(f) $, con:
+  $$ F = \lambda f . cond(\emph{B} \llbracket B \rrbracket , f \circ C \llbracket C \rrbracket , id) $$
+  dove $ F: ST \rightarrow ST $. Dobbiamo dimostrare che F è continua. Dimostriamo in primo luogo che il \emph{lub} esiste. Per farlo, presi \emph{b} e \emph{g} generici e $ \emph{X} \subseteq ST \land chain(X) $, facciamo vedere che $$ cond(b,X,g) $$ è monotono sul secondo argomento, tenendo fissi il primo e il terzo argomento:
+  $$ (f_1 \sqsubseteq f_2) \rightarrow cond(b,f_{1},g) \sqsubseteq cond(b,f_{2},g) $$
+  Preso $s \in \Sigma $ generico, ipotizzo che:
+  $$ cond(b,f_1,g)(s) \downarrow $$
+  sia definito. Allora ci sono due possibilità:
+  \begin{enumerate}
+  \item $ b(s) = false $ \\
+    $ cond(b,f_1,g)(s)=g(s)=cond(b,f_2,g)(s) $
+  \item $ b(s) = true $ \\
+    $ cond(b,f_1,g)(s) = f_{1}(s) \sqsubseteq f_{2}(s) = cond(b,f_2,g)(s) $
+  \end{enumerate}
+  Concludiamo allora che la monotonia vale. \\
+  Sia ora $ X \subseteq ST \; . \; chain(X) $. Allora dimostriamo che:
+  $$ chain( \{cond(b,f,g) | f \in X\}) $$
+  La cardinalità di questo insieme è minore o uguale a quella di \emph{X}, e quindi di $ \aleph_0 $. In particolare se \emph{X} è infinito c'è almeno un elemento che è g (quando b è falso). Quindi l'insieme è numerabile. \\ Ora devo dimostrare che è totalmente ordinato. Siano $f_1,f_2 \in \emph{X}$ generiche tali che \emph{chain(X)}. Allora:
+  \begin{enumerate}
+  \item $cond(b,f_1,g) \sqsubseteq cond(b,f_2,g)$, oppure
+  \item $cond(b,f_2,g) \sqsubseteq cond(b,f_1,g)$
+  \end{enumerate}
+  Dato che \emph{X} è una catena, $f_1 \sqsubseteq f_2 \vee f_2 \sqsubseteq f_1 $. E otteniamo nel primo caso la (1) mentre la (2) nel secondo caso. Siaccome siamo in un CPO concludiamo che il lub esiste. \\
+  Ora dobbiamo far vedere chi è il lub. Intuitivamente è:
+  $$ lub( \{ cond(b,f,g) \; | \; f \in X \})= \begin{cases} \uparrow , & \mbox{se } b(s)=true \land \forall f \in X f(s) \uparrow \; \\ g(s), & \mbox{se } b(s)=false \; \\ f(s) & \mbox{se } b(s)=true \land f \in X \mbox{ tale che } f(s) \downarrow 
+  \end{cases} $$
+  Dobbiamo dimostrare che il \emph{lub} è proprio lui e che:
+  $$ lub(cond(b,X,g)) = cond(b, lub\; X, g) $$
+  In questo modo avremo dimostrato che \emph{cond} è continuo sul secondo argomento. Chiamiamo allora \emph{h(s)} l'espressione in parentesi graffe e dimostriamo che h(s) è proprio il \emph{lub} di:
+  $$ \{cond(b,f,g) | f \in X \} $$
+  Si ha $ \forall b \in BT, \forall g \in ST, \forall f \in X : cond(b,f,g) \sqsubseteq h $, cioè che:
+  $$ \forall f_1, f_2 \in ST : f_1 \sqsubseteq f_2 \Leftrightarrow $$
+  $$ \Leftrightarrow \forall s \in \Sigma \mbox{ tale che } f_{1}(s) \downarrow \Rightarrow f_{2}(s) \downarrow \land f_{2}(s) = f_{1}(s) $$
+  Applicando la suddetta definizione:
+  \begin{itemize}
+  \item Se \emph{h(s)} diverge non c'è nulla da dimostrare;
+  \item Supponiamo che $cond(b,f,g)$ converga. Dobbiamo dimostrare che:
+    $$ \forall s \in \Sigma \mbox{ tale che } cond(b,f,g)(s) \downarrow \Rightarrow h(s) \downarrow \land cond(b,f,g)(s) = h(s) $$
+    Ci sono due ulteriori casi:
+    \begin{enumerate}
+    \item Se $b(s) = false$ per definizione di \emph{cond}:
+      $$ cond(b,f,g)(s) = g(s) \land h(s) = g(s) $$
+    \item Se $b(s)=true$ per definizione di \emph{cond}:
+      $$ cond(b,f,g)(s) = f(s) \Rightarrow f(s) \downarrow $$
+      Poichè $f \in X$ e sappiamo che termina, siamo nel terzo caso. Ma allora:
+      $$ h(s) = f(s) $$
+    \end{enumerate}	
+  \end{itemize}
+
+  Quindi sappiamo che è un upper bound, dobbiamo solo dimostrare che è il lub. Dobbiamo cioè dimostrare che:
+  $$ lub( \{ (cond(b,f,g)) | f \in X \} ) = cond(b, lub \; X, g) $$
+  Sia $s \in \Sigma$ arbitrario. Sia:
+  $$ h(s) = cond(b,lub \; X, g)(s) $$
+  Scartiamo la possibilità di non terminazione. Allora abbiamo due casi:
+  \begin{enumerate}
+  \item $b(s) = false \Rightarrow h(s) = g(s) $ \\
+    $g(s) = cond(b,lub \; X, g)(s) $, per definizione di cond.
+  \item $b(s)=true$ \\
+    Abbiamo due ulteriori casi:
+    \begin{itemize}
+    \item $b(s) = true \land \forall f \in X \; : \; f(s) 
+      \uparrow \; \Rightarrow lub \; X \uparrow$ \\
+      Cioè se non termina da un lato, non termina neanche dall'altro.
+    \item $b(s)=true \land f \in X : f(s) \downarrow$
+      Allora:
+      $$ lub \; X(s) = f(s) $$
+      Come ci si aspettava. 
+    \end{itemize}
+  \end{enumerate}
+  Quindi \emph{cond} è effettivamente continuo sul secondo argomento.\\
+  Ci rimane da far vedere che se \emph{X} è una catena e compongo tutti gli elementi della catena con uno \emph{ST} allora ottengo sempre una catena, cioè:
+  $$ \forall g \in ST : \forall X \subseteq ST : chain(X) \; \Rightarrow chain(\{ f \circ g | f \in X \} ) $$
+  In particolare se $f = \perp$ l'insieme è un singoletto. \\
+  Dimostriamo quanto scritto ante:
+  \begin{itemize}
+  \item L'insieme è enumerabile (banalmente vero).
+  \item Per dimostrare che è totalmente ordinato devo far vedere che:
+    $$ \forall f_1 , f_2 \in X : f \circ g \sqsubseteq f_2 \vee f_2 \circ g \sqsubseteq f_1 $$
+    Facciamo vedere che vale una delle due, per esempio la prima:
+    $$ f_1 \sqsubseteq s_2 \Rightarrow f_1 \circ g \sqsubseteq f_2 \circ g $$
+    Applicando la definizione di $ \sqsubseteq $ si ha:
+    $$ \forall s \in \Sigma : f_{1}(s) \downarrow \; \Rightarrow f_{2}(s) \downarrow 
+    \land f{1}(s)=f_{2}(s) \; \; (*) $$
+    Questo è dato. Voglio dimostrare che:
+    $$ \forall s \in \Sigma : f_1 \circ g(s) \downarrow \; \Rightarrow f_2 \circ g(s)
+    \downarrow \land f_2 \circ g(s) = f_1 \circ g(s) $$
+    Che sarebbe:
+    $$ \forall s \in \Sigma : f_{1}(g(s)) \downarrow \; \Rightarrow f_{2}(g(s)) 
+    \downarrow \land f_{1}(g(s)) = f_{2}(g(s)) $$
+    Che è vera per la (*) ed è proprio quello che ci serve. \\
+    L'altro caso è assolutamente duale.
+  \end{itemize}
+  Abbiamo dimostrato allora la continuità della funzione:
+  $$ \forall b \in PT \forall g,h \in ST \; \lambda f \; . \; cond(b,f \circ h,g) $$
+  Questa è la \emph{F} che risulta quindi continua. Per il \emph{Teorema di Tarski} possiede un minimo punto fisso che si trova facendo le iterate successive a partire da $\perp$ . Allora possiamo concludere che:
+  $$ \emph{C} \llbracket while \; B \; do \; C \rrbracket = lfp \; F $$
+  E:
+  $$ lfp \; F = lub \{ F^n(\perp ) | n \in \mathbb{N} \} $$
+\end{proof}
+
+\end{document}
