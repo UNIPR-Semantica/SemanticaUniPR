@@ -41,7 +41,7 @@
 \subsection{Ordinamento Parziale}
 \begin{definizione}[Ordinamento Parziale]
   Un insieme S dotato della relazione binaria $\preceq\ \subseteq\ S\ \times\ S$\\
-  è un \emph{Ordinamento Parziale}, o PO, se valgono le seguenti:
+  è un \emph{Ordinamento Parziale}, o \emph{PO}, se valgono le seguenti:
   \begin{itemize}
   \item (Riflessività) $ \forall x \in S : x \preceq x $
   \item (Transitività) $ \forall x,y,z \in S : x \preceq y \land y \preceq z $ allora $ x \preceq z $
@@ -72,13 +72,13 @@
 \
 \subsection{Upper Bound}
 \begin{definizione}[Upper Bound]
-  Sia $(S,\preceq)$ un PO e $T\subseteq S$. Si dice che $u \in S$ è un \emph{Upper Bound} o \emph{Maggiorante} di T se e solo se $ \forall x \in T : x \preceq u $.
+  Sia $(S,\preceq)$ un \emph{PO} e $T\subseteq S$. Si dice che $u \in S$ è un \emph{Upper Bound} o \emph{Maggiorante} di T se e solo se $ \forall x \in T : x \preceq u $.
 \end{definizione}
 
 \
 \subsection{Least Upper Bound}
 \begin{definizione}[Least Upper Bound]
-  Sia $(S,\preceq)$ un PO e $T\subseteq S$. Si dice che $u \in S$ è un \emph{Least Upper Bound} o \emph{Minimo dei Maggioranti} di T se e solo se $$( \forall x \in T : x \preceq u ) \land (\forall u' \in S : \forall y \in T : y \preceq u' \Rightarrow u \preceq u') $$.
+  Sia $(S,\preceq)$ un \emph{PO} e $T\subseteq S$. Si dice che $u \in S$ è un \emph{Least Upper Bound} o \emph{Minimo dei Maggioranti} di T se e solo se $$( \forall x \in T : x \preceq u ) \land (\forall u' \in S : \forall y \in T : y \preceq u' \Rightarrow u \preceq u') $$.
 \end{definizione}
 
 \
@@ -90,7 +90,7 @@
 \
 \subsection{Funzioni monotone e continue}
 \begin{definizione}
-  Siano $(S,\preceq)$ e $(T,\sqsubseteq)$ due CPO e sia $ f:S\rightarrow T$. Allora:
+  Siano $(S,\preceq)$ e $(T,\sqsubseteq)$ due \emph{CPO} e sia $ f:S\rightarrow T$. Allora:
   \begin{itemize}
   \item $f$ è \emph{monotona} $\Leftrightarrow \forall x,y \in S :
     x \preceq y \Rightarrow f(x) \sqsubseteq f(y)$
@@ -98,6 +98,21 @@
   \item $f$ è \emph{additiva} $\Leftrightarrow \forall X \subseteq S \Rightarrow (\exists lub\ f(X) \land f(lub\ X) = lub\ f(X))$
   \end{itemize}
 \end{definizione}
+
+\
+\subsection{Punto fisso}
+\begin{definizione}
+  Sia $S$ un insieme e sia $f : S \rightarrow S$ una funzione. Allora un \emph{FP} o \emph{Punto Fisso} di $f$ è un qualunque valore $x$ tale che $f(x) = x$.
+  Se $x$ è anche il minimo dei punti fissi allora è un \emph{LFP} o \emph{Minimo Punto Fisso}
+\end{definizione}
+
+\newtheorem{teorema}{Teorema}
+\
+\subsection{Teorema di Tarski}
+\begin{teorema}[Teorema di Tarski]
+  Sia $(S, \preceq)$ un \emph{CPO}, sia $\bot = min\ S$ e sia $f : S \rightarrow S$ continua
+  $$\Rightarrow \exists\ lfp\ f \land\ lfp\ f = lub\ \left\{f^n(\bot)\ |\ n \in \mathbb{N}\right\}$$
+\end{teorema}
 
 \newpage
 \section{Esercizi sui CPO}
@@ -108,7 +123,7 @@
 \
 \subsection{Unicità lub}
 \begin{esercizio}[Unicità lub]
-  Sia $(S, \preceq)$ un PO, sia $T \subseteq S \Rightarrow (\exists lub\ T \Rightarrow lub\ T$ è unico)
+  Sia $(S, \preceq)$ un \emph{PO}, sia $T \subseteq S \Rightarrow (\exists lub\ T \Rightarrow lub\ T$ è unico)
 \end{esercizio}
 \begin{proof}
   \begin{center}
@@ -154,7 +169,7 @@
 \
 \subsection{Ogni catena finita ha massimo}
 \begin{esercizio}
-  Sia $(C, \preceq)$ un PO $: Chain(C) \land |C| < \aleph_0 \Rightarrow \exists max\ C$
+  Sia $(C, \preceq)$ un \emph{PO} $: Chain(C) \land |C| < \aleph_0 \Rightarrow \exists max\ C$
   \begin{proof}
     Sia I $\subseteq \mathbb{N} : C = \left\{a_i\right\}_{i \in I} \Rightarrow \exists i \in I : \forall j \in I : a_j \preceq a_i \Rightarrow a_i = max\ C$
     \end{proof}
@@ -163,7 +178,7 @@
 \
 \subsection{Ogni sottoinsieme di una catena è una catena}
 \begin{esercizio}
-  Sia $(C, \preceq)$ un PO $: Chain(C) \Rightarrow (X \subseteq C \Rightarrow Chain(X))$
+  Sia $(C, \preceq)$ un \emph{PO} $: Chain(C) \Rightarrow (X \subseteq C \Rightarrow Chain(X))$
   \begin{proof}
     $X \subseteq C \Rightarrow |X| \leq |C| \leq \aleph_0 \Rightarrow |X| \leq \aleph_0$. $\forall x,y \in X \Rightarrow x,y \in C \Rightarrow x \preceq y \lor y \preceq x$\\
     X è dunque numerabile e totalmente ordinato
@@ -204,7 +219,7 @@
 \
 \subsection{$f$  continua $\Rightarrow f$  monotona}
 \begin{esercizio}[$f$  continua $\Rightarrow f$  monotona]
-  Siano $(S, \preceq)$ e $(T, \sqsubseteq)$ due CPO e sia $f: S \rightarrow T $
+  Siano $(S, \preceq)$ e $(T, \sqsubseteq)$ due \emph{CPO} e sia $f: S \rightarrow T $
   \begin{center}
     $\Downarrow$\\
     $(f\ continua \Rightarrow f\ monotona)$
@@ -217,7 +232,7 @@
 \
 \subsection{f monotona $\Arrownot \Rightarrow$ f continua}
 \begin{esercizio}[f monotona $\Arrownot \Rightarrow$ f continua]
-  Siano $(S, \preceq)$ e $(T, \sqsubseteq)$ due CPO e sia $f: S \rightarrow T$
+  Siano $(S, \preceq)$ e $(T, \sqsubseteq)$ due \emph{CPO} e sia $f: S \rightarrow T$
   \begin{center}
     $\Downarrow$\\
     $(f\ monotona \Arrownot \Rightarrow f\ continua)$
@@ -240,7 +255,7 @@
 \
 \subsection{L'immagine di una catena è una catena}
 \begin{esercizio}
-  Siano $(X, \sqsubseteq_X)$ e $(Y, \sqsubseteq_Y)$ due PO e sia $f: X \rightarrow Y$ monotona
+  Siano $(X, \sqsubseteq_X)$ e $(Y, \sqsubseteq_Y)$ due \emph{PO} e sia $f: X \rightarrow Y$ monotona
   \begin{center}
     $\Downarrow$\\
     $(\forall C \subseteq X : Chain(C) \Rightarrow Chain(f(C))$
@@ -260,7 +275,7 @@
 \newpage
 \subsection{Composizione di funzioni continue}
 \begin{esercizio}[Composizione di funzioni continue]
-  Siano $ (A, \sqsubseteq_A), \; (B, \sqsubseteq_B) \; e \; (D, \sqsubseteq_D) $ dei CPO e siano $ f: A \rightarrow B $ e $ g: B \rightarrow D $ funzioni continue $ \Rightarrow g \circ f : A \rightarrow D $ è continua.
+  Siano $ (A, \sqsubseteq_A), \; (B, \sqsubseteq_B) \; e \; (D, \sqsubseteq_D) $ dei \emph{CPO} e siano $ f: A \rightarrow B $ e $ g: B \rightarrow D $ funzioni continue $ \Rightarrow g \circ f : A \rightarrow D $ è continua.
   \begin{proof}
     Sia $C \subseteq A : Chain(C) \Rightarrow \exists lub \; f(C) \land lub \; f(C) = f(lub \; C)$.
     Dall'esercizio precedente sappiamo che: 
@@ -307,7 +322,7 @@ Il comando $ while\; B\; do\; C $ è continuo.
   \item $cond(b,f_1,g) \sqsubseteq cond(b,f_2,g)$, oppure
   \item $cond(b,f_2,g) \sqsubseteq cond(b,f_1,g)$
   \end{enumerate}
-  Dato che \emph{X} è una catena, $f_1 \sqsubseteq f_2 \lor f_2 \sqsubseteq f_1 $. E otteniamo nel primo caso la (1) mentre la (2) nel secondo caso. Siaccome siamo in un CPO concludiamo che il lub esiste. \\
+  Dato che \emph{X} è una catena, $f_1 \sqsubseteq f_2 \lor f_2 \sqsubseteq f_1 $. E otteniamo nel primo caso la (1) mentre la (2) nel secondo caso. Siaccome siamo in un \emph{CPO} concludiamo che il lub esiste. \\
   Ora dobbiamo far vedere chi è il lub. Intuitivamente è:
   $$ lub( \{ cond(b,f,g) \; | \; f \in X \})= \begin{cases} \uparrow , & \mbox{se } b(s)=true \land \forall f \in X f(s) \uparrow \; \\ g(s), & \mbox{se } b(s)=false \; \\ f(s) & \mbox{se } b(s)=true \land f \in X \mbox{ tale che } f(s) \downarrow 
   \end{cases} $$
