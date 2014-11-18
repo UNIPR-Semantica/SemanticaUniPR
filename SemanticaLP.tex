@@ -112,6 +112,17 @@
 \begin{teorema}[Teorema di Tarski]
   Sia $(S, \preceq)$ un \emph{CPO}, sia $\bot = min\ S$ e sia $f : S \rightarrow S$ continua
   $$\Rightarrow \exists\ lfp\ f \land\ lfp\ f = lub\ \left\{f^n(\bot)\ |\ n \in \mathbb{N}\right\}$$
+  \begin{proof}
+    Come prima cosa dimostriamo per induzione su $n \in \mathbb{N}$ che l'insieme sopra definito che chiamiamo C è una \emph{Catena}:
+    \begin{itemize}
+      \item[$\circ$] $n = 0\ :\ f^0(\bot) = \bot \preceq f^1(\bot)$ visto che $\bot = min\ S$
+      \item[$\circ$] $n > 0\ :\ f^n(\bot) \preceq f^{n+1}(\bot) \Longleftrightarrow f(f^{n-1}(\bot)) \preceq f(f^n(\bot))$ vera per ipotesi induttiva
+    \end{itemize}
+    $Chain(C) \land (S, \preceq)\ \emph{CPO} \Rightarrow \exists lub\ C$. $f$ è continua $\Rightarrow f(lub\ C) = lub\ f(C)$ ma per definizione di C sappiamo
+    che $lub\ f(C) = lub\ C \Rightarrow lub\ C$ è un \emph{FP} di $f$. Dimostriamo per assurdo che è proprio il \emph{LFP}:
+    Sia $m$ un \emph{FP} di f con $m \prec lub\ C \Rightarrow \exists i \in \mathbb{N} : m = f^j(\bot) \forall j \meq i$ ma così il $lub\ C$ non sarebbe più
+    un \emph{LUB} che è assurdo.
+  \end{proof}
 \end{teorema}
 
 \newpage
