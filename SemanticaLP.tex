@@ -12,6 +12,7 @@
 \usepackage{vmargin}
 \usepackage{hyperref}
 \usepackage{makeidx}
+\usepackage{nicefrac}
 \hypersetup{colorlinks=true, urlcolor=blue, linkcolor=blue}
 
 \setmarginsrb{25mm}{10mm}{25mm}{10mm}{0mm}{10mm}{0mm}{10mm} 
@@ -120,7 +121,7 @@
     \end{itemize}
     $Chain(C) \land (S, \preceq)\ \emph{CPO} \Rightarrow \exists lub\ C$. $f$ è continua $\Rightarrow f(lub\ C) = lub\ f(C)$ ma per definizione di C sappiamo
     che $lub\ f(C) = lub\ C \Rightarrow lub\ C$ è un \emph{FP} di $f$. Dimostriamo per assurdo che è proprio il \emph{LFP}:
-    Sia $m$ un \emph{FP} di f con $m \prec lub\ C \Rightarrow \exists i \in \mathbb{N} : m = f^j(\bot) \forall j \meq i$ ma così il $lub\ C$ non sarebbe più
+    Sia $m$ un \emph{FP} di f con $m \prec lub\ C \Rightarrow \exists i \in \mathbb{N} : m = f^j(\bot) \forall j \leq i$ ma così il $lub\ C$ non sarebbe più
     un \emph{LUB} che è assurdo.
   \end{proof}
 \end{teorema}
@@ -410,5 +411,33 @@ Il comando $ while\; B\; do\; C $ è continuo.
   E:
   $$ lfp \; F = lub \{ F^n(\perp ) | n \in \mathbb{N} \} $$
 \end{proof}
+\newpage
+
+\section{Logica di Floyd-Hoare}
+
+\subsection{Esercizio 1}
+Dare una dimostrazione per la seguente tripla di Hoare:
+$$ \{X=a \; \land Y=b\} \; X=X+Y; \; Y=X-Y; \; X=X-Y \; \{Y=a \; \land \; X=b\} $$
+
+\begin{proof}
+Dimostriamo la tripla partendo dal fondo. Applicando l'assioma dell'assegnamento si ha:
+$$ \{S[\nicefrac{X-Y}{X}] \} \; X=X-Y \; \{Y=a \; \land \; X=b\} $$
+$$ \Downarrow $$
+$$ \{Y=a \; \land X-Y=b \} \; X=X-Y \; \{Y=a \; \land \; X=b\} $$
+Risaliamo ora di un "livello" applicando ancora l'assioma dell'assegnamento:
+$$ \{S[\nicefrac{X-Y}{Y}] \} \; Y=X-Y \; \{Y=a \; \land \; X-Y=b\} $$
+$$ \Downarrow $$
+$$ \{X-Y=a \; \land X-(X-Y)=b \} \; Y=X-Y \; \{Y=a \; \land \; X-Y=b\} $$
+Semplificando la precondizione si ottiene:
+$$ \{X-Y=a \; \land Y=b \} \; Y=X-Y \; \{Y=a \; \land \; X-Y=b\} $$
+Risaliamo ulteriormente di un livello, applicando l'assioma dell'assegnamento. Si ha:
+$$ \{S[\nicefrac{X+Y}{Y}] \} \; X=X+Y \; \{X-Y=a \; \land \; Y=b\} $$
+$$ \Downarrow $$
+$$ \{(X+Y)-Y=a \; \land Y=b \} \; X=X+Y \; \{X-Y=a \; \land \; Y=b\} $$
+Semplificando ancora una volta la precondizione si ottiene:
+$$ \{X=a \; \land Y=b \} \; X=X+Y \; \{X-Y=a \; \land \; Y=b\} $$
+Che è quanto volevamo dimostrare.
+\end{proof}
+
 
 \end{document}
