@@ -439,5 +439,26 @@ $$ \{X=a \; \land Y=b \} \; X=X+Y \; \{X-Y=a \; \land \; Y=b\} $$
 Che è quanto volevamo dimostrare.
 \end{proof}
 
+\subsection{Esercizio 2}
+Dare una dimostrazione per la seguente tripla di Hoare:
+$$ \{X=R+(Y \times Q) \} \; BEGIN \; R=R-Y; \; Q=Q+1 \; END \; \{X=R+(Y \times Q)\} $$
+
+\begin{proof}
+Come nell'esercizio precedente, procediamo dal fondo. Applichiamo quindi l'assioma dell'assegnamento:
+$$ \{S[\nicefrac{Q+1}{Q}] \} \; Q=Q+1 \; \{X=R+(Y \times Q)\} $$
+$$ \Downarrow $$
+$$ \{X=R+(Y \times (Q+1)) \} \; Q=Q+1 \; \{X=R+(Y \times Q)\} $$
+Semplificando la precondizione si ottiene:
+$$ \{X=R+Y \times Q + Y \} \; Q=Q+1 \; \{X=R+(Y \times Q)\} $$
+Risalendo di un livello e applicando ancora l'assioma dell'assegnamento si trova:
+$$ \{S[\nicefrac{R-Y}{R}] \} \; R=R-Y \; \{X=R+Y \times Q + Y \} $$
+$$ \Downarrow $$
+$$ \{X= R-Y+Y \times Q+Y \} \; R=R-Y \; \{X=R+Y \times Q + Y \} $$
+Semplificando la precondizione si ottiene:
+$$ \{X= R+(Y \times Q) \} \; R=R-Y \; \{X=R+Y \times Q + Y \} $$
+Che è quanto volevamo dimostrare.
+\end{proof}
+
+
 
 \end{document}
