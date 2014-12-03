@@ -1,0 +1,436 @@
+
+%% Proof trees.
+\input prooftree
+\newcommand*{\nohyp}{\phantom{x}}
+
+%% C++.
+\newcommand*{\Cplusplus}{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}
+{\tiny\bf ++}}}
+
+%% BNF rules.
+\newcommand*{\vbar}{\mathrel{\mid}}
+
+%% Abstract syntax of the analyzed language.
+\newcommand*{\Type}{\mathrm{Type}}
+\newcommand*{\dType}{\mathrm{dType}}
+\newcommand*{\dT}{\mathrm{dT}}
+\newcommand*{\sType}{\mathrm{sType}}
+\newcommand*{\sT}{\mathrm{sT}}
+\newcommand*{\cType}{\mathrm{cType}}
+\newcommand*{\cT}{\mathrm{cT}}
+\newcommand*{\Integer}{\mathrm{Integer}}
+\newcommand*{\Bool}{\mathrm{Bool}}
+\newcommand*{\Id}{\mathrm{Id}}
+\newcommand*{\id}{\mathrm{id}}
+\newcommand*{\rId}{\mathrm{rId}}
+\newcommand*{\idx}{\mathrm{x}}
+\newcommand*{\ridx}{\underline{\mathrm{x}}}
+\newcommand*{\Exp}{\mathrm{Exp}}
+\newcommand*{\Exps}{\mathrm{Exps}}
+\newcommand*{\Decl}{\mathrm{Decl}}
+\newcommand*{\exceptDecl}{\mathrm{exceptDecl}}
+\newcommand*{\Catch}{\mathrm{Catch}}
+\newcommand*{\Stmt}{\mathrm{Stmt}}
+\newcommand*{\Label}{\mathrm{Label}}
+\newcommand*{\Con}{\mathrm{Con}}
+\newcommand*{\con}{\mathrm{con}}
+\newcommand*{\fps}{\mathrm{fps}}
+\newcommand*{\funBody}{\mathrm{Body}}
+\newcommand*{\funbody}{\mathrm{body}}
+\newcommand*{\main}{\mathrm{main}}
+\newcommand*{\es}{\mathrm{es}}
+\newcommand*{\formParams}{\mathrm{formParams}}
+\newcommand*{\emptysequence}{\boxempty}
+\newcommand*{\Glob}{\mathrm{Glob}}
+
+%% Sets of configurations
+\newcommand*{\NTe}{\Gamma_\mathrm{e}}
+\newcommand*{\NTb}{\Gamma_\mathrm{b}}
+\newcommand*{\NTd}{\Gamma_\mathrm{d}}
+\newcommand*{\NTg}{\Gamma_\mathrm{g}}
+\newcommand*{\NTs}{\Gamma_\mathrm{s}}
+\newcommand*{\NTk}{\Gamma_\mathrm{k}}
+\newcommand*{\Te}{T_\mathrm{e}}
+\newcommand*{\Tb}{T_\mathrm{b}}
+\newcommand*{\Td}{T_\mathrm{d}}
+\newcommand*{\Tg}{T_\mathrm{g}}
+\newcommand*{\Ts}{T_\mathrm{s}}
+\newcommand*{\Tk}{T_\mathrm{k}}
+
+%% Lambda notation.
+\newcommand*{\lambdaop}{\mathop{\lambda}\nolimits}
+
+%% Sets of (no better specified) configurations.
+\newcommand*{\NT}[1]{\Gamma_{#1}}
+\newcommand*{\NTq}{\Gamma_q}
+\newcommand*{\Tq}{T_q}
+
+%% Denotable values.
+\newcommand*{\dVal}{\mathrm{dVal}}
+%% Storeable values.
+\newcommand*{\sVal}{\mathrm{sVal}}
+\newcommand*{\sval}{\mathrm{sval}}
+
+%% Control modes.
+\newcommand*{\CtrlMode}{\mathord{\mathrm{CtrlMode}}}
+\newcommand*{\cm}{\mathrm{cm}}
+%% Branch modes.
+%\newcommand*{\BranchMode}{\mathord{\mathrm{BranchMode}}}
+\newcommand*{\GotoMode}{\mathord{\mathrm{GotoMode}}}
+\newcommand*{\SwitchMode}{\mathord{\mathrm{SwitchMode}}}
+\newcommand*{\cmgoto}{\mathop{\mathrm{goto}}\nolimits}
+\newcommand*{\cmswitch}{\mathop{\mathrm{switch}}\nolimits}
+\newcommand*{\cmbreak}{\mathop{\mathrm{break}}\nolimits}
+\newcommand*{\cmcontinue}{\mathop{\mathrm{continue}}\nolimits}
+\newcommand*{\cmreturn}{\mathop{\mathrm{return}}\nolimits}
+%% Exec mode.
+\newcommand*{\cmexec}{\mathrm{exec}}
+%% Value mode.
+\newcommand*{\ValMode}{\mathord{\mathrm{ValMode}}}
+\newcommand*{\cmvalue}{\mathop{\mathrm{value}}\nolimits}
+%% Environment mode.
+\newcommand*{\EnvMode}{\mathord{\mathrm{EnvMode}}}
+\newcommand*{\cmenv}{\mathrm{env}}
+%% Exception modes.
+\newcommand*{\ExceptMode}{\mathord{\mathrm{ExceptMode}}}
+\newcommand*{\cmexcept}{\mathrm{except}}
+
+%% Control states.
+\newcommand*{\CtrlState}{\mathord{\mathrm{CtrlState}}}
+\newcommand*{\cs}{\mathord{\mathrm{cs}}}
+%% Value states.
+\newcommand*{\ValState}{\mathord{\mathrm{ValState}}}
+\newcommand*{\valstate}{\upsilon}
+%% Environment states.
+%\newcommand*{\EnvState}{\mathord{\mathrm{EnvState}}}
+%% Exception states.
+\newcommand*{\ExceptState}{\mathord{\mathrm{ExceptState}}}
+\newcommand*{\exceptstate}{\varepsilon}
+
+%% Keywords.
+\newcommand*{\kw}[1]{\mathop{\textup{\textbf{#1}}}}
+
+\newcommand*{\bop}{\mathbin{\mathrm{bop}}}
+%\newcommand*{\uop}{\mathop{\mathrm{uop}}}
+
+%% Things that hold by definition.
+\newcommand{\defrel}[1]{\mathrel{\buildrel \mathrm{def} \over {#1}}}
+\newcommand{\defeq}{\defrel{=}}
+\newcommand{\defiff}{\defrel{\Longleftrightarrow}}
+%\newcommand{\defeq}{=}
+%\newcommand{\defiff}{\Longleftrightarrow}
+
+%% Divergence relation
+\newcommand{\diverges}{\,\mathord{\buildrel \infty \over \longrightarrow}}
+
+%% Special letters denoting sets and algebras.
+\providecommand*{\Nset}{\mathbb{N}}             % Naturals
+\providecommand*{\Qset}{\mathbb{Q}}             % Rationals
+\providecommand*{\Zset}{\mathbb{Z}}             % Integers
+\providecommand*{\Rset}{\mathbb{R}}             % Reals
+
+%% Calligraphic alphabet.
+\newcommand*{\calA}{\ensuremath{\mathcal{A}}}
+\newcommand*{\calB}{\ensuremath{\mathcal{B}}}
+\newcommand*{\calC}{\ensuremath{\mathcal{C}}}
+\newcommand*{\calD}{\ensuremath{\mathcal{D}}}
+\newcommand*{\calE}{\ensuremath{\mathcal{E}}}
+\newcommand*{\calF}{\ensuremath{\mathcal{F}}}
+\newcommand*{\calG}{\ensuremath{\mathcal{G}}}
+\newcommand*{\calH}{\ensuremath{\mathcal{H}}}
+\newcommand*{\calI}{\ensuremath{\mathcal{I}}}
+\newcommand*{\calJ}{\ensuremath{\mathcal{J}}}
+\newcommand*{\calK}{\ensuremath{\mathcal{K}}}
+\newcommand*{\calL}{\ensuremath{\mathcal{L}}}
+\newcommand*{\calM}{\ensuremath{\mathcal{M}}}
+\newcommand*{\calN}{\ensuremath{\mathcal{N}}}
+\newcommand*{\calO}{\ensuremath{\mathcal{O}}}
+\newcommand*{\calP}{\ensuremath{\mathcal{P}}}
+\newcommand*{\calQ}{\ensuremath{\mathcal{Q}}}
+\newcommand*{\calR}{\ensuremath{\mathcal{R}}}
+\newcommand*{\calS}{\ensuremath{\mathcal{S}}}
+\newcommand*{\calT}{\ensuremath{\mathcal{T}}}
+\newcommand*{\calU}{\ensuremath{\mathcal{U}}}
+\newcommand*{\calV}{\ensuremath{\mathcal{V}}}
+\newcommand*{\calW}{\ensuremath{\mathcal{W}}}
+\newcommand*{\calX}{\ensuremath{\mathcal{X}}}
+\newcommand*{\calY}{\ensuremath{\mathcal{Y}}}
+\newcommand*{\calZ}{\ensuremath{\mathcal{Z}}}
+
+%% Declarators for functions and relations.
+\newcommand*{\reld}[3]{\mathord{#1}\subseteq#2\times#3}
+\newcommand*{\fund}[3]{\mathord{#1}\colon#2\to#3}
+\newcommand*{\pard}[3]{\mathord{#1}\colon#2\rightarrowtail#3}
+
+%% Logical quantifiers stuff.
+\newcommand{\st}{\mathrel{.}}
+\newcommand{\itc}{\mathrel{:}}
+
+%% Domain, codomain and range of a function.
+\newcommand*{\dom}{\mathop{\mathrm{dom}}\nolimits}
+%\newcommand*{\cod}{\mathop{\mathrm{cod}}\nolimits}
+%\newcommand*{\range}{\mathop{\mathrm{range}}\nolimits}
+
+%% Restriction of a function.
+\newcommand*{\restrict}[1]{\mathop{\mid}\nolimits_{#1}}
+
+%% Type of a constant.
+\newcommand*{\type}{\mathop{\mathrm{type}}\nolimits}
+
+%% Lubs, glbs, and fixed points.
+\newcommand*{\lub}{\mathop{\mathrm{lub}}\nolimits}
+%\newcommand*{\glb}{\mathop{\mathrm{glb}}\nolimits}
+\newcommand*{\lfp}{\mathop{\mathrm{lfp}}\nolimits}
+\newcommand*{\gfp}{\mathop{\mathrm{gfp}}\nolimits}
+
+%% Generic widening.
+\newcommand*{\widen}{\mathbin{\nabla}}
+
+%% Set theory.
+\renewcommand{\emptyset}{\varnothing}
+
+%\newcommand*{\wpc}{\mathop{\wp_\mathrm{c}}\nolimits}
+%\newcommand*{\wpf}{\mathop{\wp_\mathrm{f}}\nolimits}
+%\newcommand*{\wpn}{\mathop{\wp_\mathrm{n}}\nolimits}
+
+\newcommand*{\sseq}{\subseteq}
+\newcommand*{\sseqf}{\mathrel{\subseteq_\mathrm{f}}}
+\newcommand*{\sslt}{\subset}
+%\newcommand*{\Sseq}{\supseteq}
+%\newcommand*{\Ssgt}{\supset}
+
+%\newcommand{\Nsseq}{\nsubseteq}
+
+\newcommand*{\union}{\cup}
+\newcommand*{\bigunion}{\bigcup}
+%\newcommand*{\biginters}{\bigcap}
+\newcommand*{\inters}{\cap}
+\newcommand*{\setdiff}{\setminus}
+
+\newcommand{\sset}[2]{{\renewcommand{\arraystretch}{1.2}
+                      \left\{\,#1 \,\left|\,
+                               \begin{array}{@{}l@{}}#2\end{array}
+                      \right.   \,\right\}}}
+
+%% Base sets.
+\newcommand*{\ttv}{\mathrm{tt}}
+\newcommand*{\ffv}{\mathrm{ff}}
+\newcommand*{\divop}{\mathbin{/}}
+\newcommand*{\modop}{\mathbin{\%}}
+\newcommand*{\andop}{\mathbin{\textbf{\textup{and}}}}
+\newcommand*{\orop}{\mathbin{\textbf{\textup{or}}}}
+\newcommand*{\notop}{\mathop{\textbf{\textup{not}}}}
+
+\newcommand*{\FI}{\mathop{\mathrm{FI}}\nolimits}
+\newcommand*{\DI}{\mathop{\mathrm{DI}}\nolimits}
+\newcommand*{\SL}{\mathop{\mathrm{SL}}\nolimits}
+%\newcommand*{\match}{\mathop{\mathrm{match}}\nolimits}
+
+\newcommand*{\Env}{\mathord{\mathrm{Env}}}
+\newcommand*{\emptystring}{\mathord{\epsilon}}
+
+%% Exceptions.
+\newcommand*{\RTSExcept}{\mathord{\mathrm{RTSExcept}}}
+\newcommand*{\rtsexcept}{\chi}
+\newcommand*{\Except}{\mathord{\mathrm{Except}}}
+\newcommand*{\except}{\xi}
+\newcommand*{\none}{\mathtt{none}}
+\newcommand*{\divbyzero}{\mathtt{divbyzero}}
+\newcommand*{\stkovflw}{\mathtt{stkovflw}}
+\newcommand*{\datovflw}{\mathtt{datovflw}}
+\newcommand*{\memerror}{\mathtt{memerror}}
+%\newcommand*{\inerror}{\mathtt{inerror}}
+%\newcommand*{\nullptr}{\mathtt{nullptr}}
+%\newcommand*{\outofboundsptr}{\mathtt{outofboundsptr}}
+
+%% Flags for terminal configurations of catch clauses.
+\newcommand*{\caught}{\mathtt{caught}}
+\newcommand*{\uncaught}{\mathtt{uncaught}}
+
+%% Static semantics.
+\newcommand*{\TEnv}{\mathord{\mathrm{TEnv}}}
+\newcommand*{\tinteger}{\mathrm{integer}}
+\newcommand*{\tboolean}{\mathrm{boolean}}
+\newcommand*{\trtsexcept}{\mathrm{rts\_exception}}
+
+%% Memory structures.
+\newcommand*{\Loc}{\mathord{\mathrm{Loc}}}
+\newcommand*{\Ind}{\mathrm{Ind}}
+\newcommand*{\Addr}{\mathrm{Addr}}
+\newcommand*{\Map}{\mathrm{Map}}
+%\newcommand*{\eMap}{\mathrm{eMap}}
+\newcommand*{\Stack}{\mathord{\mathrm{Stack}}}
+\newcommand*{\Mem}{\mathord{\mathrm{Mem}}}
+\newcommand*{\stknew}{\mathop{\mathrm{new}_\mathrm{s}}\nolimits}
+\newcommand*{\datnew}{\mathop{\mathrm{new}_\mathrm{d}}\nolimits}
+\newcommand*{\txtnew}{\mathop{\mathrm{new}_\mathrm{t}}\nolimits}
+\newcommand*{\heapnew}{\mathop{\mathrm{new}_\mathrm{h}}\nolimits}
+\newcommand*{\heapdel}{\mathop{\mathrm{delete}_\mathrm{h}}\nolimits}
+\newcommand*{\datcleanup}{\mathop{\mathrm{cleanup}_\mathrm{d}}\nolimits}
+\newcommand*{\smark}{\mathop{\mathrm{mark}_\mathrm{s}}\nolimits}
+\newcommand*{\sunmark}{\mathop{\mathrm{unmark}_\mathrm{s}}\nolimits}
+\newcommand*{\slink}{\mathop{\mathrm{link}_\mathrm{s}}\nolimits}
+\newcommand*{\sunlink}{\mathop{\mathrm{unlink}_\mathrm{s}}\nolimits}
+\newcommand*{\asmark}{\mathop{\mathrm{mark}_\mathrm{s}^\sharp}\nolimits}
+\newcommand*{\asunmark}{\mathop{\mathrm{unmark}_\mathrm{s}^\sharp}\nolimits}
+\newcommand*{\aslink}{\mathop{\mathrm{link}_\mathrm{s}^\sharp}\nolimits}
+\newcommand*{\asunlink}{\mathop{\mathrm{unlink}_\mathrm{s}^\sharp}\nolimits}
+\newcommand*{\aswiden}{\mathop{\mathrm{widen}}\nolimits}
+\newcommand*{\sm}{\dag}
+\newcommand*{\fm}{\ddag}
+\newcommand*{\topmost}{\mathop{\mathrm{tf}}\nolimits}
+%% Short forms of \datcleanup, \sunmark, \sunlink for table.
+\newcommand*{\datcleanupshort}{\mathop{\mathrm{cu}_\mathrm{d}}\nolimits}
+\newcommand*{\sunmarkshort}{\mathop{\mathrm{um}_\mathrm{s}}\nolimits}
+\newcommand*{\sunlinkshort}{\mathop{\mathrm{ul}_\mathrm{s}}\nolimits}
+
+\newcommand*{\location}[1]{\mathord{#1 \; \mathrm{loc}}}
+%\newcommand*{\saeval}{\mathop{\mathrm{aeval}}\nolimits}
+%\newcommand*{\saupd}{\mathop{\mathrm{aupd}}\nolimits}
+\newcommand*{\asupported}{\mathop{\mathrm{supported}^\sharp}\nolimits}
+\newcommand*{\aeval}{\mathop{\mathrm{eval}^\sharp}\nolimits}
+\newcommand*{\ceval}[1]{\mathop{\mathrm{eval}_{#1}}\nolimits}
+
+%% Abstracts.
+\newcommand*{\Abstract}{\mathord{\mathrm{Abstract}}}
+\newcommand*{\abs}{\mathord{\mathrm{abs}}}
+
+%% Integer part function.
+\newcommand{\intp}{\mathop{\mathrm{int}}\nolimits}
+
+%% Concrete functions and operations.
+% Aritmethic
+%% \newcommand*{\conadd}{\mathbin{\boxplus}}
+%% \newcommand*{\consub}{\mathbin{\boxminus}}
+%% \newcommand*{\conmul}{\mathbin{\boxdot}}
+%% \newcommand*{\condiv}{\mathbin{\boxslash}}
+%% \newcommand*{\conmod}{\mathbin{\boxbar}}
+% Boolean
+%% \newcommand*{\coneq}{\mathbin{\triangleq}}
+%% \newcommand*{\conineq}{\mathbin{\trianglelefteq}}
+%% \newcommand*{\conneg}{\mathbin{\daleth}}
+%% \newcommand*{\conor}{\mathbin{\triangledown}}
+%% \newcommand*{\conand}{\mathbin{\vartriangle}}
+\newcommand*{\bneg}{\mathop{\neg}\nolimits}
+
+%% Abstract functions and operations.
+% Aritmethic
+\newcommand*{\absuminus}{\mathop{\ominus}\nolimits}
+\newcommand*{\absadd}{\mathbin{\oplus}}
+\newcommand*{\abssub}{\mathbin{\ominus}}
+\newcommand*{\absmul}{\mathbin{\odot}}
+\newcommand*{\absdiv}{\mathbin{\oslash}}
+\newcommand*{\absmod}{\mathbin{\obar}}
+% Boolean
+\newcommand*{\abseq}{\mathrel{\triangleq}}
+\newcommand*{\absneq}{\mathrel{\not\triangleq}}
+\newcommand*{\absleq}{\mathrel{\trianglelefteq}}
+\newcommand*{\abslt}{\mathrel{\vartriangleleft}}
+\newcommand*{\absgeq}{\mathrel{\trianglerighteq}}
+\newcommand*{\absgt}{\mathrel{\vartriangleright}}
+\newcommand*{\absneg}{\mathrel{\circleddash}}
+\newcommand*{\absor}{\mathrel{\ovee}}
+\newcommand*{\absand}{\mathrel{\owedge}}
+
+%% Summaries for theorem-like environments
+\newcommand{\summary}[1]{\textrm{\textbf{\textup{#1}}}}
+
+%% Filter function extracting the relevant and irrelevant parts.
+\newcommand*{\sel}{\mathop{\mathrm{sel}}\nolimits}
+\newcommand*{\mem}{\mathop{\mathrm{mem}}\nolimits}
+
+%% Modeling definite exceptions.
+%\newcommand*{\None}{\mathrm{None}}
+
+%% Strict Cartesian products.
+\newcommand*{\stimes}{\otimes}
+\newcommand*{\spair}[2]{{#1} \otimes {#2}}
+%\newcommand*{\rstimes}{\rtimes}
+%\newcommand*{\rspair}[2]{{#1} \rtimes {#2}}
+%\newcommand*{\lstimes}{\ltimes}
+%\newcommand*{\lspair}[2]{{#1} \ltimes {#2}}
+
+%% Additional syntax for the numeric type extension supplement
+\newcommand*{\iT}{\mathrm{iT}}
+\newcommand*{\iType}{\mathrm{iType}}
+\newcommand*{\tschar}{\mathrm{signed\_char}}
+\newcommand*{\tuchar}{\mathrm{unsigned\_char}}
+\newcommand*{\flcon}{\mathrm{fl}}
+\newcommand*{\Float}{\mathrm{Float}}
+\newcommand*{\sccon}{\mathrm{sc}}
+\newcommand*{\sChar}{\mathrm{sChar}}
+\newcommand*{\uccon}{\mathrm{uc}}
+\newcommand*{\uChar}{\mathrm{uChar}}
+
+%% Additional macros for the extension for extra numeric types
+%% Floating point types.
+\newcommand*{\tfloat}{\mathrm{float}}
+%% Numeric types
+\newcommand*{\nType}{\mathrm{nType}}
+\newcommand*{\nT}{\mathrm{nT}}
+
+%% Additional macros for the extension to pointer and arrays:
+%% Elementary types.
+\newcommand*{\eType}{\mathrm{eType}}
+\newcommand*{\eT}{\mathrm{eT}}
+%% Elementary values.
+%\newcommand*{\eValue}{\mathrm{eVal}}
+%% Array types.
+\newcommand*{\aType}{\mathrm{aType}}
+\newcommand*{\aT}{\mathrm{aT}}
+%% Record types.
+\newcommand*{\rType}{\mathrm{rType}}
+\newcommand*{\rT}{\mathrm{rT}}
+%% Object types.
+\newcommand*{\oType}{\mathrm{oType}}
+\newcommand*{\oT}{\mathrm{oT}}
+%% Function types.
+\newcommand*{\fType}{\mathrm{fType}}
+\newcommand*{\fT}{\mathrm{fT}}
+%% Memory types.
+\newcommand*{\mType}{\mathrm{mType}}
+\newcommand*{\mT}{\mathrm{mT}}
+%% Pointer types.
+\newcommand*{\pType}{\mathrm{pType}}
+\newcommand*{\pT}{\mathrm{pT}}
+%% Offsets.
+\newcommand*{\Offset}{\mathrm{Offset}}
+\newcommand*{\nooffset}{\boxempty}
+\newcommand*{\indexoffset}[1]{\mathopen{\boldsymbol{[}}{#1}\mathclose{\boldsymbol{]}}}
+\newcommand*{\fieldoffset}[1]{\mathop{\boldsymbol{.}}{#1}}
+%% Lvalues.
+\newcommand*{\lValue}{\mathrm{LValue}}
+\newcommand*{\lvalue}{\mathrm{lval}}
+%% Rvalues.
+\newcommand*{\rValue}{\mathrm{RValue}}
+\newcommand*{\rvalue}{\mathrm{rval}}
+%%
+\newcommand*{\pointer}[1]{{#1}\boldsymbol{\ast}}
+\newcommand*{\maddress}[1]{\mathop{\&}{#1}}
+\newcommand*{\indirection}[1]{\mathop{\boldsymbol{\ast}}{#1}}
+%%
+\newcommand*{\locnull}{\mathord{l_\mathrm{null}}}
+\newcommand*{\ptrmove}{{\mathop{\mathrm{ptrmove}}\nolimits}}
+\newcommand*{\ptrdiff}{{\mathop{\mathrm{ptrdiff}}\nolimits}}
+\newcommand*{\ptrcmp}{{\mathop{\mathrm{ptrcmp}}\nolimits}}
+%%
+\newcommand*{\arraysyntax}[3]{\kw{#1} {#2} \kw{of}\,{#3}}
+\newcommand*{\arraytype}[2]{\arraysyntax{array}{#1}{#2}}
+\newcommand*{\firstof}{{\mathop{\mathrm{firstof}}\nolimits}}
+\newcommand*{\arrayindex}{\mathop{\mathrm{index}}\nolimits}
+\newcommand*{\locindex}{\mathop{\mathrm{locindex}}\nolimits}
+%%
+\newcommand*{\recordsyntax}[3]{\kw{#1} {#2} \kw{of}\,{#3}}
+\newcommand*{\recordtype}[2]{\recordsyntax{record}{#1}{#2}}
+\newcommand*{\field}{\mathop{\mathrm{field}}\nolimits}
+\newcommand*{\locfield}{\mathop{\mathrm{locfield}}\nolimits}
+%%
+\newcommand*{\NTo}{\Gamma_\mathrm{o}}
+\newcommand*{\To}{T_\mathrm{o}}
+\newcommand*{\NTl}{\Gamma_\mathrm{l}}
+\newcommand*{\Tl}{T_\mathrm{l}}
+%\newcommand*{\NTr}{\Gamma_\mathrm{r}}
+%\newcommand*{\Tr}{T_\mathrm{r}}
+%%
+\newcommand*{\arraydatnew}{\mathop{\mathrm{newarray}_\mathrm{d}}\nolimits}
+\newcommand*{\arraystknew}{\mathop{\mathrm{newarray}_\mathrm{s}}\nolimits}
