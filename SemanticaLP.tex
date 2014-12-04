@@ -228,7 +228,7 @@
   \end{proof}
 \end{esercizio}
 
-\
+
 \subsection{$f$  continua $\Rightarrow f$  monotona}
 \begin{esercizio}[$f$  continua $\Rightarrow f$  monotona]
   Siano $(S, \preceq)$ e $(T, \sqsubseteq)$ due \emph{CPO} e sia $f: S \rightarrow T $
@@ -241,7 +241,7 @@
   \end{proof}
 \end{esercizio}
 
-\
+
 \subsection{f monotona $\Arrownot \Rightarrow$ f continua}
 \begin{esercizio}[f monotona $\Arrownot \Rightarrow$ f continua]
   Siano $(S, \preceq)$ e $(T, \sqsubseteq)$ due \emph{CPO} e sia $f: S \rightarrow T$
@@ -414,12 +414,14 @@ Il comando $ while\; B\; do\; C $ è continuo.
 \newpage
 
 \section{Logica di Floyd-Hoare}
+\newcommand{\mactext}[1]{\text{\texttt{#1}}}
+% Comando per scrivere con texttt dentro una formula matematica
 
 \subsection{Esercizio 1}
 Dare una dimostrazione per la seguente tripla di Hoare:
 $$ \{X=a \; \land Y=b\} \; X=X+Y; \; Y=X-Y; \; X=X-Y \; \{Y=a \; \land \; X=b\} $$
 
-\begin{proof}
+\begin{proof}[Svolgimento]
 Dimostriamo la tripla partendo dal fondo. Applicando l'assioma dell'assegnamento si ha:
 $$ \{S[\nicefrac{X-Y}{X}] \} \; X=X-Y \; \{Y=a \; \land \; X=b\} $$
 $$ \Downarrow $$
@@ -443,8 +445,9 @@ Che è quanto volevamo dimostrare.
 Dare una dimostrazione per la seguente tripla di Hoare:
 $$ \{X=R+(Y \times Q) \} \; BEGIN \; R=R-Y; \; Q=Q+1 \; END \; \{X=R+(Y \times Q)\} $$
 
-\begin{proof}
-Come nell'esercizio precedente, procediamo dal fondo. Applichiamo quindi l'assioma dell'assegnamento:
+\begin{proof}[Svolgimento]
+Come nell'esercizio precedente, procediamo dal fondo.\\
+Applichiamo quindi l'assioma dell'assegnamento:
 $$ \{S[\nicefrac{Q+1}{Q}] \} \; Q=Q+1 \; \{X=R+(Y \times Q)\} $$
 $$ \Downarrow $$
 $$ \{X=R+(Y \times (Q+1)) \} \; Q=Q+1 \; \{X=R+(Y \times Q)\} $$
@@ -459,6 +462,105 @@ $$ \{X= R+(Y \times Q) \} \; R=R-Y \; \{X=R+Y \times Q + Y \} $$
 Che è quanto volevamo dimostrare.
 \end{proof}
 
+\subsection{Esercizio 3 \emph{(Esonero del 28/11/2014)}}
+Lo xor bit a bit, $ \oplus: \mathbb{N} \times \mathbb{N} \rightarrow \mathbb{N} $, gode delle
+seguenti proprietà:
+\begin{itemize}
+	\item $ x \oplus (y \oplus z) = (x \oplus y) \oplus z $ \emph{(associatività)}
+	\item $ x \oplus y = y \oplus x $ \emph{(commutatività)}
+	\item $ x \oplus 0 = x $ \emph{(elemento neutro)}
+	\item $ x \oplus x = 0 $ \emph{(nipotenza/ogni elemento è l'inverso di se stesso)}
+\end{itemize}
+Si dimostri, usando la logica di Floyd-Hoare, che la composizione sequenziale:
+\begin{center}
+\texttt{X := X XOR Y; Y := X XOR Y; X := X XOR Y}
+\end{center}
+realizza lo scambio dei valori tra le variabili \texttt{X} e \texttt{Y} se queste, all'inizio della computazione, contengono valori naturali.
 
+\begin{proof}[Svolgimento]
+Dobbiamo dimostrare che la seguente tripla di Hoare è corretta:
+
+\begin{center}
+$ \{ \mactext{X=a} \; \land \; \mactext{Y=b} \} $ 
+\texttt{X := X XOR Y; Y := X XOR Y; X := X XOR Y} 
+$\{\mactext{X=b} \; \land \; \mactext{Y=a} \} $
+\end{center}
+Procediamo, al solito, partendo dal fondo. Applichiamo dunque l'assioma dell'assegnamento:
+
+\begin{center}
+$ \{ S[\nicefrac{\mactext{X XOR Y}}{\mactext{X}}] \} $ 
+\texttt{X := X XOR Y} 
+$\{\mactext{X=b} \; \land \; \mactext{Y=a} \} $
+\end{center}
+$$ \Downarrow $$
+\begin{center}
+$ \{\mactext{X XOR Y = b} \; \land \mactext{Y=a}  \} $ 
+\texttt{X := X XOR Y} 
+$\{\mactext{X=b} \; \land \; \mactext{Y=a} \} $
+\end{center}
+
+Passiamo al successivo assegnamento:
+\begin{center}
+$ \{ S[\nicefrac{\mactext{X XOR Y}}{\mactext{Y}} ] \} $ 
+\texttt{Y := X XOR Y} 
+$ \{\mactext{X XOR Y = b} \; \land \mactext{Y=a} \} $
+\end{center}
+$$ \Downarrow $$
+\begin{center}
+$ \{ \mactext{X XOR (X XOR Y) = b} \; \land \; \mactext{X XOR Y = a} \} $
+\texttt{Y := X XOR Y} 
+$ \{ \mactext{X XOR Y = b} \; \land \; \mactext{Y=a} \} $
+\end{center}
+Applichiamo la proprietà di associatività dello XOR in precondizione:
+\begin{center}
+$ \{ \mactext{(X XOR X) XOR Y = b} \; \land \; \mactext{X XOR Y = a} \} $
+\texttt{Y := X XOR Y} 
+$ \{ \mactext{X XOR Y = b} \; \land \; \mactext{Y=a} \} $
+\end{center}
+Applichiamo la proprietà di nipotenza dello XOR in precondizione:
+\begin{center}
+$ \{ \mactext{0 XOR Y = b} \; \land \; \mactext{X XOR Y = a} \} $
+\texttt{Y := X XOR Y} 
+$ \{ \mactext{X XOR Y = b} \; \land \; \mactext{Y=a} \} $
+\end{center}
+Applichiamo la proprietà di elemento neutro dello XOR in precondizione:
+\begin{center}
+$ \{ \mactext{Y=b} \; \land \; \mactext{X XOR Y = a} \} $
+\texttt{Y := X XOR Y} 
+$ \{ \mactext{X XOR Y = b} \; \land \; \mactext{Y=a} \} $
+\end{center}
+
+Passiamo ora al successivo, e ultimo, assegnamento della tripla:
+\begin{center}
+$ \{ S[\nicefrac{\mactext{X XOR Y}}{\mactext{X}} ] \} $ 
+\texttt{X := X XOR Y} 
+$ \{ \mactext{Y=b} \; \land \; \mactext{X XOR Y = a} \} $
+\end{center}
+$$ \Downarrow $$
+\begin{center}
+$ \{ \mactext{Y=b} \; \land \; \mactext{(X XOR Y) XOR Y = a} \} $
+\texttt{X := X XOR Y} 
+$ \{ \mactext{Y=b} \; \land \; \mactext{X XOR Y = a} \} $
+\end{center}
+Applichiamo la proprietà di associatività dello XOR in precondizione:
+\begin{center}
+$ \{ \mactext{Y=b} \; \land \; \mactext{X XOR (Y XOR Y) = a} \} $
+\texttt{X := X XOR Y} 
+$ \{ \mactext{Y=b} \; \land \; \mactext{X XOR Y = a} \} $
+\end{center}
+Applichiamo la proprietà di nipotenza dello XOR in precondizione:
+\begin{center}
+$ \{ \mactext{Y=b} \; \land \; \mactext{X XOR 0 = a} \} $
+\texttt{X := X XOR Y} 
+$ \{ \mactext{Y=b} \; \land \; \mactext{X XOR Y = a} \} $
+\end{center}
+Applichiamo la proprietà di elemento neutro dello XOR in precondizione:
+\begin{center}
+$ \{ \mactext{Y=b} \; \land \; \mactext{X=a} \} $
+\texttt{X := X XOR Y} 
+$ \{ \mactext{Y=b} \; \land \; \mactext{X XOR Y = a} \} $
+\end{center}
+Otteniamo dunque quello che volevamo dimostrare.
+\end{proof}
 
 \end{document}
