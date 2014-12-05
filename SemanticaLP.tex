@@ -59,14 +59,14 @@
   \item (Riflessività) $ \forall x \in S : x \preceq x $
   \item (Transitività) $ \forall x,y,z \in S : x \preceq y \land y \preceq z $ allora $ x \preceq z $
   \item (Antisimmetria) $ \forall x,y \in S : x \preceq y \land y \preceq x $ allora $ x = y $
-  \item (Totalità) $ \forall x,y \in S$, $ x \preceq y \lor y \preceq x $
+  \item (Totalità) $ \forall x,y \in S : x \preceq y \lor y \preceq x $
   \end{itemize}
 \end{definizione}
 
 \
 \subsection{Catena}
 \begin{definizione}[Catena]
-  Un insieme numerabile (cioé tale che la sua cardinalità sia minore o uguale ad $\aleph_0 $) e totalmente ordinato si dice \emph{Catena}, ossia:
+  Un insieme numerabile (cioè tale che la sua cardinalità sia minore o uguale ad $\aleph_0 $) e totalmente ordinato si dice \emph{catena}, ossia:
   $$ Chain(X) \Longleftrightarrow (\forall x,y \in X : x \preceq y \lor y \preceq x) \land |X| \leq \aleph_0 \ $$
 \end{definizione}
 
@@ -79,7 +79,7 @@
 \
 \subsection{Least Upper Bound}
 \begin{definizione}[Least Upper Bound]
-  Sia $(S,\preceq)$ un \emph{PO} e $T\subseteq S$. Si dice che $u \in S$ è un \emph{Least Upper Bound} o \emph{Minimo dei Maggioranti} di T se e solo se $$( \forall x \in T : x \preceq u ) \land (\forall u' \in S : \forall y \in T : y \preceq u' \Rightarrow u \preceq u') $$.
+  Sia $(S,\preceq)$ un \emph{PO} e $T\subseteq S$. Si dice che $u \in S$ è un \emph{Least Upper Bound} o \emph{Minimo dei Maggioranti} di T se e solo se $$( \forall x \in T : x \preceq u ) \land (\forall u' \in S : \forall y \in T : y \preceq u' \Rightarrow u \preceq u') $$
 \end{definizione}
 
 \
@@ -104,7 +104,7 @@
 \subsection{Punto fisso}
 \begin{definizione}
   Sia $S$ un insieme e sia $f : S \rightarrow S$ una funzione. Allora un \emph{FP} o \emph{Punto Fisso} di $f$ è un qualunque valore $x$ tale che $f(x) = x$.
-  Se $x$ è anche il minimo dei punti fissi allora è un \emph{LFP} o \emph{Minimo Punto Fisso}
+  Se $x$ è anche il minimo dei punti fissi allora è un \emph{LFP} o \emph{Minimo Punto Fisso}.
 \end{definizione}
 
 \newtheorem{teorema}{Teorema}
