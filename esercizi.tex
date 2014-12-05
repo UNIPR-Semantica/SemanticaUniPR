@@ -1,0 +1,102 @@
+%% Logical quantifiers stuff
+\newcommand*{\st}{\mathrel{.}}
+\newcommand*{\itc}{\mathrel{:}}
+
+\newcommand*{\Com}{\mathrm{Com}}
+\newcommand*{\Exp}{\mathrm{Com}}
+
+\newcommand*{\union}{\cup}
+
+\newcommand*{\card}{\mathop{\#}\nolimits}
+
+\providecommand*{\Nset}{\mathbb{N}}            % Naturals
+\providecommand*{\Rset}{\mathbb{R}}            % Reals
+
+\newcommand*{\multichoice}{\Alph{answerno}\addtocounter{answerno}{1}}
+\newcommand*{\bad}{\multichoice}
+\ifthenelse{\boolean{SOLUTIONS}}{%
+\newcommand*{\good}{\textbf{\multichoice}}
+\newcommand*{\answer}[1]{\par\noindent\textbf{Risposta:} #1\medskip}
+}{
+\newcommand*{\good}{\multichoice}
+\newcommand*{\answer}[1]{}
+}
+
+\newcommand*{\stick}{{\,|\,}}
+
+\begin{document}
+\title{Semantica dei linguaggi di programmazione \\
+       Prova in itinere}
+\date{28 novembre 2014}
+\maketitle
+
+\section*{Esercizio 1}
+Si estenda il linguaggio WHILE con il costrutto
+\verb+REPEAT C UNTIL B+ che, lo si dia per assodato,
+\`e equivalente a \verb+C; WHILE NOT B DO C+.
+Per tale costrutto si definiscano:
+\begin{itemize}
+\item
+regole/assiomi per la semantica operazionale ``big step'';
+\item
+regole/assiomi per la semantica operazionale ``small step'';
+\item
+equazione/i per la semantica denotazionale;
+\item
+regole/assiomi per la correttezza parziale nella logica di Floyd-Hoare;
+\item
+regole/assiomi per la correttezza totale nella logica di Floyd-Hoare.
+\end{itemize}
+
+\section*{Esercizio 2}
+
+Lo xor bit a bit, $\fund{\oplus}{\Nset \times \Nset}{\Nset}$,
+gode delle seguenti propriet\`a:
+\begin{align*}
+x \oplus (y \oplus z ) &= (x \oplus y) \oplus z,
+  &\text{associativit\`a}; \\
+x \oplus y &= y \oplus x,
+  &\text{commutativit\`a}; \\
+x \oplus 0 &= x,
+  &\text{elemento neutro}; \\
+x \oplus x &= 0,
+  &\text{nilpotenza / ogni elemento \`e l'inverso di s\'e stesso}.
+\end{align*}
+Si dimostri, usando la logica di Floyd-Hoare, che la composizione
+sequenziale
+\verb+X := X XOR Y; Y := X XOR Y; X := X XOR Y+
+realizza lo scambio dei valori tra le variabili \verb+X+ e \verb+Y+
+se queste, all'inizio della computazione contengono, valori naturali.
+
+\section*{Esercizio 3}
+
+Si dimostri il seguente lemma sulla semantica operazionale ``small step'':
+\begin{align*}
+  \forall C_1, C_2 \in \Com &\itc \forall s, s' \in \Sigma
+                             \itc \forall n \in \Nset \itc
+    \langle C_1; C_2, s \rangle \longrightarrow^n s' \\
+      &\implies \exists n_1, n_2 \in \Nset \st \exists s'' \in \Sigma \st \\
+      &\qquad\qquad\qquad
+        \langle C_1, s \rangle \longrightarrow^{n_1} s'' \land
+        \langle C_2, s'' \rangle \longrightarrow^{n_2} s'' \land
+        n = n_1 + n_2.
+\end{align*}
+
+\section*{Esercizio 4}
+Si estenda il linguaggio WHILE con un costrutto
+\verb+SWITCH+ dignitoso.
+Per tale costrutto si definiscano:
+\begin{itemize}
+\item
+sintassi;
+\item
+regole/assiomi per la semantica operazionale ``big step'';
+\item
+regole/assiomi per la semantica operazionale ``small step'';
+\item
+equazione/i per la semantica denotazionale;
+\item
+regole/assiomi per la correttezza parziale nella logica di Floyd-Hoare;
+\item
+regole/assiomi per la correttezza totale nella logica di Floyd-Hoare.
+\end{itemize}

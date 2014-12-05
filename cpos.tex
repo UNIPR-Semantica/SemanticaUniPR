@@ -1,0 +1,972 @@
+\documentclass[online,helvetica,a4]{chaksem}
+%\documentclass[paper,helvetica]{chaksem}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{url}
+\usepackage{verbatim}
+\usepackage{ifthen}
+\usepackage{varioref}
+\usepackage{hhline}
+\input prooftree
+\input macros
+
+\begin{document}
+
+\begin{slide}
+  \vspace*{-.9\bigskipamount}
+  \begin{center}
+    \vspace*{\fill}
+    \huge
+    {\dblue Complete Partial Orders}
+    \\[1.2em]
+    \large
+    {\dgreen Roberto \textsc{Bagnara}} \\
+             Department of Mathematics \\
+             University of Parma, Italy \\
+  \end{center}%
+  \vspace*{-.5\bigskipamount}
+\setfooter{%
+  \bgcolbox{bggray}{{\upshape Copyright \copyright\ 2011 Roberto Bagnara.
+                              Distributed under the terms of the
+                              GNU Free Documentation License 1.2}}}
+\end{slide}
+
+
+\begin{slide} \heading{POs, Chains and CPOs}
+
+$(S, \preceq)$ is a partial ordering (or \Emph{PO}) if `$\preceq$'
+is reflexive, transitive and antisymmetric over $S$.
+
+$(S, \preceq)$ is \Emph{totally ordered} if, for each $x, y \in S$,
+we have $x \preceq y$ or $y \preceq x$.
+
+If $(S, \preceq)$ is totally ordered and denumerable, then it
+is called a \Emph{chain}.
+
+$(S, \preceq)$ is called a \Emph{complete partial ordering} or \Emph{CPO}
+if it has a minimum element ($\bot$) and all its chains
+have a least upper bound.
+
+\vfill
+\textbf{Exercise}: Prove that
+\begin{enumerate} 
+\item
+The maximum element of a PO, when it exists, is also the least upper bound of the the PO.
+\item
+Every finite chain has a maximum element.
+\item
+Every subset of a chain is a chain.
+\end{enumerate}
+\end{slide}
+
+\begin{slide} \heading{Monotonic Functions}
+
+Let $(S, \preceq)$ and $(T, \sqsubseteq)$ be CPOs.
+
+The function $\fund{f}{S}{T}$ is \Emph{monotonic} if, for each $x, y \in S$,
+we have $f(x) \sqsubseteq f(y)$ whenever $x \preceq y$.
+
+This can be read as the fact that $f$ preserves the information content:
+when given more information it will not produce less information.
+
+All the functions we are interested in for the purpose of defining the
+concrete and abstract semantics of programming languages are monotonic.
+(If you find yourself dealing with a non-monotonic function, start
+looking for the bug: there is one somewhere.)
+\end{slide}
+
+\begin{slide} \heading{Continuous Functions}
+
+Let $(S, \preceq)$ and $(T, \sqsubseteq)$ be CPOs.
+
+The function $\fund{f}{S}{T}$ is \Emph{continuous} if,
+for each chain $X \sseq S$, we have:
+\begin{enumerate}
+\item
+$\lub\bigl\{\, f(x) \bigm| x \in X \,\bigr\}$ exists;
+\item
+$f(\lub X) = \lub\bigl\{\, f(x) \bigm| x \in X \,\bigr\}$.
+\end{enumerate}
+
+Suppose $y$ is an infinite object
+(e.g., the set of \Emph{all} computation paths in a program)
+that is only definable as the limit of a chain of finite parts $X$
+(e.g., a set of \Emph{some} computation paths, then \Emph{some more}
+and so forth): $y = \lub X$.
+
+Since $y$ is an infinite object, we cannot compute $f(y)$ directly.
+\end{slide}
+
+\begin{slide} \heading{Continuous Functions, cont.}
+
+However, \emph{sometimes} we can approach $y$ by computing $f(x)$ for $x \in X$
+(we can do that if each $x$ is a finite object).
+
+And, \emph{sometimes} $f(y)$ is the \Emph{limit} of such process:
+$f(y) = \lub\bigl\{\, f(x) \bigm| x \in X \,\bigr\}$.
+
+When the function $f$ is \Emph{continuous}, in the above sentences
+we can replace \emph{sometimes} by \emph{always}.
+
+All the functions we are interested in for the purpose of defining the
+concrete and abstract semantics of programming languages are continuous.
+
+\vfill
+\textbf{Exercise}: Prove that a continuous function is also monotonic.
+
+\vfill
+\textbf{Exercise}: Exhibit a monotonic function that is not continuous.
+
+\end{slide}
+
+\begin{slide} \heading{Additive Functions}
+
+The function $f$ is \Emph{additive} if
+\[
+	f(\lub X) = \lub\bigl\{\, f(x) \bigm| x \in X \,\bigr\}
+\]
+for all sets $X \sseq S$ (i.e., it preserves \Emph{all} lubs, not just
+the lubs of chains).
+
+With an additive function
+any composite piece of information (i.e., something that is obtainable
+as $\lub X$) can be processed by processing the components individually
+(i.e., computing $\{\, f(x) \mid x \in X \,\}$)
+and then composing the processed pieces.
+
+Not all functions we are interested in are additive, unfortunately.
+
+\vfill
+\textbf{Exercise}: Give a reasonable definition of the division operation
+over intervals.  Then prove that the operation you defined is additive
+in the first argument, but it is not in the second argument.
+
+\end{slide}
+
+\begin{slide} \heading{Fixed Points}
+Let $S$ be a set and $\fund{f}{S}{S}$ be any function.
+A \Emph{fixed point} of $f$ is any value $x$ for which $f(x) = x$.
+
+\textbf{Examples:} 
+
+Let $S \defeq \Rset$.
+The function $f(x) \defeq x+1$ has no fixed points.
+With the function $f(x) \defeq x$, every element of $\Rset$ is a fixed point.
+
+Let $S \defeq \wpf(\Nset)$.
+The function 
+\[
+   f(x) = x \union \bigl\{ m-1 \bigm| m \in x \setdiff \{0\} \bigr\}
+\]
+has the chains of numbers $\{0, \ldots, m\}$ for all $m \in \Nset$
+as its fixed points.
+\end{slide}
+
+
+\begin{slide} \heading{Least Fixed Points of Continuous Functions}
+If $(S, \preceq)$ is a CPO with a least element $\bot$
+and $\fund{f}{S}{S}$ is continuous,
+then $f$ has a \Emph{least fixed point} denoted by \Emph{$\lfp f$} and given by
+\[
+	\lfp f = \lub \bigl\{\, f^n(\bot) \bigm| n \in \Nset \,\bigr\}
+\]
+where, for each $x \in S$,
+\begin{align*}
+  f^0(x)    &\defeq x, \\
+  f^{n+1}(x) &\defeq f\bigl(f^n(x)\bigr). \\
+\end{align*}
+\end{slide}
+
+
+\begin{slide} \heading{Least Fixed Points of Continuous Functions: Proof}
+We first prove that $\forall n \in \Nset \itc f^n(\bot) \preceq f^{n+1}(\bot)$.
+\begin{description}
+\item[$n = 0$:]
+$f^0(\bot) = \bot \preceq f^1(\bot)$ as $\bot$ is the least element;
+\item[$n > 0$:]
+$f^n(\bot) \preceq f^{n+1}(\bot)$ is equivalent to
+$f\bigl(f^{n-1}(\bot)\bigr) \preceq f\bigl(f^n(\bot)\bigr)$;
+the latter is true by inductive hypothesis and by monotonicity
+of $f$.
+\end{description}
+
+As a consequence, $C = \bigl\{\, f^n(\bot) \bigm| n \in \Nset \,\bigr\}$
+is a chain in $S$, hence, as $S$ is a CPO, $\lub C$ exists.
+
+By continuity of $f$, $f(\lub C) = \lub f(C)$, but $\lub f(C) = \lub C$
+by definition of $C$, and thus $f(\lub C) = \lub C$ so that $\lub C$
+is a fixed point of $f$.
+
+Suppose, towards a contradiction, the $m$ is a fixed point of $f$ with
+$m \prec \lub C$.  There must exist $i \in \Nset$ such that
+$m = f^j(\bot)$ for each $j \ge i$.  This would imply $\lub C$ is not
+the least upper bound of $C$.
+\end{slide}
+
+\end{document}
+
+\begin{slide} \heading{Inductively Defined Sets}
+Let $\cU$ a \Emph{universe} of (not better specified) terms.
+
+Let $\fund{F}{\wp(U)}{\wp(U)}$ be a continuous function with respect to the
+complete lattice $\bigl(\wp(\cU), \sseq\bigr)$.
+
+The set \Emph{inductively defined by $F$} is $\lfp F$.
+For what we said before, we have
+\[
+	\lfp F = \bigunion_{i \in \Nset} F^i(\emptyset).
+\]
+\end{slide}
+
+\begin{slide} \heading{Inductively Defined Sets, cont.}
+\textbf{Example:} consider the BNF rule
+\[
+    V ::= 0 \ | \ 1V
+\]
+and the associated function $\fund{\bar{V}}{\{0,1\}^\star}{\{0,1\}^\star}$
+\[
+    \bar{V}(S) \defeq \{ 0 \} \union \{\, 1s \mid s \in S \,\}.
+\]
+Then $\bar{V}$ is continuous.
+
+We have $\lfp \bar{V} = \{\, 1^n0 \mid n \in \Nset \,\}$.
+\end{slide}
+
+\begin{slide} \heading{Coinductively Defined Sets}
+Dualizing the definition of continuous functions, we obtain
+\Emph{co-continuous} functions.
+
+We also can dualize the definition of inductively defined sets.
+
+Let $\fund{F}{\wp(U)}{\wp(U)}$ be a co-continuous function with respect to the
+complete lattice $\bigl(\wp(\cU), \sseq\bigr)$.
+
+The set \Emph{coinductively defined by $F$} is given by
+\[
+	\gfp F = \biginters_{i \in \Nset} F^i(U).
+\]
+\end{slide}
+
+\begin{slide} \heading{Coinductively Defined Sets, cont.}
+\textbf{Example:} consider again the BNF rule
+\[
+    V ::= 0 \ | \ 1V
+\]
+and the associated co-continuous function
+$\fund{\bar{V}}{\{0,1\}^\star}{\{0,1\}^\omega}$
+\[
+    \bar{V}(S) \defeq \{ 0 \} \union \{\, 1s \mid s \in S \,\}.
+\]
+We have
+\(
+  \gfp \bar{V}
+     = \{\, 1^n0 \mid n \in \Nset \,\} \union \{ 1^\omega \}
+     = \lfp \bar{V} \union \{ 1^\omega \}
+\).
+
+\textbf{Note:} when computing $\lfp \bar{V}$, $\bar{V}^i(\emptyset)$
+contains the strings
+that will \Emph{definitely be in} the final result.
+When computing $\gfp \bar{V}$, strings that are not in
+$\bar{V}^i\bigl({\{0,1\}^\omega}\bigr)$
+will \Emph{never be in} the final result.
+\end{slide}
+
+\begin{slide} \heading{Rules and Rule Instances}
+
+We have defined our big-step semantics by means of \Emph{rules}
+such as
+\[
+\prooftree
+      \langle c_0, \sigma \rangle
+        \rightarrow
+          \sigma''
+\qquad
+      \langle c_1, \sigma'' \rangle
+        \rightarrow
+          \sigma'
+\justifies
+      \langle c_0 ; c_1, \sigma \rangle
+        \rightarrow
+          \sigma'
+\endprooftree
+\]
+
+By instantiating the meta-variables, a rule can spawn infinitely many
+\Emph{rule instances}, such as
+\[
+\footnotesize
+\prooftree
+      \bigl\langle x := 0, \{ z = 2 \} \bigr\rangle
+        \rightarrow
+          \{ x = 0, z = 2 \}
+\qquad
+      \bigl\langle y := 1, \{ x = 0, z = 2 \} \bigr\rangle
+        \rightarrow
+          \{ x = 0, y = 1, z = 2 \}
+\justifies
+      \bigl\langle x := 0 ; y := 1, \{ z = 2 \} \bigr\rangle
+        \rightarrow
+          \{ x = 0, y = 1, z = 2 \}
+\endprooftree
+\]
+
+Notice that the instantiation chosen above \emph{makes sense}, but this
+is not required by the definition or rule instance.
+This only requires the meta-variables to be \Emph{consistently replaced}
+by objects of the right kind.
+\end{slide}
+
+\begin{slide} \heading{Building Trees of Rule Instances}
+
+Let the universe $U$ be the set $\Nset^2$ of pairs of natural numbers.
+The subset
+\[
+  \cF
+    \defeq
+      \bigl\{\,
+        (n, m)
+      \bigm|
+        \text{$m$ is the $n$-th Fibonacci number}
+      \,\bigr\}
+\]
+can be defined by the rules:
+\[
+\prooftree
+\justifies
+  (1, 1) \in \cF
+\endprooftree
+\qquad
+\prooftree
+\justifies
+  (2, 1) \in \cF
+\endprooftree
+\qquad
+\prooftree
+  (n, m) \in \cF \quad (n+1, m_1) \in \cF
+\justifies
+  (n+2, m+m_1) \in \cF
+\endprooftree
+\]
+An \Emph{perfectly legal} instance of the third rule is
+\[
+\prooftree
+  (17, 2) \in \cF \quad (18, 2) \in \cF
+\justifies
+  (19, 4) \in \cF
+\endprooftree
+\]
+\end{slide}
+
+\begin{slide} \heading{Building Trees of Rule Instances, cont.}
+
+Here is a tree constituting the proof that $5$ is the $5$-th Fibonacci
+number:
+\[
+\prooftree
+  \prooftree
+    \prooftree
+    \justifies
+      (1, 1) \in \cF
+    \endprooftree
+    \quad
+    \prooftree
+    \justifies
+      (2, 1) \in \cF
+    \endprooftree
+  \justifies
+    (3, 2) \in \cF
+  \endprooftree
+  \quad
+  \prooftree
+    \prooftree
+    \justifies
+      (2, 1) \in \cF
+    \endprooftree
+  \quad
+    \prooftree
+      \prooftree
+      \justifies
+        (1, 1) \in \cF
+      \endprooftree
+      \quad
+      \prooftree
+      \justifies
+        (2, 1) \in \cF
+      \endprooftree
+    \justifies
+      (3, 2) \in \cF
+    \endprooftree
+  \justifies
+    (4, 3) \in \cF
+  \endprooftree
+\justifies
+  (5, 5) \in \cF
+\endprooftree
+\]
+
+Of course, building the tree is only possible if the right instances
+are chosen and put at the right place.
+\end{slide}
+
+\begin{slide} \heading{Inductive Definitions Again}
+
+We do not need to build the tree explicitly, \Emph{if we only care
+about the end result and not with its justification}.
+Consider the rules again:
+\[
+\prooftree
+\justifies
+  (1, 1) \in \cF
+\endprooftree
+\qquad
+\prooftree
+\justifies
+  (2, 1) \in \cF
+\endprooftree
+\qquad
+\prooftree
+  (n, m) \in \cF \quad (n+1, m_1) \in \cF
+\justifies
+  (n+2, m+m_1) \in \cF
+\endprooftree
+\]
+The set of all their instances can be expressed as
+\[
+F \defeq
+\left\{
+\prooftree
+  \emptyset
+\justifies
+  (1, 1)
+\endprooftree
+\right\}
+\union
+\left\{
+\prooftree
+  \emptyset
+\justifies
+  (2, 1)
+\endprooftree
+\right\}
+\union
+\Biggl\{\,
+\prooftree
+  \bigl\{ (n, m), (n+1, m_1) \bigr\}
+\justifies
+  (n+2, m+m_1)
+\endprooftree
+\Biggm|
+  n, m, m_1 \in \Nset
+\,\Biggr\}
+\]
+The \Emph{induced operator} $\fund{\bar{F}}{\wp(\Nset^2)}{\wp(\Nset^2)}$ is
+\[
+  \bar{F}(X)
+    \defeq
+      \bigl\{  (1, 1), (2, 1) \bigr\}
+        \union
+          \Bigl\{\,
+            (n+2, m+m_1)
+          \Bigm|
+            \bigl\{ (n, m), (n+1, m_1) \bigr\} \sseq X
+          \,\Bigr\}
+\]
+\end{slide}
+
+\begin{slide} \heading{Inductive Definitions Again, cont.}
+
+\textbf{Exercise:} prove the following:
+\begin{enumerate}
+\item
+\(
+  \bigl(\wp(\Nset^2), \emptyset, \Nset^2, \inters, \union\bigr)
+\)
+is a complete lattice;
+\item
+the ordering of
+\(
+  \bigl(\wp(\Nset^2), \emptyset, \Nset^2, \inters, \union\bigr)
+\)
+is `$\sseq$';
+\item
+$\bar{F}$ is continuous over 
+\(
+  \bigl(\wp(\Nset^2), \sseq\bigr)
+\).
+\end{enumerate}
+
+It can then be proved that \Emph{the smallest set $|F|$ that satisfies
+the rules $F$ is the least fixpoint of $\bar{F}$, which, in turn, is $\cF$}:
+\[
+  \cF = |F| = \lfp \bar{F}
+    = \lub_{\sseq} \bigl\{\, \bar{F}^n(\emptyset) \bigm| n \in \Nset \,\bigr\}
+    = \bigunion_{n \in \Nset} \bar{F}^n(\emptyset)
+\]
+
+By iterating the least fixpoint construction we can obtain as many Fibonacci
+numbers as desired, without explicitly building trees.
+\end{slide}
+
+\begin{slide} \heading{Finite Big-Step Semantics Trees}
+
+We start by considering \Emph{finite} trees only:
+\begin{itemize}
+\item
+for the \Emph{concrete} semantics this means that we disregard
+infinite computations (as these are captured by infinite trees);
+\item
+for the \Emph{abstract} semantics this means that we lose the ability
+to assign an abstract meaning to many programs
+(here included programs that express only finite computations!).
+\end{itemize}
+
+With these limitation in mind, both the concrete and the abstract
+semantics will be defined \Emph{inductively}.
+\end{slide}
+
+\begin{slide} \heading{Finite Big-Step Semantics Trees, cont.}
+
+Let $\cR$ be the set of the concrete or abstract rule instances for IMP.
+
+The set $\cT_\mathrm{f}$ of \Emph{finite semantics trees built from $\cR$}
+can be defined \Emph{inductively} as the \Emph{smallest} set such that
+whenever
+$\{ \theta_1, \ldots, \theta_n \} \sseq \cT_\mathrm{f}$
+and
+\[
+  \prooftree
+    \bigl\{ \troot(\theta_1), \ldots, \troot(\theta_n) \bigr\}
+  \justifies
+     \eta
+  \endprooftree
+    \in \cR,
+\]
+for some $n \geq 0$,
+then
+\[
+  \prooftree
+    \theta_1, \ldots, \theta_n
+  \justifies
+     \eta
+  \endprooftree
+    \in \cT_\mathrm{f}.
+\]
+\end{slide}
+
+\begin{slide} \heading{Finite Big-Step Semantics Trees, cont.}
+
+Let $\cR^\flat$ denote the set of concrete rule instances for IMP
+and $\cT^\flat_\mathrm{f}$ the
+set of trees built from $\cR^\flat$.
+
+Let $\cR^\sharp$ denote the set of abstract rule instances for IMP
+and $\cT^\sharp_\mathrm{f}$ the
+set of trees built from $\cR^\sharp$.
+
+We will now define a relation
+$\reld{\propto}{\cT^\flat_\mathrm{f}}{\cT^\sharp_\mathrm{f}}$.
+If $\tau^\flat \in \cT^\flat_\mathrm{f}$
+and $\tau^\sharp \in \cT^\sharp_\mathrm{f}$,
+then \Emph{$\tau^\flat \propto \tau^\sharp$} means that
+then \Emph{$\tau^\flat$ is correctly approximated by $\tau^\sharp$}.
+\end{slide}
+
+\begin{slide} \heading{Safety for Finite Big-Step Semantics Trees}
+
+Let $\tau^\flat \in \cT^\flat_\mathrm{f}$
+and $\tau^\sharp \in \cT^\sharp_\mathrm{f}$.
+
+Then $\tau^\flat \propto \tau^\sharp$ if and only if
+\begin{enumerate}
+\item
+$\troot(\tau^\flat) \propto \troot(\tau^\sharp)$; and
+\item
+for each immediate subtree $\tau^\flat_i$ of $\tau^\flat$
+there exists a immediate subtree $\tau^\sharp_j$ of $\tau^\sharp$
+such that $\tau^\flat_i \propto \tau^\sharp_j$.
+\end{enumerate}
+
+In words, \Emph{every immediate subtree of $\tau^\flat$ is approximated by
+some immediate subtree of $\tau^\sharp$}.
+
+Notice that one immediate subtree in $\tau^\sharp$ may be related by
+`$\propto$' to none, one or more than one immediate subtree of $\tau^\flat$.
+
+We now need to define `$\propto$' for the trees' nodes.
+\end{slide}
+
+\begin{slide} \heading{Safety for Finite Big-Step Semantics Trees, cont.}
+
+Since we are adopting a \Emph{Galois connection approach} it is natural
+to define the notion of \Emph{sound approximation} in terms of
+the abstraction or of the concretization function.
+We choose the latter for no particular reason.
+
+We thus define
+\begin{align*}
+  r^\flat \propto r^\sharp
+    &\defiff
+      r^\flat \in \gamma(r^\sharp),
+&&\text{for each $r^\flat \in \mv{Int}^\flat$ and $r^\sharp \in \mv{Int}^\sharp$;} \\
+  t^\flat \propto t^\sharp
+    &\defiff
+      t^\flat \in \gamma(t^\sharp),
+&&\text{for each $t^\flat \in \mv{Bool}$ and $t^\sharp \in \mv{Bool}^\sharp$;} \\
+  \sigma^\flat \propto \sigma^\sharp
+    &\defiff
+      \sigma^\flat \in \gamma(\sigma^\sharp),
+&&\text{for each $\sigma^\flat \in \Stores_V$ and $\sigma^\sharp \in \Stores^\sharp_V$.}
+\end{align*}
+\end{slide}
+
+\begin{slide} \heading{Safety for Finite Big-Step Semantics Trees, cont.}
+
+Let $\sigma^\flat \in \Stores^\flat_V$, $\sigma^\sharp \in \Stores^\sharp_V$,
+$r^\flat \in \mv{Int}^\flat$, and $r^\sharp \in \mv{Int}^\sharp$.
+Then
+\[
+  \bigl(\langle a_1, \sigma^\flat  \rangle \rightarrow r^\flat\bigr)
+    \propto
+  \bigl(\langle a_2, \sigma^\sharp \rangle \rightsquigarrow r^\sharp\bigr)
+\]
+if and only if
+$a_1 = a_2$,
+$\sigma^\flat \propto \sigma^\sharp$, and
+$r^\flat \propto r^\sharp$.
+
+Similarly, if
+$\sigma^\flat \in \Stores^\flat_V$, $\sigma^\sharp \in \Stores^\sharp_V$,
+$t^\flat \in \mv{Bool}^\flat$, and $t^\sharp \in \mv{Bool}^\sharp$,
+then
+\[
+  \bigl(\langle b_1, \sigma^\flat  \rangle \rightarrow t^\flat\bigr)
+    \propto
+  \bigl(\langle b_2, \sigma^\sharp \rangle \rightsquigarrow t^\sharp\bigr)
+\]
+if and only if
+$b_1 = b_2$,
+$\sigma^\flat \propto \sigma^\sharp$, and
+$t \propto t^\sharp$.
+
+Finally, if
+$\sigma^\flat, \rho^\flat \in \Stores^\flat_V$, and
+$\sigma^\sharp, \rho^\sharp \in \Stores^\sharp_V$,
+then
+\[
+  \bigl(\langle c_1, \sigma^\flat  \rangle \rightarrow \rho^\flat\bigr)
+    \propto
+  \bigl(\langle c_2, \sigma^\sharp \rangle \rightsquigarrow \rho^\sharp\bigr)
+\]
+if and only if
+$c_1 = c_2$,
+$\sigma^\flat \propto \sigma^\sharp$, and
+$\rho^\flat \propto \rho^\sharp$.
+\end{slide}
+
+\begin{slide} \heading{Safety for Finite Big-Step Semantics Trees, cont.}
+%The objective is now to prove the following results:
+
+\textbf{Theorem 1}:
+\begin{quote}
+  For each command $c \in \mv{Com}$,
+  for each concrete store $\sigma^\flat  \in \Stores_V^\flat$,
+  for each tree $\tau^\flat \in \cT^\flat_\mathrm{f}$,
+  such that
+  \(
+    \troot(\tau^\flat)
+      = \bigl(\langle c, \sigma^\flat \rangle \rightarrow \rho^\flat\bigr)
+  \),
+  for each abstract store $\sigma^\sharp \in \Stores^\sharp_V$
+  such that $\sigma^\flat \propto \sigma^\sharp$,
+  for each tree $\tau^\sharp \in \cT^\sharp_\mathrm{f}$
+  such that
+  \(
+    \troot(\tau^\sharp)
+      = \bigl(\langle c, \sigma^\sharp \rangle
+                \rightsquigarrow \rho^\sharp\bigr)
+  \),
+  we have $\tau^\flat \propto \tau^\sharp$.
+\end{quote}
+\textbf{Theorem 2}:
+\begin{quote}
+  For each command $c \in \mv{Com}$,
+  for each concrete store $\sigma^\flat  \in \Stores_V^\flat$,
+  for each tree $\tau^\flat \in \cT^\flat_\mathrm{f}$
+  such that
+  \(
+    \troot(\tau^\flat)
+      = \bigl(\langle c, \sigma^\flat \rangle \rightarrow \rho^\flat\bigr)
+  \),
+  there exists a tree $\tau^\sharp \in \cT^\sharp_\mathrm{f}$
+  such that
+  $\tau^\flat \propto \tau^\sharp$.
+\end{quote}
+
+\textbf{Course Project 1}:
+Prove the above theorems.
+
+\end{slide}
+
+\begin{slide} \heading{Safety for Finite Big-Step Semantics Trees, cont.}
+
+To prove Theorem 2, we have to establish that we have
+enough abstract rules to cover all concrete rules.
+(The proof can then be completed by induction on the height of the concrete
+tree.)
+
+More formally, we should prove that, for each concrete rule instance
+\[
+  \prooftree
+    \bigl\{ s^\flat_1, \ldots, s^\flat_h \bigr\}
+  \justifies
+     s^\flat
+  \endprooftree
+    \in \cR^\flat
+\]
+there exist an abstract rule instance
+\[
+  \prooftree
+    \bigl\{ s^\sharp_1, \ldots, s^\sharp_k \bigr\}
+  \justifies
+     s^\sharp
+  \endprooftree
+    \in \cR^\sharp
+\]
+such that (1)
+$s^\flat \propto s^\sharp$,
+and, (2),
+for each $i \in \{ 1, \ldots, h \}$ there exists $j \in \{ 1, \ldots, k \}$
+such that $s^\flat_i \propto s^\sharp_j$.
+
+\end{slide}
+
+\begin{slide} \heading{Safety for Finite Big-Step Semantics Trees, cont.}
+
+Here is an example showing that concrete rules are adequately covered.
+
+Let $m \in \mv{Int}$.  The rule instance
+\[
+\prooftree
+\justifies
+\langle m, \sigma \rangle
+        \rightarrow m
+\endprooftree
+\qquad\text{ is covered by }\qquad
+\prooftree
+\justifies
+\bigl\langle m, \alpha\bigl(\{\sigma\}\bigr) \bigr\rangle
+        \rightsquigarrow \alpha\bigl(\{m\}\bigr)
+\endprooftree
+\]
+since
+\(
+  \bigl(\langle m, \sigma \rangle \rightarrow m\bigr)
+    \propto
+  \bigl(\bigl\langle m, \alpha\bigl(\{\sigma\}\bigr) \bigr\rangle
+          \rightsquigarrow \alpha\bigl(\{m\}\bigr)\bigr)
+\).
+
+This is so because $\sigma \propto \alpha\bigl(\{\sigma\}\bigr)$, that is,
+$\sigma \in \gamma\bigl(\alpha\bigl(\{\sigma\}\bigr)\bigr)$, which is
+true because $\alpha$ and $\gamma$ constitute a Galois connection
+between $\wp(\Stores^\flat)$ and $\Stores^\sharp$.
+
+Similarly, we have $m \propto \alpha\bigl(\{m\}\bigr)$, that is,
+$m \in \gamma\bigl(\alpha\bigl(\{m\}\bigr)\bigr)$, which is
+true because $\alpha$ and $\gamma$ constitute a Galois connection
+between $\wp(\mv{Int}^\flat)$ and $\mv{Int}^\sharp$.
+
+\end{slide}
+
+\begin{slide} \heading{Safety for Finite Big-Step Semantics Trees, cont.}
+
+Another example.
+
+Let $x \in V \sseqf \mv{Var}$ and $\sigma \neq \error_V$.
+The rule instance
+\[
+\prooftree
+\justifies
+      \langle x, \sigma \rangle
+        \rightarrow
+          \sigma(x)
+\endprooftree
+\qquad\text{ is covered by }\qquad
+\prooftree
+\justifies
+      \bigl\langle x, \alpha\bigl(\{\sigma\}\bigr) \bigr\rangle
+        \rightsquigarrow
+          \alpha\bigl(\{\sigma\}\bigr)(x)
+\endprooftree
+\]
+since
+\(
+  \bigl(\langle x, \sigma \rangle \rightarrow \sigma(x)\bigr)
+    \propto
+  \bigl(\bigl\langle x, \alpha\bigl(\{\sigma\}\bigr) \bigr\rangle
+          \rightsquigarrow \alpha\bigl(\{\sigma\}\bigr)(x)\bigr)
+\).
+
+This is so because $\sigma \propto \alpha\bigl(\{\sigma\}\bigr)$
+as before.
+
+Moreover, we have
+$\sigma(x) \propto \alpha\bigl(\{\sigma\}\bigr)(x)$
+because $\sigma \in \gamma\bigl(\alpha\bigl(\{\sigma\}\bigr)\bigr)$,
+which implies
+\(
+  \forall y \in V
+    \itc
+      \sigma(y) \in \gamma\bigl(\alpha\bigl(\{\sigma\}\bigr)(y)\bigr)
+\),
+and thus
+$\sigma(x) \in \gamma\bigl(\alpha\bigl(\{\sigma\}\bigr)(x)\bigr)$.
+\end{slide}
+
+\begin{slide} \heading{Infinite Big-Step Semantics Trees}
+
+Let $\cR$ be the set of the concrete or abstract rule instances for IMP.
+
+The set $\cT_\omega$ of \Emph{infinite semantics trees built from $\cR$}
+can be defined \Emph{coinductively} as the \Emph{greatest} set
+of \emph{finitely branching trees of at most $\omega$ depth} such that
+whenever, for some $n \geq 0$,
+\[
+  \prooftree
+    \theta_1, \ldots, \theta_n
+  \justifies
+     \eta
+  \endprooftree
+    \in \cT_\omega
+\]
+there exists $\{ \theta_1, \ldots, \theta_n \} \sseq \cT_\omega$
+such that
+\[
+  \prooftree
+    \bigl\{ \troot(\theta_1), \ldots, \troot(\theta_n) \bigr\}
+  \justifies
+     \eta
+  \endprooftree
+    \in \cR.
+\]
+\end{slide}
+
+\begin{slide} \heading{Infinite Big-Step Abstract Semantics Trees, cont.}
+
+For correctness, each program (fragment) with a concrete semantics tree
+must posses \Emph{at least one} abstract semantics tree.
+
+Depending on the choice of abstract domain, there are programs
+possessing a finite concrete tree for which \Emph{no finite abstract
+semantics tree exists}.
+
+This means that we do need to consider inifinite abstract semantics trees.
+
+\textbf{Example}: Consider, for each $n \in \Nset$, the program
+\[
+    x = n; \kw{while} \evenop(x) \kw{do} x := x \divop 2
+\]
+This always has a finite concrete tree (it always terminates).
+\end{slide}
+
+\begin{slide} \heading{Infinite Big-Step Abstract Semantics Trees, cont.}
+In contrast, and assuming an abstract domain for polarities,
+every tree rooted at
+\[
+  \bigl\langle \{x = e\}, \kw{while} \evenop(x) \kw{do} x := x \divop 2 \bigr\rangle
+    \rightsquigarrow \{ x = r^\sharp \},
+\]
+where $r^\sharp \in \mv{Int}^\sharp$, is infinite.
+
+Let us abbreviate $\evenop(x)$ with $b$, $x := x \divop 2$ with $a$,
+the command $\kw{while} \evenop(x) \kw{do} x := x \divop 2$
+with $c$, and the abstract stores $\{ x = e \}$, $\{ x = m^\sharp \}$
+and $\{ x = \top \}$ with $x_e$, $x_{m^\sharp}$ and $x_\top$, respectively.
+\[
+\footnotesize
+\prooftree
+      \langle b, x_e \rangle
+        \rightsquigarrow
+          \ttv
+\quad
+      \langle a, x_e \rangle
+        \rightsquigarrow
+          x_\top
+\quad
+      \prooftree
+            \langle b, x_\top \rangle
+              \rightsquigarrow
+                \top
+      \quad
+            \langle a, x_e \rangle
+              \rightsquigarrow
+                x_\top
+      \quad
+            \prooftree
+                  \cdots
+            \justifies
+                  \langle c, x_\top \rangle
+                    \rightsquigarrow
+                      x_o \sqcup x_{m^\sharp}
+            \endprooftree
+      \justifies
+            \langle c, x_\top \rangle
+              \rightsquigarrow
+                x_o \sqcup x_{m^\sharp}
+      \endprooftree
+\justifies
+      \langle c, x_e \rangle
+        \rightsquigarrow
+          x_o \sqcup x_{m^\sharp}
+\endprooftree
+\]
+\end{slide}
+
+\begin{slide} \heading{Infinite Big-Step Abstract Semantics Trees, cont.}
+
+Both $m^\sharp = o$ ($x$ is odd) and $m^\sharp = \top$ ($x$ is unknown)
+gives a well-formed infinite tree: for precision, we want to take the
+\Emph{least tree}.
+
+We thus define a \Emph{partial ordering on infinite trees}.
+Let $\cT^\sharp_\omega$ be the set of infinite abstract trees
+enriched with two distinct elements $\Omega$ (the \emph{undefined} tree)
+and $\Delta$ (the \emph{top} tree).
+
+Let $\tau^\sharp, \upsilon^\sharp \in \cT^\sharp_\omega$.
+Then $\tau^\sharp \preceq \upsilon^\sharp$
+if and only if
+$\tau^\sharp = \Omega$
+or $\upsilon^\sharp = \Delta$
+or
+\begin{enumerate}
+\item
+$\troot(\tau^\sharp) \preceq \troot(\upsilon^\sharp)$; and
+\item
+for each immediate subtree $\tau^\sharp_i$ of $\tau^\sharp$
+there exists a immediate subtree $\upsilon^\sharp_j$ of $\upsilon^\sharp$
+such that $\tau^\flat_i \preceq \upsilon^\sharp_j$.
+\end{enumerate}
+
+\textbf{Exercise:}  Define `$\preceq$' for tree nodes so that
+the formula $\troot(\tau^\sharp) \preceq \troot(\upsilon^\sharp)$
+makes sense.
+
+\textbf{Exercise:}  Prove that $(\cT^\sharp_\omega, \preceq)$
+is a complete lattice.
+\end{slide}
+
+\begin{slide} \heading{Infinite Big-Step Abstract Semantics Trees, cont.}
+
+The correctness proof is done as in the case of finite abstract trees
+(by induction on the height of the concrete tree, which is finite).
+
+This works because infinite paths in the abstract tree correspond
+to divergent computations that are \Emph{excluded by the concrete tree}.
+\end{slide}
+
+\end{document}
+
