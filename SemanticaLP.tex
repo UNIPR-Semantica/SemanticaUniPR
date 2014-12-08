@@ -19,6 +19,7 @@
 \setmarginsrb{25mm}{10mm}{25mm}{10mm}{0mm}{10mm}{0mm}{10mm} 
 %{<leftmargin>}{<topmargin>}{<rightmargin>}{<bottommargin>}{<headheight>}{<headsep>}{<footheight>}{<footskip>}
 
+\input{prooftree.tex}
 
 \begin{document}
 
@@ -639,6 +640,68 @@ Si ha:
 \end{itemize}
 
 Questo prova la correttezza totale.
+\end{proof}
+
+\section{Semantica operazionale, denotazionale, assiomatica}
+
+\subsection{Esercizio 1}
+Aggiungere al linguaggio \emph{While} visto a lezione l'espressione:
+$$ Exp \ni E ::= \dots \; | \; B \; ? \; E_2 \; : \; E_3 $$
+definendone la semantica operazionale Big Step, Small Step e denotazionale.
+
+\begin{proof}[Svolgimento]
+Di seguito illustriamo le regole e gli assiomi in semantica Small Step:
+$$ \prooftree
+		\langle B,s \rangle \; \rightarrow \; \langle B', s' \rangle
+      	\justifies
+      		\langle B \; ? \; E_2 \; : E_3, s \rangle \; \rightarrow \; \langle B' \; ? \; E_2 \; : E_3, s' \rangle
+	\thickness=0.08em
+	\endprooftree
+$$
+
+$$ \prooftree
+      	\justifies
+      		\langle true \; ? \; E_2 \; : E_3, s \rangle \; \rightarrow \; \langle E_2, s' \rangle
+	\thickness=0.08em
+	\endprooftree
+$$
+
+$$ \prooftree
+      	\justifies
+      		\langle false \; ? \; E_2 \; : E_3, s \rangle \; \rightarrow \; \langle E_3, s' \rangle
+	\thickness=0.08em
+	\endprooftree
+$$
+
+Di seguito illustriamo le regole e gli assiomi in semantica Big Step:
+$$ \prooftree
+		\langle B,s \rangle \Downarrow \langle true, s' \rangle \; \;
+		\langle E_2,s' \rangle \Downarrow \langle n, s'' \rangle
+      	\justifies
+      		\langle B \; ? \; E_2 \; : E_3, s \rangle \Downarrow \langle n s'' \rangle
+	\thickness=0.08em
+	\endprooftree
+$$
+
+$$ \prooftree
+		\langle B,s \rangle \Downarrow \langle false, s' \rangle \; \;
+		\langle E_3,s' \rangle \Downarrow \langle n, s'' \rangle
+      	\justifies
+      		\langle B \; ? \; E_2 \; : E_3, s \rangle \Downarrow \langle n s'' \rangle
+	\thickness=0.08em
+	\endprooftree
+$$
+
+Di seguito illustriamo la definizione dell'espressione in semantica denotazionale:
+$$
+\llbracket B \; ? \; E_2 \; : \; E_3 \rrbracket (s) \; = 
+\begin{cases} 
+	\varepsilon \llbracket E_2 \rrbracket (s) & se \; \emph{B} \llbracket B \rrbracket (s) = tt \\
+	\varepsilon \llbracket E_3 \rrbracket (s) & se \; \emph{B} \llbracket B \rrbracket (s) = ff \\
+	\bot & altrimenti
+\end{cases}
+$$
+
 \end{proof}
 
 
