@@ -109,6 +109,15 @@
   Se $x$ è anche il minimo dei punti fissi allora è un \emph{LFP} o \emph{Minimo Punto Fisso}.
 \end{definizione}
 
+\subsection{Programma propriamente annotato}
+\begin{definizione}
+Un programma si dice \emph{propriamente annotato} se ci sono annotazioni nei seguenti punti:
+\begin{itemize}
+	\item Prima ogni comando $C_i$ in una composizione sequenziale $C_1;C_2; \dots ;C_n$ in cui $C_i$ non è un comando di assegnamento.
+	\item Dopo la parola \textbf{do} in un comando \textbf{while}.
+\end{itemize}
+\end{definizione}
+
 \newtheorem{teorema}{Teorema}
 \
 \subsection{Teorema di Tarski}
@@ -644,6 +653,24 @@ Si ha:
 Questo prova la correttezza totale.
 \end{proof}
 
+\subsection{Esercizio 5}
+Estendere la regola del blocco vista a lezione, svincolandola dalla condizione secondo la quale nessuna variabile che compare all'interno del blocco possa comparire in precondizione o in postcondizione.
+
+\begin{proof}[Svolgimento]
+Possiamo, a livello di preprocessore, rinominare tutte le variabili di blocco con un nome univoco $ y_1,\dots ,y_n $, facendo attenzione al fatto che abbiano un identificatore univoco. La regola allora è riscrivibile come:
+$$
+\prooftree
+	\vdash \; \{ P \} \; C[\nicefrac{y_1}{v_1}]\dots [\nicefrac{y_n}{v_n}] \; \{ Q \}
+	\justifies
+		\{ P \} \; \mactext{BEGIN Var } v_1; \dots v_n; \; C \; \mactext{END} \; \{ Q \}
+	\thickness=0.08em
+	\using
+		(Vars(P) \cup Vars(Q)) \cap \{ y_1,\dots ,y_n \} = \emptyset
+\endprooftree
+$$
+\end{proof}
+
+
 \section{Semantica operazionale, denotazionale, assiomatica}
 
 \subsection{Esercizio 1}
@@ -703,8 +730,6 @@ $$
 	\bot & altrimenti
 \end{cases}
 $$
-
 \end{proof}
-
 
 \end{document}
