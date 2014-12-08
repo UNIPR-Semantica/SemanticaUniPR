@@ -21,6 +21,7 @@
 
 \input{prooftree.tex}
 
+
 \begin{document}
 
 \frenchspacing % Forza Latex ad una spaziatura uniforme, invece di lasciare più spazio alla fine dei
@@ -566,8 +567,9 @@ Otteniamo dunque quello che volevamo dimostrare.
 
 
 \subsection{Esercizio 4}
+
 Dimostrare la correttezza della seguente tripla di Hoare:
-\begin{lstlisting}[mathescape, numberfirstline=false]
+\begin{lstlisting}[mathescape, numberfirstline=false, frame=single]
 $ [x = n] $
 if x < 0 then
 	y := 0;
@@ -678,7 +680,7 @@ $$ \prooftree
 		\langle B,s \rangle \Downarrow \langle true, s' \rangle \; \;
 		\langle E_2,s' \rangle \Downarrow \langle n, s'' \rangle
       	\justifies
-      		\langle B \; ? \; E_2 \; : E_3, s \rangle \Downarrow \langle n s'' \rangle
+      		\langle B \; ? \; E_2 \; : E_3, s \rangle \Downarrow \langle n, s'' \rangle
 	\thickness=0.08em
 	\endprooftree
 $$
@@ -687,7 +689,7 @@ $$ \prooftree
 		\langle B,s \rangle \Downarrow \langle false, s' \rangle \; \;
 		\langle E_3,s' \rangle \Downarrow \langle n, s'' \rangle
       	\justifies
-      		\langle B \; ? \; E_2 \; : E_3, s \rangle \Downarrow \langle n s'' \rangle
+      		\langle B \; ? \; E_2 \; : E_3, s \rangle \Downarrow \langle n, s'' \rangle
 	\thickness=0.08em
 	\endprooftree
 $$
