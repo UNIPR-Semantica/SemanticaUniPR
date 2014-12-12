@@ -8,7 +8,7 @@
 \subsection{Ordinamento Parziale}
 
 \begin{definizione}\summary{Ordinamento parziale.}
-  Un insieme S dotato della relazione binaria $\preceq\ \subseteq\ S\ \times\ S$\\
+  Un insieme S dotato della relazione binaria $\preceq\ \subseteq\ S\ \times\ S$
   è un \emph{Ordinamento Parziale}, o \emph{PO}, se valgono le seguenti:
   \begin{itemize}
   \item (Riflessività) $ \forall x \in S : x \preceq x $
@@ -17,10 +17,9 @@
   \end{itemize}
 \end{definizione}
 
-\
 \subsection{Ordinamento Totale}
 \begin{definizione}[Ordinamento Totale]
-  Un insieme S dotato della relazione binaria $\preceq\ \subseteq\ S\ \times\ S$\\
+  Un insieme S dotato della relazione binaria $\preceq\ \subseteq\ S\ \times\ S$
   è un \emph{Ordinamento Totale} se valgono le seguenti:
   \begin{itemize}
   \item (Riflessività) $ \forall x \in S : x \preceq x $
@@ -37,25 +36,21 @@
   $$ Chain(X) \Longleftrightarrow (\forall x,y \in X : x \preceq y \lor y \preceq x) \land |X| \leq \aleph_0 \ $$
 \end{definizione}
 
-\
 \subsection{Upper Bound}
 \begin{definizione}[Upper Bound]
   Sia $(S,\preceq)$ un \emph{PO} e $T\subseteq S$. Si dice che $u \in S$ è un \emph{Upper Bound} o \emph{Maggiorante} di T se e solo se $ \forall x \in T : x \preceq u $.
 \end{definizione}
 
-\
 \subsection{Least Upper Bound}
 \begin{definizione}[Least Upper Bound]
   Sia $(S,\preceq)$ un \emph{PO} e $T\subseteq S$. Si dice che $u \in S$ è un \emph{Least Upper Bound} o \emph{Minimo dei Maggioranti} di T se e solo se $$( \forall x \in T : x \preceq u ) \land (\forall u' \in S : \forall y \in T : y \preceq u' \Rightarrow u \preceq u') $$
 \end{definizione}
 
-\
 \subsection{CPO}
 \begin{definizione}[CPO]
   Un \emph{Ordinamento Parziale Completo} è un insieme (S,$\preceq$) se ha un elemento minimo ed ogni sua catena ha un least upper bound.
 \end{definizione}
 
-\
 \subsection{Funzioni monotone e continue}
 \begin{definizione}
   Siano $(S,\preceq)$ e $(T,\sqsubseteq)$ due \emph{CPO} e sia $ f:S\rightarrow T$. Allora:
@@ -67,7 +62,7 @@
   \end{itemize}
 \end{definizione}
 
-\
+
 \subsection{Punto fisso}
 \begin{definizione}
   Sia $S$ un insieme e sia $f : S \rightarrow S$ una funzione. Allora un \emph{FP} o \emph{Punto Fisso} di $f$ è un qualunque valore $x$ tale che $f(x) = x$.
@@ -84,7 +79,7 @@ Un programma si dice \emph{propriamente annotato} se ci sono annotazioni nei seg
 \end{definizione}
 
 \newtheorem{teorema}{Teorema}
-\
+
 \subsection{Teorema di Tarski}
 \begin{teorema}[Teorema di Tarski]
   Sia $(S, \preceq)$ un \emph{CPO}, sia $\bot = min\ S$ e sia $f : S \rightarrow S$ continua
@@ -102,13 +97,11 @@ Un programma si dice \emph{propriamente annotato} se ci sono annotazioni nei seg
   \end{proof}
 \end{teorema}
 
-\newpage
 \section{Esercizi sui CPO}
 
 \theoremstyle{definition}
 \newtheorem{esercizio}{Esercizio}
 
-\
 \subsection{Unicità lub}
 \begin{esercizio}[Unicità lub]
   Sia $(S, \preceq)$ un \emph{PO}, sia $T \subseteq S \Rightarrow (\exists lub\ T \Rightarrow lub\ T$ è unico)
@@ -129,7 +122,6 @@ Un programma si dice \emph{propriamente annotato} se ci sono annotazioni nei seg
   \end{center}
 \end{proof}
 
-\
 \subsection{Se il lub appartiene a un insieme è il massimo}
 \begin{esercizio}[$lub\ T \in T \Rightarrow lub\ T = max\ T$]
   Sia $(S, \preceq)$ un ordinamento parziale, sia $T \subseteq S$ e\\
@@ -139,7 +131,6 @@ Un programma si dice \emph{propriamente annotato} se ci sono annotazioni nei seg
   \end{proof}
 \end{esercizio}
 
-\
 \subsection{Il massimo di un insieme è anche il lub}
 \begin{esercizio}[$\exists max\ S \Rightarrow lub\ S = max\ S$]
   Sia $(S, \preceq)$ un ordinamento parziale
@@ -154,7 +145,6 @@ Un programma si dice \emph{propriamente annotato} se ci sono annotazioni nei seg
   \end{proof}
 \end{esercizio}
 
-\
 \subsection{Ogni catena finita ha massimo}
 \begin{esercizio}
   Sia $(C, \preceq)$ un \emph{PO} $: Chain(C) \land |C| < \aleph_0 \Rightarrow \exists max\ C$
@@ -163,7 +153,6 @@ Un programma si dice \emph{propriamente annotato} se ci sono annotazioni nei seg
     \end{proof}
 \end{esercizio}
 
-\
 \subsection{Ogni sottoinsieme di una catena è una catena}
 \begin{esercizio}
   Sia $(C, \preceq)$ un \emph{PO} $: Chain(C) \Rightarrow (X \subseteq C \Rightarrow Chain(X))$
@@ -173,7 +162,6 @@ Un programma si dice \emph{propriamente annotato} se ci sono annotazioni nei seg
   \end{proof}
 \end{esercizio}
 
-\
 \subsection{$(ST, \sqsubseteq)$ è un CPO}
 \begin{esercizio}[$(ST, \sqsubseteq)$ è un CPO]
   Sia ST l'insieme degli \emph{State Transformer} e
@@ -260,7 +248,6 @@ Un programma si dice \emph{propriamente annotato} se ci sono annotazioni nei seg
   \end{proof}
 \end{esercizio}
 
-\newpage
 \subsection{Composizione di funzioni continue}
 \begin{esercizio}[Composizione di funzioni continue]
   Siano $ (A, \sqsubseteq_A), \; (B, \sqsubseteq_B) \; e \; (D, \sqsubseteq_D) $ dei \emph{CPO} e siano $ f: A \rightarrow B $ e $ g: B \rightarrow D $ funzioni continue $ \Rightarrow g \circ f : A \rightarrow D $ è continua.
@@ -274,7 +261,6 @@ Un programma si dice \emph{propriamente annotato} se ci sono annotazioni nei seg
     \end{center}
   \end{proof}
 \end{esercizio}
-\newpage
 
 \section{Continuità del comando While}
 Il comando $ while\; B\; do\; C $ è continuo.
@@ -387,7 +373,6 @@ Il comando $ while\; B\; do\; C $ è continuo.
   E:
   $$ lfp \; F = lub \{ F^n(\perp ) | n \in \mathbb{N} \} $$
 \end{proof}
-\newpage
 
 \section{Logica di Floyd-Hoare}
 \newcommand{\mactext}[1]{\text{\texttt{#1}}}
@@ -696,5 +681,3 @@ $$
 \end{cases}
 $$
 \end{proof}
-
-\end{document}
