@@ -1,0 +1,37 @@
+\documentclass[12pt,a4]{book}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel} % Adatta Latex alle convenzioni tipogafiche italiane
+\usepackage[utf8]{inputenc} % Consente l'uso dei caratteri accentati italiani
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{listings}
+\usepackage{stmaryrd}
+\usepackage{amssymb}
+\usepackage{vmargin}
+\usepackage{hyperref}
+\usepackage{makeidx}
+\usepackage{nicefrac}
+\usepackage{listings}
+\hypersetup{colorlinks=true, urlcolor=blue, linkcolor=blue}
+
+\setmarginsrb{25mm}{10mm}{25mm}{10mm}{0mm}{10mm}{0mm}{10mm} 
+%{<leftmargin>}{<topmargin>}{<rightmargin>}{<bottommargin>}{<headheight>}{<headsep>}{<footheight>}{<footskip>}
+
+\input{prooftree.tex}
+\input{macros.tex}
+
+\begin{document}
+
+\title{Appunti di semantica dei linguaggi di programmazione}
+\author{Amerigo Mancino, Valentino Marano, \dots, Roberto Bagnara}
+\date{31/10/2014}
+
+\maketitle
+
+\tableofcontents
+
+\input{prelim.tex}
+\input{ai.tex}
+
+\end{document}
