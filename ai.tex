@@ -1,0 +1,65 @@
+
+\chapter{Interpretazione astratta}
+
+[Introduzione al capitolo da scrivere.]
+
+\section{Analisi dei segni per WHILE}
+
+\newcommand*{\Signtop}{\mathrm{Sign}}
+
+\newcommand*{\signtop}{\top}
+\newcommand*{\signbot}{\bot}
+\newcommand*{\signge}{\mathord{\geq}}
+\newcommand*{\signgt}{\mathord{>}}
+\newcommand*{\signle}{\mathord{\leq}}
+\newcommand*{\signlt}{\mathord{<}}
+\newcommand*{\signeq}{\mathord{=}}
+\newcommand*{\signne}{\mathord{\neq}}
+
+\begin{figure}
+\begin{center}
+\setlength{\unitlength}{1.8mm}
+\begin{picture}(28, 40)
+{\thicklines
+\put(14, 2){\circle{4}}
+\put(14, 2){\makebox(0, 0){$\signbot$}}
+
+\put( 2, 14){\circle{4}}
+\put( 2, 14){\makebox(0, 0){$\signlt$}}
+\put(14, 14){\circle{4}}
+\put(14, 14){\makebox(0, 0){$\signeq$}}
+\put(26, 14){\circle{4}}
+\put(26, 14){\makebox(0, 0){$\signgt$}}
+
+\put( 2, 26){\circle{4}}
+\put( 2, 26){\makebox(0, 0){$\signle$}}
+\put(14, 26){\circle{4}}
+\put(14, 26){\makebox(0, 0){$\signne$}}
+\put(26, 26){\circle{4}}
+\put(26, 26){\makebox(0, 0){$\signge$}}
+
+\put(14, 38){\circle{4}}
+\put(14, 38){\makebox(0, 0){$\signtop$}}
+
+\put( 2, 24){\line(0, -1){8}}
+\put(26, 24){\line(0, -1){8}}
+
+\put(14, 36){\line(0, -1){8}}
+\put(14, 12){\line(0, -1){8}}
+
+\put(15.42, 36.58){\line(1, -1){9.16}}
+\put( 3.42, 24.58){\line(1, -1){9.16}}
+\put(15.42, 24.58){\line(1, -1){9.16}}
+\put( 3.42, 12.58){\line(1, -1){9.16}}
+
+\put( 3.42, 27.42){\line(1, 1){9.16}}
+\put( 3.42, 15.42){\line(1, 1){9.16}}
+\put(15.42, 15.42){\line(1, 1){9.16}}
+\put(15.42,  3.42){\line(1, 1){9.16}}
+}
+\end{picture}
+\end{center}
+\caption{Diagramma di Hasse del dominio \Sign.}
+\label{fig:ordering-rels-lattice}
+\end{figure}
+
