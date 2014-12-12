@@ -1,48 +1,13 @@
-\documentclass[a4paper, 10pt]{article} % Prepara un documento per carta A4 con un bel font grande
 
-\usepackage{lmodern}
-\usepackage[T1]{fontenc}
-%\usepackage[italian]{babel} % Adatta Latex alle convenzioni tipogafiche italiane
-\usepackage[utf8]{inputenc} % Consente l'uso dei caratteri accentati italiani
-\usepackage{amsmath}
-\usepackage{amsthm}
-\usepackage{listings}
-\usepackage{stmaryrd}
-\usepackage{amssymb}
-\usepackage{vmargin}
-\usepackage{hyperref}
-\usepackage{makeidx}
-\usepackage{nicefrac}
-\usepackage{listings}
-\hypersetup{colorlinks=true, urlcolor=blue, linkcolor=blue}
+\chapter{Nozioni preliminari}
 
-\setmarginsrb{25mm}{10mm}{25mm}{10mm}{0mm}{10mm}{0mm}{10mm} 
-%{<leftmargin>}{<topmargin>}{<rightmargin>}{<bottommargin>}{<headheight>}{<headsep>}{<footheight>}{<footskip>}
+[Introduzione al capitolo da scrivere.]
 
-\input{prooftree.tex}
-
-
-\begin{document}
-
-\frenchspacing % Forza Latex ad una spaziatura uniforme, invece di lasciare più spazio alla fine dei
-% punti fermi come da convenzione inglese
-
-\title{Semantica dei Linguaggi di Programmazione}
-\author{Amerigo Mancino, Valentino Marano}
-\date{31/10/2014}
-
-\maketitle % Produce il titolo a partire dai comandi \title, \author e \date
-
-\tableofcontents
-\newpage
-
-\section{Definizioni}
-
-\theoremstyle{definition}
-\newtheorem{definizione}{Definizione}
+\section{Ordinamenti}
 
 \subsection{Ordinamento Parziale}
-\begin{definizione}[Ordinamento Parziale]
+
+\begin{definizione}\summary{Ordinamento parziale.}
   Un insieme S dotato della relazione binaria $\preceq\ \subseteq\ S\ \times\ S$\\
   è un \emph{Ordinamento Parziale}, o \emph{PO}, se valgono le seguenti:
   \begin{itemize}
