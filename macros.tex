@@ -335,6 +335,9 @@
 %% Summaries for theorem-like environments
 \newcommand{\summary}[1]{\textrm{\textbf{\textup{#1}}}}
 
+% Annotations in equations
+\newcommand{\law}[1]{{\hspace*{\fill}\mbox{\footnotesize\rm{[#1]}}}}
+
 %% Filter function extracting the relevant and irrelevant parts.
 \newcommand*{\sel}{\mathop{\mathrm{sel}}\nolimits}
 \newcommand*{\mem}{\mathop{\mathrm{mem}}\nolimits}
@@ -437,3 +440,5 @@
 
 \theoremstyle{definition}
 \newtheorem{definizione}{Definizione}
+\newtheorem{teorema}{Teorema}
+\newtheorem{proposizione}{Proposizione}

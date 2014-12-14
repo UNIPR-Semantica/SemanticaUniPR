@@ -19,7 +19,7 @@ Inoltre:
              \`e infinito e numerabile oppure che ha la
              \emph{potenza del numerabile} oppure che ha cardinalit\`a
              $\aleph_0$ e si scrive $|S| = \aleph_0$; per contro, le
-             espressioni ``S \`e finito'' e $|S| < \aleph_0$ sono
+             espressioni ``S \`e finito'' e ``$|S| < \aleph_0$'' sono
              equivalenti;
 \item[$\wp(S)$] denota l'insieme di tutti i sottoinsiemi di $S$, anche detto
                 insieme delle parti di $S$ o
@@ -44,6 +44,220 @@ Se $\fund{f}{A}{B}$ \`e una funzione e $S \sseq A$, allora si pone
 \[
     f(S) = \bigl\{\, f(x) \bigm| x \in S \,\bigr\} \sseq B.
 \]
+
+
+\section{Strutture algebriche}
+
+\begin{definizione} \summary{Struttura algebrica.}
+Una \emph{struttura algebrica} o \emph{algebra mono-sortale}
+\`e una coppia $(S, Q)$, dove
+\begin{enumerate}
+\item
+$S$ \`e un insieme non vuoto detto \emph{insieme base} o \emph{carrier};
+\item
+$Q$ \`e una funzione definita su un insieme di indici $I$,
+possibilmente infinito non numerabile, tale che, per ogni $i \in I$,
+$Q(i)$ \`e un'operazione finitaria (ovvero $n$-aria con $n$ finito,
+possibilmente nullo) da elementi di $S$ ad elementi di $S$. Ad
+esempio, se $Q(i)$ \`e $n$-aria, allora
+\[
+    \fund{Q(i)}{\overbrace{S \times\cdots\times S}^{n}}{S}.
+\]
+\end{enumerate}
+\end{definizione}
+
+Anzich\'e con la coppia $(S, Q)$, nel seguito le algebre saranno
+usualmente denotate con una $(k+1)$-pla
+\[
+    (S, o_1, \ldots, o_k)
+\]
+dove $S$ \`e il medesimo insieme non vuoto della definizione, e $o_1$,
+$\ldots$, $o_k$ sono alcune operazioni nel codominio di $Q$. L'ariet\`a
+delle $o_i$ sar\`a specificata di volta in volta.
+
+\begin{definizione} \summary{Reticolo.}
+\label{def:reticolo1}
+Un'algebra
+\[
+    A = (L, \otimes, \oplus)
+\]
+con le due operazioni binarie $\otimes$ (detto \emph{meet}) e $\oplus$ (detto
+\emph{join}) \`e un \emph{reticolo} se valgono, per ogni $x, y, z \in L$,
+le seguenti identit\`a:
+\begin{itemize}
+\item[$L_1 (a):$] $x \otimes y = y \otimes x$,
+\item[$L_1 (b):$] $x \oplus  y = y \oplus  x$,
+    \law{leggi commutative}
+\item[$L_2 (a):$] $x \otimes (y \otimes z) = (x \otimes y) \otimes z$,
+\item[$L_2 (b):$] $x \oplus  (y \oplus  z) = (x \oplus  y) \oplus  z$,
+    \law{leggi associative}
+\item[$L_3 (a):$] $x \otimes x = x$,
+\item[$L_3 (b):$] $x \oplus  x = x$,
+    \law{leggi di idempotenza}
+\item[$L_4 (a):$] $x \otimes (x \oplus  y) = x$,
+\item[$L_4 (b):$] $x \oplus  (x \otimes y) = x$.
+    \law{leggi di assorbimento}
+\end{itemize}
+\end{definizione}
+
+\begin{definizione}  \summary{Ordinamento parziale e totale.}
+Una relazione binaria $\preceq$ definita su un insieme
+$S$ \`e una \emph{relazione di ordinamento parziale} su $S$
+se le seguenti condizioni valgono identicamente in $S$,
+per ogni $a, b, c \in S$,
+\begin{itemize}
+\item[$O_1:$] $a \leq a$,
+    \law{riflessivit\`a}
+\item[$O_2:$] $(a \leq b) \land (b \leq a) \implies a = b$,
+    \law{antisimmetria}
+\item[$O_3:$] $(a \leq b) \land (b \leq c) \implies a \leq c$.
+    \law{transitivit\`a}
+\end{itemize}
+Se inoltre, $\forall a, b \in S$, vale
+\begin{itemize}
+\item[$O_4:$] $(a \leq b) \lor (b \leq a)$,
+\end{itemize}
+allora $\leq$ \`e detta \emph{relazione di ordinamento totale} su $S$.
+\end{definizione}
+
+\begin{definizione}
+Un insieme non vuoto $P$ equipaggiato con una relazione di ordinamento
+parziale $\leq$ su $P$ \`e chiamato ``insieme parzialmente ordinato'' o
+``poset''. Se $\leq$ \`e una relazione di ordinamento totale su $P$, allora
+$P$ viene detto ``insieme totalmente ordinato'' o ``catena''.
+In un insieme parzialmente ordinato si usa l'espressione $a<b$ con il
+significato $a\leq b$ ma $a\not= b$.
+\end{definizione}
+
+\begin{definizione}
+Sia $(P, \leq)$ un poset e sia $A \sseq P$.
+Un elemento $p\in P$ \`e un ``limite superiore'' per $A$ se $a \leq p$ per ogni
+$a\in A$.
+Un elemento $p\in P$ \`e il ``sup'' di $A$, scritto $p=\sup(A)$, se $p$ \`e un
+limite superiore per $A$ e, per ogni altro limite superiore $p'$ per $A$,
+risulta $p\leq p'$. In modo del tutto analogo
+un elemento $p\in P$ \`e un ``limite inferiore'' per $A$ se $p \leq a$ per ogni
+$a\in A$.
+Un elemento $p\in P$ \`e detto ``inf'' di $A$, scritto $p=\inf(A)$, se $p$ \`e un
+limite inferiore per $A$ e, per ogni altro limite inferiore $p'$ per $A$,
+risulta $p'\leq p$.
+\end{definizione}
+
+\begin{definizione}
+\label{def:cpo}
+Un poset $(D, \leq)$ \`e un ``cpo'', o ``dominio'', se e solo se
+ha un elemento minimo e, per ogni catena $K \sseq D$, esiste $\sup(K)\in D$.
+\end{definizione}
+
+\begin{definizione}
+\label{def:reticolo2}
+Un insieme parzialmente ordinato $L$ \`e un ``reticolo'' se e solo se,
+$\forall a,b \in L$, esistono in $L$ sia $\sup\{a,b\}$ che $\inf\{a,b\}$.
+\end{definizione}
+
+\begin{proposizione}
+{\rm \cite{BS81}} Le definizioni di reticolo
+{\rm\ref{def:reticolo1}} e {\rm\ref{def:reticolo2}} sono equivalenti. Inoltre, se $L$ \`e
+un reticolo per la prima definizione, la seconda definizione si ottiene
+ponendo, $\forall a,b \in L$,
+\[
+    a \leq b \quad\iff\quad a \otimes b = a \quad\iff\quad a \oplus b = b.
+\]
+Viceversa, se $L$ \`e un reticolo per la seconda definizione,
+la prima definizione si ottiene ponendo, $\forall a,b \in L$,
+\[
+    a \otimes b = \inf\{a,b\} \qquad\mbox{e}\qquad a \oplus b = \sup\{a,b\}.
+\]
+Le due trasformazioni sono inverse l'una dell'altra.
+\end{proposizione}
+
+\begin{definizione}
+Un reticolo $L$ \`e un ``reticolo distributivo'' se e solo se soddisfa,
+$\forall x, y \in L$ le seguenti identit\`a:
+\begin{itemize}
+\item[$D_1:$] $x \otimes (y \oplus   z) = (x \otimes y) \oplus  (x \otimes z)$,
+\item[$D_2:$] $x \oplus  (y \otimes  z) = (x \oplus  y) \otimes (x \oplus  z)$.
+    \law{leggi distributive}
+\end{itemize}
+\end{definizione}
+
+\begin{proposizione}
+{\rm \cite{BS81}} Un reticolo soddisfa $D_1$ se e solo se soddisfa $D_2$.
+\end{proposizione}
+
+\begin{definizione}
+Un poset $P$ \`e ``completo'' se, per ogni $A \sseq P$ esistono in $P$ sia
+$\sup(A)$ che $\inf(A)$. Tutti i poset completi sono reticoli e un reticolo
+$L$ che \`e completo come poset \`e detto ``reticolo completo''.
+\end{definizione}
+
+\begin{proposizione}
+\label{prop:complete-lattice0}
+{\rm \cite{BS81}} Sia $P$ un poset tale che esista $\sup(A)$ per ogni $A \sseq P$,
+oppure tale che esista $\inf(A)$ per ogni $A \sseq P$. Allora $P$ \`e un reticolo
+completo.
+\end{proposizione}
+
+Nella precedente proposizione l'esistenza di $\sup(\emptyset)$ garantisce
+l'esistenza di un elemento minimo in $P$ e, similmente, l'esistenza di
+$\inf(\emptyset)$ garantisce l'esistenza di un elemento massimo in $P$.
+Si pu\`o perci\`o riformulare la proposizione \ref{prop:complete-lattice} in un
+modo equivalente e che sar\`a spesso usato in questa tesi.
+
+\begin{proposizione}
+\label{prop:complete-lattice}
+{\rm \cite{BS81}} Un poset $P$ \`e completo se possiede un elemento minimo
+ed esiste $\sup(A)$ per ogni $A$ sottoinsieme non vuoto di $P$, oppure se
+possiede un elemento massimo ed esiste $\inf(A)$ per ogni $A$ sottoinsieme non
+vuoto di $P$.
+\end{proposizione}
+
+\begin{definizione}
+{\rm \cite{BS81}} Un'algebra
+\[
+    (L, \otimes, \oplus, \top, \bot)
+\]
+con due operatori binari e due operatori nullari \`e un ``reticolo limitato'' se
+soddisfa $\forall x\in L$:
+\begin{itemize}
+\item[$B_1 \phantom{(a)}:$] $(L, \otimes, \oplus)$ \`e un reticolo,
+\item[$B_2 (a):$] $x \otimes \bot = \bot$,
+\item[$B_2 (b):$] $x \oplus  \top = \top$.
+    \law{leggi di annichilazione}
+\end{itemize}
+\end{definizione}
+Si osservi che se $(L, \otimes, \oplus)$ \`e un reticolo completo, allora
+\[
+    \bigl(L, \otimes, \oplus, \sup(L), \inf(L)\bigr)
+\]
+\`e un reticolo limitato. 
+In questa tesi si utilizzer\`a talvolta la nozione di reticolo limitato e
+completo, ma al solo scopo di esibire, assieme al {\em carrier\/} e agli
+operatori, anche gli elementi estremi (massimo e minimo) dell'algebra.
+
+\begin{definizione}
+Un ``monoide'' \`e un'algebra
+\[
+    (M, \cdot, 1)
+\]
+con un operatore binario ``$\,\cdot$'' e un operatore nullario ``$\,1$'' che
+soddisfa, $\forall x,y,z\in M$ le seguenti identit\`a:
+\begin{itemize}
+\item[$M_1:$] $x \cdot (y \cdot z) = (x \cdot y) \cdot z$,
+    \law{legge associativa}
+\item[$M_2:$] $x \cdot 1 = 1 \cdot x = 1$.
+    \law{legge dell'unit\`a}
+\end{itemize}
+Un ``monoide commutativo'' \`e un monoide che soddisfa, $\forall x,y \in M$,
+\begin{itemize}
+\item[$M_3:$] $x \cdot y = y \cdot x$.
+\end{itemize}
+Un ``monoide idempotente'' \`e un monoide che soddisfa, $\forall x \in M$,
+\begin{itemize}
+\item[$M_4:$] $x \cdot x = x$.
+\end{itemize}
+\end{definizione}
+%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 \section{Ordinamenti}
 
@@ -120,7 +334,6 @@ Un programma si dice \emph{propriamente annotato} se ci sono annotazioni nei seg
 \end{itemize}
 \end{definizione}
 
-\newtheorem{teorema}{Teorema}
 
 \subsection{Teorema di Tarski}
 \begin{teorema}[Teorema di Tarski]
@@ -141,7 +354,7 @@ Un programma si dice \emph{propriamente annotato} se ci sono annotazioni nei seg
 
 \section{Esercizi sui CPO}
 
-\theoremstyle{definition}
+\theoremstyle{definizione}
 \newtheorem{esercizio}{Esercizio}
 
 \subsection{Unicità lub}
