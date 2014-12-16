@@ -48,7 +48,7 @@ Se $\fund{f}{A}{B}$ \`e una funzione e $S \sseq A$, allora si pone
 
 \section{Strutture algebriche}
 
-\begin{definizione} \summary{Struttura algebrica.}
+\begin{definizione} \summary{(Struttura algebrica.)}
 Una \emph{struttura algebrica} o \emph{algebra mono-sortale}
 \`e una coppia $(S, Q)$, dove
 \begin{enumerate}
@@ -75,7 +75,7 @@ dove $S$ \`e il medesimo insieme non vuoto della definizione, e $o_1$,
 $\ldots$, $o_k$ sono alcune operazioni nel codominio di $Q$. L'ariet\`a
 delle $o_i$ sar\`a specificata di volta in volta.
 
-\begin{definizione} \summary{Reticolo.}
+\begin{definizione} \summary{(Reticolo.)}
 \label{def:reticolo1}
 Un'algebra
 \[
@@ -100,71 +100,81 @@ le seguenti identit\`a:
 \end{itemize}
 \end{definizione}
 
-\begin{definizione}  \summary{Ordinamento parziale e totale.}
+\begin{definizione}  \summary{(Ordinamento parziale e totale.)}
 Una relazione binaria $\preceq$ definita su un insieme
 $S$ \`e una \emph{relazione di ordinamento parziale} su $S$
 se le seguenti condizioni valgono identicamente in $S$,
 per ogni $a, b, c \in S$,
 \begin{itemize}
-\item[$O_1:$] $a \leq a$,
+\item[$O_1:$] $a \preceq a$,
     \law{riflessivit\`a}
-\item[$O_2:$] $(a \leq b) \land (b \leq a) \implies a = b$,
+\item[$O_2:$] $(a \preceq b) \land (b \preceq a) \implies a = b$,
     \law{antisimmetria}
-\item[$O_3:$] $(a \leq b) \land (b \leq c) \implies a \leq c$.
+\item[$O_3:$] $(a \preceq b) \land (b \preceq c) \implies a \preceq c$.
     \law{transitivit\`a}
 \end{itemize}
 Se inoltre, $\forall a, b \in S$, vale
 \begin{itemize}
-\item[$O_4:$] $(a \leq b) \lor (b \leq a)$,
+\item[$O_4:$] $(a \preceq b) \lor (b \preceq a)$,
 \end{itemize}
-allora $\leq$ \`e detta \emph{relazione di ordinamento totale} su $S$.
+allora $\preceq$ \`e detta \emph{relazione di ordinamento totale} su $S$.
 \end{definizione}
 
-\begin{definizione}
+\begin{definizione} \summary{(Poset, catena.)}
 Un insieme non vuoto $P$ equipaggiato con una relazione di ordinamento
-parziale $\leq$ su $P$ \`e chiamato ``insieme parzialmente ordinato'' o
-``poset''. Se $\leq$ \`e una relazione di ordinamento totale su $P$, allora
-$P$ viene detto ``insieme totalmente ordinato'' o ``catena''.
-In un insieme parzialmente ordinato si usa l'espressione $a<b$ con il
-significato $a\leq b$ ma $a\not= b$.
+parziale $\preceq$ su $P$ \`e chiamato
+\emph{insieme parzialmente ordinato} o \emph{poset}.
+Se $\preceq$ \`e una relazione di
+ordinamento totale su $P$, allora $P$ viene detto
+\emph{insieme totalmente ordinato} o \emph{catena}.
+In un insieme parzialmente
+ordinato si usa l'espressione $a<b$ con il significato $a\preceq b$ ma
+$a \neq b$.
 \end{definizione}
 
-\begin{definizione}
-Sia $(P, \leq)$ un poset e sia $A \sseq P$.
-Un elemento $p\in P$ \`e un ``limite superiore'' per $A$ se $a \leq p$ per ogni
-$a\in A$.
-Un elemento $p\in P$ \`e il ``sup'' di $A$, scritto $p=\sup(A)$, se $p$ \`e un
-limite superiore per $A$ e, per ogni altro limite superiore $p'$ per $A$,
-risulta $p\leq p'$. In modo del tutto analogo
-un elemento $p\in P$ \`e un ``limite inferiore'' per $A$ se $p \leq a$ per ogni
-$a\in A$.
-Un elemento $p\in P$ \`e detto ``inf'' di $A$, scritto $p=\inf(A)$, se $p$ \`e un
-limite inferiore per $A$ e, per ogni altro limite inferiore $p'$ per $A$,
-risulta $p'\leq p$.
+Quando il poset $(P, \preceq)$ \`e implicito dal contesto
+e $A \sseq P$ scriveremo $\chain(A)$ intendendo con questo
+che $(A, \preceq)$ \`e una catena.
+
+\begin{definizione} \summary{(Limite superiore/inferiore, sup/inf.)}
+Sia $(P, \preceq)$ un poset e sia $A \sseq P$.
+Un elemento $p \in P$ \`e un \emph{limite superiore} per $A$
+se $a \preceq p$ per ogni $a\in A$.
+Un elemento $p \in P$ \`e il \emph{sup} di $A$, scritto $p = \sup(A)$,
+se $p$ \`e un limite superiore per $A$ e,
+per ogni altro limite superiore $p'$ per $A$,
+risulta $p \preceq p'$.
+In modo del tutto analogo un elemento $p \in P$ \`e un \emph{limite inferiore}
+per $A$ se $p \preceq a$ per ogni $a \in A$.
+Un elemento $p \in P$ \`e detto \emph{inf} di $A$,
+scritto $p = \inf(A)$, se $p$ \`e un limite inferiore per $A$ e,
+per ogni altro limite inferiore $p'$ per $A$, risulta $p' \preceq p$.
 \end{definizione}
 
-\begin{definizione}
+\begin{definizione} \summary{(CPO.)}
 \label{def:cpo}
-Un poset $(D, \leq)$ \`e un ``cpo'', o ``dominio'', se e solo se
-ha un elemento minimo e, per ogni catena $K \sseq D$, esiste $\sup(K)\in D$.
+Un poset $(D, \preceq)$ \`e un \emph{CPO}, o \emph{dominio}, se e solo se
+ha un elemento minimo e, per ogni catena $K \sseq D$, esiste $\sup(K) \in D$.
 \end{definizione}
 
-\begin{definizione}
+\begin{definizione}  \summary{(Reticolo.)}
 \label{def:reticolo2}
 Un insieme parzialmente ordinato $L$ \`e un ``reticolo'' se e solo se,
-$\forall a,b \in L$, esistono in $L$ sia $\sup\{a,b\}$ che $\inf\{a,b\}$.
+per ogni $a, b \in L$, esistono in $L$ sia $\sup\{a,b\}$ che $\inf\{a,b\}$.
 \end{definizione}
 
 \begin{proposizione}
-{\rm \cite{BS81}} Le definizioni di reticolo
-{\rm\ref{def:reticolo1}} e {\rm\ref{def:reticolo2}} sono equivalenti. Inoltre, se $L$ \`e
+\textup{\cite{BurrisS81}} Le definizioni di reticolo
+delle definizioni~\textup{\ref{def:reticolo1}} e \textup{\ref{def:reticolo2}}
+sono equivalenti.
+Inoltre, se $L$ \`e
 un reticolo per la prima definizione, la seconda definizione si ottiene
-ponendo, $\forall a,b \in L$,
+ponendo, per ogni $a,b \in L$,
 \[
-    a \leq b \quad\iff\quad a \otimes b = a \quad\iff\quad a \oplus b = b.
+    a \preceq b \quad\iff\quad a \otimes b = a \quad\iff\quad a \oplus b = b.
 \]
 Viceversa, se $L$ \`e un reticolo per la seconda definizione,
-la prima definizione si ottiene ponendo, $\forall a,b \in L$,
+la prima definizione si ottiene ponendo, per ogni $a,b \in L$,
 \[
     a \otimes b = \inf\{a,b\} \qquad\mbox{e}\qquad a \oplus b = \sup\{a,b\}.
 \]
@@ -182,7 +192,7 @@ $\forall x, y \in L$ le seguenti identit\`a:
 \end{definizione}
 
 \begin{proposizione}
-{\rm \cite{BS81}} Un reticolo soddisfa $D_1$ se e solo se soddisfa $D_2$.
+{\rm \cite{BurrisS81}} Un reticolo soddisfa $D_1$ se e solo se soddisfa $D_2$.
 \end{proposizione}
 
 \begin{definizione}
@@ -193,32 +203,33 @@ $L$ che \`e completo come poset \`e detto ``reticolo completo''.
 
 \begin{proposizione}
 \label{prop:complete-lattice0}
-{\rm \cite{BS81}} Sia $P$ un poset tale che esista $\sup(A)$ per ogni $A \sseq P$,
-oppure tale che esista $\inf(A)$ per ogni $A \sseq P$. Allora $P$ \`e un reticolo
-completo.
+\textup{\cite{BurrisS81}}
+Sia $P$ un poset tale che esista $\sup(A)$ per ogni $A \sseq P$,
+oppure tale che esista $\inf(A)$ per ogni $A \sseq P$.
+Allora $P$ \`e un reticolo completo.
 \end{proposizione}
 
 Nella precedente proposizione l'esistenza di $\sup(\emptyset)$ garantisce
 l'esistenza di un elemento minimo in $P$ e, similmente, l'esistenza di
 $\inf(\emptyset)$ garantisce l'esistenza di un elemento massimo in $P$.
 Si pu\`o perci\`o riformulare la proposizione \ref{prop:complete-lattice} in un
-modo equivalente e che sar\`a spesso usato in questa tesi.
+modo equivalente.
 
 \begin{proposizione}
 \label{prop:complete-lattice}
-{\rm \cite{BS81}} Un poset $P$ \`e completo se possiede un elemento minimo
+{\rm \cite{BurrisS81}} Un poset $P$ \`e completo se possiede un elemento minimo
 ed esiste $\sup(A)$ per ogni $A$ sottoinsieme non vuoto di $P$, oppure se
 possiede un elemento massimo ed esiste $\inf(A)$ per ogni $A$ sottoinsieme non
 vuoto di $P$.
 \end{proposizione}
 
-\begin{definizione}
-{\rm \cite{BS81}} Un'algebra
+\begin{definizione}  \summary{(Reticolo limitato.)}
+{\rm \cite{BurrisS81}} Un'algebra
 \[
     (L, \otimes, \oplus, \top, \bot)
 \]
-con due operatori binari e due operatori nullari \`e un ``reticolo limitato'' se
-soddisfa $\forall x\in L$:
+con due operatori binari e due operatori nullari
+\`e un \emph{reticolo limitato} se soddisfa, per ogni $x \in L$:
 \begin{itemize}
 \item[$B_1 \phantom{(a)}:$] $(L, \otimes, \oplus)$ \`e un reticolo,
 \item[$B_2 (a):$] $x \otimes \bot = \bot$,
@@ -230,96 +241,53 @@ Si osservi che se $(L, \otimes, \oplus)$ \`e un reticolo completo, allora
 \[
     \bigl(L, \otimes, \oplus, \sup(L), \inf(L)\bigr)
 \]
-\`e un reticolo limitato. 
-In questa tesi si utilizzer\`a talvolta la nozione di reticolo limitato e
-completo, ma al solo scopo di esibire, assieme al {\em carrier\/} e agli
+\`e un reticolo limitato.
+Si utilizzer\`a talvolta la nozione di reticolo limitato e
+completo, ma al solo scopo di esibire, assieme al \emph{carrier} e agli
 operatori, anche gli elementi estremi (massimo e minimo) dell'algebra.
 
-\begin{definizione}
-Un ``monoide'' \`e un'algebra
+\begin{definizione}  \summary{(Monoide.)}
+Un \emph{monoide} \`e un'algebra
 \[
     (M, \cdot, 1)
 \]
 con un operatore binario ``$\,\cdot$'' e un operatore nullario ``$\,1$'' che
-soddisfa, $\forall x,y,z\in M$ le seguenti identit\`a:
+soddisfa, per ogni $x,y,z\in M$ le seguenti identit\`a:
 \begin{itemize}
 \item[$M_1:$] $x \cdot (y \cdot z) = (x \cdot y) \cdot z$,
     \law{legge associativa}
 \item[$M_2:$] $x \cdot 1 = 1 \cdot x = 1$.
     \law{legge dell'unit\`a}
 \end{itemize}
-Un ``monoide commutativo'' \`e un monoide che soddisfa, $\forall x,y \in M$,
+Un \emph{monoide commutativo} \`e un monoide che soddisfa, per ogni $x,y \in M$,
 \begin{itemize}
 \item[$M_3:$] $x \cdot y = y \cdot x$.
 \end{itemize}
-Un ``monoide idempotente'' \`e un monoide che soddisfa, $\forall x \in M$,
+Un \emph{monoide idempotente} \`e un monoide che soddisfa, per ogni $x \in M$,
 \begin{itemize}
 \item[$M_4:$] $x \cdot x = x$.
 \end{itemize}
 \end{definizione}
-%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-\section{Ordinamenti}
+\section{Funzioni su poset}
 
-\subsection{Ordinamento Parziale}
-
-\begin{definizione}\summary{Ordinamento parziale.}
-  Un insieme S dotato della relazione binaria $\preceq\ \subseteq\ S\ \times\ S$
-  è un \emph{Ordinamento Parziale}, o \emph{PO}, se valgono le seguenti:
-  \begin{itemize}
-  \item (Riflessività) $ \forall x \in S : x \preceq x $
-  \item (Transitività) $ \forall x,y,z \in S : x \preceq y \land y \preceq z $ allora $ x \preceq z $
-  \item (Antisimmetria) $ \forall x,y \in S : x \preceq y \land y \preceq x $ allora $ x = y $
-  \end{itemize}
-\end{definizione}
-
-\subsection{Ordinamento Totale}
-\begin{definizione}[Ordinamento Totale]
-  Un insieme S dotato della relazione binaria $\preceq\ \subseteq\ S\ \times\ S$
-  è un \emph{Ordinamento Totale} se valgono le seguenti:
-  \begin{itemize}
-  \item (Riflessività) $ \forall x \in S : x \preceq x $
-  \item (Transitività) $ \forall x,y,z \in S : x \preceq y \land y \preceq z $ allora $ x \preceq z $
-  \item (Antisimmetria) $ \forall x,y \in S : x \preceq y \land y \preceq x $ allora $ x = y $
-  \item (Totalità) $ \forall x,y \in S : x \preceq y \lor y \preceq x $
-  \end{itemize}
-\end{definizione}
-
-\
-\subsection{Catena}
-\begin{definizione}[Catena]
-  Un insieme numerabile (cioè tale che la sua cardinalità sia minore o uguale ad $\aleph_0 $) e totalmente ordinato si dice \emph{catena}, ossia:
-  $$ Chain(X) \Longleftrightarrow (\forall x,y \in X : x \preceq y \lor y \preceq x) \land |X| \leq \aleph_0 \ $$
-\end{definizione}
-
-\subsection{Upper Bound}
-\begin{definizione}[Upper Bound]
-  Sia $(S,\preceq)$ un \emph{PO} e $T\subseteq S$. Si dice che $u \in S$ è un \emph{Upper Bound} o \emph{Maggiorante} di T se e solo se $ \forall x \in T : x \preceq u $.
-\end{definizione}
-
-\subsection{Least Upper Bound}
-\begin{definizione}[Least Upper Bound]
-  Sia $(S,\preceq)$ un \emph{PO} e $T\subseteq S$. Si dice che $u \in S$ è un \emph{Least Upper Bound} o \emph{Minimo dei Maggioranti} di T se e solo se $$( \forall x \in T : x \preceq u ) \land (\forall u' \in S : \forall y \in T : y \preceq u' \Rightarrow u \preceq u') $$
-\end{definizione}
-
-\subsection{CPO}
-\begin{definizione}[CPO]
-  Un \emph{Ordinamento Parziale Completo} è un insieme (S,$\preceq$) se ha un elemento minimo ed ogni sua catena ha un least upper bound.
-\end{definizione}
-
-\subsection{Funzioni monotone e continue}
-\begin{definizione}
-  Siano $(S,\preceq)$ e $(T,\sqsubseteq)$ due \emph{CPO} e sia $ f:S\rightarrow T$. Allora:
-  \begin{itemize}
-  \item $f$ è \emph{monotona} $\Leftrightarrow \forall x,y \in S :
-    x \preceq y \Rightarrow f(x) \sqsubseteq f(y)$
-  \item $f$ è \emph{continua} $\Leftrightarrow \forall X \subseteq S : Chain(X) \Rightarrow (\exists lub\ f(X) \land f(lub\ X) = lub\ f(X))$
-  \item $f$ è \emph{additiva} $\Leftrightarrow \forall X \subseteq S \Rightarrow (\exists lub\ f(X) \land f(lub\ X) = lub\ f(X))$
-  \end{itemize}
+\begin{definizione} \summary{(Funzione monotona/continua/additiva.)}
+Siano $(S, \preceq)$ e $(T, \sqsubseteq)$ due poset
+e sia $\fund{f}{S}{T}$ una funzione.
+Allora
+$f$ è \emph{monotona} se, per ogni $x, y \in S$,
+$x \preceq y \implies f(x) \sqsubseteq f(y)$.
+Se $(S, \preceq)$ \`e un CPO,
+$f$ si dice \emph{continua} se, per ogni $X \subseteq S$,
+$\chain(X) \implies \bigl(\exists \lub f(X) \land f(\lub X) = \lub f(X)\bigr)$.
+Se $(S, \preceq)$ \`e un reticolo completo,
+$f$ è \emph{additiva} se, per ogni $X \subseteq S$,
+$\exists \lub f(X) \land f(\lub X) = \lub f(X)$
 \end{definizione}
 
 
-\subsection{Punto fisso}
+\section{Punti fissi}
+
 \begin{definizione}
   Sia $S$ un insieme e sia $f : S \rightarrow S$ una funzione. Allora un \emph{FP} o \emph{Punto Fisso} di $f$ è un qualunque valore $x$ tale che $f(x) = x$.
   Se $x$ è anche il minimo dei punti fissi allora è un \emph{LFP} o \emph{Minimo Punto Fisso}.
