@@ -1,0 +1,304 @@
+%\documentclass[a4paper, 10pt]{article} % Prepara un documento per carta A4 con un bel font grande
+\documentclass[a4paper, 12pt, oneside,fleqn]{book}
+
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc} % Consente l'uso dei caratteri accentati italiani
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{listings}
+\usepackage{stmaryrd}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+% i comandi seguenti impediscono la scrittura in maiuscolo
+% dei nomi dei capitoli e dei paragrafi nelle intestazioni
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+\renewcommand{\subsectionmark}[1]{\markright{\thesection\ #1}}
+\fancyhf{} % rimuove l’attuale contenuto dell’intestazione
+\fancyhead[L]{\bfseries\rightmark}
+\fancyhead[R]{\bfseries\leftmark}
+\fancyfoot[C]{\bfseries\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0pt}
+\addtolength{\headheight}{0.5pt} % riserva spazio per la linea
+\fancypagestyle{plain}{%
+\fancyhead{} % ignora, nello stile plain, le intestazioni
+\renewcommand{\headrulewidth}{0pt} % e la linea
+}
+\frenchspacing % Forza Latex ad una spaziatura uniforme, invece di lasciare più spazio alla fine dei
+
+\include{macros}
+\begin{document}
+
+\title{Logica di specifica}
+\author{Università degli studi di Parma \\
+Corso: Semantica dei linguaggi di programmazione \\
+Docente: Roberto Bagnara \\\\\\
+Bartolomeo Lombardi
+}
+\date{2014/15}
+\maketitle
+\tableofcontents
+
+\newpage
+\chapter{Sintassi}
+\section{Definizione sintattica}
+\theoremstyle{definition}
+Si vuole definire precisamente un linguaggio logico per le precondizioni e postcondizioni. Sia $\LE$ l'insieme delle espressioni aritmetiche della logica :
+$$\LE \in \LExp \itc\itc\defeq \idx \mid \C \mid \LE{_1} + \LE{_2} \mid \sqrt{\LE} \mid \LE^{\LE{_2}} \mid \LE! \mid \lfloor \LE \rfloor \mid ...$$
+Sia $\idx\in\Var\cup\Ghost$ dove $\Var$ è l'insieme delle variabili del programma e $\Ghost$ è l'insieme delle variabili fantasma tali che $\Var\cap\Ghost = \emptyset$.\\\\
+Sia P l'insieme dei predicati logici: 
+\begin{align*}
+\p \in \Pred \itc\itc\defeq &\true \mid\false\mid\LE{_1} = \LE{_2}\mid ...\mid \p{_1} \wedge \p{_2} \mid \p{_1} \vee \p{_2} \mid \neg \p\\
+&\mid \forall\idx\itc \p\mid \exists\idx\st \p\mid \p{_1} \Rightarrow \p{_2} \mid \p{_1} \Leftrightarrow \p{_2} \mid \p{_1} \Leftarrow \p{_2}
+\end{align*}
+dove $\idx\in\Ghost$ è ovvio che una precondizione o una postcondizione sarà un predicato. Ora che abbiamo definito la grammatica possiamo definire la semantica, in particolare avremmo due funzioni di valutazione semantica.
+\section{Sostituzione per LExp}
+\begin{align*}
+\idx[^{\LE}/_\idx] &= \idx,\\
+\C[^{\LE}/_\idx] &= 
+	\begin{cases}
+		\LE, &se \hspace{1mm}\idx=\C,  \\
+		\C, &se\hspace{1mm} \C\neq\idx, 
+	\end{cases} \\
+(\LE_1 + \LE_2)[^{\LE}/_\idx] &= (\LE_1[^{\LE}/_\idx]) + (\LE_2[^{\LE}/_\idx]),\\
+\sqrt{\LE_1}[^{\LE}/_\idx] &= \sqrt{{\LE_1}[^{\LE}/_\idx]},\\
+\LE_1^{\LE{_2}}[^{\LE}/_\idx] &=\LE_1[^{\LE}/_\idx]^{\LE{_2}[^{\LE}/_\idx]},\\
+{\LE_1}![^{\LE}/_\idx] &= {{\LE_1}[^{\LE}/_\idx]}!,\\
+\lfloor \LE_1 \rfloor[^{\LE}/_\idx] &= \lfloor \LE_1[^{\LE}/_\idx] \rfloor;\\
+\end{align*}
+Con questo si deduce che la sostituzione entra dentro qualunque operatore.
+\section{Sostituzione per Pred}
+\begin{align*}
+\true[^{\LE}/_\idx] &= \true,\\
+\false[^{\LE}/_\idx] &= \false,\\
+(\LE{_1} = \LE{_2})[^{\LE}/_\idx] &= (\LE{_1}[^{\LE}/_\idx]) = (\LE{_2}[^{\LE}/_\idx], \\
+(\p{_1} \wedge \p{_2})[^{\LE}/_\idx] &= (\LE{_1}[^{\LE}/_\idx]) \wedge (\LE{_2}[^{\LE}/_\idx]),\\
+(\p{_1} \vee \p{_2})[^{\LE}/_\idx] &= (\LE{_1}[^{\LE}/_\idx]) \vee (\LE{_2}[^{\LE}/_\idx]), \\
+(\neg \p)[^{\LE}/_\idx] &= \neg(\p[^{\LE}/_\idx]),\\
+(\forall\y\itc \p)[^{\LE}/_\idx] &= \forall \mathrm{z}\itc (\p[^\mathrm{z}/_\y])[^{\LE}/_\idx] \text{ con: }\mathrm{z}\notin\Var(\LE), \mathrm{z}\notin\Var(\p),\mathrm{z}\neq\idx, \\
+(\exists \y\st \p)[^{\LE}/_\idx] &= \exists \mathrm{z}\st (\p[^\mathrm{z}/_\y])[^{\LE}/_\idx] \text{ con: }\mathrm{z}\notin\Var(\LE), \mathrm{z}\notin\Var(\p),\mathrm{z}\neq\idx,\\
+(\p{_1} \Rightarrow \p{_2})[^{\LE}/_\idx] &= (\p{_1}[^{\LE}/_\idx]) \Rightarrow (\p{_2}[^{\LE}/_\idx]), \\
+(\p{_1} \Leftrightarrow \p{_2})[^{\LE}/_\idx] &= (\p{_1}[^{\LE}/_\idx]) \Leftrightarrow (\p{_2}[^{\LE}/_\idx]), \\
+(\p{_1} \Leftarrow \p{_2})[^{\LE}/_\idx] &= (\p{_1}[^{\LE}/_\idx]) \Leftarrow (\p{_2}[^{\LE}/_\idx]);
+\end{align*}
+\chapter{Semantica}
+\section{Valutazione semantica di LExp}
+$\Sigma$ rappresenta lo store utile in quanto nelle espressioni possono comparire variabili del programma, mentre $\Gamma$ e' l'ambiente delle variabili $\Ghost$ definita come $\Gamma\itc\Ghost\rightarrow\Zset$.\\
+Funzione di valutazione semantica delle espressioni:
+$$\llbracket\cdot\rrbracket ^{\LExp}: \LExp \rightarrow ((\Sigma \times \Gamma) \rightarrow \Zset)$$
+Diamo una definizione per induzione strutturale su ogni espressione:
+\begin{align}
+\llbracket \idx\rrbracket(\s,\idt) &= 
+	\begin{cases}
+		\s(\idx), &\text{se}\hspace{1mm} \idx\in\Var,  \\  \idt(\idx), &\text{se}\hspace{1mm} \idx\in\Ghost,
+	\end{cases}\\
+\llbracket \C\rrbracket(\s,\idt) &= \C,\\
+\llbracket \LE{_1}+\LE{_2} \rrbracket(\s,\idt) &= \llbracket \LE{_1} \rrbracket(\s,\idt) + \llbracket \LE{_2}\rrbracket(\s,\idt),\\
+\llbracket \sqrt{\LE} \rrbracket(\s,\idt) &= \sqrt{\llbracket\LE\rrbracket}(\s,\idt),\\
+\llbracket \LE^{\LE{_2}}\rrbracket(\s,\idt) &= \llbracket\LE\rrbracket^{\llbracket\LE{_2}\rrbracket}(\s,\idt),\\
+\llbracket \LE!\rrbracket(\s,\idt) &= \llbracket\LE\rrbracket!(\s,\idt),\\
+\llbracket \lfloor \LE \rfloor\rrbracket(\s,\idt) &= \lfloor\llbracket \LE \rrbracket\rfloor(\s,\idt);
+\end{align}
+\section{Valutazione semantica di Pred}
+Funzione di valutazione semantica dei predicati:
+
+$$\llbracket \cdot \rrbracket ^{\Pred}: \Pred \rightarrow ((\Sigma \times \Gamma) \rightarrow \{\ttv,\ffv \})$$\\
+Usando ancora l'induzione strutturale su ogni predicato:
+\begin{align}
+\llbracket \true \rrbracket(\s,\idt) &= \ttv, \\
+\llbracket \false \rrbracket(\s,\idt) &= \ffv, \\
+\llbracket \LE{_1} = \LE{_2}\rrbracket(\s,\idt) &= 
+	\begin{cases}
+   		\ttv, &\text{se} \hspace{1mm}\llbracket\LE{_1}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\llbracket 						\LE{_2} \rrbracket(\s,\idt),\\
+   		\ffv, &\text{se}\hspace{1mm}\llbracket\LE{_1}\rrbracket(\s,\idt)\hspace{1mm}\neq\hspace{1mm}\llbracket 						\LE{_2}\rrbracket(\s,\idt),
+	\end{cases} \\
+\llbracket \p{_1} \wedge \p{_2}\rrbracket(\s,\idt) &=
+	\begin{cases}
+   		\ttv, &\text{se}\hspace{1mm}\llbracket \p{_1}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\llbracket 						\p{_2}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\true,\\
+   		\ffv, &\text{altrimenti},
+ 	\end{cases} \\
+\llbracket \p{_1} \vee \p{_2}\rrbracket(\s,\idt) &=
+	\begin{cases}
+   		\ffv, &\text{se} \hspace{1mm}\llbracket \p{_1}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\llbracket 						\p{_2}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\false,   \\
+   		\ttv,  &\text{altrimenti},
+	\end{cases} \\
+\llbracket \neg \p\rrbracket(\s,\idt) &= 
+	\begin{cases}
+   		\ttv,&\text{se}\hspace{1mm}\llbracket \p\rrbracket(\s,\idt)\hspace{1mm} = \ffv,\\
+   		\ffv,&\text{se}\hspace{1mm} \llbracket \p\rrbracket(\s,\idt)\hspace{1mm} = \ttv,
+   	\end{cases}
+\end{align}
+Poniamo attenzione ai due casi particolari:
+\begin{align}
+\llbracket\forall\idx\itc \p\rrbracket(\s,\idt) &=
+	\begin{cases}
+   		\ttv, &\text{se}\hspace{1mm}\forall\idk\in\Zset\itc(\llbracket \p\rrbracket(\s,\idt[^\idk/_									\idx])\hspace{1mm} = \ttv),   \\  
+   		\ffv, &\text{se}\hspace{1mm}\exists\idk\in\Zset\st(\llbracket \p\rrbracket(\s,\idt[^\idk/_									\idx])\hspace{1mm} = \ffv),
+   \end{cases} \\
+\llbracket \exists\idx \st \p\rrbracket(\s,\idt) &= 
+	\begin{cases}
+   		\ttv,  &\text{se}\hspace{1mm} \exists\idk \in \Zset\st(\llbracket \p\rrbracket(\s,\idt[^\idk/_									\idx])\hspace{1mm} = \ttv),   \\
+   		\ffv,&\text{se}\hspace{1mm}\forall\idk \in \Zset\itc(\llbracket \p\rrbracket(\s,\idt[^\idk/_\idx])								\hspace{1mm} = \ffv),
+   	\end{cases}
+\end{align}
+Dove: \\
+\begin{align}
+\forall\idx ,\y\in\Ghost\itc\forall\idt \in \Gamma \itc \forall\idk \in \Zset \itc \idt[^\idk/_\idx](\y) &=
+	\begin{cases}
+   		\idk,  &\text{se}\hspace{1mm} \idx=\y,   \\
+   	    \idt(\y),&\text{se}\hspace{1mm} \idx \neq \y,
+	\end{cases}
+\end{align}
+\begin{align}
+\llbracket \p{_1} \Rightarrow \p{_2}\rrbracket(\s,\idt) &=
+	\begin{cases}
+   		\ffv, &\text{se} \hspace{1mm}\llbracket \p{_1}\rrbracket(\s,\idt)\hspace{1mm} = \true \wedge \hspace{1mm}					\llbracket \p{_2}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\false,   \\
+   		\ttv,	&\text{altrimenti},
+	\end{cases} \\
+\llbracket \p{_1} \Leftrightarrow \p{_2}\rrbracket(\s,\idt) &= 
+	\begin{cases}
+   		\ttv,&\text{se} \hspace{1mm}\llbracket \p{_1}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\llbracket 						\p{_2}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\true \\ 
+   		 	&\vee\hspace{1mm}\llbracket \p{_1}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\llbracket \p{_2}							\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\false,  \\
+   	   \ffv,&\text{altrimenti},
+	\end{cases} \\
+\llbracket \p{_1} \Leftarrow \p{_2}\rrbracket(\s,\idt) &= 
+	\begin{cases}
+   		\ffv,&\text{se} \hspace{1mm}\llbracket \p{_1}\rrbracket(\s,\idt)\hspace{1mm} = \false \wedge \hspace{1mm}					\llbracket \p{_2}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\true,   \\
+   		\ttv,&\text{altrimenti};
+   \end{cases} 
+\end{align}
+\chapter{Variabili libere}
+\section{Variabili fantasma}
+In logica matematica e in particolare in un linguaggio del primo ordine si dice che una variabile occorre libera in una formula ben formata se nella formula tale variabile appare al di fuori del dominio di un quantificatore sulla variabile stessa. Una variabile $\Ghost$ può essere libera per questo ce ne interessiamo.
+Definiamo due funzioni con lo stesso nome (quindi sovraccaricate) per calcolare le variabili libere in una formula :
+$$\FV\itc\LExp \rightarrow \calP(\Ghost)$$\\
+Per induzione strutturale abbiamo :
+\begin{align}
+\FV(\idx) &= \begin{cases}
+   \emptyset,&\text{se}\hspace{1mm} \idx \in \Var, \\
+   \{\idx\},&\text{se}\hspace{1mm}\idx \in \Ghost,
+   \end{cases} \\
+\FV(\C) &= \emptyset,\hspace{1mm} \text{poichè non ci sono variabili libere in una costante}\\
+\FV(\LE{_1} + \LE{_2}) &= \FV(\LE{_1}) \cup \FV(\LE{_2}),\\
+\FV(\sqrt{\LE}) &= \FV(\LE),\\
+\FV(\LE{_1}^{\LE_2}) &= \FV(\LE{_1}) \cup \FV(\LE_2),\\
+\FV(\LE!) &= \FV(\LE),\\
+\FV(\lfloor \LE \rfloor) &= \FV(\LE);
+\end{align}
+La seconda funzione sovraccaricata è:
+
+$$\FV\itc\Pred\rightarrow\calP(\Ghost)$$
+Per induzione strutturale abbiamo:
+\begin{align}
+\FV(\true) &= \emptyset,\\
+\FV(\false) &= \emptyset,\\
+\FV(\LE{_1} = \LE{_2}) &= \FV(\LE{_1}) \cup \FV(\LE{_2}),\\
+\FV(\p{_1} \wedge \p{_2}) &= \FV(\p{_1}) \cup \FV(\p{_2}),\\
+\FV(\p{_1} \vee \p{_2}) &= \FV(\p{_1}) \cup \FV(\p{_2}),\\
+\FV(\neg \p) &= \FV(\p),\\
+\FV(\forall\idx\itc \p) &= \FV(\p)\setminus \{\idx\},\\
+\FV(\exists\idx\st \p) &= \FV(\p)\setminus \{\idx\},\\
+\FV(\p{_1} \Rightarrow \p{_2}) &= \FV(\p{_1}) \cup \FV(\p{_2}),\\
+\FV(\p{_1} \Leftrightarrow \p{_2}) &= \FV(\p{_1}) \cup \FV(\p{_2}),\\
+\FV(\p{_1} \Leftarrow \p{_2}) &= \FV(\p{_1}) \cup \FV(\p{_2});
+\end{align}
+\chapter{Logica di Floyd-Hoare}
+\section{Verità di una tripla di Hoare}
+Ora abbiamo tutti gli elementi per definire quando una tripla di Hoare è vera.
+$$\llbracket \{\p\}\C\{\Q\} \rrbracket = \ttv;$$
+\textbf{Caso semplice.} Supponiamo di non avere variabili $\Ghost$:
+$$\FV(\p) \cup \FV(\Q)= \emptyset;$$
+Quindi :
+\begin{align*}
+\llbracket \{\p\}\C\{\Q\} \rrbracket = \ttv \Leftrightarrow (\forall \s,\s'\in \Sigma \itc(&\llbracket \p \rrbracket(\s,\emptyset) = \ttv \hspace{1mm}\wedge <\C,\s>\rightarrow ^*<\mathrm{skip},\s'>) \\
+\Rightarrow&\llbracket \Q \rrbracket(\s',\emptyset)=\ttv);
+\end{align*}
+\textbf{Caso Completo.} Caso in cui sono effettivamente presenti variabili Ghost, ma prima riflettiamo. In una tripla di Hoare del tipo:
+$$\{\idx = \mathrm{n}\} \idx:=\idx+1\{\idx=\mathrm{n}+1\};$$
+Nelle triple di Hoare se ci sono variabili non quantificate, esse vengono universalmente quantificate (con un $\forall$) in maniera implicita.\\
+Caso in cui sono possibili variabili $\Ghost$:
+$$\FV(\p) \cup \FV(\Q) \neq \emptyset;$$
+Quindi :\\
+\begin{align*}
+\llbracket \{\p\}\C\{\Q\} \rrbracket = \ttv \Leftrightarrow \forall \idt \in \Gamma_{\FV(\p)\cup \FV(Q)}\itc\hspace{1mm}&(\forall \s,\s'\in \Sigma\itc(\llbracket \p \rrbracket(\s,\idt) = \ttv \\ &\wedge <\C,\s>\rightarrow ^*<\mathrm{skip},\s'>) \\ &\Rightarrow\llbracket \Q \rrbracket(\s',\idt)=\ttv);
+\end{align*}
+Dove:\\
+$$\forall \mathrm{v} \subset \Ghost, \hspace{1cm} \Gamma_{\mathrm{v}} =\{ \idt \in \Gamma \hspace{1mm}\text{t.c} \hspace{1mm} \dom(\idt) = \mathrm{v}\};$$
+\section{Correttezza della logica di Floyd-Hoare}
+Se la tripla di Hoare ha dimostrazione, allora essa è vera.
+$$\forall \p,\Q \in \Pred \itc \forall \C \in \Com : \ \vdash \{\p\}\C\{\Q\} \Rightarrow \llbracket \{\p\}\C\{\Q\} \rrbracket;$$
+Si dimostra per induzione strutturale sull'albero che dimostra \{P\}C\{Q\}:\\\\
+\textbf{Skip}
+$$\frac{}{\{\p\}\mathrm{skip}\{\p\}}$$
+\begin{align*}
+\llbracket \{\p\}\mathrm{skip}\{\p\} \rrbracket \Leftrightarrow \forall \idt \in \Gamma_{\FV(\p)}\itc
+&\forall \s,\s'\in \Sigma \itc(\llbracket \p \rrbracket(\s,\idt) = \ttv \\
+&\wedge <\mathrm{skip},\s>\rightarrow ^*<\mathrm{skip},\s'>) \\
+&\Rightarrow\llbracket \p \rrbracket(s',\idt)=\ttv);
+\end{align*}
+Dato che la premessa è vera abbiamo che $\s=\s'$, dunque:
+$$\llbracket \p \rrbracket(\s,\idt)=\ttv=\llbracket \p \rrbracket(\s',\idt);$$
+\textbf{Assegnamento}
+$$\frac{}{\{\Q[^{\LE}/_\idx]\}\idx:=\LE\{\Q\}}$$
+\begin{align*}
+\llbracket \{\Q[^{\LE}/_\idx]\}\idx:=\LE\{\Q\} \rrbracket \Leftrightarrow
+&\forall \idt \in \Gamma_{\FV(\LE)\cup \FV(\Q)}\itc\forall \s,\s'\in \Sigma \itc\\
+&(\llbracket\Q \rrbracket[^{\LE}/_\idx] (\s,\idt) = \ttv\\
+&\wedge <\idx:=\LE,\s>\rightarrow ^*<\mathrm{skip},\s'>)\\
+&\Rightarrow\llbracket \Q \rrbracket(\s',\idt)=\ttv);
+\end{align*}
+Questo grazie al \textbf{Lemma}:
+\begin{align*}
+\forall \idk \in \Nset \itc
+&(<\idx:=\LE,\s> \rightarrow ^\idk<\mathrm{skip},\s'>\\
+&\Rightarrow \hspace{1mm}\exists \mathrm{n} \in \Zset\st <\LE,\s>\rightarrow ^\mathrm{{k}-1}<\mathrm{n},\s> \hspace{1mm} \wedge \hspace{1mm} \s'= \s[^\mathrm{n}/_\idx]);
+\end{align*}
+\textbf{Dimostrazione} per induzione \\
+\textit{Caso base}\\
+Con $\idk$ = 0 è banalmente vera poiché l'antecedente è falso.\\
+Con $\idk$ = 1 abbiamo: 
+$$<\idx:=\LE,\s>\rightarrow ^1<\mathrm{skip},\s'>,$$
+ma allora $\LE \in \Zset$ e $\s'= \s[^\mathrm{n}/_\idx],$\\\\
+Ma allora $\exists\mathrm{n} = \LE,$ tali che :
+$$<\LE,\s>\rightarrow ^0<\LE,\s> \hspace{1mm} \equiv \hspace{1mm} <\mathrm{n},\s>;$$
+Per definizione di $\rightarrow ^0,$ chiusura riflessiva.\\\\
+\textit{Passo induttivo}
+$\idk = \mathrm{h}+1$;
+$$<\idx:=\LE,\s>\rightarrow ^\mathrm{h+1}<\mathrm{skip},\s'>,$$
+Allora si può ricondurre ad $\mathrm{h+1}$ passi per poi applicare l'ipotesi induttiva:
+$$<\idx:=\LE,\s>\rightarrow ^1<\idx:=\LE',\s>,$$
+Ora:
+$$<\idx:=\LE',\s>\rightarrow ^\mathrm{h}<\mathrm{skip},\s'>,$$
+per ipotesi induttiva si ha che:
+$$\exists \mathrm{n} \in \Zset\itc <\LE',\s>\rightarrow ^\mathrm{{h}-1}<\mathrm{n},\s>,$$
+e inoltre:
+$$ \s'= \s[^\mathrm{n}/_\idx],$$
+Allora aggiungendo l'ultimo passo: 
+$$<\idx:=\LE,\s>\rightarrow ^1<\idx:=\LE',\s>\rightarrow ^\mathrm{h}<\mathrm{skip},\s'>,$$
+$$<\LE,\s>\rightarrow ^1<\LE',\s>\rightarrow ^\mathrm{{h}-1}<\mathrm{n},\s'>, $$
+Allora:
+$$<\LE,\s>\rightarrow ^\mathrm{h}<\mathrm{skip},\s'>;$$
+\textbf{Composizione Sequenziale}
+$$\frac{\{\p\}\C_1\{\Q\} \hspace{1cm} \{\Q\}\C_2\{\mathrm{R}\}}{\{\p\}\C_1;\C_2\{\mathrm{R}\}}$$
+\begin{align*}
+\llbracket \{\p\}\C_1;\C_2\{\mathrm{R}\} \rrbracket \Leftrightarrow \forall \idt \in \Gamma_{\FV(\p)\cup \FV(\mathrm{R})}\itc
+&(\forall \s,\s'\in \Sigma \itc(\llbracket \p \rrbracket(\s,\idt) = \ttv \\
+&\wedge <\C_1; \C_2,\s>\rightarrow ^*<\mathrm{skip},\s'>) \\
+&\Rightarrow\llbracket \mathrm{R} \rrbracket(\s',\idt)=\ttv);
+\end{align*}
+\begin{align*}
+\llbracket \{\p\}\C_1\{\Q\} \rrbracket \wedge \llbracket \{\Q\}\C_2\{\mathrm{R}\} \rrbracket \Leftrightarrow
+&\forall \idt \in \Gamma_{\FV(\p)\cup\FV(\mathrm{R})\cup\FV(\Q)}\itc\\
+&\forall \s,\s'\in \Sigma \itc(\llbracket \p \rrbracket(\s,\idt) = \ttv\\
+&\wedge <\C_1,\s>\rightarrow ^*<\mathrm{skip},\s'>\\
+&\wedge \llbracket\Q\rrbracket(\s',\idt)=\ttv \\
+&\wedge <\C_2,\s'>\rightarrow ^*<\mathrm{skip},\s''>)\\
+&\Rightarrow\llbracket \mathrm{R} \rrbracket(\s'',\idt)=\ttv;
+\end{align*}
+Questo grazie al \textbf{Lemma}:
+$$<\C_1; \C_2,s>\rightarrow ^\idk<\mathrm{skip},\s'>)$$ 
+$$\Downarrow$$
+$$\exists \idk_1,\idk_2 \in \Nset\itc<\C_1,\s>\rightarrow ^{\idk_1}<\mathrm{skip},\s'> \wedge <\C_2,\s'>\rightarrow ^{\idk_2}<\mathrm{skip},\s''>;$$ 
+\textbf{Dimostrazione} da fare
+\end{document}
