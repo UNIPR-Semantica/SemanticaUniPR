@@ -1,0 +1,23 @@
+[user]
+        name = Roberto Bagnara
+        email = bagnara@cs.unipr.it
+[alias]
+        up = pull --rebase
+        wup = log -p origin..@{0}
+        wdiff = diff --color-words
+        wshow = show --color-words
+
+[diff]
+        renames = true
+
+[push]
+        default = tracking
+
+[core]
+        pager = less -FRX
+
+[diff "odf"]
+        textconv=odt2txt
+
+[diff "word"]
+      textconv = catdoc
