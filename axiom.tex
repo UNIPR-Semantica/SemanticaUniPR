@@ -23,46 +23,46 @@ Un programma si dice \emph{propriamente annotato} se ci sono annotazioni nei seg
 
 \subsection{Esercizio 1}
 Dare una dimostrazione per la seguente tripla di Hoare:
-$$ \{X=a \; \land Y=b\} \; X=X+Y; \; Y=X-Y; \; X=X-Y \; \{Y=a \; \land \; X=b\} $$
+$$ \{X=a \; \land Y=b\} \; X:=X+Y; \; Y:=X-Y; \; X:=X-Y \; \{Y=a \; \land \; X=b\} $$
 
 \begin{proof}[Svolgimento]
 Dimostriamo la tripla partendo dal fondo. Applicando l'assioma dell'assegnamento si ha:
-$$ \{S[\nicefrac{X-Y}{X}] \} \; X=X-Y \; \{Y=a \; \land \; X=b\} $$
+$$ \{S[\nicefrac{X-Y}{X}] \} \; X:=X-Y \; \{Y=a \; \land \; X=b\} $$
 $$ \Downarrow $$
-$$ \{Y=a \; \land X-Y=b \} \; X=X-Y \; \{Y=a \; \land \; X=b\} $$
+$$ \{Y=a \; \land X-Y=b \} \; X:=X-Y \; \{Y=a \; \land \; X=b\} $$
 Risaliamo ora di un "livello" applicando ancora l'assioma dell'assegnamento:
-$$ \{S[\nicefrac{X-Y}{Y}] \} \; Y=X-Y \; \{Y=a \; \land \; X-Y=b\} $$
+$$ \{S[\nicefrac{X-Y}{Y}] \} \; Y:=X-Y \; \{Y=a \; \land \; X-Y=b\} $$
 $$ \Downarrow $$
-$$ \{X-Y=a \; \land X-(X-Y)=b \} \; Y=X-Y \; \{Y=a \; \land \; X-Y=b\} $$
+$$ \{X-Y=a \; \land X-(X-Y)=b \} \; Y:=X-Y \; \{Y=a \; \land \; X-Y=b\} $$
 Semplificando la precondizione si ottiene:
-$$ \{X-Y=a \; \land Y=b \} \; Y=X-Y \; \{Y=a \; \land \; X-Y=b\} $$
+$$ \{X-Y=a \; \land Y=b \} \; Y:=X-Y \; \{Y=a \; \land \; X-Y=b\} $$
 Risaliamo ulteriormente di un livello, applicando l'assioma dell'assegnamento. Si ha:
-$$ \{S[\nicefrac{X+Y}{Y}] \} \; X=X+Y \; \{X-Y=a \; \land \; Y=b\} $$
+$$ \{S[\nicefrac{X+Y}{Y}] \} \; X:=X+Y \; \{X-Y=a \; \land \; Y=b\} $$
 $$ \Downarrow $$
-$$ \{(X+Y)-Y=a \; \land Y=b \} \; X=X+Y \; \{X-Y=a \; \land \; Y=b\} $$
+$$ \{(X+Y)-Y=a \; \land Y=b \} \; X:=X+Y \; \{X-Y=a \; \land \; Y=b\} $$
 Semplificando ancora una volta la precondizione si ottiene:
-$$ \{X=a \; \land Y=b \} \; X=X+Y \; \{X-Y=a \; \land \; Y=b\} $$
+$$ \{X=a \; \land Y=b \} \; X:=X+Y \; \{X-Y=a \; \land \; Y=b\} $$
 Che è quanto volevamo dimostrare.
 \end{proof}
 
 \subsection{Esercizio 2}
 Dare una dimostrazione per la seguente tripla di Hoare:
-$$ \{X=R+(Y \times Q) \} \; BEGIN \; R=R-Y; \; Q=Q+1 \; END \; \{X=R+(Y \times Q)\} $$
+$$ \{X=R+(Y \times Q) \} \; BEGIN \; R:=R-Y; \; Q:=Q+1 \; END \; \{X=R+(Y \times Q)\} $$
 
 \begin{proof}[Svolgimento]
 Come nell'esercizio precedente, procediamo dal fondo.\\
 Applichiamo quindi l'assioma dell'assegnamento:
-$$ \{S[\nicefrac{Q+1}{Q}] \} \; Q=Q+1 \; \{X=R+(Y \times Q)\} $$
+$$ \{S[\nicefrac{Q+1}{Q}] \} \; Q:=Q+1 \; \{X=R+(Y \times Q)\} $$
 $$ \Downarrow $$
-$$ \{X=R+(Y \times (Q+1)) \} \; Q=Q+1 \; \{X=R+(Y \times Q)\} $$
+$$ \{X=R+(Y \times (Q+1)) \} \; Q:=Q+1 \; \{X=R+(Y \times Q)\} $$
 Semplificando la precondizione si ottiene:
-$$ \{X=R+Y \times Q + Y \} \; Q=Q+1 \; \{X=R+(Y \times Q)\} $$
+$$ \{X=R+Y \times Q + Y \} \; Q:=Q+1 \; \{X=R+(Y \times Q)\} $$
 Risalendo di un livello e applicando ancora l'assioma dell'assegnamento si trova:
-$$ \{S[\nicefrac{R-Y}{R}] \} \; R=R-Y \; \{X=R+Y \times Q + Y \} $$
+$$ \{S[\nicefrac{R-Y}{R}] \} \; R:=R-Y \; \{X=R+Y \times Q + Y \} $$
 $$ \Downarrow $$
-$$ \{X= R-Y+Y \times Q+Y \} \; R=R-Y \; \{X=R+Y \times Q + Y \} $$
+$$ \{X= R-Y+Y \times Q+Y \} \; R:=R-Y \; \{X=R+Y \times Q + Y \} $$
 Semplificando la precondizione si ottiene:
-$$ \{X= R+(Y \times Q) \} \; R=R-Y \; \{X=R+Y \times Q + Y \} $$
+$$ \{X= R+(Y \times Q) \} \; R:=R-Y \; \{X=R+Y \times Q + Y \} $$
 Che è quanto volevamo dimostrare.
 \end{proof}
 
