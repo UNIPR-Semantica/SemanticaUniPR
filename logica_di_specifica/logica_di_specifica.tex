@@ -46,8 +46,9 @@ Bartolomeo Lombardi
 \theoremstyle{definition}
 Si vuole definire precisamente un linguaggio logico per le precondizioni e postcondizioni. Sia $\LE$ l'insieme delle espressioni aritmetiche della logica :
 $$\LE \in \LExp \itc\itc\defeq \idx \mid \C \mid \LE{_1} + \LE{_2} \mid \sqrt{\LE} \mid \LE^{\LE{_2}} \mid \LE! \mid \lfloor \LE \rfloor \mid ...$$
-Sia $\idx\in\Var\cup\Ghost$ dove $\Var$ è l'insieme delle variabili del programma e $\Ghost$ è l'insieme delle variabili fantasma tali che $\Var\cap\Ghost = \emptyset$.\\\\
-Sia P l'insieme dei predicati logici: 
+Sia $\idx\in\Var\cup\Ghost$ dove $\Var$ è l'insieme delle variabili del programma e $\Ghost$ è l'insieme delle variabili fantasma tali che $\Var\cap\Ghost = \emptyset$.
+
+Sia P l'insieme dei predicati logici:
 \begin{align*}
 \p \in \Pred \itc\itc\defeq &\true \mid\false\mid\LE{_1} = \LE{_2}\mid ...\mid \p{_1} \wedge \p{_2} \mid \p{_1} \vee \p{_2} \mid \neg \p\\
 &\mid \forall\idx\itc \p\mid \exists\idx\st \p\mid \p{_1} \Rightarrow \p{_2} \mid \p{_1} \Leftrightarrow \p{_2} \mid \p{_1} \Leftarrow \p{_2}
@@ -55,12 +56,14 @@ Sia P l'insieme dei predicati logici:
 dove $\idx\in\Ghost$ è ovvio che una precondizione o una postcondizione sarà un predicato. Ora che abbiamo definito la grammatica possiamo definire la semantica, in particolare avremmo due funzioni di valutazione semantica.
 \section{Sostituzione per LExp}
 \begin{align*}
-\idx[^{\LE}/_\idx] &= \idx,\\
-\C[^{\LE}/_\idx] &= 
-	\begin{cases}
-		\LE, &se \hspace{1mm}\idx=\C,  \\
-		\C, &se\hspace{1mm} \C\neq\idx, 
-	\end{cases} \\
+  \idx[^{\LE}/_\idx]
+    &= \idx,\\
+  \C[^{\LE}/_\idx]
+    &=
+      \begin{cases}
+        \LE, &\text{se $\idx = \C$,} \\
+        \C,  &\text{se $\C \neq \idx$},
+      \end{cases} \\
 (\LE_1 + \LE_2)[^{\LE}/_\idx] &= (\LE_1[^{\LE}/_\idx]) + (\LE_2[^{\LE}/_\idx]),\\
 \sqrt{\LE_1}[^{\LE}/_\idx] &= \sqrt{{\LE_1}[^{\LE}/_\idx]},\\
 \LE_1^{\LE{_2}}[^{\LE}/_\idx] &=\LE_1[^{\LE}/_\idx]^{\LE{_2}[^{\LE}/_\idx]},\\
@@ -89,10 +92,10 @@ Funzione di valutazione semantica delle espressioni:
 $$\llbracket\cdot\rrbracket ^{\LExp}: \LExp \rightarrow ((\Sigma \times \Gamma) \rightarrow \Zset)$$
 Diamo una definizione per induzione strutturale su ogni espressione:
 \begin{align}
-\llbracket \idx\rrbracket(\s,\idt) &= 
-	\begin{cases}
-		\s(\idx), &\text{se}\hspace{1mm} \idx\in\Var,  \\  \idt(\idx), &\text{se}\hspace{1mm} \idx\in\Ghost,
-	\end{cases}\\
+\llbracket \idx\rrbracket(\s,\idt) &=
+        \begin{cases}
+                \s(\idx), &\text{se}\hspace{1mm} \idx\in\Var,  \\  \idt(\idx), &\text{se}\hspace{1mm} \idx\in\Ghost,
+        \end{cases}\\
 \llbracket \C\rrbracket(\s,\idt) &= \C,\\
 \llbracket \LE{_1}+\LE{_2} \rrbracket(\s,\idt) &= \llbracket \LE{_1} \rrbracket(\s,\idt) + \llbracket \LE{_2}\rrbracket(\s,\idt),\\
 \llbracket \sqrt{\LE} \rrbracket(\s,\idt) &= \sqrt{\llbracket\LE\rrbracket}(\s,\idt),\\
@@ -108,65 +111,65 @@ Usando ancora l'induzione strutturale su ogni predicato:
 \begin{align}
 \llbracket \true \rrbracket(\s,\idt) &= \ttv, \\
 \llbracket \false \rrbracket(\s,\idt) &= \ffv, \\
-\llbracket \LE{_1} = \LE{_2}\rrbracket(\s,\idt) &= 
-	\begin{cases}
-   		\ttv, &\text{se} \hspace{1mm}\llbracket\LE{_1}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\llbracket 						\LE{_2} \rrbracket(\s,\idt),\\
-   		\ffv, &\text{se}\hspace{1mm}\llbracket\LE{_1}\rrbracket(\s,\idt)\hspace{1mm}\neq\hspace{1mm}\llbracket 						\LE{_2}\rrbracket(\s,\idt),
-	\end{cases} \\
+\llbracket \LE{_1} = \LE{_2}\rrbracket(\s,\idt) &=
+        \begin{cases}
+                \ttv, &\text{se} \hspace{1mm}\llbracket\LE{_1}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\llbracket                                          \LE{_2} \rrbracket(\s,\idt),\\
+                \ffv, &\text{se}\hspace{1mm}\llbracket\LE{_1}\rrbracket(\s,\idt)\hspace{1mm}\neq\hspace{1mm}\llbracket                                          \LE{_2}\rrbracket(\s,\idt),
+        \end{cases} \\
 \llbracket \p{_1} \wedge \p{_2}\rrbracket(\s,\idt) &=
-	\begin{cases}
-   		\ttv, &\text{se}\hspace{1mm}\llbracket \p{_1}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\llbracket 						\p{_2}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\true,\\
-   		\ffv, &\text{altrimenti},
- 	\end{cases} \\
+        \begin{cases}
+                \ttv, &\text{se}\hspace{1mm}\llbracket \p{_1}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\llbracket                                           \p{_2}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\true,\\
+                \ffv, &\text{altrimenti},
+        \end{cases} \\
 \llbracket \p{_1} \vee \p{_2}\rrbracket(\s,\idt) &=
-	\begin{cases}
-   		\ffv, &\text{se} \hspace{1mm}\llbracket \p{_1}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\llbracket 						\p{_2}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\false,   \\
-   		\ttv,  &\text{altrimenti},
-	\end{cases} \\
-\llbracket \neg \p\rrbracket(\s,\idt) &= 
-	\begin{cases}
-   		\ttv,&\text{se}\hspace{1mm}\llbracket \p\rrbracket(\s,\idt)\hspace{1mm} = \ffv,\\
-   		\ffv,&\text{se}\hspace{1mm} \llbracket \p\rrbracket(\s,\idt)\hspace{1mm} = \ttv,
-   	\end{cases}
+        \begin{cases}
+                \ffv, &\text{se} \hspace{1mm}\llbracket \p{_1}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\llbracket                                          \p{_2}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\false,   \\
+                \ttv,  &\text{altrimenti},
+        \end{cases} \\
+\llbracket \neg \p\rrbracket(\s,\idt) &=
+        \begin{cases}
+                \ttv,&\text{se}\hspace{1mm}\llbracket \p\rrbracket(\s,\idt)\hspace{1mm} = \ffv,\\
+                \ffv,&\text{se}\hspace{1mm} \llbracket \p\rrbracket(\s,\idt)\hspace{1mm} = \ttv,
+        \end{cases}
 \end{align}
 Poniamo attenzione ai due casi particolari:
 \begin{align}
 \llbracket\forall\idx\itc \p\rrbracket(\s,\idt) &=
-	\begin{cases}
-   		\ttv, &\text{se}\hspace{1mm}\forall\idk\in\Zset\itc(\llbracket \p\rrbracket(\s,\idt[^\idk/_									\idx])\hspace{1mm} = \ttv),   \\  
-   		\ffv, &\text{se}\hspace{1mm}\exists\idk\in\Zset\st(\llbracket \p\rrbracket(\s,\idt[^\idk/_									\idx])\hspace{1mm} = \ffv),
+        \begin{cases}
+                \ttv, &\text{se}\hspace{1mm}\forall\idk\in\Zset\itc(\llbracket \p\rrbracket(\s,\idt[^\idk/_                                                                     \idx])\hspace{1mm} = \ttv),   \\
+                \ffv, &\text{se}\hspace{1mm}\exists\idk\in\Zset\st(\llbracket \p\rrbracket(\s,\idt[^\idk/_                                                                      \idx])\hspace{1mm} = \ffv),
    \end{cases} \\
-\llbracket \exists\idx \st \p\rrbracket(\s,\idt) &= 
-	\begin{cases}
-   		\ttv,  &\text{se}\hspace{1mm} \exists\idk \in \Zset\st(\llbracket \p\rrbracket(\s,\idt[^\idk/_									\idx])\hspace{1mm} = \ttv),   \\
-   		\ffv,&\text{se}\hspace{1mm}\forall\idk \in \Zset\itc(\llbracket \p\rrbracket(\s,\idt[^\idk/_\idx])								\hspace{1mm} = \ffv),
-   	\end{cases}
+\llbracket \exists\idx \st \p\rrbracket(\s,\idt) &=
+        \begin{cases}
+                \ttv,  &\text{se}\hspace{1mm} \exists\idk \in \Zset\st(\llbracket \p\rrbracket(\s,\idt[^\idk/_                                                                  \idx])\hspace{1mm} = \ttv),   \\
+                \ffv,&\text{se}\hspace{1mm}\forall\idk \in \Zset\itc(\llbracket \p\rrbracket(\s,\idt[^\idk/_\idx])                                                              \hspace{1mm} = \ffv),
+        \end{cases}
 \end{align}
 Dove: \\
 \begin{align}
 \forall\idx ,\y\in\Ghost\itc\forall\idt \in \Gamma \itc \forall\idk \in \Zset \itc \idt[^\idk/_\idx](\y) &=
-	\begin{cases}
-   		\idk,  &\text{se}\hspace{1mm} \idx=\y,   \\
-   	    \idt(\y),&\text{se}\hspace{1mm} \idx \neq \y,
-	\end{cases}
+        \begin{cases}
+                \idk,  &\text{se}\hspace{1mm} \idx=\y,   \\
+            \idt(\y),&\text{se}\hspace{1mm} \idx \neq \y,
+        \end{cases}
 \end{align}
 \begin{align}
 \llbracket \p{_1} \Rightarrow \p{_2}\rrbracket(\s,\idt) &=
-	\begin{cases}
-   		\ffv, &\text{se} \hspace{1mm}\llbracket \p{_1}\rrbracket(\s,\idt)\hspace{1mm} = \true \wedge \hspace{1mm}					\llbracket \p{_2}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\false,   \\
-   		\ttv,	&\text{altrimenti},
-	\end{cases} \\
-\llbracket \p{_1} \Leftrightarrow \p{_2}\rrbracket(\s,\idt) &= 
-	\begin{cases}
-   		\ttv,&\text{se} \hspace{1mm}\llbracket \p{_1}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\llbracket 						\p{_2}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\true \\ 
-   		 	&\vee\hspace{1mm}\llbracket \p{_1}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\llbracket \p{_2}							\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\false,  \\
-   	   \ffv,&\text{altrimenti},
-	\end{cases} \\
-\llbracket \p{_1} \Leftarrow \p{_2}\rrbracket(\s,\idt) &= 
-	\begin{cases}
-   		\ffv,&\text{se} \hspace{1mm}\llbracket \p{_1}\rrbracket(\s,\idt)\hspace{1mm} = \false \wedge \hspace{1mm}					\llbracket \p{_2}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\true,   \\
-   		\ttv,&\text{altrimenti};
-   \end{cases} 
+        \begin{cases}
+                \ffv, &\text{se} \hspace{1mm}\llbracket \p{_1}\rrbracket(\s,\idt)\hspace{1mm} = \true \wedge \hspace{1mm}                                       \llbracket \p{_2}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\false,   \\
+                \ttv,   &\text{altrimenti},
+        \end{cases} \\
+\llbracket \p{_1} \Leftrightarrow \p{_2}\rrbracket(\s,\idt) &=
+        \begin{cases}
+                \ttv,&\text{se} \hspace{1mm}\llbracket \p{_1}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\llbracket                                           \p{_2}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\true \\
+                        &\vee\hspace{1mm}\llbracket \p{_1}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\llbracket \p{_2}                                                       \rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\false,  \\
+           \ffv,&\text{altrimenti},
+        \end{cases} \\
+\llbracket \p{_1} \Leftarrow \p{_2}\rrbracket(\s,\idt) &=
+        \begin{cases}
+                \ffv,&\text{se} \hspace{1mm}\llbracket \p{_1}\rrbracket(\s,\idt)\hspace{1mm} = \false \wedge \hspace{1mm}                                       \llbracket \p{_2}\rrbracket(\s,\idt)\hspace{1mm} = \hspace{1mm}\true,   \\
+                \ttv,&\text{altrimenti};
+   \end{cases}
 \end{align}
 \chapter{Variabili libere}
 \section{Variabili fantasma}
@@ -257,7 +260,7 @@ Questo grazie al \textbf{Lemma}:
 \textbf{Dimostrazione} per induzione \\
 \textit{Caso base}\\
 Con $\idk$ = 0 è banalmente vera poiché l'antecedente è falso.\\
-Con $\idk$ = 1 abbiamo: 
+Con $\idk$ = 1 abbiamo:
 $$<\idx:=\LE,\s>\rightarrow ^1<\mathrm{skip},\s'>,$$
 ma allora $\LE \in \Zset$ e $\s'= \s[^\mathrm{n}/_\idx],$\\\\
 Ma allora $\exists\mathrm{n} = \LE,$ tali che :
@@ -274,7 +277,7 @@ per ipotesi induttiva si ha che:
 $$\exists \mathrm{n} \in \Zset\itc <\LE',\s>\rightarrow ^\mathrm{{h}-1}<\mathrm{n},\s>,$$
 e inoltre:
 $$ \s'= \s[^\mathrm{n}/_\idx],$$
-Allora aggiungendo l'ultimo passo: 
+Allora aggiungendo l'ultimo passo:
 $$<\idx:=\LE,\s>\rightarrow ^1<\idx:=\LE',\s>\rightarrow ^\mathrm{h}<\mathrm{skip},\s'>,$$
 $$<\LE,\s>\rightarrow ^1<\LE',\s>\rightarrow ^\mathrm{{h}-1}<\mathrm{n},\s'>, $$
 Allora:
@@ -297,8 +300,8 @@ $$\frac{\{\p\}\C_1\{\Q\} \hspace{1cm} \{\Q\}\C_2\{\mathrm{R}\}}{\{\p\}\C_1;\C_2\
 &\Rightarrow\llbracket \mathrm{R} \rrbracket(\s'',\idt)=\ttv;
 \end{align*}
 Questo grazie al \textbf{Lemma}:
-$$<\C_1; \C_2,s>\rightarrow ^\idk<\mathrm{skip},\s'>)$$ 
+$$<\C_1; \C_2,s>\rightarrow ^\idk<\mathrm{skip},\s'>)$$
 $$\Downarrow$$
-$$\exists \idk_1,\idk_2 \in \Nset\itc<\C_1,\s>\rightarrow ^{\idk_1}<\mathrm{skip},\s'> \wedge <\C_2,\s'>\rightarrow ^{\idk_2}<\mathrm{skip},\s''>;$$ 
+$$\exists \idk_1,\idk_2 \in \Nset\itc<\C_1,\s>\rightarrow ^{\idk_1}<\mathrm{skip},\s'> \wedge <\C_2,\s'>\rightarrow ^{\idk_2}<\mathrm{skip},\s''>;$$
 \textbf{Dimostrazione} da fare
 \end{document}
