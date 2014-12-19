@@ -1,3 +1,118 @@
 \chapter{Semantica denotazionale}
 
-[Da scrivere.]
+[Da scrivere]
+
+\section{Continuità del comando While}\marginpar{Mancino}
+Il comando $ while\; B\; do\; C $ è continuo.
+
+\begin{proof}
+
+  Il comando $$\emph{C}\llbracket while\; B\; do\; C \rrbracket $$ è riconducibile a:
+  $$ \emph{C}\llbracket if\; B\; then\; (C;\; while\; B\; do\; C)\; else\; skip \rrbracket = $$
+  $$ = cond( \emph{B}\llbracket B \rrbracket\; ,\; seq(\emph{C}\llbracket C \rrbracket , C \llbracket \\ while\; B\; do\; C \rrbracket , id ) $$
+  $$ = cond( \emph{B}\llbracket B \rrbracket\;, \emph{C}\llbracket while\; B\; do\; C \rrbracket \circ \emph{C}\llbracket C \rrbracket , id) $$
+
+  Ora sia:
+  $$ f = cond(B \llbracket B \rrbracket , f \circ C \llbracket C \rrbracket , id) $$
+  E sia:
+  $ f = F(f) $, con:
+  $$ F = \lambda f . cond(\emph{B} \llbracket B \rrbracket , f \circ C \llbracket C \rrbracket , id) $$
+  dove $ F: ST \rightarrow ST $. Dobbiamo dimostrare che F è continua. Dimostriamo in primo luogo che il \emph{lub} esiste. Per farlo, presi \emph{b} e \emph{g} generici e $ \emph{X} \subseteq ST \land chain(X) $, facciamo vedere che $$ cond(b,X,g) $$ è monotono sul secondo argomento, tenendo fissi il primo e il terzo argomento:
+  $$ (f_1 \sqsubseteq f_2) \rightarrow cond(b,f_{1},g) \sqsubseteq cond(b,f_{2},g) $$
+  Preso $s \in \Sigma $ generico, ipotizzo che:
+  $$ cond(b,f_1,g)(s) \downarrow $$
+  sia definito. Allora ci sono due possibilità:
+  \begin{enumerate}
+  \item $ b(s) = false $ \\
+    $ cond(b,f_1,g)(s)=g(s)=cond(b,f_2,g)(s) $
+  \item $ b(s) = true $ \\
+    $ cond(b,f_1,g)(s) = f_{1}(s) \sqsubseteq f_{2}(s) = cond(b,f_2,g)(s) $
+  \end{enumerate}
+  Concludiamo allora che la monotonia vale. \\
+  Sia ora $ X \subseteq ST \; . \; chain(X) $. Allora dimostriamo che:
+  $$ chain( \{cond(b,f,g) | f \in X\}) $$
+  La cardinalità di questo insieme è minore o uguale a quella di \emph{X}, e quindi di $ \aleph_0 $. In particolare se \emph{X} è infinito c'è almeno un elemento che è g (quando b è falso). Quindi l'insieme è numerabile. \\ Ora devo dimostrare che è totalmente ordinato. Siano $f_1,f_2 \in \emph{X}$ generiche tali che \emph{chain(X)}. Allora:
+  \begin{enumerate}
+  \item $cond(b,f_1,g) \sqsubseteq cond(b,f_2,g)$, oppure
+  \item $cond(b,f_2,g) \sqsubseteq cond(b,f_1,g)$
+  \end{enumerate}
+  Dato che \emph{X} è una catena, $f_1 \sqsubseteq f_2 \lor f_2 \sqsubseteq f_1 $. E otteniamo nel primo caso la (1) mentre la (2) nel secondo caso. Siaccome siamo in un \emph{CPO} concludiamo che il lub esiste. \\
+  Ora dobbiamo far vedere chi è il lub. Intuitivamente è:
+  $$ lub( \{ cond(b,f,g) \; | \; f \in X \})= \begin{cases} \uparrow , & \mbox{se } b(s)=true \land \forall f \in X f(s) \uparrow \; \\ g(s), & \mbox{se } b(s)=false \; \\ f(s) & \mbox{se } b(s)=true \land f \in X \mbox{ tale che } f(s) \downarrow
+  \end{cases} $$
+  Dobbiamo dimostrare che il \emph{lub} è proprio lui e che:
+  $$ lub(cond(b,X,g)) = cond(b, lub\; X, g) $$
+  In questo modo avremo dimostrato che \emph{cond} è continuo sul secondo argomento. Chiamiamo allora \emph{h(s)} l'espressione in parentesi graffe e dimostriamo che h(s) è proprio il \emph{lub} di:
+  $$ \{cond(b,f,g) | f \in X \} $$
+  Si ha $ \forall b \in BT, \forall g \in ST, \forall f \in X : cond(b,f,g) \sqsubseteq h $, cioè che:
+  $$ \forall f_1, f_2 \in ST : f_1 \sqsubseteq f_2 \Leftrightarrow $$
+  $$ \Leftrightarrow \forall s \in \Sigma \mbox{ tale che } f_{1}(s) \downarrow \Rightarrow f_{2}(s) \downarrow \land f_{2}(s) = f_{1}(s) $$
+  Applicando la suddetta definizione:
+  \begin{itemize}
+  \item Se \emph{h(s)} diverge non c'è nulla da dimostrare;
+  \item Supponiamo che $cond(b,f,g)$ converga. Dobbiamo dimostrare che:
+    $$ \forall s \in \Sigma \mbox{ tale che } cond(b,f,g)(s) \downarrow \Rightarrow h(s) \downarrow \land cond(b,f,g)(s) = h(s) $$
+    Ci sono due ulteriori casi:
+    \begin{enumerate}
+    \item Se $b(s) = false$ per definizione di \emph{cond}:
+      $$ cond(b,f,g)(s) = g(s) \land h(s) = g(s) $$
+    \item Se $b(s)=true$ per definizione di \emph{cond}:
+      $$ cond(b,f,g)(s) = f(s) \Rightarrow f(s) \downarrow $$
+      Poichè $f \in X$ e sappiamo che termina, siamo nel terzo caso. Ma allora:
+      $$ h(s) = f(s) $$
+    \end{enumerate}
+  \end{itemize}
+
+  Quindi sappiamo che è un upper bound, dobbiamo solo dimostrare che è il lub. Dobbiamo cioè dimostrare che:
+  $$ lub( \{ (cond(b,f,g)) | f \in X \} ) = cond(b, lub \; X, g) $$
+  Sia $s \in \Sigma$ arbitrario. Sia:
+  $$ h(s) = cond(b,lub \; X, g)(s) $$
+  Scartiamo la possibilità di non terminazione. Allora abbiamo due casi:
+  \begin{enumerate}
+  \item $b(s) = false \Rightarrow h(s) = g(s) $ \\
+    $g(s) = cond(b,lub \; X, g)(s) $, per definizione di cond.
+  \item $b(s)=true$ \\
+    Abbiamo due ulteriori casi:
+    \begin{itemize}
+    \item $b(s) = true \land \forall f \in X \; : \; f(s)
+      \uparrow \; \Rightarrow lub \; X \uparrow$ \\
+      Cioè se non termina da un lato, non termina neanche dall'altro.
+    \item $b(s)=true \land f \in X : f(s) \downarrow$
+      Allora:
+      $$ lub \; X(s) = f(s) $$
+      Come ci si aspettava.
+    \end{itemize}
+  \end{enumerate}
+  Quindi \emph{cond} è effettivamente continuo sul secondo argomento.\\
+  Ci rimane da far vedere che se \emph{X} è una catena e compongo tutti gli elementi della catena con uno \emph{ST} allora ottengo sempre una catena, cioè:
+  $$ \forall g \in ST : \forall X \subseteq ST : chain(X) \; \Rightarrow chain(\{ f \circ g | f \in X \} ) $$
+  In particolare se $f = \perp$ l'insieme è un singoletto. \\
+  Dimostriamo quanto scritto ante:
+  \begin{itemize}
+  \item L'insieme è enumerabile (banalmente vero).
+  \item Per dimostrare che è totalmente ordinato devo far vedere che:
+    $$ \forall f_1 , f_2 \in X : f \circ g \sqsubseteq f_2 \lor f_2 \circ g \sqsubseteq f_1 $$
+    Facciamo vedere che vale una delle due, per esempio la prima:
+    $$ f_1 \sqsubseteq s_2 \Rightarrow f_1 \circ g \sqsubseteq f_2 \circ g $$
+    Applicando la definizione di $ \sqsubseteq $ si ha:
+    $$ \forall s \in \Sigma : f_{1}(s) \downarrow \; \Rightarrow f_{2}(s) \downarrow
+    \land f{1}(s)=f_{2}(s) \; \; (*) $$
+    Questo è dato. Voglio dimostrare che:
+    $$ \forall s \in \Sigma : f_1 \circ g(s) \downarrow \; \Rightarrow f_2 \circ g(s)
+    \downarrow \land f_2 \circ g(s) = f_1 \circ g(s) $$
+    Che sarebbe:
+    $$ \forall s \in \Sigma : f_{1}(g(s)) \downarrow \; \Rightarrow f_{2}(g(s))
+    \downarrow \land f_{1}(g(s)) = f_{2}(g(s)) $$
+    Che è vera per la (*) ed è proprio quello che ci serve. \\
+    L'altro caso è assolutamente duale.
+  \end{itemize}
+  Abbiamo dimostrato allora la continuità della funzione:
+  $$ \forall b \in PT \forall g,h \in ST \; \lambda f \; . \; cond(b,f \circ h,g) $$
+  Questa è la \emph{F} che risulta quindi continua. Per il \emph{Teorema di Tarski} possiede un minimo punto fisso che si trova facendo le iterate successive a partire da $\perp$ . Allora possiamo concludere che:
+  $$ \emph{C} \llbracket while \; B \; do \; C \rrbracket = lfp \; F $$
+  E:
+  $$ lfp \; F = lub \{ F^n(\perp ) | n \in \mathbb{N} \} $$
+\end{proof}
+
+
+
