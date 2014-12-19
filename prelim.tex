@@ -288,32 +288,52 @@ $\exists \lub f(X) \land f(\lub X) = \lub f(X)$
 
 \section{Punti fissi}
 
-\begin{definizione}
-  Sia $S$ un insieme e sia $f : S \rightarrow S$ una funzione. Allora un \emph{FP} o \emph{Punto Fisso} di $f$ è un qualunque valore $x$ tale che $f(x) = x$.
-  Se $x$ è anche il minimo dei punti fissi allora è un \emph{LFP} o \emph{Minimo Punto Fisso}.
+\begin{definizione} \summary{(Punto fisso.)}
+Sia $S$ un insieme e sia $\fund{f}{S}{S}$ una funzione.
+Allora un \emph{punto fisso} di $f$ è un qualunque $x \in S$ tale
+che $f(x) = x$.
 \end{definizione}
 
-\subsection{Programma propriamente annotato}
-\begin{definizione}
-Un programma si dice \emph{propriamente annotato} se ci sono annotazioni nei seguenti punti:
-\begin{itemize}
-	\item Prima ogni comando $C_i$ in una composizione sequenziale $C_1;C_2; \dots ;C_n$ in cui $C_i$ non è un comando di assegnamento.
-	\item Dopo la parola \textbf{do} in un comando \textbf{while}.
-\end{itemize}
-\end{definizione}
-
+Una funzione può avere zero punti fissi (esempio: ...), un solo punto fisso
+(esempio: ...), o addirittura infiniti punti fissi (esempio: ...).
+Quando un punto fisso di $f$ gode di una certa proprietà rispetto
+all'insieme di tutti i punti fissi di $f$, ad esempio è il minimo
+oppure il massimo di questi, diremo che è il
+\emph{minimo punto fisso di $f$}, denotato con $\lfp f$,
+o il \emph{massimo punto fisso di $f$}, denotato con $\gfp f$,
 
 \subsection{Teorema di Tarski}
 \begin{teorema}[Teorema di Tarski]
-  Sia $(S, \preceq)$ un \emph{CPO}, sia $\bot = min\ S$ e sia $f : S \rightarrow S$ continua
-  $$\Rightarrow \exists\ lfp\ f \land\ lfp\ f = lub\ \left\{f^n(\bot)\ |\ n \in \mathbb{N}\right\}$$
+Sia $(S, \preceq)$ un CPO, sia $\bot = \min S$ e sia
+$\fund{f}{S}{S}$ continua.
+Allora $f$ ha un minimo punto fisso e questo coincide con il limite
+delle iterate di $f$ a partire da $\bot$.
+Formalmente:
+\[
+  \exists \lfp f
+    \land
+      \lfp f = \lub \bigl\{\, f^n(\bot) \bigm| n \in \Nset \,\bigr\}.
+\]
   \begin{proof}
-    Come prima cosa dimostriamo per induzione su $n \in \mathbb{N}$ che l'insieme sopra definito che chiamiamo C è una \emph{Catena}:
-    \begin{itemize}
-      \item[$\circ$] $n = 0\ :\ f^0(\bot) = \bot \preceq f^1(\bot)$ visto che $\bot = min\ S$
-      \item[$\circ$] $n > 0\ :\ f^n(\bot) \preceq f^{n+1}(\bot) \Longleftrightarrow f(f^{n-1}(\bot)) \preceq f(f^n(\bot))$ vera per ipotesi induttiva
-    \end{itemize}
-    $Chain(C) \land (S, \preceq)\ \emph{CPO} \Rightarrow \exists lub\ C$. $f$ è continua $\Rightarrow f(lub\ C) = lub\ f(C)$ ma per definizione di C sappiamo
+Come prima cosa dimostriamo per induzione su $n \in \Nset$
+che l'insieme
+\[
+  C \defeq \bigl\{\, f^n(\bot) \bigm| n \in \Nset \,\bigr\}
+\]
+è una catena, ovvero che, per ogni $i \in \Nset$,
+$f^i(\bot) \preceq f^{i+1}(\bot)$.
+
+Per $i = 0$, abbiamo $f^0(\bot) = \bot \preceq f^1(\bot)$
+dal momento che $\bot = \min S$.
+
+Per $i > 0$, dalla monotonia di $f$ e dall'ipotesi induttiva discende che
+\[
+  f^i(\bot) = f\bigl(f^{i-1}(\bot)\bigr)
+            \preceq f\bigl(f^i(\bot)\bigr)
+            = f^{i+1}(\bot).
+\]
+
+$Chain(C) \land (S, \preceq)\ \emph{CPO} \Rightarrow \exists lub\ C$. $f$ è continua $\Rightarrow f(lub\ C) = lub\ f(C)$ ma per definizione di C sappiamo
     che $lub\ f(C) = lub\ C \Rightarrow lub\ C$ è un \emph{FP} di $f$. Dimostriamo per assurdo che è proprio il \emph{LFP}:
     Sia $m$ un \emph{FP} di f con $m \prec lub\ C \Rightarrow \exists i \in \mathbb{N} : m = f^j(\bot) \forall j \leq i$ ma così il $lub\ C$ non sarebbe più
     un \emph{LUB} che è assurdo.
