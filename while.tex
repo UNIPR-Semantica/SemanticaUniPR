@@ -1,10 +1,41 @@
 \chapter{Il linguaggio WHILE}
 
-[Da scrivere.]
+In questo capitolo si introduce un semplice linguaggio di programmazione,
+chiamato ``WHILE'',
+che sarà utilizzato per esemplificare varie tecniche di definizione della
+semantica dei linguaggi di programmazione.
+Il linguaggio per quanto molto semplice, soprattutto nella sua versione di
+base, ammette qualche estensione interessante che sarà illustrata nel
+seguito.
 
 \section{Sintassi}
 
-[Da scrivere.]
+\begin{description}
+\item[Variabili]
+$x \in \Var = \{ x_0, x_1, \ldots \}$,%
+\item[Interi]
+$n \in \Integer \defeq \Zset$;
+\item[Booleani]
+$t \in \Bool \defeq \{ \ttv, \ffv \}$;
+\item[Espressioni aritmetiche]%
+\begin{align*}
+  \AExp \ni
+  E &::= n \vbar x \vbar E_0 + E_1 \vbar E_0 - E_1 \vbar E_0 * E_1 \vbar \ldots
+\end{align*}
+\item[Espressioni booleane]%
+\begin{align*}
+  \BExp \ni
+  B &::= \ttv \vbar \ffv \vbar B_0 \kw{and} B_1 \vbar E_0 \kw{and} E_1
+              \vbar \kw{not} E \vbar \ldots
+\end{align*}
+\item[Comandi]%
+\begin{align*}
+  \Com \ni
+  C &::= \kw{skip} \vbar x := E \vbar C_0 ; C_1
+         \vbar \kw{if} B \kw{then} C_0 \kw{else} C_1 \\
+    &\vbar \kw{while} B \kw{do} C \vbar \ldots
+\end{align*}
+\end{description}
 
 \section{Semantica informale}
 
