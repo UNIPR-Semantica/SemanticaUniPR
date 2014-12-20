@@ -1,3 +1,41 @@
 \chapter{Semantica operazionale ``big step''}
 
-[Da scrivere.]
+La semantica operazionale "big step" è un particolare tipo di semantica operazionale che descrive formalmente come il risultato complessivo dell'esecuzione di un'operazione è ottenuto. Per fare questo, sfrutta schemi di assiomi e regole che hanno la seguente forma:
+
+$$
+\prooftree
+	premessa_1
+	\cdots
+	premessa_k
+   \justifies
+   		conclusioni
+	\using
+		(nome \; regola)
+\endprooftree
+$$
+
+\subsection{Un primo esempio di applicazione}
+Consideriamo un linguaggio con la seguente sintassi:
+$$ Exp \ni E ::= n \bigm| (E+E) \bigm| \cdots $$
+dove $n$ si espande nei naturali $1, 2, \dots$ 
+I punti di sospensione garantiscono la possibilità di inserire nuove espressioni.
+Allora una sua possibile semantica big step potrebbe essere, ad esempio:
+
+$$
+\prooftree
+   \justifies
+   		n \Downarrow n
+	\using
+		(B-NUM)
+\endprooftree
+$$
+
+$$
+\prooftree
+	E_1 \Downarrow n_1 \; \; E_2 \Downarrow n_2
+   \justifies
+   		(E_1 + E_2) \Downarrow n_3
+	\using
+		(B-ADD)
+\endprooftree
+$$
