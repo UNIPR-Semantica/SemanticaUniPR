@@ -1,6 +1,9 @@
 \chapter{Semantica operazionale ``big step''}
-
-La semantica operazionale "big step" è un particolare tipo di semantica operazionale che descrive formalmente come il risultato complessivo dell'esecuzione di un'operazione è ottenuto. Per fare questo, sfrutta schemi di assiomi e regole che hanno la seguente forma:
+\marginpar{Mancino}
+In questo capitolo introduciamo la semantica operazionale "big step" (letteralmente 'a grandi passi'),
+un particolare tipo di semantica operazionale che descrive formalmente
+come il risultato complessivo dell'esecuzione di un'operazione è ottenuto. 
+Per fare questo, sfrutta schemi di assiomi e regole che hanno la seguente forma:
 
 $$
 \prooftree
@@ -14,23 +17,21 @@ $$
 \endprooftree
 $$
 
-\subsection{Un primo esempio di applicazione}
+\subsection{Un primo esempio di applicazione}\marginpar{Mancino}
 Consideriamo un linguaggio con la seguente sintassi:
 $$ Exp \ni E ::= n \bigm| (E+E) \bigm| \cdots $$
 dove $n$ si espande nei naturali $1, 2, \dots$ 
-I punti di sospensione garantiscono la possibilità di inserire nuove espressioni.
+e dove i punti di sospensione garantiscono la possibilità di inserire nuove espressioni.
 Allora una sua possibile semantica big step potrebbe essere, ad esempio:
 
-$$
+\begin{align*}
 \prooftree
    \justifies
    		n \Downarrow n
 	\using
 		(B-NUM)
 \endprooftree
-$$
-
-$$
+&&
 \prooftree
 	E_1 \Downarrow n_1 \; \; E_2 \Downarrow n_2
    \justifies
@@ -38,4 +39,118 @@ $$
 	\using
 		(B-ADD)
 \endprooftree
+\end{align*}
+
+L'operatore $\Downarrow$ può essere letto come 'valuta a' e permette
+in un solo colpo di compiere tutti i passi affinché un comando o un'espressione
+giunga al termine della propria computazione. Operando in questo modo,
+ci è possibile provare, tramite dimostrazioni ad albero, asserzioni come la seguente:
+
 $$
+\prooftree
+	\prooftree
+   		\justifies
+   			3 \Downarrow 3
+   		\using
+   			(B-NUM)
+	\endprooftree
+	\;
+	\;
+	\prooftree
+		\prooftree
+   			\justifies
+   				2 \Downarrow 2
+   			\using
+   				(B-NUM)
+		\endprooftree		
+		\;
+		\;
+		\prooftree
+   			\justifies
+   				3 \Downarrow 3
+   			\using
+   				(B-NUM)
+		\endprooftree	
+   		\justifies
+   			(2+1) \Downarrow 3
+   		\using
+   			(B-ADD)
+		\endprooftree
+   \justifies
+   		(3+(2+1)) \Downarrow 6
+   	\using
+   		(B-ADD)
+\endprooftree
+$$
+
+La dimostrazione, come si vede, è un albero che va dal basso verso l'alto, dove
+in fondo troviamo ciò che vogliamo dimostrare e, applicando le due regole date precedentemente,
+giungiamo a degli assiomi (le foglie dell'albero) che quindi provano quanto volevamo.
+In sostanza, per dimostrare la conclusione dobbiamo far valere tutte le premesse che ricaviamo
+applicando le regole.
+
+\subsection{Semantica big step per While}\marginpar{Mancino}
+Se invece di usare un linguaggio didattico semplice come quello descritto nel capitolo
+precedente volessimo definire tramite la big step la semantica del linguaggio while
+avremo, logicamente, che una coppia \emph{(comando, stato)} viene valutata ad un
+nuovo stato, ossia, dato un comando C e uno stato s, in generale:
+
+$$
+\langle C,s \rangle \Downarrow s'
+$$
+
+Con questa premessa, definendo con E la generica espressione, con C
+il generico comando e con s il generico stato,
+è facile immaginare il comportamento di tutti i comandi per while:
+
+\begin{align*}
+\prooftree
+   \justifies
+   		\langle skip,s \rangle \Downarrow s
+\endprooftree
+&&
+\prooftree
+	E \Downarrow n
+   \justifies
+   		\langle x:=E,s \rangle \Downarrow s[n \rightarrow x]
+\endprooftree
+\end{align*}
+
+\begin{align*}
+\prooftree
+	B \Downarrow true \; \; \langle C_1,s \rangle \Downarrow s'
+   \justifies
+   		\langle if \; B \; then \; C_1 \; else \; C_2, s \rangle \Downarrow s'
+\endprooftree
+&&
+\prooftree
+	B \Downarrow false \; \; \langle C_2,s \rangle \Downarrow s'
+   \justifies
+   		\langle if \; B \; then \; C_1 \; else \; C_2, s \rangle \Downarrow s'
+\endprooftree
+\end{align*}
+
+\begin{align*}
+\prooftree
+	\langle C_1,s \rangle \Downarrow s' \; \; \langle C_2,s' \rangle \Downarrow s''
+   \justifies
+   		\langle C_1; \; C_2,s \rangle \Downarrow s''
+\endprooftree
+\end{align*}
+
+Infine rimane la regola del while per la quale, ovviamente, abbiamo due casi distinti:
+
+\begin{align*}
+\prooftree
+	B \Downarrow true \; \; \langle C;s \rangle \Downarrow s' \; \;
+	\langle while \; B \; do \; C, s' \rangle \Downarrow s''
+   \justifies
+   		\langle while \; B \; do \; C,s \rangle \Downarrow s''
+\endprooftree
+&&
+\prooftree
+	B \Downarrow false
+   \justifies
+   		\langle while \; B \; do \; C, s \rangle \Downarrow s
+\endprooftree
+\end{align*}
