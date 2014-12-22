@@ -89,6 +89,46 @@ giungiamo a degli assiomi (le foglie dell'albero) che quindi provano quanto vole
 In sostanza, per dimostrare la conclusione dobbiamo far valere tutte le premesse che ricaviamo
 applicando le regole.
 
+\subsection{Determinatezza}\marginpar{Mancino}
+La proprietà di determinatezza asserisce che un qualunque oggetto sintattico non può
+avere due semantiche differenti. In particolare, possiamo dimostrare il seguente
+
+\begin{teorema}[Determinatezza]
+La semantica big step di Exp gode della proprietà di determinatezza, ossia
+$\forall E \in Exp, \; \forall \; n, n' \in Num \text{ tali che }
+ E\Downarrow n \; \land \; E \Downarrow n' \; \Rightarrow n = n'$
+\end{teorema}
+
+\begin{proof}
+Per induzione strutturale sulla struttura di E:
+\begin{itemize}
+	\item Base $(n \in Num)$ - 
+		  In questo caso abbiamo che $n \Downarrow n_1$ e che $n \Downarrow n_2$.
+		  Dalla regola semantica del caso base allora sarebbe $n=n_1$ e $n=n_2$.
+		  Quindi, per la transitività dell'uguaglianza otteniamo $n_1 = n_2$.
+	\item Passo induttivo $(E \in Exp$ con $E=E_1 + E_2$) - 
+		  In questo caso abbiamo che $(E_1 + E_2) \Downarrow m_3$ e che $(E_1+E_2) \Downarrow p_3$.
+		  Questo implica che $ \exists \; m_1,m_2,p_1,p_2 \in Num$ tali che:
+		  \begin{align*}
+		   & m_1 + m_2 = m_3 \\
+		     \land \; & p_1+p_2 = p_3 \\
+		     \land \; & E_1 \Downarrow m_1 \\
+		     \land \; & E_2 \Downarrow m_2 \\ 
+		     \land \; & E_1 \Downarrow p_1 \\ 
+		     \land \; & E_2 \Downarrow p_2
+		    \end{align*}
+		  Ma allora, per ipotesi induttiva:
+		  \begin{align*}
+		  & m_1 = p_1 \\
+		    \land & \; m_2 = p_2 \\
+		    \land & \; m_1+m_2=m_3 \\
+		    \land & \; p_1 + p_2 = p_3
+		  \end{align*}
+		  Da cui deduciamo che:
+		  $ m_1 + m_2 = p_1 + p_2 \Rightarrow m_3 = p_3$ come volevamo dimostrare.
+\end{itemize}
+\end{proof}
+
 \subsection{Semantica big step per While}\marginpar{Mancino}
 Se invece di usare un linguaggio didattico semplice come quello descritto nel capitolo
 precedente volessimo definire tramite la big step la semantica del linguaggio while
