@@ -5,4 +5,6 @@ Marano: esercizi CPO, Teorema di Tarski
 Segalini: semantica degli array, teorema conservazione passi small step in denotazionale,
           correttezza if nella logica di Floyd-Hoare, semantica delle eccezioni
 Trombi: interpretazione astratta
-Lombardi: logica di specifica
+Lombardi: logica di specifica, definizione sintattica, variabili libere,
+          Valutazione semantica di LExp, Valutazione semantica di Pred,
+		  Verità di una tripla di Floyd-Hoare, Correttezza della logica di Floyd-Hoare
