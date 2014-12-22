@@ -17,7 +17,7 @@ $$
 \endprooftree
 $$
 
-\subsection{Un primo esempio di applicazione}\marginpar{Mancino}
+\section{Un primo esempio di applicazione}\marginpar{Mancino}
 Consideriamo un linguaggio con la seguente sintassi:
 $$ Exp \ni E ::= n \bigm| (E+E) \bigm| \cdots $$
 dove $n$ si espande nei naturali $1, 2, \dots$ 
@@ -89,7 +89,7 @@ giungiamo a degli assiomi (le foglie dell'albero) che quindi provano quanto vole
 In sostanza, per dimostrare la conclusione dobbiamo far valere tutte le premesse che ricaviamo
 applicando le regole.
 
-\subsection{Determinatezza}\marginpar{Mancino}
+\section{Determinatezza}\marginpar{Mancino}
 La proprietà di determinatezza asserisce che un qualunque oggetto sintattico non può
 avere due semantiche differenti. In particolare, possiamo dimostrare il seguente
 
@@ -129,7 +129,7 @@ Per induzione strutturale sulla struttura di E:
 \end{itemize}
 \end{proof}
 
-\subsection{Semantica big step per While}\marginpar{Mancino}
+\section{Semantica big step per While}\marginpar{Mancino}
 Se invece di usare un linguaggio didattico semplice come quello descritto nel capitolo
 precedente volessimo definire tramite la big step la semantica del linguaggio while
 avremo, logicamente, che una coppia \emph{(comando, stato)} viene valutata ad un
@@ -194,3 +194,54 @@ Infine rimane la regola del while per la quale, ovviamente, abbiamo due casi dis
    		\langle while \; B \; do \; C, s \rangle \Downarrow s
 \endprooftree
 \end{align*}
+
+\section{Effetti collaterali}\marginpar{Mancino}
+In questo paragrafo ridefiniamo la semantica data precedentemente
+per il linguaggio While introducendo degli effetti collaterali.
+
+\begin{definizione} \summary{(Effetti collaterali.)}
+Si dice che si verifica un \emph{effetto collaterale} quando
+una funzione modifica un valore o uno stato al di fuori del proprio
+scoping locale.
+\end{definizione}
+
+In questo caso, dobbiamo ricordarci che, rispetto alle definizioni date
+nel paragrafo precedente, detto C il generico comando, E la generica espressione,
+s il generico stato, si ha:
+
+\begin{align*}
+& \langle C,s \rangle \Downarrow s' \\
+& \langle E,s \rangle \Downarrow \langle n,s \rangle
+\end{align*}
+
+Partendo da questo assunto non è quindi difficile ricostruire la semantica:
+
+\begin{align*}
+\prooftree
+   \justifies
+   		\langle skip,s \rangle \Downarrow s
+\endprooftree
+&&
+\prooftree
+	\langle E,s \rangle \Downarrow \langle n,s' \rangle
+   \justifies
+   		\langle x:=E,s \rangle \Downarrow s'[n \rightarrow x]
+\endprooftree
+\end{align*}
+
+\begin{align*}
+\prooftree
+	\langle B,s \rangle \Downarrow \langle true,s' \rangle \; \; \langle C_1,s' \rangle \Downarrow s''
+   \justifies
+   		\langle if \; B \; then \; C_1 \; else \; C_2, s \rangle \Downarrow s''
+\endprooftree
+&&
+\prooftree
+	\langle B,s \rangle \Downarrow \langle true,s' \rangle \; \; \langle C;s' \rangle \Downarrow s'' \; \;
+	\langle while \; B \; do \; C, s' \rangle \Downarrow s'''
+   \justifies
+   		\langle while \; B \; do \; C,s \rangle \Downarrow s'''
+\endprooftree
+\end{align*}
+
+E così via per le restanti.
