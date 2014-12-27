@@ -1,3 +1,133 @@
 \chapter{Semantica operazionale ``small step''}
+\marginpar{Marano}
+In questo capitolo parleremo della semantica operazionale "small step", una semantica che descrive formalmente dopo ogni piccolo passo di calcolo che comando
+viene eseguito e come viene modificato lo store. Per fare ciò sfrutta assiomi e regole che hanno la stessa forma di quelle viste nel capitolo precedente
 
-[Da scrivere.]
+$$
+\prooftree
+premessa_1
+\cdots
+premessa_k
+\justifies
+conclusioni
+\using
+(nome \; regola)
+\endprooftree
+$$
+
+\section{Introduzione}\marginpar{Marano}
+Se quindi abbiamo un linguaggio con la seguente sintassi
+$$ Exp \ni E ::= n \bigm| (E+E) \bigm| \cdots $$
+dove $n$ si espande nei naturali $1, 2, \dots$ (nei puntini di sospensione si può inserire qualsiasi espressione).
+Allora una possibile semantica small step è:
+
+\begin{align*}
+  \prooftree
+  \justifies
+  n \rightarrow n
+  \using
+  (S-NUM)
+  \endprooftree
+  &&
+  \prooftree
+  E_1 \rightarrow E_1'
+  \justifies
+  (E_1 + E_2) \rightarrow (E_1' + E_2)
+  \using
+  (S-LEFT)
+  \endprooftree
+\end{align*}
+\newline
+\begin{align*}
+  \prooftree
+  E_2 \rightarrow E_2'
+  \justifies
+  (E_1 + E_2) \rightarrow (E_1 + E_2')
+  \using
+  (S-RIGHT)
+  \endprooftree
+  &&
+  \prooftree
+  \justifies
+  (1 + 2) \rightarrow 3
+  \using
+  (S-ADD)
+  \endprooftree
+\end{align*}
+
+L'operatore $\rightarrow$ quindi rappresenta a tutti gli effetti un passo di computazione.
+Con questa semantica abbiamo lo stesso potere espressivo della semantica Big step ma,
+essendo più verbosa, da più informazione sulla sequenzialità e sui "risultati intermedi".
+Vediamo un esempio di dimostrazione:
+\begin{align*}
+\prooftree
+	\prooftree
+   		\justifies
+   			(1+2) \rightarrow 3
+   		\using
+   			(S-ADD)
+	\endprooftree
+\justifies
+       	((1+2)+(3+4)) \rightarrow (3+(3+4))
+\using
+	(S-ADD)
+\endprooftree
+&&
+\prooftree
+	\prooftree
+   		\justifies
+   			(3+4) \rightarrow 7
+   		\using
+   			(S-ADD)
+	\endprooftree
+\justifies
+       	(3+(3+4)) \rightarrow (3+7)
+\using
+	(S-ADD)
+\endprooftree
+\end{align*}
+\begin{align*}
+\prooftree
+	\justifies
+		(3+7) \rightarrow 10
+	\using
+		(S-ADD)
+\endprooftree
+\end{align*}
+
+Possiamo subito osservare che differentemente dalla semantica Big Step
+nella semantica Small Step si usano tanti alberi di dimostrazione più piccoli per dimostrare
+ogni asserzione. 
+
+[Da aggiungere determinatezza...]
+
+\section{Semantica Small Step per While}\marginpar{Marano}
+Diamo ora una semantica al linguaggio While tramite la small step, dovremo
+perciò valutare non più una singola espressione ma una coppia formata da
+comando e stato. 
+
+$$
+\langle C,s \rangle \rightarrow \langle C',s' \rangle
+$$
+
+Indichiamo perciò con E la generica espressione, con C il generico comando 
+e con s il generico stato:
+\begin{align*}
+\prooftree
+   \justifies
+   		\langle skip,s \rangle \rightarrow s
+\endprooftree
+\end{align*}
+\begin{align*}
+\prooftree
+	E \rightarrow E'
+   \justifies
+   		\langle E,s \rangle \rightarrow \langle E',s \rangle
+\endprooftree
+&&
+\prooftree
+	E \rightarrow n
+   \justifies
+   		\langle x:=E,s \rangle \rightarrow s[n \rightarrow x]
+\endprooftree
+\end{align*}
