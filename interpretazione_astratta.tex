@@ -117,7 +117,44 @@ Dimostriamo la monotonia di $\alpha$.
 \end{center}
 
 \subsection{Inserzione di Galois}
-Siamo in un'inserzione di Galois? Il primo passo da verificare è che $\gamma \circ \alpha$ è estensiva. [continuare]
+Siamo in un'inserzione di Galois? Il primo passo da verificare è che $\gamma \circ \alpha$ è estensiva. 
+
+\begin{center}
+	$ \forall S \in \calP(\Zset) : \gamma \circ \alpha(S) \supseteq S $
+\end{center}
+
+\begin{center}
+	$ \gamma(\alpha(S)) \supseteq S $
+\end{center}
+
+\begin{center}
+	$ \gamma(\sqcup \{ \beta(n) \mid n \in S \} ) \supseteq S $
+\end{center}
+
+Consideriamo $\gamma$ additiva: dovremmo prendere i vari casi e dimostrare che, ad esempio, l'unione fra $\gamma(=)$ e $\gamma(<)$ è $\gamma(\leq)$.
+
+Questo perché l'unione è il lub di quell'insieme:
+
+\begin{center}
+	$ \union \{ \gamma(\beta(n)) \mid n \in \Zset \} \supseteq S $
+\end{center}
+Per dimostrarlo possiamo sfuttare il lemma:
+
+\begin{center}
+	$ \forall n \in \Zset : n \in \gamma(\beta(n)) $
+\end{center}
+Facendo i vari casi, questo completa la dimostrazione.
+
+Infine, dobbiamo mostrare che $\alpha \circ \gamma$ corrisponde all'identità:
+\begin{center}
+	$ \alpha \circ \gamma(\bot) = \bot $
+\end{center}
+\begin{center}
+	$ \alpha \circ \gamma(\top) = \top $
+\end{center}
+\begin{center}
+	$ \alpha \circ \gamma(\geq) = \geq $
+\end{center}
 
 \section{Operazioni astratte}
 Le operazioni astratte vanno definite seguendo le operazioni concrete; esse si applicano tra elementi del dominio astratto.
@@ -334,6 +371,17 @@ Nella seguente tabella, gli indici delle colonne indicano l'elemento a sinistra 
 		$\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$\\
 		\hline
 	\end{tabular}
+\end{center}
+
+\section{Semantica astratta small-step}
+
+Diamo una semantica astratta per $\Exp$, $\Bool$ e $\Com$.
+
+\subsection{Store astratto}
+Definiamo lo store astratto $\Sigma^\#:$
+
+\begin{center}
+	$ \Sigma^\# : \Var \rightarrow A $
 \end{center}
 
 \end{document}
