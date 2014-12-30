@@ -36,9 +36,8 @@ Allora una possibile semantica small step è:
   \using
   (S-LEFT)
   \endprooftree
-\end{align*}
-\newline
-\begin{align*}
+\\
+\\
   \prooftree
   E_2 \rightarrow E_2'
   \justifies
@@ -59,6 +58,7 @@ L'operatore $\rightarrow$ quindi rappresenta a tutti gli effetti un passo di com
 Con questa semantica abbiamo lo stesso potere espressivo della semantica Big step ma,
 essendo più verbosa, da più informazione sulla sequenzialità e sui "risultati intermedi".
 Vediamo un esempio di dimostrazione:
+
 \begin{align*}
 \prooftree
 	\prooftree
@@ -72,7 +72,8 @@ Vediamo un esempio di dimostrazione:
 \using
 	(S-ADD)
 \endprooftree
-&&
+\\
+\\
 \prooftree
 	\prooftree
    		\justifies
@@ -85,8 +86,8 @@ Vediamo un esempio di dimostrazione:
 \using
 	(S-ADD)
 \endprooftree
-\end{align*}
-\begin{align*}
+\\
+\\
 \prooftree
 	\justifies
 		(3+7) \rightarrow 10
@@ -99,35 +100,152 @@ Possiamo subito osservare che differentemente dalla semantica Big Step
 nella semantica Small Step si usano tanti alberi di dimostrazione più piccoli per dimostrare
 ogni asserzione. 
 
+\section{Determinatezza della semantica Small Step}\marginpar{Marano}
 [Da aggiungere determinatezza...]
 
 \section{Semantica Small Step per While}\marginpar{Marano}
 Diamo ora una semantica al linguaggio While tramite la small step, dovremo
 perciò valutare non più una singola espressione ma una coppia formata da
-comando e stato. 
-
+comando e stato. Per ora tralasciamo la possibilità di effetti collaterali.
 $$
 \langle C,s \rangle \rightarrow \langle C',s' \rangle
 $$
-
 Indichiamo perciò con E la generica espressione, con C il generico comando 
 e con s il generico stato:
 \begin{align*}
-\prooftree
-   \justifies
-   		\langle skip,s \rangle \rightarrow s
-\endprooftree
-\end{align*}
-\begin{align*}
-\prooftree
-	E \rightarrow E'
-   \justifies
-   		\langle E,s \rangle \rightarrow \langle E',s \rangle
-\endprooftree
+(S-SKIP)
 &&
 \prooftree
-	E \rightarrow n
    \justifies
-   		\langle x:=E,s \rangle \rightarrow s[n \rightarrow x]
+   		\langle skip, s \rangle \rightarrow s
+\endprooftree
+\\
+(S-EXP.NUM)
+&&
+\prooftree
+   \justifies
+   \langle x, s \rangle \rightarrow \langle n, s \rangle
+   \using
+   s(x) = n 
 \endprooftree
 \end{align*}
+
+Osserviamo che il comando skip e la lettura in memoria non modificano lo stato attuale.
+
+\begin{align*}
+(S-EXP.LEFT)
+&&
+\prooftree
+	\langle E_1, s \rangle \rightarrow \langle E_1', s \rangle
+   \justifies
+	\langle (E_1 + E_2), s \rangle \rightarrow \langle (E_1' + E_2), s \rangle
+\endprooftree
+\\
+\\
+(S-EXP.RIGHT)
+&&
+\prooftree
+	\langle E_2, s \rangle \rightarrow \langle E_2', s \rangle
+   \justifies
+	\langle (E_1 + E_2), s \rangle \rightarrow \langle (E_1 + E_2'), s \rangle
+\endprooftree
+\\
+\\
+(S-ADD)
+&&
+\prooftree
+   \justifies
+   \langle (n_1 + n_2), s \rangle \rightarrow \langle n_3, s \rangle
+   \using
+   n_3 = n_1 + n_2
+\endprooftree
+\\
+\\
+(S-ASS.EXP)
+&&
+\prooftree
+	\langle E, s \rangle \rightarrow \langle E', s \rangle
+   \justifies
+   	\langle x:= E, s \rangle \rightarrow \langle x:= E', s \rangle
+\endprooftree
+\\
+\\
+(S-ASS.NUM)
+&&
+\prooftree
+   \justifies
+   	\langle x:= n, s \rangle \rightarrow \langle skip, s[x \rightarrow n] \rangle
+\endprooftree
+\\
+\\
+(S-SEQ.LEFT)
+&&
+\prooftree
+	\langle C_1, s \rangle \rightarrow \langle C_1', s' \rangle
+   \justifies
+   	\langle C_1 ; C_2, s \rangle \rightarrow \langle C_1' ; C_2, s' \rangle
+\endprooftree
+\\
+\\
+(S-SEQ.SKIP)
+&&
+\prooftree
+   \justifies
+   	\langle skip ; C_2, s \rangle \rightarrow \langle C_2, s' \rangle
+\endprooftree
+\\
+\\
+(S-COND.BOOL)
+&&
+\prooftree
+	\langle B, s \rangle \rightarrow \langle B', s \rangle
+   \justifies
+   	\langle if B then C_1 else C_2, s \rangle \rightarrow \langle if B' then C_1 else C_2, s \rangle
+\endprooftree
+\\
+\\
+(S-COND.TRUE)
+&&
+\prooftree
+   \justifies
+   	\langle if true then C_1 else C_2, s \rangle \rightarrow \langle C_1, s \rangle
+\endprooftree
+\\
+\\
+(S-COND.FALSE)
+&&
+\prooftree
+   \justifies
+   	\langle if false then C_1 else C_2, s \rangle \rightarrow \langle C_2, s \rangle
+\endprooftree
+\\
+\\
+(S-WHILE.BOOL)
+&&
+\prooftree
+	\langle B, s \rangle \rightarrow \langle B', s \rangle
+   \justifies
+   	\langle while B do C, s \rangle \rightarrow \langle while B do C, s \rangle
+\endprooftree
+\\
+\\
+(S-WHILE.FALSE)
+&&
+\prooftree
+   \justifies
+   	\langle while false do C, s \rangle \rightarrow \langle skip, s \rangle
+\endprooftree
+\\
+\\
+(S-WHILE)
+&&
+\prooftree
+   \justifies
+   	\langle while B do C, s \rangle \rightarrow \langle if B then (C ; while B do C) else skip, s \rangle
+\endprooftree
+\\
+\end{align*}
+[Da aggiungere And e Or logici e circuitati e correggere impaginazione]
+
+
+
