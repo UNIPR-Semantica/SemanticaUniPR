@@ -8,6 +8,7 @@
 \usepackage{listings}
 \usepackage{stmaryrd}
 \usepackage{fancyhdr}
+\usepackage{cases}
 \pagestyle{fancy}
 
 \renewcommand{\sectionmark}[1]{\markboth{#1}{}}
@@ -54,22 +55,69 @@ Questo dominio concreto è giustificato dal fatto che le variabili del linguaggi
 
 \subsection{Dominio astratto degli interi}
 [Inserire figura]\\
-I simboli del dominio astratto sono tutti rispetto al numero $\mathrm{0}$.
+I simboli del dominio astratto sono tutti rispetto al numero $0$.
 
 \section{Funzione di concretizzazione $\gamma$}
 
 \subsection{Definizione di $\gamma$}
-\begin{center} $\gamma : A \rightarrow \calP({(\Zset), \subseteq)} $\end{center}
+\begin{center}
+	$ \gamma : A \rightarrow \calP({(\Zset), \subseteq)} $
+\end{center}
+
+Definiamola per qualche elemento del dominio astratto, mostrando in generale come definirla per tutti:
+\begin{center}
+	$ \gamma(\top) = \Zset $ \\
+	$ \gamma(\bot) = \o $ \\
+	$ \gamma(>) = \{ n \in \Zset \mid n > 0 \} $ \\
+	$ \gamma(\neq) = \{ n \in \Zset \mid n \neq 0 \} $
+\end{center}
 
 \subsection{Monotonia di $\gamma$}
-Argomentiamo la monotonia di $\gamma$
+Argomentiamo la monotonia di $\gamma$:
+\begin{center}
+	$ \gamma(\bot) = \o \subseteq \gamma(a) , \forall a \in A $ \\
+	$ \gamma(=) = \{0\} \subseteq \gamma(\geq) $ \\
+	$ \gamma(a) \subseteq \Zset = \gamma(\top), \forall a \in A $
+\end{center}
+
 \section{Funzione di astrazione $\alpha$}
 
 \subsection{Definizione di $\alpha$}
-\begin{center} $\alpha : A \rightarrow \calP({(\Zset), \subseteq)} $\end{center}
+\begin{center}
+	$ \alpha : A \rightarrow (\calP{(\Zset), \subseteq)} $
+\end{center}
+\begin{center}
+	$ \forall S \in \calP(\Zset) : \alpha(S) = \sqcup \{ \beta(n) \mid n \in S \} $
+\end{center}
+Si nota che la definizione di $\alpha$ viene fatta attraverso la funzione $\beta$, definita come segue:
+\begin{center}
+	$ \beta: \Zset \rightarrow A  $
+\end{center}
+
+\begin{align*}
+	\forall n \in \Zset: \beta(n) &=
+	\begin{cases}
+		>,	&\text{se $n  >  0$;} \\
+		=,	&\text{se $n = 0$;} \\
+		<,	&\text{se $n < 0$.}
+	\end{cases} 
+\end{align*}
 
 \subsection{Monotonia di $\alpha$}
 Dimostriamo la monotonia di $\alpha$.
+[completare]
+\begin{center}
+	$ \forall S_1, S_2 \in \calP(\Zset) : S_1 \subseteq S_2 \Rightarrow \alpha(S_1) \sqsubseteq \alpha(S_2) $
+\end{center}
+\begin{center}
+	$ S_1 \subseteq S_2 \Rightarrow \beta(S_1) \subseteq \beta(S_2) $, perché $\beta$ è  una funzione
+\end{center}
+\begin{center}
+	$ \alpha(S_1) = \alpha(S_2) $ per proprietà del lub.
+\end{center}
+
+\subsection{Inserzione di Galois}
+Siamo in un'inserzione di Galois? Il primo passo da verificare è che $\gamma \circ \alpha$ è estensiva. [continuare]
 
 \section{Operazioni astratte}
 Le operazioni astratte vanno definite seguendo le operazioni concrete; esse si applicano tra elementi del dominio astratto.
@@ -79,12 +127,12 @@ Le operazioni astratte vanno definite seguendo le operazioni concrete; esse si a
 La moltiplicazione astratta è definita come segue:
 
 \begin{center}
-	$\mathrm{\otimes = \lambda a_1,a_2 \in A . \alpha(\gamma(a_1) \boxtimes \gamma(a_2))}$
+	$ \otimes = \lambda a_1,a_2 \in A . \alpha(\gamma(a_1) \boxtimes \gamma(a_2)) $
 \end{center}
 con $\boxtimes$ moltiplicazione concreta, definita come segue:
 
 \begin{center}
-	$\mathrm{S_1 \boxtimes S_2 = \{ n_1 * n_2 \mid n_1 \in S_1, n_2 \in S_2 \}}$
+	$ S_1 \boxtimes S_2 = \{ n_1 * n_2 \mid n_1 \in S_1, n_2 \in S_2 \} $
 \end{center}
 
 \begin{center}
@@ -118,12 +166,12 @@ Come si può notare, la tabella risultante è simmetrica: questo perché l'opera
 La somma astratta è definita come segue:
 
 \begin{center}
-	$\mathrm{\oplus = \lambda a_1,a_2 \in A . \alpha(\gamma(a_1) \boxplus \gamma(a_2))}$
+	$ \oplus = \lambda a_1,a_2 \in A . \alpha(\gamma(a_1) \boxplus \gamma(a_2)) $
 \end{center}
 con $\boxplus$ somma concreta, definita come segue:
 
 \begin{center}
-	$\mathrm{S_1 \boxplus S_2 = \{ n_1 + n_2 \mid n_1 \in S_1, n_2 \in S_2 \}}$
+	$ S_1 \boxplus S_2 = \{ n_1 + n_2 \mid n_1 \in S_1, n_2 \in S_2 \} $
 \end{center}
 
 \begin{center}
@@ -157,13 +205,13 @@ Osservando il numero di ricorrenze di $\top$ all'interno della tabella e confron
 La divisione intera astratta viene definita come segue:
 
 \begin{center}
-	$\mathrm{\oslash = \lambda a_1,a_2 \in A . \alpha(\gamma(a_1) \boxslash \gamma(a_2))}$
+	$ \oslash = \lambda a_1,a_2 \in A . \alpha(\gamma(a_1) \boxslash \gamma(a_2)) $
 \end{center}
 
 con $\boxslash$ divisione intera concreta, definita come segue:
 
 \begin{center}
-	$\mathrm{S_1 \boxslash S_2 = \{ n_1 / n_2 \mid n_1 \in S_1, n_2 \in S_2 \backslash \{0\} \}}$
+	$ S_1 \boxslash S_2 = \{ n_1 / n_2 \mid n_1 \in S_1, n_2 \in S_2 \backslash \{0\} \} $
 \end{center}
 Nella seguente tabella, gli indici delle colonne indicano il dividendo e gli indici delle righe indicano il divisore.
 
@@ -193,14 +241,14 @@ Nella seguente tabella, gli indici delle colonne indicano il dividendo e gli ind
 
 \subsection{Meno unario astratto}
 
-Il meno unario astratto ($\ominus$) può essere definito per semplificare la definizione di meno binario astratto ($\mathrm{\ominus}_b$). Infatti l'operazione astratta
+Il meno unario astratto ($\ominus$) può essere definito per semplificare la definizione di meno binario astratto ($\ominus_b$). Infatti l'operazione astratta
 \begin{center}
-	$\mathrm{a \mathrm{\ominus}_b b}$
+	$ a \ominus_b b $
 \end{center}
 può essere riscritta come:
 
 \begin{center}
-	$\mathrm{a \mathrm{\ominus}_b b = a \oplus (\ominus b)}$
+	$ a  \ominus_b b = a \oplus (\ominus b) $
 \end{center}
 
 \begin{center}
@@ -251,11 +299,11 @@ Il dominio astratto dei booleani ci permette di ragionare su altre operazioni as
 
 Per definire l'operazione astratta di diverso basta definire quella di negato astratto:
 \begin{center}
-	$\mathrm{ c_1 \neq c_2 \iff \neg (c_2 = c_2)}$
+	$ c_1 \neq c_2 \iff \neg (c_2 = c_2) $
 \end{center}
 
 \begin{center}
-	$\mathrm{ a_1 \neq _a a_2 \iff \neg _a (a_1 =_a a_2)}$
+	$ a_1 \neq _a a_2 \iff \neg _a (a_1 =_a a_2) $
 \end{center}
 
 \subsection{Disuguaglianza astratta $\preceq$}
