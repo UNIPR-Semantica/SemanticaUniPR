@@ -129,6 +129,23 @@ Per induzione strutturale sulla struttura di E:
 \end{itemize}
 \end{proof}
 
+\section{Normalizzazione}\marginpar{Mancino}
+La proprietà di normalizzazione asserisce che per ogni espressione $E$ esiste almeno un risultato
+$n$ tale che $E \Downarrow n$.
+
+Osserviamo che, in generale, ci sono esempi in cui non è possibile normalizzare:
+$$ while \; true \; do \; skip \; \Downarrow \; ? $$
+A destra dell'operatore di 'valuta a' non posso scriverci nulla, il ciclo non termina.
+Un altro esempio è il seguente:
+$$ \nicefrac{0}{0} \; \Downarrow \; ? $$
+A destra dell'operatore di 'valuta a' posso scrivere la codifica del disastro (se esiste)
+altrimenti, come nel caso precedente, non possiamo scriverci nulla.
+
+\begin{teorema}[Normalizzazione]
+La semantica big step di Exp gode della proprietà di normalizzazione, ossia
+$\forall E \in Exp, \; \exists \; n \in Num \text{ tale che } E \Downarrow n$.
+\end{teorema}
+
 \section{Semantica big step per While}\marginpar{Mancino}
 Se invece di usare un linguaggio didattico semplice come quello descritto nel capitolo
 precedente volessimo definire tramite la big step la semantica del linguaggio while
