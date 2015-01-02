@@ -102,9 +102,9 @@ Dimostriamo ora che la semantica Small Step gode della proprietà
 della determinatezza, ogni oggetto sintattico può avere perciò
 al massimo una semantica. Prima dimostriamo però il seguente
 
-\begin{lemma}
+\begin{teorema}
 $\forall E_1, E_2, E \in Exp . E \rightarrow _1 E_1 \land E \rightarrow _1 E_2 \Rightarrow E_1 = E_2 $
-\end{lemma}
+\end{teorema}
 
 \begin{proof}
   Dimostriamo per induzione strutturale
@@ -138,11 +138,11 @@ ogni oggetto semantico ha almeno una semantica. Perciò per ogni espressione $E$
 esiste almeno un risultato $n$ tale che $E \rightarrow ^* n$.
 Dimostriamo prima però il seguente
 
-\begin{lemma}
+\begin{teorema}
   $\forall E \in Exp : E \in Num \land \exists E' \in Num \Rightarrow E \rightarrow E'$
   Questa proprietà ci aiuterà nella dimostrazione del successivo teorema ma dobbiamo anche dimostrare che le espressioni non possono transitare per sempre,
   ovvero che $\forall E \in Exp : \exists k \in \mathbb{N} . E \rightarrow ^k F \land F \nrightarrow$
-\end{lemma}
+\end{teorema}
 
 \begin{proof}
   Definiamo perciò una funzione $f : Exp \rightarrow \mathbb{N}$ che calcola il numero di "+", ovvero il numero di passi da fare per arrivare fino a una
