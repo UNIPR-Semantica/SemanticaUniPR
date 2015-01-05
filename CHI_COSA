@@ -1,6 +1,6 @@
 Mancino: nozioni preliminari, continuità del comando while, esercizi logica
          di Floyd-Hoare, esercizio 1 nel paragrafo "Relazione fra le sematiche",
-         semantica big step
+         semantica big step, semantica informale del linguaggio While
 Marano: esercizi CPO, Teorema di Tarski
 Segalini: semantica degli array, teorema conservazione passi small step in denotazionale,
           correttezza if nella logica di Floyd-Hoare, semantica delle eccezioni

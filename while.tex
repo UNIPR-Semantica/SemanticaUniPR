@@ -37,6 +37,27 @@ $t \in \Bool \defeq \{ \ttv, \ffv \}$;
 \end{align*}
 \end{description}
 
-\section{Semantica informale}
+\section{Semantica informale} \marginpar{Mancino}
+La semantica di questo linguaggio, ora definito solo sintatticamente, verrà espressa in
+maniera operazionale, denotazionale e assiomatica nei prossimi capitoli. Di seguito ne
+diamo solo una sua semantica intuitiva.
 
-[Da scrivere.]
+La variabili sono celle di memoria che possono contenere interi o booleani. Ad ogni istante
+viene tenuta traccia dello stato (o store) delle variabili per mezzo di una
+funzione così definita
+$ \forall x, \forall y, \forall n$:
+
+$$ s[x \rightarrow n](y) =
+	\begin{cases} n, & \mbox{ se } y=x \\
+				  s(y) & \mbox{ altrimenti}
+	\end{cases}
+$$
+
+Le espressioni aritmetiche sono insiemi di numeri e/o variabili legati da segni di operazione.
+Allo stesso modo le operazioni booleane sono insiemi di variabili e/o valori booleani legati da
+operatori logici.
+I punti di sospensione, sia nel caso di espressioni aritmetiche che booleane,
+garantiscono la possibilità di introdurre nuove espressioni.
+I comandi sono istruzioni che modificano lo stato. In particolare, ad esempio,
+$\kw{skip}$ è il comando che lascia lo store invariato, mentre $x:=E$ è il comando che 
+assegna ad x il risultato dell'espressione E.
