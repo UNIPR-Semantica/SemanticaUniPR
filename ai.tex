@@ -453,6 +453,24 @@ Ora manca da definire l'ordinamento su $ \Sigma^\# $:
 
 \subsection{Semantica di $\Bool$}
 
+Prima di poter definire la semantica di $\Bool$ rispetto all'operatore astratto $\absand$, definiamo l'operatore $\absand$:
+
+\begin{center}
+	\begin{tabular}{| c | c | c | c | c |}
+		\hline
+		$\absand$ & $\top$ & 1 & 0 & $\bot$ \\
+		\hline
+		$\top$ & $\top$ & $\top$ & 0 & $\bot$ \\
+		\hline
+		1 & $\top$ & 1 & 0 & $\bot$ \\
+		\hline
+		0 & 0 & 0 & 0 & $\bot$ \\
+		\hline
+		$\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ \\
+		\hline
+	\end{tabular}
+\end{center} 
+
 \begin{center}
 	(AND-SHORT.LEFT)
 	\prooftree
