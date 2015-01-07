@@ -20,26 +20,25 @@ dell'array:
 \subsection{Semantica informale}
 
 Gli array in questo semplice linguaggio di programmazione (per scelta
-di progettazione) sono dinamici: la loro dimensione è illimitata,
-ma solo un numero finito di elementi è definito in ogni momento
-della computazione.
-Gli elementi non precedentemente assegnati dell'array hanno il valore $0$.
-Verranno mostrate due
-semantiche diverse: in una l'accesso ad una
-variabile scalare $x$ con un'espressione della forma $x(E)$
-restituisce il valore contenuto in $x$, ignorando quindi $E$.
-Nell'altra semantica, l'accesso $x(E)$ trasforma la
-variabile scalare $x$ in un array con tutti gli elementi
-non definiti eccetto quello nella posizione indicata da $E$,
-la quale assumerà il valore contenuto in $x$ prima di tale accesso.
+di progettazione) sono dinamici: la loro dimensione è illimitata, ma
+solo un numero finito di elementi è definito in ogni momento della
+computazione.  Gli elementi non precedentemente assegnati dell'array
+hanno il valore $0$.  Verranno mostrate due semantiche diverse: in una
+l'accesso ad una variabile scalare $x$ con un'espressione della forma
+$x(E)$ restituisce il valore contenuto in $x$, ignorando quindi $E$.
+Nell'altra semantica, l'accesso $x(E)$ trasforma la variabile scalare
+$x$ in un array con tutti gli elementi non definiti eccetto quello
+nella posizione indicata da $E$, la quale assumerà il valore contenuto
+in $x$ prima di tale accesso.
 
-\subsubsection{Semantica formale}
+\subsection{Semantica formale}
 
 \begin{definizione} \summary{(Array semantici.)}
 Un \emph{array} (semantico) è una funzione da interi (indice
 dell'array) a interi (contenuto della cella) in cui solo ad un insieme
 finito di elementi del dominio corrisponde un numero diverso da $0$.
 Formalmente:
+
 \[
   \Lambda
     \defeq
@@ -53,112 +52,150 @@ Formalmente:
 
 \begin{definizione} \summary{(Insieme degli stati con array.)}
 Modifichiamo l'insieme degli store $\Sigma$ per includere gli array tra
-le variabili del programma
+le variabili del programma:
+
 \[
   \pard{\Sigma}{\Var}{\Zset \union \Lambda}.
 \]
 \end{definizione}
 
-Semantica di $V(E)$ denotazionale senza conversione scalare-array
+\subsubsection{Denotazionale}
+Semantica di $x(E)$ denotazionale senza conversione scalare-array:
+
 \[
-  \calE\llbracket V(E) \rrbracket(s) =
+  \calE\llbracket x(E) \rrbracket(s) =
   \begin{cases}
-    s(V), &\text{se $s(V) \in \Zset$; (V è uno scalare)} \\
-    s(V)\bigl(\calE\llbracket E \rrbracket(s)\bigr), &\text{se $s(V)
+    s(x), &\text{se $s(x) \in \Zset$; (x è uno scalare)} \\
+    s(x)\bigl(\calE\llbracket E \rrbracket(s)\bigr), &\text{se $s(x)
       \in \Lambda \land \calE\llbracket E \rrbracket(s)\convrg$;} \\
-    \divrg, &\text{se $s(V) \in \Lambda \land \calE\llbracket E
+    \divrg, &\text{se $s(x) \in \Lambda \land \calE\llbracket E
       \rrbracket(s)\divrg$;} \\
-    \divrg, &\text{se $s(V)\divrg$;}
+    \divrg, &\text{se $s(x)\divrg$;}
   \end{cases}
 \]
+\subsubsection{Operazionale small-step}
+Semantica di $x(E)$ small step su di un array:
 
-Semantica di $V(E)$ small step su di un array
+\begin{align*}
+  &\prooftree
+    \config{E}{s} \ssarrow \config{E'}{s'}
+  \justifies
+    \config{x(E)}{s} \ssarrow \config{x(E')}{s'}
+    \thickness=0.08em
+  \endprooftree
+\intertext{%
+se $x$ è un array:
+}
+  &\prooftree
+  \justifies
+    \config{x(n)}{s} \ssarrow \config{s(x)(n)}{s}
+  \thickness=0.08em
+  \using
+    s(x) \in \Lambda
+  \endprooftree
+\intertext{%
+se $x$ è uno scalare:
+}
+  &\prooftree
+  \justifies
+    \config{x(n)}{s} \ssarrow \config{0}{s'}
+  \thickness=0.08em
+  \using
+    s(x) \in \Zset \land s' = \subst{s}{a}{x}
+  \endprooftree
+\end{align*}
+\[
+\text{dove } a = \lambdaop i.0
+\]
+Semantica di $x(E)$ alternativa che trasforma lo scalare $x$ in un
+array vuoto (composto interamente da 0), eccezione fatta per la
+posizione $n$-ma la quale conterrà il valore di $x$:
+
 \[
   \prooftree
   \justifies
-  \config{V(n)}{s} \ssarrow \config{s(V)(n)}{s}
+    \config{x(n)}{s} \ssarrow \config{s(x)}{s'}
   \thickness=0.08em
   \using
-  s(V) \in \Lambda
+    s(x) \in \Zset \land s' = \subst{s}{a}{x}
   \endprooftree
 \]
+\begin{align*}
+  \text{dove } a = \lambdaop i.
+    \begin{cases}
+      s(x), &\text{se $i = n$} \\
+      0,    &\text{altrimenti}
+    \end{cases}
+\end{align*}
+Semantica di $x(E_0) \weq E_1$ small step che permetta la conversione di uno
+scalare in un array:
 
-Semantica di $V(E)$ (accesso ad array) con conversione scalare-array
-data con stile small step. La trasformazione richiede un
-cambiamento di stato quindi un effetto collaterale non ammesso nella
-semantica denotazionale. Questa semantica trasforma lo scalare in un
-array ovunque non definito
+\[
+  \prooftree
+    \config{E_0}{s} \ssarrow \config{E_0'}{s'}
+  \justifies
+    \config{x(E_0) \weq E_1}{s} \ssarrow \config{x(E_0') \weq E_1}{s'}
+    \thickness=0.08em
+  \endprooftree
+\]
+\[
+  \prooftree
+    \config{E_1}{s} \ssarrow \config{E_1'}{s'}
+  \justifies
+    \config{x(n) \weq E_1}{s} \ssarrow \config{x(n) \weq E_1'}{s'}
+    \thickness=0.08em
+  \endprooftree
+\]
+se $x$ è un array:
 \[
   \prooftree
   \justifies
-  \config{V(n)}{s} \ssarrow \config{0}{s'}
+    \config{x(n)\ \weq\ k}{s} \ssarrow \config{\kw{skip}}{s'}
   \thickness=0.08em
   \using
-  s(V) \in \Zset \land s' = \subst{s}{\lambdaop i.0}{V}
+    s(x) \in \Lambda \land s' = \subst{s}{a}{x}
   \endprooftree
 \]
-
-Questa semantica trasforma lo scalare in un array totalmente
-indefinito eccetto per la posizione $n$-ma che sarà inizializzata col
-valore contenuto precedentemente in $V$
+\begin{align*}
+  \text{dove } a = \lambdaop i.
+  \begin{cases}
+    k, &\text{se $i = n$} \\
+    s(x)(i), &\text{se $i \neq n$}
+  \end{cases}
+\end{align*}
+se $x$ è uno scalare (assegnamento distruttivo):
 \[
   \prooftree
   \justifies
-  \config{V(n)}{s} \ssarrow \config{s(V)}{s'}
+    \config{x(n)\ \weq\ k}{s} \ssarrow \config{\kw{skip}}{s'}
   \thickness=0.08em
   \using
-  s(v) \in \Zset \land s' = \subst{s}{a}{V} \land a = \lambdaop i.\begin{cases}
-    s(V), &\text{se $i = n$} \\
-    0,    &\text{altrimenti}
-    \end{cases}
+    s(x) \in \Zset \land s' = \subst{s}{a}{x}
   \endprooftree
 \]
-
-Semantica di $V(E) \weq $ small step che permetta la conversione di uno
-scalare in un array (assegnamento distruttivo)[problema: viene
-lasciato troppo poco spazio]
-
-
+\begin{align*}
+  \text{dove } a = \lambdaop i.
+  \begin{cases}
+    k, &\text{se $i = n$} \\
+    0, &\text{se $i \neq n$}
+  \end{cases}
+\end{align*}
+oppure conserviamo il valore contenuto in $x$ e lo salviamo
+alla posizione~0 del nuovo array:
 \[
-\prooftree
-\justifies
-\config{V(h)\ \weq\ k}{s} \ssarrow \config{\kw{skip}}{s'}
-\thickness=0.08em
-\using
-  s' = \begin{cases}
-    \subst{s}{a}{V} \land \begin{cases}
-      k, &\text{se $i = h$} \\
-      0, &\text{se $i \neq h$}
-      \end{cases}
-    &\text{se $s(V) \in \Zset$} \\
-    \subst{s}{a}{V} \land \begin{cases}
-      k, &\text{se $i = h$} \\
-      a(i), &\text{se $i \neq h$}
-      \end{cases}
-    &\text{se $s(V) \in \Lambda$}
-    \end{cases}
-\endprooftree
+  \prooftree
+  \justifies
+    \config{x(n)\ \weq\ k}{s} \ssarrow \config{\kw{skip}}{s'}
+  \thickness=0.08em
+  \using
+    s(x) \in \Zset \land s' = \subst{s}{a}{x}
+  \endprooftree
 \]
-
-oppure
-\[
-\prooftree
-\justifies
-\config{V(h)\ \weq\ k}{s} \ssarrow \config{\kw{skip}}{s'}
-\thickness=0.08em
-\using
-  s' = \begin{cases}
-    \subst{s}{a}{V} \land \begin{cases}
-      s(V), &\text{se $i = 0 \land h \neq 0$} \\
-      k, &\text{se $i = h$} \\
-      0, &\text{se $i \neq h$}
-      \end{cases}
-    &\text{se $s(V) \in \Zset$} \\
-    \subst{s}{a}{V} \land \begin{cases}
-      k, &\text{se $i = h$} \\
-      a(i), &\text{se $i \neq h$}
-      \end{cases}
-    &\text{se $s(V) \in \Lambda$}
-    \end{cases}
-\endprooftree
-\]
+\begin{align*}
+  \text{dove } a = \lambdaop i.
+  \begin{cases}
+    k, &\text{se $i = n$} \\
+    0, &\text{se $i \neq n$} \\
+    s(x), &\text{se $i = 0 \land h \neq 0$}
+  \end{cases}
+\end{align*}
