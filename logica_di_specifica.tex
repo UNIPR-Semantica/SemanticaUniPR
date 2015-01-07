@@ -37,77 +37,12 @@ P \in \Pred &::= \true
 \end{align*}
 dove $x \in\Ghost$.
 
-Per definire la semantica di un tale linguaggio logico abbiamo bisogno
-di formalizzare l'operazione di sostituzione sintattica di termini
-al posto di variabili.
-
-\begin{definizione} \summary{(Sostituzione per LExp.)}
-Sia $x \in \Var \union \Ghost$ una variabile e siano $\LE_0, LE \in \LExp$
-due espressioni.
-L'espressione $\LE_0\substt{\LE}{x}$ è un elemento di $\LExp$ definito
-per induzione strutturale su $\LE_0$ come segue:
-\begin{align*}
-   x_0\substt{\LE}{x}
-    &=
-      \begin{cases}
-        \LE, &\text{se $x_0 = x$;} \\
-        x_0, &\text{se $x_0 \neq x$;}
-      \end{cases} \\
-   c\substt{\LE}{x}
-    &= c;\\
-  (\LE_1 + \LE_2)\substt{\LE}{x}
-     &= (\LE_1\substt{\LE}{x}) + (\LE_2\substt{\LE}{x});\\
-  \sqrt{\LE_1}\substt{\LE}{x}
-     &= \sqrt{{\LE_1}\substt{\LE}{x}};\\
-  \LE_1^{\LE_2}\substt{\LE}{x}
-     &= \LE_1\substt{\LE}{x}^{\LE_2\substt{\LE}{x}};\\
-  {\LE_1}!\substt{\LE}{x}
-     &= {{\LE_1}\substt{\LE}{x}}!;\\
-  \lfloor \LE_1 \rfloor\substt{\LE}{x}
-     &= \bigl\lfloor \LE_1\substt{\LE}{x} \bigr\rfloor.\\
-\end{align*}
-\end{definizione}
-La definizione si estende in modo ovvio ad ogni altro operatore presente
-nella sintassi delle espressioni.
-
-\begin{definizione} \summary{(Sostituzione per Pred.)}
-Sia $x \in \Var \union \Ghost$ una variabile, $\LE \in \LExp$ un'espressione
-e $P \in \Pred$ un predicato.
-L'espressione $P\substt{\LE}{x}$ è un elemento di $\Pred$ definito
-per induzione strutturale su $P$ come segue:
-\begin{align*}
-  \true\substt{\LE}{x}
-    &= \true;\\
-  \false\substt{\LE}{x}
-    &= \false;\\
-  (\LE_1 = \LE_2)\substt{\LE}{x}
-    &= \bigl(\LE_1\substt{\LE}{x}\bigr) = \bigl(\LE_2\substt{\LE}{x}\bigr); \\
-  (P_1 \land P_2)\substt{\LE}{x}
-    &= \bigl(\LE_1\substt{\LE}{x}\bigr) \land \bigl(\LE_2\substt{\LE}{x}\bigr);\\
-  (P_1 \lor P_2)\substt{\LE}{x}
-    &= (\LE_1\substt{\LE}{x}) \lor (\LE_2\substt{\LE}{x});\\
-  (\neg P)\substt{\LE}{x}
-    &= \neg(P\substt{\LE}{x});\\
-  (\forall y\itc P)\substt{\LE}{x}
-    &= \forall z\itc (P[^z/_y])\substt{\LE}{x} \text{ con: $z\notin\FV(\LE), z\notin\Var(P),z\neq x$};\\
-  (\exists  y\st P)\substt{\LE}{x}
-    &= \exists z\st (P[^z/_y])\substt{\LE}{x} \text{ con: $z\notin\FV(\LE),  z\notin\Var(P), z\neq x$};\\
-  (P_1 \Rightarrow P_2)\substt{\LE}{x}
-    &= (P_1\substt{\LE}{x}) \Rightarrow (P_2\substt{\LE}{x});\\
-  (P_1 \Leftrightarrow P_2)\substt{\LE}{x}
-    &= (P_1\substt{\LE}{x}) \Leftrightarrow (P_2\substt{\LE}{x}); \\
-  (P_1 \Leftarrow P_2)\substt{\LE}{x}
-    &= (P_1\substt{\LE}{x}) \Leftarrow (P_2\substt{\LE}{x}).
-\end{align*}
-\end{definizione}
-
 \subsection{Variabili libere}
 In logica matematica e in particolare in un linguaggio del primo ordine si dice che una variabile occorre libera in una formula ben formata se nella formula tale variabile appare al di fuori del dominio di un quantificatore sulla variabile stessa. Una variabile $\Ghost$ può essere libera per questo ce ne interessiamo.
-Definiamo due funzioni con lo stesso nome (quindi sovraccaricate) per calcolare le variabili libere in una formula :
-\[
-   \FV\itc\LExp \rightarrow \calP(\Ghost)
-\]
-Per induzione strutturale abbiamo :
+Definiamo due funzioni con lo stesso nome (sovraccaricate) per calcolare le variabili libere in una formula.
+Sia $\fund{\FV}{\LExp}{\wp(\Ghost)}$ una funzione per catturare le variabili libere in una espressione della logica.
+
+Definiamola per induzione strutturale :
 \begin{align*}
    \FV(x)
       &=
@@ -115,8 +50,8 @@ Per induzione strutturale abbiamo :
             \emptyset,&\text{se $x  \in \Var$};\\
             \{x\},    &\text{se $x  \in \Ghost$};
         \end{cases} \\
-   \FV( C)
-      &= \emptyset,\text{ poichè non ci sono variabili libere in una costante};\\
+   \FV(c)
+      &= \emptyset;\\
    \FV(\LE_1 + \LE_2)
       &= \FV(\LE_1) \union \FV(\LE_2);\\
    \FV(\sqrt{\LE})
@@ -128,11 +63,10 @@ Per induzione strutturale abbiamo :
    \FV(\lfloor \LE \rfloor)
       &= \FV(\LE).
 \end{align*}
-La seconda funzione sovraccaricata è:
-\[
-\FV\itc\Pred\rightarrow\calP(\Ghost)
-\]
-Per induzione strutturale abbiamo:
+
+Sia $\fund{\FV}{\Pred}{\wp(\Ghost)}$ una funzione per catturare le variabili libere in predicati della logica.
+
+Definiamola per induzione strutturale :
 \begin{align*}
    \FV(\true)
       &= \emptyset;\\
@@ -157,36 +91,103 @@ Per induzione strutturale abbiamo:
    \FV(P_1 \Leftarrow P_2)
       &= \FV(P_1) \union \FV(P_2).
 \end{align*}
+
+\subsection{Definizione semantica}
+Per definire la semantica di un tale linguaggio logico abbiamo bisogno
+di formalizzare l'operazione di sostituzione sintattica di termini
+al posto di variabili.
+
+\begin{definizione} \summary{(Sostituzione per LExp.)}
+Sia $x \in \Var \union \Ghost$ una variabile e siano $\LE_0, LE \in \LExp$
+due espressioni.
+L'espressione $\LE_0\substt{\LE}{x}$ è un elemento di $\LExp$ definito
+per induzione strutturale su $\LE_0$ come segue:
+\begin{align*}
+   x_0\substt{\LE}{x}
+    &=
+      \begin{cases}
+        \LE, &\text{se $x_0 = x$;} \\
+        x_0, &\text{se $x_0 \neq x$;}
+      \end{cases} \\
+   c\substt{\LE}{x}
+    &= c;\\
+  (\LE_1 + \LE_2)\substt{\LE}{x}
+     &= \bigl(\LE_1\substt{\LE}{x}\bigr) + \bigl(\LE_2\substt{\LE}{x}\bigr);\\
+  \sqrt{\LE_1}\substt{\LE}{x}
+     &= \sqrt{{\LE_1}\substt{\LE}{x}};\\
+  \LE_1^{\LE_2}\substt{\LE}{x}
+     &= \LE_1\substt{\LE}{x}^{\LE_2\substt{\LE}{x}};\\
+  {\LE_1}!\substt{\LE}{x}
+     &= {{\LE_1}\substt{\LE}{x}}!;\\
+  \lfloor \LE_1 \rfloor\substt{\LE}{x}
+     &= \bigl\lfloor \LE_1\substt{\LE}{x} \bigr\rfloor.\\
+\end{align*}
+La definizione si estende in modo ovvio ad ogni altro operatore presente
+nella sintassi delle espressioni.
+\end{definizione}
+
+\begin{definizione} \summary{(Sostituzione per Pred.)}
+Sia $x \in \Var \union \Ghost$ una variabile, $\LE \in \LExp$ un'espressione
+e $P \in \Pred$ un predicato.
+L'espressione $P\substt{\LE}{x}$ è un elemento di $\Pred$ definito
+per induzione strutturale su $P$ come segue:
+\begin{align*}
+  \true\substt{\LE}{x}
+    &= \true;\\
+  \false\substt{\LE}{x}
+    &= \false;\\
+  (\LE_1 = \LE_2)\substt{\LE}{x}
+    &= \bigl(\LE_1\substt{\LE}{x}\bigr) = \bigl(\LE_2\substt{\LE}{x}\bigr);\\
+  (P_1 \land P_2)\substt{\LE}{x}
+    &= \bigl(\LE_1\substt{\LE}{x}\bigr) \land \bigl(\LE_2\substt{\LE}{x}\bigr);\\
+  (P_1 \lor P_2)\substt{\LE}{x}
+    &= \bigl(\LE_1\substt{\LE}{x}\bigr) \lor \bigl(\LE_2\substt{\LE}{x}\bigr);\\
+  (\neg P)\substt{\LE}{x}
+    &= \neg \bigl(P \substt{\LE}{x}\bigr);\\
+  (\forall y\itc P)\substt{\LE}{x}
+    &= \forall z\itc \bigl(P \substt{z}{y}\bigr)\substt{\LE}{x} \text{ con: $z\notin\FV(\LE), z\notin\FV(P), z\neq x$};\\
+  (\exists  y\st P)\substt{\LE}{x}
+    &= \exists z\st \bigl(P \substt{z}{y}\bigr)\substt{\LE}{x} \text{ con: $z\notin\FV(\LE), z\notin\FV(P), z\neq x$};\\
+  (P_1 \Rightarrow P_2)\substt{\LE}{x}
+    &= \bigl(P_1\substt{\LE}{x}\bigr) \Rightarrow \bigl(P_2\substt{\LE}{x}\bigr);\\
+  (P_1 \Leftrightarrow P_2)\substt{\LE}{x}
+    &= \bigl(P_1\substt{\LE}{x}\bigr) \Leftrightarrow \bigl(P_2\substt{\LE}{x}\bigr);\\
+  (P_1 \Leftarrow P_2)\substt{\LE}{x}
+    &= \bigl(P_1\substt{\LE}{x}\bigr) \Leftarrow \bigl(P_2\substt{\LE}{x}\bigr).
+\end{align*}
+\end{definizione}
+
 \subsection{Valutazione semantica di LExp}
-$\Sigma$ rappresenta lo store utile in quanto nelle espressioni possono comparire variabili del programma, mentre $\Gamma$ e' l'ambiente delle variabili $\Ghost$ definita come $\Gamma\itc\Ghost\rightarrow\Zset$. Funzione di valutazione semantica delle espressioni:
+$\Sigma$ rappresenta lo store utile in quanto nelle espressioni possono comparire variabili del programma, mentre $\Gamma$ e' l'ambiente delle variabili $\Ghost$ definita come $\fund{\Gamma}{\Ghost}{\Zset}$. Funzione di valutazione semantica delle espressioni:
 \[
-\llbracket\cdot\rrbracket ^{\LExp}: \LExp \rightarrow ((\Sigma \times \Gamma) \rightarrow \Zset)
+   \fund{\llbracket \cdot \rrbracket ^\LExp}{\LExp}{((\Sigma \times \Gamma) \rightarrow \Zset)}
 \]
 Diamo una definizione per induzione strutturale su ogni espressione:
 \begin{align*}
    \llbracket x \rrbracket(s,t)
       &=
         \begin{cases}
-                 s(x), &\text{se $x \in\Var$};\\
-                 t(x), &\text{se $ x \in\Ghost$};
+                 s(x), &\text{se $x \in \Var$};\\
+                 t(x), &\text{se $x \in \Ghost$};
         \end{cases}\\
-   \llbracket  C\rrbracket(s,t)
-     &=  C;\\
-   \llbracket \LE_1+\LE_2 \rrbracket(s,t)
-     &= \llbracket \LE_1 \rrbracket(s,t) + \llbracket \LE_2\rrbracket( s, t);\\
+   \llbracket  c \rrbracket(s,t)
+     &=  c;\\
+   \llbracket \LE_1 + \LE_2 \rrbracket(s,t)
+     &= \llbracket \LE_1 \rrbracket(s,t) + \llbracket \LE_2 \rrbracket(s,t);\\
    \llbracket \sqrt{\LE} \rrbracket(s,t)
-     &= \sqrt{\llbracket\LE\rrbracket}(s,t);\\
-   \llbracket \LE^{\LE_2}\rrbracket(s,t)
-     &= \llbracket\LE\rrbracket^{\llbracket\LE_2\rrbracket}(s,t);\\
-   \llbracket \LE!\rrbracket(s,t)
-     &= \llbracket\LE\rrbracket!(s,t);\\
-   \llbracket \lfloor \LE \rfloor\rrbracket(s,t)
-     &= \lfloor\llbracket \LE \rrbracket\rfloor(s,t).
+     &= \sqrt{\llbracket \LE \rrbracket}(s,t);\\
+   \llbracket \LE^{\LE_2} \rrbracket(s,t)
+     &= \llbracket \LE \rrbracket^{\llbracket \LE_2 \rrbracket}(s,t);\\
+   \llbracket \LE! \rrbracket(s,t)
+     &= \llbracket \LE \rrbracket!(s,t);\\
+   \llbracket \lfloor \LE \rfloor \rrbracket(s,t)
+     &= \bigl \lfloor \llbracket \LE \rrbracket \bigr \rfloor(s,t).
 \end{align*}
+
 \subsection{Valutazione semantica di Pred}
 Funzione di valutazione semantica dei predicati:
 \[
-\llbracket \cdot \rrbracket ^{\Pred}: \Pred \rightarrow ((\Sigma \times \Gamma) \rightarrow \{\ttv,\ffv \})
+   \fund{\llbracket \cdot \rrbracket ^{\Pred}}{\Pred}{((\Sigma \times \Gamma) \rightarrow \{\ttv,\ffv\})}
 \]
 Usando ancora l'induzione strutturale su ogni predicato:
 \begin{align*}
@@ -209,7 +210,7 @@ Usando ancora l'induzione strutturale su ogni predicato:
     \llbracket P_1 \lor P_2\rrbracket(s,t)
       &=
         \begin{cases}
-                \ffv, &\text{se $\llbracket P_1\rrbracket(s,t) = \llbracket P_2\rrbracket(s,t) = \false$};   \\
+                \ffv, &\text{se $\llbracket P_1\rrbracket(s,t) = \llbracket P_2\rrbracket(s,t) = \false$};\\
                 \ttv, &\text{altrimenti};
         \end{cases} \\
     \llbracket \neg P\rrbracket(s,t)
@@ -224,19 +225,19 @@ Poniamo attenzione ai due casi particolari:
    \llbracket\forall x \itc P\rrbracket(s,t)
       &=
         \begin{cases}
-                \ttv, &\text{se $\forall k\in\Zset\itc(\llbracket P\rrbracket(s,t[^k/_x]) = \ttv$});\\
-                \ffv, &\text{se $\exists k\in\Zset\st(\llbracket P\rrbracket(s,t[^k/_x]) = \ffv$});
+                \ttv, &\text{se $\forall k\in\Zset\itc(\llbracket P\rrbracket(s,t\substt{k}{x}) = \ttv$});\\
+                \ffv, &\text{se $\exists k\in\Zset\st(\llbracket P\rrbracket(s,t\substt{k}{x}) = \ffv$});
         \end{cases}\\
    \llbracket \exists x \st P\rrbracket(s,t)
       &=
         \begin{cases}
-                \ttv,  &\text{se $\exists k\in \Zset\st(\llbracket P\rrbracket(s,t[^ k/_x]) = \ttv$});\\
-                \ffv,  &\text{se $\forall k\in \Zset\itc(\llbracket P\rrbracket(s,t[^k/_x]) = \ffv$});
+                \ttv,  &\text{se $\exists k\in \Zset\st(\llbracket P\rrbracket(s,t\substt{k}{x}) = \ttv$});\\
+                \ffv,  &\text{se $\forall k\in \Zset\itc(\llbracket P\rrbracket(s,t\substt{k}{x}) = \ffv$});
         \end{cases}
 \end{align*}
 Dove:
 \begin{align*}
-   \forall x,y\in\Ghost\itc\forall t \in\Gamma\itc\forall k\in\Zset \itc t[^k/_x]( y)
+   \forall x,y\in\Ghost\itc\forall t \in\Gamma\itc\forall k\in\Zset \itc t\substt{k}{x}(y)
       &=
         \begin{cases}
                  k,   &\text{se $x = y$};\\
@@ -244,7 +245,7 @@ Dove:
         \end{cases}
 \end{align*}
 \begin{align*}
-    \llbracket P_1 \Rightarrow P_2\rrbracket(s,t)
+    \llbracket P_1 \Rightarrow P_2 \rrbracket(s,t)
        &=
         \begin{cases}
             \ffv, &\text{se $\llbracket P_1\rrbracket(s,t) = \true \land \llbracket P_2\rrbracket(s,t) = \false$};\\
@@ -254,9 +255,9 @@ Dove:
        &=
         \begin{cases}
             \ttv,&\text{se $\llbracket P_1\rrbracket(s,t) = \llbracket P_2\rrbracket(s,t) = \true$}\\
-                 &\text{$\lor\llbracket P_1\rrbracket(s,t) = \llbracket P_2 \rrbracket(s,t) = \false$};  \\
-           \ffv, &\text{altrimenti};
-        \end{cases} \\
+                 &\text{$\lor\llbracket P_1\rrbracket(s,t) = \llbracket P_2 \rrbracket(s,t) = \false$};\\
+            \ffv, &\text{altrimenti};
+        \end{cases}\\
    \llbracket P_1 \Leftarrow P_2\rrbracket(s,t)
       &=
         \begin{cases}
@@ -267,41 +268,40 @@ Dove:
 \subsection{Verità di una tripla di Floyd-Hoare}
 Ora abbiamo tutti gli elementi per definire quando una tripla di Hoare è vera.
 \[
-\llbracket \{P\}C\{Q\} \rrbracket = \ttv;
+   \llbracket \{P\}C\{Q\} \rrbracket = \ttv;
 \]
 \textbf{Caso semplice: }Supponiamo di non avere variabili $\Ghost$:
 \[
-\FV(P) \union \FV(Q)= \emptyset;
+   \FV(P) \union \FV(Q)= \emptyset;
 \]
 Quindi :
 \begin{align*}
-   \llbracket \{P\} C\{Q\} \rrbracket = \ttv \Leftrightarrow (\forall s,s'\in \Sigma \itc(
+   \llbracket \{P\} C\{Q\} \rrbracket 
+      = \ttv \Leftrightarrow (\forall s,s'\in \Sigma \itc(
       &\llbracket P \rrbracket( s,\emptyset) = \ttv\land <C,s>\rightarrow ^*<\mathrm{skip},s'>)\\
       \Rightarrow&\llbracket Q \rrbracket(s',\emptyset)=\ttv);
 \end{align*}
-\textbf{Caso Completo: }Caso in cui sono effettivamente presenti variabili Ghost, ma prima riflettiamo. In una tripla di Hoare del tipo:
+\textbf{Caso Completo: }Caso in cui sono effettivamente presenti variabili $\Ghost$, ma prima riflettiamo.
+Nelle triple di Hoare se ci sono variabili non quantificate, esse vengono universalmente quantificate (con un $\forall$) in maniera implicita.
 \[
-\{x=n\}x:=x+1\{x=n+1\};
-\]
-Nelle triple di Hoare se ci sono variabili non quantificate, esse vengono universalmente quantificate (con un $\forall$) in maniera implicita. Caso in cui sono possibili variabili $\Ghost$:
-\[
-\FV(P) \union \FV(Q) \neq \emptyset;
+   \FV(P) \union \FV(Q) \neq \emptyset;
 \]
 Quindi :
 \begin{align*}
-    \llbracket \{P\} C\{Q\} \rrbracket = \ttv \Leftrightarrow \forall t \in \Gamma_{\FV(P)\union \FV(Q)}\itc
+    \llbracket \{P\} C\{Q\} \rrbracket 
+       = \ttv \Leftrightarrow \forall t \in \Gamma_{\FV(P)\union \FV(Q)}\itc
        &(\forall  s,s'\in \Sigma\itc(\llbracket P \rrbracket(s,t) = \ttv\\
        &\land <C,s>\rightarrow ^*<\mathrm{skip},s'>)\\
        &\Rightarrow\llbracket Q \rrbracket(s',t)=\ttv);
 \end{align*}
 Dove:
 \[
-\forall v \subset\Ghost,\Gamma_{v} =\{t \in \Gamma \text{ t.c; $\dom(t) =v$\}}.
+   \forall v \subset \Ghost,\Gamma_{v} =\{t \in \Gamma \text{ t.c; $\dom(t) = v$\}}.
 \]
 \subsection{Correttezza della logica di Floyd-Hoare}
 Se la tripla di Hoare ha dimostrazione, allora essa è vera.
 \[
-\forall P,Q \in \Pred \itc \forall C \in \Com : \vdash\{P\}C\{Q\} \Rightarrow \llbracket \{P\}C\{Q\}\rrbracket;
+   \forall P,Q \in \Pred \itc \forall C \in \Com : \vdash\{P\}C\{Q\} \Rightarrow \llbracket \{P\}C\{Q\}\rrbracket;
 \]
 Si dimostra per induzione strutturale sull'albero che dimostra \{P\}C\{Q\}:
 \textbf{Skip}
@@ -312,18 +312,17 @@ Si dimostra per induzione strutturale sull'albero che dimostra \{P\}C\{Q\}:
  \thickness=0.08em
  \shiftright 2em
  \using
- 	SK
  \endprooftree
 \]
 \begin{align*}
    \llbracket \{P\}\mathrm{skip}\{P\} \rrbracket \Leftrightarrow \forall t \in \Gamma_{\FV(P)}\itc
-      &\forall s,s'\in \Sigma \itc(\llbracket P \rrbracket(s,t) = \ttv \\
+      &\forall s,s'\in \Sigma \itc(\llbracket P \rrbracket(s,t) = \ttv\\
       &\land <\mathrm{skip},s>\rightarrow ^*<\mathrm{skip},s'>)\\
       &\Rightarrow\llbracket P \rrbracket(s',t)=\ttv);
 \end{align*}
 Dato che la premessa è vera abbiamo che $s=s'$, dunque:
 \[
-\llbracket P \rrbracket(s,t)=\ttv =\llbracket P \rrbracket(s',t).
+   \llbracket P \rrbracket(s,t)=\ttv =\llbracket P \rrbracket(s',t).
 \]
 \textbf{Assegnamento}
 \[
@@ -333,7 +332,6 @@ Dato che la premessa è vera abbiamo che $s=s'$, dunque:
  \thickness=0.08em
  \shiftright 2em
  \using
-	AS
  \endprooftree
 \]
 \begin{align*}
@@ -349,7 +347,6 @@ Questo grazie al \textbf{Lemma}:
       &(<x:=\LE,s> \rightarrow ^k<\mathrm{skip},s'>\\
       &\Rightarrow \exists n \in \Zset\st <\LE,s>\rightarrow ^{k-1}<n,s>\land s'=s[^n/_x]);
 \end{align*}
-\textbf{Dimostrazione} per induzione\\
 \textit{Caso base}\\
 \text{Con: $k = 0$ è banalmente vera poiché l'antecedente è falso.}\\
 \text{Con: $k = 1$ abbiamo:}
