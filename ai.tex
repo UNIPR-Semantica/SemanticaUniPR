@@ -393,12 +393,33 @@ Nella seguente tabella, gli indici delle colonne indicano l'elemento a sinistra 
 
 Diamo una semantica astratta per $\Exp$, $\Bool$ e $\Com$.
 
-\subsection{Store astratto}
-
-Definiamo lo store astratto $\Sigma^\#:$
+Innanzitutto definiamo lo store astratto $\Sigma^\#:$
 
 \begin{center}
 	$ \Sigma^\# : \Var \rightarrow A $
+\end{center}
+
+La semantica astratta non può essere definita come quella concreta:
+\begin{center}
+	$ \llbracket P \rrbracket (s) = s' $, se $ \langle P,\ s \rangle \rightarrow^* \langle skip,\ s \rangle $
+\end{center}
+
+Ora abbiamo non determinismo:
+\begin{center}
+	$ \llbracket \cdot \rrbracket^\# : \Com^\# \mapsto (\Sigma^\# \rightarrowtail \Sigma^\#) $
+\end{center}
+
+\begin{center}
+	$ \llbracket P \rrbracket^\# (s) =  \sqcup _{\Sigma^\#} \{ s^\#_1 \in \Sigma^\# \mid \langle \alpha(P),\ s^\# \rangle \rightarrow \langle skip,\ s^\#_1 \rangle \} $
+\end{center}
+
+Ora manca da definire l'ordinamento su $ \Sigma^\# $:
+\begin{center}
+	$ \sqsubseteq\ \subseteq \Sigma^\# \stimes \Sigma^\# $
+\end{center}
+
+\begin{center}
+	$ \forall s_1^\#,\ s_2^\# \in \Sigma^\# : s_1^\# \sqsubseteq_{\Sigma^\#} s_2^\# \iff ( dom(s_1^\#) = dom(s_2^\#) \wedge \forall x \in dom(s_1^\#) : s_1^\#(x) \sqsubseteq_A s_2^\#(x) ) $
 \end{center}
 
 \subsection{Semantica di $\Exp$}
@@ -427,5 +448,95 @@ Definiamo lo store astratto $\Sigma^\#:$
 		\justifies
 		\langle (a_1 + a_2),\ s \rangle \rightarrow \langle a_3,\ s \rangle 
 		\using a_3 = a_1 \absadd a_2
+	\endprooftree
+\end{center}
+
+\subsection{Semantica di $\Bool$}
+
+\begin{center}
+	(AND-SHORT.LEFT)
+	\prooftree
+		\langle B_1,\ s \rangle \rightarrow \langle B_1',\ s' \rangle
+		\justifies
+		\langle (B_1 \wedge B_2),\ s \rangle \rightarrow \langle (B_1' \wedge B_2),\ s' \rangle
+	\endprooftree
+\end{center}
+
+\begin{center}
+	(AND-SHORT.TOP)
+	\prooftree
+		\langle B_2,\ s \rangle \rightarrow \langle B_2',\ s' \rangle
+		\justifies
+		\langle (\top \wedge B_2),\ s \rangle \rightarrow \langle (\top \wedge B_2'),\ s' \rangle
+	\endprooftree
+\end{center}
+
+\begin{center}
+	(AND-SHORT.TRUE)
+	\prooftree
+		\justifies
+		\langle (1 \wedge B_2),\ s \rangle \rightarrow \langle B_2,\ s \rangle
+	\endprooftree
+\end{center}
+
+\begin{center}
+	(AND-SHORT.FALSE)
+	\prooftree
+		\justifies
+		\langle (0 \wedge B_2),\ s \rangle \rightarrow \langle 0,\ s \rangle
+	\endprooftree
+\end{center}
+
+\begin{center}
+	(ABS-AND-SHORT.TOP)
+	\prooftree
+		\justifies
+		\langle (\top \wedge b_2),\ s \rangle \rightarrow \langle (\top \absand b_2),\ s \rangle
+	\endprooftree
+\end{center}
+
+\subsection{Semantica di $\Com$}
+
+\begin{center}
+	(ASSIGN)
+	\prooftree
+		\langle E,\ s \rangle \rightarrow \langle E',\ s' \rangle
+		\justifies
+		\langle x \weq E,\ s \rangle \rightarrow \langle x \weq E',\ s' \rangle
+	\endprooftree
+\end{center}
+
+\begin{center}
+	(ASSIGN-SKIP)
+	\prooftree
+		\justifies
+		\langle x \weq a,\ s \rangle \rightarrow \langle skip,\ s[x \mapsto a] \rangle
+	\endprooftree
+\end{center}
+
+\begin{center}
+	(IF-BOOL)
+	\prooftree
+		\langle B,\ s \rangle \rightarrow \langle B',\ s' \rangle
+		\justifies
+		\langle if\ B\ then\ C_1\ else\ C_2,\ s \rangle \rightarrow \langle if\ B'\ then\ C_1\ else\ C_2,\ s' \rangle
+	\endprooftree
+\end{center}
+
+\begin{center}
+	(IF-TRUE)
+	\prooftree
+		\justifies
+		\langle if\ b\ then\ C_1\ else\ C_2,\ s \rangle \rightarrow \langle C_1,\ s \rangle
+		\using b \sqsubseteq_B 1
+	\endprooftree
+\end{center}
+
+\begin{center}
+	(IF-FALSE)
+	\prooftree
+		\justifies
+		\langle if\ b\ then\ C_1\ else\ C_2,\ s \rangle \rightarrow \langle C_2,\ s \rangle
+		\using b \sqsubseteq_B 0
 	\endprooftree
 \end{center}
