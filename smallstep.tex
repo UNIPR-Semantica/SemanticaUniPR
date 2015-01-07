@@ -109,7 +109,7 @@ $\forall E_1, E_2, E \in Exp . E \rightarrow _1 E_1 \land E \rightarrow _1 E_2 \
 \begin{proof}
   Dimostriamo per induzione strutturale
   \begin{itemize}
-  \item Caso Base ($E \in Num$) - $E = n \Rightarrow E \nrightarrow$, ovvero E non transita.
+  \item Caso Base ($E \in Num$) - $E = n \Rightarrow E \nrightarrow$, ovvero E non transisce.
   \item Passo induttivo ($E \in Exp$) - $E = E_1 + E_2$ \\
     perciò $E_1 + E_2 \rightarrow \begin{cases} E_1 \oplus E_2, & \mbox{se }E_1, E_2 \in \mbox{ Num} \\
     E_1 + E_2', & \mbox{se }E_1 \in \mbox{ Num} \land E_2 \rightarrow E_2' \\
@@ -140,13 +140,13 @@ Dimostriamo prima però il seguente
 
 \begin{teorema}
   $\forall E \in Exp : E \in Num \land \exists E' \in Num \Rightarrow E \rightarrow E'$
-  Questa proprietà ci aiuterà nella dimostrazione del successivo teorema ma dobbiamo anche dimostrare che le espressioni non possono transitare per sempre,
+  Questa proprietà ci aiuterà nella dimostrazione del successivo teorema ma dobbiamo anche dimostrare che le espressioni non possono transire per sempre,
   ovvero che $\forall E \in Exp : \exists k \in \mathbb{N} . E \rightarrow ^k F \land F \nrightarrow$
 \end{teorema}
 
 \begin{proof}
   Definiamo perciò una funzione $f : Exp \rightarrow \mathbb{N}$ che calcola il numero di "+", ovvero il numero di passi da fare per arrivare fino a una
-  espressione che non possa più transitare, f restituisce ovvero il \emph{k} definito nella tesi del teorema. Definiamo per induzione strutturale:
+  espressione che non possa più transire, f restituisce ovvero il \emph{k} definito nella tesi del teorema. Definiamo per induzione strutturale:
   \begin{itemize}
     \item Caso Base ($E \in Num$) - $E = n \in Num \Rightarrow f(n) = 0$
     \item Passo Induttivo ($E = \not \in Num$) - $\exists E_1, E_2 \in Exp\ .\ E = E_1 + E_2 \Rightarrow f(E) = f(E_1 + E_2) = f(E_1) + f(E_2) + 1$
