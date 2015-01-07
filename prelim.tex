@@ -24,7 +24,7 @@ Inoltre:
 \item[$\wp(S)$] denota l'insieme di tutti i sottoinsiemi di $S$, anche detto
                 insieme delle parti di $S$ o
                 insieme potenza di $S$;
-\item[$\wp_f(S)$] denota l'insieme di tutti i sottoinsiemi \emph{finiti} di
+\item[$\wpf(S)$] denota l'insieme di tutti i sottoinsiemi \emph{finiti} di
                   $S$;
 
 \item[$S^{\ast}$] denota l'insieme delle sequenze finite, possibilmente vuote,
@@ -103,8 +103,8 @@ le seguenti identit\`a:
 \begin{definizione}  \summary{(Ordinamento parziale e totale.)}
 Una relazione binaria $\preceq$ definita su un insieme
 $S$ \`e una \emph{relazione di ordinamento parziale} su $S$
-se le seguenti condizioni valgono identicamente in $S$,
-per ogni $a, b, c \in S$,
+se le seguenti condizioni valgono in $S$,
+per ogni $a, b, c \in S$:
 \begin{itemize}
 \item[$O_1:$] $a \preceq a$,
     \law{riflessivit\`a}
@@ -113,7 +113,7 @@ per ogni $a, b, c \in S$,
 \item[$O_3:$] $(a \preceq b) \land (b \preceq c) \implies a \preceq c$.
     \law{transitivit\`a}
 \end{itemize}
-Se inoltre, $\forall a, b \in S$, vale
+Se inoltre, per ogni $a, b \in S$, vale
 \begin{itemize}
 \item[$O_4:$] $(a \preceq b) \lor (b \preceq a)$,
 \end{itemize}
@@ -128,7 +128,7 @@ Se $\preceq$ \`e una relazione di
 ordinamento totale su $P$, allora $P$ viene detto
 \emph{insieme totalmente ordinato} o \emph{catena}.
 In un insieme parzialmente
-ordinato si usa l'espressione $a<b$ con il significato $a\preceq b$ ma
+ordinato si usa l'espressione $a \prec b$ con il significato $a\preceq b$ ma
 $a \neq b$.
 \end{definizione}
 
@@ -153,13 +153,13 @@ per ogni altro limite inferiore $p'$ per $A$, risulta $p' \preceq p$.
 
 \begin{definizione} \summary{(CPO.)}
 \label{def:cpo}
-Un poset $(D, \preceq)$ \`e un \emph{CPO}, o \emph{dominio}, se e solo se
+Un poset $(D, \preceq)$ \`e un \emph{CPO} se e solo se
 ha un elemento minimo e, per ogni catena $K \sseq D$, esiste $\sup(K) \in D$.
 \end{definizione}
 
 \begin{definizione}  \summary{(Reticolo.)}
 \label{def:reticolo2}
-Un insieme parzialmente ordinato $L$ \`e un ``reticolo'' se e solo se,
+Un insieme parzialmente ordinato $L$ \`e un \emph{reticolo} se e solo se,
 per ogni $a, b \in L$, esistono in $L$ sia $\sup\{a,b\}$ che $\inf\{a,b\}$.
 \end{definizione}
 
@@ -182,8 +182,8 @@ Le due trasformazioni sono inverse l'una dell'altra.
 \end{proposizione}
 
 \begin{definizione}
-Un reticolo $L$ \`e un ``reticolo distributivo'' se e solo se soddisfa,
-$\forall x, y \in L$ le seguenti identit\`a:
+Un reticolo $L$ \`e un \emph{reticolo distributivo} se e solo se soddisfa,
+per ogni $x, y \in L$, le seguenti identit\`a:
 \begin{itemize}
 \item[$D_1:$] $x \otimes (y \oplus   z) = (x \otimes y) \oplus  (x \otimes z)$,
 \item[$D_2:$] $x \oplus  (y \otimes  z) = (x \oplus  y) \otimes (x \oplus  z)$.
@@ -196,9 +196,9 @@ $\forall x, y \in L$ le seguenti identit\`a:
 \end{proposizione}
 
 \begin{definizione}
-Un poset $P$ \`e ``completo'' se, per ogni $A \sseq P$ esistono in $P$ sia
+Un poset $P$ \`e \emph{completo} se, per ogni $A \sseq P$ esistono in $P$ sia
 $\sup(A)$ che $\inf(A)$. Tutti i poset completi sono reticoli e un reticolo
-$L$ che \`e completo come poset \`e detto ``reticolo completo''.
+$L$ che \`e completo come poset \`e detto \emph{reticolo completo}.
 \end{definizione}
 
 \begin{proposizione}
@@ -212,15 +212,15 @@ Allora $P$ \`e un reticolo completo.
 Nella precedente proposizione l'esistenza di $\sup(\emptyset)$ garantisce
 l'esistenza di un elemento minimo in $P$ e, similmente, l'esistenza di
 $\inf(\emptyset)$ garantisce l'esistenza di un elemento massimo in $P$.
-Si pu\`o perci\`o riformulare la proposizione \ref{prop:complete-lattice} in un
-modo equivalente.
+Si pu\`o perci\`o riformulare la proposizione \ref{prop:complete-lattice0}
+in un modo equivalente.
 
 \begin{proposizione}
 \label{prop:complete-lattice}
-{\rm \cite{BurrisS81}} Un poset $P$ \`e completo se possiede un elemento minimo
+\textup{\cite{BurrisS81}} Un poset $P$ \`e completo se possiede un elemento minimo
 ed esiste $\sup(A)$ per ogni $A$ sottoinsieme non vuoto di $P$, oppure se
 possiede un elemento massimo ed esiste $\inf(A)$ per ogni $A$ sottoinsieme non
-vuoto di $P$.
+vuoto di~$P$.
 \end{proposizione}
 
 \begin{definizione}  \summary{(Reticolo limitato.)}
@@ -272,17 +272,24 @@ Un \emph{monoide idempotente} \`e un monoide che soddisfa, per ogni $x \in M$,
 \section{Funzioni su poset}\marginpar{Mancino}
 
 \begin{definizione} \summary{(Funzione monotona/continua/additiva.)}
-Siano $(S, \preceq)$ e $(T, \sqsubseteq)$ due poset
-e sia $\fund{f}{S}{T}$ una funzione.
+Consideriamo due poset $(S, \preceq)$ e $(T, \sqsubseteq)$,
+e una funzione $\fund{f}{S}{T}$.
 Allora
 $f$ è \emph{monotona} se, per ogni $x, y \in S$,
-$x \preceq y \implies f(x) \sqsubseteq f(y)$.
+\[
+  x \preceq y \implies f(x) \sqsubseteq f(y).
+\]
 Se $(S, \preceq)$ \`e un CPO,
-$f$ si dice \emph{continua} se, per ogni $X \subseteq S$,
-$\chain(X) \implies \bigl(\exists \lub f(X) \land f(\lub X) = \lub f(X)\bigr)$.
+$f$ si dice \emph{continua} se, per ogni $X \subseteq S$ tale che $\chain(X)$,
+abbiamo
+\[
+  \exists \lub f(X) \land f(\lub X) = \lub f(X).
+\]
 Se $(S, \preceq)$ \`e un reticolo completo,
-$f$ è \emph{additiva} se, per ogni $X \subseteq S$,
-$\exists \lub f(X) \land f(\lub X) = \lub f(X)$
+$f$ è \emph{additiva} se, per $X \subseteq S$ qualsiasi,
+\[
+  \exists \lub f(X) \land f(\lub X) = \lub f(X).
+\]
 \end{definizione}
 
 
@@ -294,16 +301,18 @@ Allora un \emph{punto fisso} di $f$ è un qualunque $x \in S$ tale
 che $f(x) = x$.
 \end{definizione}
 
-Una funzione può avere zero punti fissi (esempio: ...), un solo punto fisso
-(esempio: ...), o addirittura infiniti punti fissi (esempio: ...).
+Una funzione può avere zero punti fissi (esempio: MANCINO!!!),
+un solo punto fisso
+(esempio: MANCINO!!!), o addirittura infiniti punti fissi (esempio: MANCINO!!!).
 Quando un punto fisso di $f$ gode di una certa proprietà rispetto
 all'insieme di tutti i punti fissi di $f$, ad esempio è il minimo
 oppure il massimo di questi, diremo che è il
 \emph{minimo punto fisso di $f$}, denotato con $\lfp f$,
-o il \emph{massimo punto fisso di $f$}, denotato con $\gfp f$,
+o il \emph{massimo punto fisso di $f$}, denotato con $\gfp f$.
 
 \subsection{Teorema di Tarski}\marginpar{Marano}
-\begin{teorema}[Teorema di Tarski]
+
+\begin{teorema} \summary{(Teorema di Tarski.)}
 Sia $(S, \preceq)$ un CPO, sia $\bot = \min S$ e sia
 $\fund{f}{S}{S}$ continua.
 Allora $f$ ha un minimo punto fisso e questo coincide con il limite
@@ -314,7 +323,7 @@ Formalmente:
     \land
       \lfp f = \lub \bigl\{\, f^n(\bot) \bigm| n \in \Nset \,\bigr\}.
 \]
-  \begin{proof}
+\begin{proof}
 Come prima cosa dimostriamo per induzione su $n \in \Nset$
 che l'insieme
 \[
@@ -333,10 +342,25 @@ Per $i > 0$, dalla monotonia di $f$ e dall'ipotesi induttiva discende che
             = f^{i+1}(\bot).
 \]
 
-$Chain(C) \land (S, \preceq)\ \emph{CPO} \Rightarrow \exists lub\ C$. $f$ è continua $\Rightarrow f(lub\ C) = lub\ f(C)$ ma per definizione di C sappiamo
-    che $lub\ f(C) = lub\ C \Rightarrow lub\ C$ è un \emph{FP} di $f$. Dimostriamo per assurdo che è proprio il \emph{LFP}:
-    Sia $m$ un \emph{FP} di f con $m \prec lub\ C \Rightarrow \exists i \in \mathbb{N} : m = f^j(\bot) \forall j \leq i$ ma così il $lub\ C$ non sarebbe più
-    un \emph{LUB} che è assurdo.
+Da $\chain(C)$ e dal fatto che $(S, \preceq)$ è un CPO deriva l'esistenza
+di $\lub C$.
+Dalla continuità di $f$ discende $f(\lub C) = \lub f(C)$ ma,
+dalla definizione di $C$ sappiamo che
+\begin{align*}
+  \lub f(C)
+    &= \lub f\Bigl(\bigl\{\, f^n(\bot) \bigm| n \in \Nset \,\bigr\}\Bigr) \\
+    &= \lub \Bigl(\bigl\{\, f(f^n(\bot)) \bigm| n \in \Nset \,\bigr\}\Bigr) \\
+    &= \lub \Bigl(\bigl\{\, f^{n+1}(\bot) \bigm| n \in \Nset \,\bigr\}\Bigr) \\
+    &= \lub \Bigl(\bigl\{\, f^n(\bot) \bigm| n \in \Nset \,\bigr\}\Bigr) \\
+    &= \lub C.
+\end{align*}
+Mettendo insieme questi due fatti abbiamo che $f(\lub C) = \lub C$,
+ovvero che $\lub C$ è un punto fisso di $f$.
+Dimostriamo per assurdo che $\lub C$ è il minimo dei punti fissi di $f$:
+sia $m$ un punto fisso di $f$ con $m \prec \lub C$;
+dunque esisterebbe $i \in \Nset$ tale che $m = f^j(\bot)$ per ogni $j \geq i$,
+ma questo implicherebbe che $\lub C$ non sia il least upper bound di C,
+il che è assurdo.
   \end{proof}
 \end{teorema}
 
@@ -392,7 +416,7 @@ $Chain(C) \land (S, \preceq)\ \emph{CPO} \Rightarrow \exists lub\ C$. $f$ è con
 \begin{esercizio}
   Sia $(C, \preceq)$ un \emph{PO} $: Chain(C) \land |C| < \aleph_0 \Rightarrow \exists max\ C$
   \begin{proof}
-    Sia I $\subseteq \mathbb{N} : C = \left\{a_i\right\}_{i \in I} \Rightarrow \exists i \in I : \forall j \in I : a_j \preceq a_i \Rightarrow a_i = max\ C$
+    Sia I $\subseteq \Nset : C = \left\{a_i\right\}_{i \in I} \Rightarrow \exists i \in I : \forall j \in I : a_j \preceq a_i \Rightarrow a_i = max\ C$
     \end{proof}
 \end{esercizio}
 
@@ -417,7 +441,7 @@ $Chain(C) \land (S, \preceq)\ \emph{CPO} \Rightarrow \exists lub\ C$. $f$ è con
   \end{center}
   \begin{proof}
     Sia $\bot \in ST : \forall s \in \sum : \bot(s)\uparrow \Rightarrow \forall f \in ST : \bot \sqsubseteq f \Rightarrow \bot = min\ ST $\\
-    Sia I $\subseteq \mathbb{N} : C = \left\{a_i\right\}_{i \in I} \Rightarrow$ se $|I| < \aleph_0 \Rightarrow$ il lub è l'elemento massimo nella catena.\\
+    Sia I $\subseteq \Nset : C = \left\{a_i\right\}_{i \in I} \Rightarrow$ se $|I| < \aleph_0 \Rightarrow$ il lub è l'elemento massimo nella catena.\\
     Se |I| = $\aleph_0$ definisco $\forall x \in \sum : f_l(x) =
     \begin{cases}
       f_h(x) & \text{se } \exists h \in I : f_h(x)\downarrow
@@ -457,17 +481,17 @@ $Chain(C) \land (S, \preceq)\ \emph{CPO} \Rightarrow \exists lub\ C$. $f$ è con
     $(f\ monotona \Arrownot \Rightarrow f\ continua)$
   \end{center}
   \begin{proof}
-    Scegliamo un controesempio con $(\mathbb{N} \cup \infty, \leq)$ e $(\left\{0,1\right\},\leq)$ e
+    Scegliamo un controesempio con $(\Nset \cup \infty, \leq)$ e $(\left\{0,1\right\},\leq)$ e
     \begin{center}
-      $f: \mathbb{N} \cup \infty \rightarrow \left\{0,1\right\} \lambda x.$
+      $f: \Nset \cup \infty \rightarrow \left\{0,1\right\} \lambda x.$
       $\begin{cases}
-        0 & \text{ se } x \in \mathbb{N}
+        0 & \text{ se } x \in \Nset
         \\
         1 & \text{ se } x = \infty
       \end{cases}
       $
     \end{center}
-    $\mathbb{N} \subseteq \mathbb{N} \cup \left\{\infty\right\} \land Chain(\mathbb{N}) \Rightarrow lub\ f(\mathbb{N}) = lub\ \left\{0\right\}$ ma $f(lub\ \mathbb{N}) = f(\infty) = 1$
+    $\Nset \subseteq \Nset \cup \left\{\infty\right\} \land Chain(\Nset) \Rightarrow lub\ f(\Nset) = lub\ \left\{0\right\}$ ma $f(lub\ \Nset) = f(\infty) = 1$
   \end{proof}
 \end{esercizio}
 
@@ -480,7 +504,7 @@ $Chain(C) \land (S, \preceq)\ \emph{CPO} \Rightarrow \exists lub\ C$. $f$ è con
     $(\forall C \subseteq X : Chain(C) \Rightarrow Chain(f(C))$
   \end{center}
   \begin{proof}
-    Sia $I \subseteq \mathbb{N} : C = \left\{a_i\right\}_{i \in I} \subseteq X \Rightarrow f(C) = \left\{f(a_i) | i \in I\right\} \Rightarrow |f(C)| \leq |I| \leq |\mathbb{N}| \Rightarrow f(C)$ è numerabile.\\
+    Sia $I \subseteq \Nset : C = \left\{a_i\right\}_{i \in I} \subseteq X \Rightarrow f(C) = \left\{f(a_i) | i \in I\right\} \Rightarrow |f(C)| \leq |I| \leq |\Nset| \Rightarrow f(C)$ è numerabile.\\
     Siano $i,j \in I \Rightarrow $
     \begin{itemize}
       \setlength{\itemindent}{20mm}

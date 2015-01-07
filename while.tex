@@ -25,8 +25,8 @@ $t \in \Bool \defeq \{ \ttv, \ffv \}$;
 \item[Espressioni booleane]%
 \begin{align*}
   \BExp \ni
-  B &::= \ttv \vbar \ffv \vbar B_0 \kw{and} B_1 \vbar E_0 \kw{and} E_1
-              \vbar \kw{not} E \vbar \ldots
+  B &::= \ttv \vbar \ffv \vbar B_0 \kw{and} B_1 \vbar B_0 \kw{or} B_1
+              \vbar \kw{not} B \vbar \ldots
 \end{align*}
 \item[Comandi]%
 \begin{align*}
@@ -38,11 +38,15 @@ $t \in \Bool \defeq \{ \ttv, \ffv \}$;
 \end{description}
 
 \section{Semantica informale} \marginpar{Mancino}
-La semantica di questo linguaggio, ora definito solo sintatticamente, verrà espressa in
-maniera operazionale, denotazionale e assiomatica nei prossimi capitoli. Di seguito ne
-diamo solo una sua semantica intuitiva.
 
-La variabili sono celle di memoria che possono contenere interi o booleani. Ad ogni istante
+La semantica di questo linguaggio, ora definito solo sintatticamente,
+verrà espressa in maniera operazionale, denotazionale e assiomatica
+nei prossimi capitoli. Di seguito ne diamo una semantica
+intuitiva.
+
+La variabili sono celle di memoria che possono contenere solo interi
+(i booleani non sono memorizzabili in WHILE).
+Ad ogni istante
 viene tenuta traccia dello stato (o store) delle variabili per mezzo di una
 funzione così definita
 $ \forall x, \forall y, \forall n$:

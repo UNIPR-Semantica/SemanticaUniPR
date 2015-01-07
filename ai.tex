@@ -6,15 +6,20 @@
 \section{Analisi dei segni per WHILE}
 
 \subsection{Dominio concreto}
-Prima di definire un dominio astratto per il linguaggio {\tt while}, si ricorda qual è il dominio concreto:
-\begin{center}
-	$ (\calP{(\Zset), \subseteq)} $
-\end{center}
-Questo dominio concreto è giustificato dal fatto che le variabili del linguaggio possono contenere solamente numeri interi.
 
-\subsection{Dominio astratto degli interi}
-[Inserire figura]\\
-I simboli del dominio astratto sono tutti rispetto al numero $0$.
+Le variabili del linguaggio WHILE possono contenere solamente numeri interi,
+il che giustifica il fatto che il dominio concreto dell'interpretazione
+astratta che andiamo a definire è
+\[
+  \bigl(\wp(\Zset), \subseteq\bigr).
+\]
+
+\subsection{Dominio astratto}
+
+Il dominio astratto $\Sign$ cattura semplici relazion rispetto al
+numero $0$, ad esempio $\cdot < 0$, $\cdot = 0$, \dots
+L'ordinamento del dominio è indicato nel diagramma di Hasse di
+figura~\ref{fig:ordering-rels-lattice}.
 
 \begin{figure}
 \begin{center}
@@ -63,30 +68,30 @@ I simboli del dominio astratto sono tutti rispetto al numero $0$.
 \label{fig:ordering-rels-lattice}
 \end{figure}
 
-\newpage
 
-\section{Funzione di concretizzazione $\gamma$}
+\subsection{Funzione di concretizzazione}
 
-\subsection{Definizione di $\gamma$}
-\begin{center}
-	$ \gamma : \Sign \rightarrow \calP({(\Zset), \subseteq)} $
-\end{center}
+La funzione di concretizzazione definisce la semantica di ogni
+elemento di $\Sign$.
+\begin{definizione} \summary{($\fund{\gamma}{\Sign}{\wp(\Zset)}$.)}
+La funzione $\fund{\gamma}{\Sign}{\wp(\Zset)}$ è definita
+da:
+\begin{align*}
+  \gamma(\top) &= \Zset, \\
+  \gamma(\bot) &= \emptyset, \\
+  \gamma(\bowtie) &= \{\, n \in \Zset \mid n \bowtie 0 \,\},
+    \quad\text{per $\bowtie \in \{ \leq, \neq, \geq, <, =, > \}$.}
+\end{align*}
+\end{definizione}
 
-Definiamola per qualche elemento del dominio astratto, mostrando in generale come definirla per tutti:
-\begin{center}
-	$ \gamma(\top) = \Zset $ \\
-	$ \gamma(\bot) = \o $ \\
-	$ \gamma(>) = \{ n \in \Zset \mid n > 0 \} $ \\
-	$ \gamma(\neq) = \{ n \in \Zset \mid n \neq 0 \} $
-\end{center}
-
-\subsection{Monotonia di $\gamma$}
-Argomentiamo la monotonia di $\gamma$:
-\begin{center}
+\begin{proposizione}
+La funzione $\gamma$ è monotona.
+\end{proposizione}
+\begin{proof}
 	$ \gamma(\bot) = \o \subseteq \gamma(a) , \forall a \in A $ \\
 	$ \gamma(=) = \{0\} \subseteq \gamma(\geq) $ \\
 	$ \gamma(a) \subseteq \Zset = \gamma(\top), \forall a \in A $
-\end{center}
+\end{proof}
 
 \section{Funzione di astrazione $\alpha$}
 
@@ -181,26 +186,18 @@ con $\conmul$ moltiplicazione concreta, definita come segue:
 \end{center}
 
 \begin{center}
-	\begin{tabular}{| c | c | c | c | c | c | c | c | c | }
-		\hline
+	\begin{tabular}{ c | c c c c c c c c }
 		$\absmul$ & $\top$ & $\leq$ & $\neq$ & $\geq$ & $<$ & $=$ & $>$ & $\bot$ \\
 		\hline
 		$\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $=$ & $\top$ & $\bot$  \\
-		\hline
 		$\leq$ & $\top$ & $\geq$ & $\top$ & $\leq$ & $\geq$ & $=$ & $\leq$ & $\bot$\\
-		\hline
 		$\neq$ & $\top$ & $\top$ & $\neq$ & $\top$ & $\neq$ & $=$ & $\neq$ & $\bot$ \\
-		\hline
 		$\geq$ & $\top$ & $\leq$ & $\top$ & $\geq$ & $\leq$ & $=$ & $\geq$ & $\bot$ \\
-		\hline
+
 		$<$ & $\top$ & $\geq$ & $\neq$ & $\leq$ & $>$ & $=$ & $<$ & $\bot$ \\
-		\hline
 		$=$ & $=$ & $=$ & $=$ & $=$ & $=$ & $=$ & $=$ & $\bot$\\
-		\hline
 		$>$ & $\top$ & $\leq$ & $\neq$ & $\geq$ & $<$ & $=$ & $>$ & $\bot$\\
-		\hline
 		$\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ \\
-		\hline
 	\end{tabular}
 \end{center}
 
@@ -419,7 +416,7 @@ Ora manca da definire l'ordinamento su $ \Sigma^\# $:
 \end{center}
 
 \begin{center}
-	$ \forall s_1^\#,\ s_2^\# \in \Sigma^\# : s_1^\# \sqsubseteq_{\Sigma^\#} s_2^\# \iff ( dom(s_1^\#) = dom(s_2^\#) \wedge \forall x \in dom(s_1^\#) : s_1^\#(x) \sqsubseteq_A s_2^\#(x) ) $
+	$ \forall s_1^\#,\ s_2^\# \in \Sigma^\# : s_1^\# \sqsubseteq_{\Sigma^\#} s_2^\# \iff ( dom(s_1^\#) = dom(s_2^\#) \land \forall x \in dom(s_1^\#) : s_1^\#(x) \sqsubseteq_A s_2^\#(x) ) $
 \end{center}
 
 \subsection{Semantica di $\Exp$}
@@ -476,7 +473,7 @@ Prima di poter definire la semantica di $\Bool$ rispetto all'operatore astratto 
 	\prooftree
 		\langle B_1,\ s \rangle \rightarrow \langle B_1',\ s' \rangle
 		\justifies
-		\langle (B_1 \wedge B_2),\ s \rangle \rightarrow \langle (B_1' \wedge B_2),\ s' \rangle
+		\langle (B_1 \land B_2),\ s \rangle \rightarrow \langle (B_1' \land B_2),\ s' \rangle
 	\endprooftree
 \end{center}
 
@@ -485,7 +482,7 @@ Prima di poter definire la semantica di $\Bool$ rispetto all'operatore astratto 
 	\prooftree
 		\langle B_2,\ s \rangle \rightarrow \langle B_2',\ s' \rangle
 		\justifies
-		\langle (\top \wedge B_2),\ s \rangle \rightarrow \langle (\top \wedge B_2'),\ s' \rangle
+		\langle (\top \land B_2),\ s \rangle \rightarrow \langle (\top \land B_2'),\ s' \rangle
 	\endprooftree
 \end{center}
 
@@ -493,7 +490,7 @@ Prima di poter definire la semantica di $\Bool$ rispetto all'operatore astratto 
 	(AND-SHORT.TRUE)
 	\prooftree
 		\justifies
-		\langle (1 \wedge B_2),\ s \rangle \rightarrow \langle B_2,\ s \rangle
+		\langle (1 \land B_2),\ s \rangle \rightarrow \langle B_2,\ s \rangle
 	\endprooftree
 \end{center}
 
@@ -501,7 +498,7 @@ Prima di poter definire la semantica di $\Bool$ rispetto all'operatore astratto 
 	(AND-SHORT.FALSE)
 	\prooftree
 		\justifies
-		\langle (0 \wedge B_2),\ s \rangle \rightarrow \langle 0,\ s \rangle
+		\langle (0 \land B_2),\ s \rangle \rightarrow \langle 0,\ s \rangle
 	\endprooftree
 \end{center}
 
@@ -509,7 +506,7 @@ Prima di poter definire la semantica di $\Bool$ rispetto all'operatore astratto 
 	(ABS-AND-SHORT.TOP)
 	\prooftree
 		\justifies
-		\langle (\top \wedge b_2),\ s \rangle \rightarrow \langle (\top \absand b_2),\ s \rangle
+		\langle (\top \land b_2),\ s \rangle \rightarrow \langle (\top \absand b_2),\ s \rangle
 	\endprooftree
 \end{center}
 
