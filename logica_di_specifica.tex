@@ -320,10 +320,13 @@ Si dimostra per induzione strutturale sull'albero che dimostra \{P\}C\{Q\}:
       &\land <\mathrm{skip},s>\rightarrow ^*<\mathrm{skip},s'>)\\
       &\Rightarrow\llbracket P \rrbracket(s',t)=\ttv);
 \end{align*}
+
+\begin{proof}
 Dato che la premessa è vera abbiamo che $s=s'$, dunque:
 \[
    \llbracket P \rrbracket(s,t)=\ttv =\llbracket P \rrbracket(s',t).
 \]
+\end{proof}
 \textbf{Assegnamento}
 \[
  \prooftree
@@ -345,51 +348,52 @@ Questo grazie al \textbf{Lemma}:
 \begin{align*}
    \forall k \in \Nset \itc
       &(<x:=\LE,s> \rightarrow ^k<\mathrm{skip},s'>\\
-      &\Rightarrow \exists n \in \Zset\st <\LE,s>\rightarrow ^{k-1}<n,s>\land s'=s[^n/_x]);
+      &\Rightarrow \exists n \in \Zset\st <\LE,s>\rightarrow ^{k-1}<n,s>\land s'=s\substt{n}{x});
 \end{align*}
-\textit{Caso base}\\
+\begin{proof}
 \text{Con: $k = 0$ è banalmente vera poiché l'antecedente è falso.}\\
 \text{Con: $k = 1$ abbiamo:}
 \[
-<x:=\LE,s>\rightarrow ^1<\mathrm{skip},s'>;
+   <x:=\LE,s>\rightarrow ^1<\mathrm{skip},s'>;
 \]
-\text{ma allora $\LE \in \Zset$ e $s'=s[^n/_x],$ quindi $\exists n=\LE$ tali che:}
+\text{ma allora $\LE \in \Zset$ e $s'=s\substt{n}{x},$ quindi $\exists n=\LE$ tali che:}
 \[
-<\LE,s>\rightarrow ^0<\LE,s> \equiv <n,s>.
+   <\LE,s>\rightarrow ^0<\LE,s> \equiv <n,s>.
 \]
 Per definizione di $\rightarrow ^0$ chiusura riflessiva.\\
 \textit{Passo induttivo}\\
 \text{Con: $k = h+1$}
 \[
-<x:=\LE,s>\rightarrow ^h+1<\mathrm{skip},s'>;
+   <x:=\LE,s>\rightarrow ^{h+1}<\mathrm{skip},s'>;
 \]
 Allora si può ricondurre ad $h+1$ passi per poi applicare l'ipotesi induttiva:
 \[
-<x:=\LE,s>\rightarrow ^1<x:=\LE',s>;
+   <x:=\LE,s>\rightarrow ^1<x:=\LE',s>;
 \]
 Ora:
 \[
-<x:=\LE',s>\rightarrow ^h<\mathrm{skip},s'>;
+   <x:=\LE',s>\rightarrow ^h<\mathrm{skip},s'>;
 \]
 per ipotesi induttiva si ha che:
 \[
-\exists n \in\Zset\itc <\LE',s>\rightarrow ^{h-1}<n,s>;
+   \exists n \in\Zset\itc <\LE',s>\rightarrow ^{h-1}<n,s>;
 \]
 e inoltre:
 \[
-s'=s[^n/_x];
+   s'=s\substt{n}{x};
 \]
 Allora aggiungendo l'ultimo passo:
 \[
-<x:=\LE,s>\rightarrow ^1<x:=\LE',s>\rightarrow ^h<\mathrm{skip},s'>;
+   <x:=\LE,s>\rightarrow ^1<x:=\LE',s>\rightarrow ^h<\mathrm{skip},s'>;
 \]
 \[
-<\LE,s>\rightarrow ^1<\LE',s>\rightarrow ^{h-1}<n,s'>;
+   <\LE,s>\rightarrow ^1<\LE',s>\rightarrow ^{h-1}<n,s'>;
 \]
 Allora:
 \[
-<\LE,s>\rightarrow ^h<\mathrm{skip},s'>.
+   <\LE,s>\rightarrow ^h<\mathrm{skip},s'>.
 \]
+\end{proof}
 \textbf{Composizione Sequenziale}
 \[
 \prooftree
@@ -421,7 +425,10 @@ Allora:
 \end{align*}
 Questo grazie al \textbf{Lemma}:
 \begin{align*}
-   <C_1;C_2,s>\rightarrow ^k<\mathrm{skip},s'>\Rightarrow\exists k_1,k_2 \in\Nset &\itc<C_1,s>\rightarrow ^{k_1}<\mathrm{skip},s'> \\
+   <C_1;C_2,s>\rightarrow ^k<\mathrm{skip},s'>\Rightarrow\forall k_1,k_2 \in\Nset 
+   &\itc<C_1,s>\rightarrow ^{k_1}<\mathrm{skip},s'> \\
    &\land <C_2,s'>\rightarrow ^{k_2}<\mathrm{skip},s''>.
 \end{align*}
-\textbf{Dimostrazione}
+\begin{proof}
+
+\end{proof}
