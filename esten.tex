@@ -101,7 +101,7 @@ se $x$ è uno scalare:
     \config{x(n)}{s} \ssarrow \config{0}{s'}
   \thickness=0.08em
   \using
-    s(x) \in \Zset \land s' = \subst{s}{a}{x}
+    s(x) \in \Zset \land s' = \substt{a}{x}
   \endprooftree
 \end{align*}
 \[
@@ -117,7 +117,7 @@ posizione $n$-ma la quale conterrà il valore di $x$:
     \config{x(n)}{s} \ssarrow \config{s(x)}{s'}
   \thickness=0.08em
   \using
-    s(x) \in \Zset \land s' = \subst{s}{a}{x}
+    s(x) \in \Zset \land s' = \substt{a}{x}
   \endprooftree
 \]
 \begin{align*}
@@ -153,7 +153,7 @@ se $x$ è un array:
     \config{x(n)\ \weq\ k}{s} \ssarrow \config{\kw{skip}}{s'}
   \thickness=0.08em
   \using
-    s(x) \in \Lambda \land s' = \subst{s}{a}{x}
+    s(x) \in \Lambda \land s' = \substt{a}{x}
   \endprooftree
 \]
 \begin{align*}
@@ -170,7 +170,7 @@ se $x$ è uno scalare (assegnamento distruttivo):
     \config{x(n)\ \weq\ k}{s} \ssarrow \config{\kw{skip}}{s'}
   \thickness=0.08em
   \using
-    s(x) \in \Zset \land s' = \subst{s}{a}{x}
+    s(x) \in \Zset \land s' = \substt{a}{x}
   \endprooftree
 \]
 \begin{align*}
@@ -188,7 +188,7 @@ alla posizione~0 del nuovo array:
     \config{x(n)\ \weq\ k}{s} \ssarrow \config{\kw{skip}}{s'}
   \thickness=0.08em
   \using
-    s(x) \in \Zset \land s' = \subst{s}{a}{x}
+    s(x) \in \Zset \land s' = \substt{a}{x}
   \endprooftree
 \]
 \begin{align*}
