@@ -199,3 +199,120 @@ alla posizione~0 del nuovo array:
     s(x), &\text{se $i = 0 \land h \neq 0$}
   \end{cases}
 \end{align*}
+
+\section{Eccezioni} \marginpar{Segalini}
+
+[Breve introduzione\dots Aggiungere nel linguaggio while le eccezioni...]
+
+
+Creiamo un nuovo insieme di possibili variabili utilizzabili in WHILE
+chiamato $\Var'$. Questo insieme contiene tutte le variabili di $\Var$
+ed una variabile speciale, non utilizzabile nei programmi, chiamata
+$\$ecc$.
+
+\begin{align*}
+  &\$ecc \not \in \Var \\
+  &\Var' \defeq \Var \union \{\$ecc\}
+\end{align*}
+l'insieme degli store è quindi definito come:
+
+\[
+  \pard{\Sigma}{\Var'}{\Zset}
+\]
+\emph{N.B.:} nella sintassi delle espressioni ($E \in \AExp ::= \dots
+\vbar x$) la $x$ appartiene a $\Var$ e non $\Var'$ (questo
+impedisce l'uso della varibile nel programma).
+
+\subsection{Sintassi}
+Aggiungiamo alla sintassi del WHILE il comando try-catch e il throw:
+
+Siano $x \in \Var$ e $E \in \AExp$
+\begin{align*}
+\Com \ni C ::= \dots \vbar \kw{try} C_1 \kw{catch}(x) \vbar \kw{throw} E
+\end{align*}
+
+\subsection{Semantica formale}
+
+\begin{align*}
+  &\prooftree \config{E}{s} \ssarrow \config{E'}{s'}
+  \justifies \config{\kw{throw} E}{s} \ssarrow 
+    \config{\kw{throw} E'}{s'}
+  \thickness=0.08em
+  \using s(\$ecc) \divrg
+  \endprooftree
+  \\ \\
+  &\prooftree
+  \justifies \config{\kw{throw} n}{s} \ssarrow 
+    \config{\kw{skip}}{s \substt{n}{\$ecc}}
+  \thickness=0.08em
+  \using s(\$ecc) \divrg
+  \endprooftree
+  \\ \\
+  &\prooftree
+  \justifies \config{x \weq E}{s} \ssarrow \config{\kw{skip}}{s}
+  \thickness=0.08em
+  \using s(\$ecc) \convrg
+  \endprooftree 
+  \\ \\
+  &\prooftree
+  \justifies \config{C_1 \weq C_2}{s} \ssarrow \config{\kw{skip}}{s}
+  \thickness=0.08em
+  \using s(\$ecc) \convrg
+  \endprooftree
+  \\ \\
+  &\prooftree
+  \justifies \config{\kw{if} B \kw{then} C_1 \kw{else} C_2}{s} 
+    \ssarrow \config{\kw{skip}}{s}
+  \thickness=0.08em
+  \using s(\$ecc) \convrg
+  \endprooftree
+  \\ \\
+  &\prooftree
+  \justifies \config{\kw{while} B \kw{do} C}{s}
+     \ssarrow \config{\kw{skip}}{s}
+  \thickness=0.08em
+  \using s(\$ecc) \convrg
+  \endprooftree
+  \\ \\
+  &\prooftree
+  \justifies \config{\kw{try} C_1 \kw{catch}(x) C_2}{s}
+     \ssarrow \config{\kw{skip}}{s}
+  \thickness=0.08em
+  \using s(\$ecc) \convrg
+  \endprooftree
+  \\ \\
+  &\prooftree
+  \justifies \config{\kw{throw} E}{s} \ssarrow \config{\kw{skip}}{s}
+  \thickness=0.08em
+  \using s(\$ecc) \convrg
+  \endprooftree
+\end{align*}
+Quando viene eseguito il blocco catch, per uscire dalla modalità
+eccezionale dobbiamo riportare la variabile $\$ecc$ ad uno stato
+indefinito. \'E necessario definire un operatore di
+uccisione di variabile:
+\[
+  \fund{\backslash}{\Sigma \times \Var'}{\Sigma} 
+\]
+\[
+  \forall s \in \Sigma \itc \forall x \in \Var' \itc 
+    \forall y \in \Var' \itc (s \backslash x)(y) = \begin{cases}
+        s(y),   &\text{se $x \neq y$} \\
+        \divrg, &\text{se $x = y$}   
+      \end{cases}
+\]
+\begin{align*}
+  &\prooftree \config{C_1}{s} \ssarrow \config{C_1'}{s'}
+  \justifies \config{\kw{try} C_1 \kw{catch}(x) C_2}{s} \ssarrow
+    \config{\kw{try} C_1' \kw{catch}(x) C_2}{s}
+  \thickness=0.08em
+  \using s(\$ecc) \divrg \land s(\$ecc) \divrg
+  \endprooftree
+  \\ \\
+  &\prooftree \config{C_1}{s} \ssarrow \config{C_1'}{s'}
+  \justifies \config{\kw{try} C_1 \kw{catch}(x) C_2}{s} \ssarrow
+    \config{C_2}{\bigl(s'\substt{s(\$ecc)}{x}\bigr) \backslash \$ecc}
+  \thickness=0.08em
+  \using s(\$ecc) \divrg \land s(\$ecc) \convrg
+  \endprooftree
+\end{align*}
