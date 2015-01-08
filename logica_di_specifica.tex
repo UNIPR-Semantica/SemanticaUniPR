@@ -19,9 +19,7 @@ L'insieme delle espressioni aritmetiche della logica, denotato con $\LExp$,
                 \vbar \lfloor \LE \rfloor
                 \vbar \dots
 \]
-
-Sia $\Pred$ l'insieme dei predicati logici definibile con una grammatica
-del tipo
+L'insieme dei predicati della logica, denotato con $\Pred$, è definito anch'esso con una grammatica in forma BNF del tipo
 \begin{align*}
 P \in \Pred &::= \true
             \vbar \false
@@ -40,9 +38,7 @@ dove $x \in\Ghost$.
 \subsection{Variabili libere}
 In logica matematica e in particolare in un linguaggio del primo ordine si dice che una variabile occorre libera in una formula ben formata se nella formula tale variabile appare al di fuori del dominio di un quantificatore sulla variabile stessa. Una variabile $\Ghost$ può essere libera per questo ce ne interessiamo.
 Definiamo due funzioni con lo stesso nome (sovraccaricate) per calcolare le variabili libere in una formula.
-Sia $\fund{\FV}{\LExp}{\wp(\Ghost)}$ una funzione per catturare le variabili libere in una espressione della logica.
-
-Definiamola per induzione strutturale :
+Sia $\fund{\FV}{\LExp}{\wp(\Ghost)}$ una funzione per catturare le variabili libere in una espressione della logica, definita per induzione strutturale :
 \begin{align*}
    \FV(x)
       &=
@@ -64,9 +60,7 @@ Definiamola per induzione strutturale :
       &= \FV(\LE).
 \end{align*}
 
-Sia $\fund{\FV}{\Pred}{\wp(\Ghost)}$ una funzione per catturare le variabili libere in predicati della logica.
-
-Definiamola per induzione strutturale :
+Sia $\fund{\FV}{\Pred}{\wp(\Ghost)}$ la seconda funzione per catturare le variabili libere nei predicati della logica, definita anch'essa per induzione strutturale:
 \begin{align*}
    \FV(\true)
       &= \emptyset;\\
@@ -98,7 +92,7 @@ di formalizzare l'operazione di sostituzione sintattica di termini
 al posto di variabili.
 
 \begin{definizione} \summary{(Sostituzione per LExp.)}
-Sia $x \in \Var \union \Ghost$ una variabile e siano $\LE_0, LE \in \LExp$
+Sia $x \in \Var \union \Ghost$ una variabile e siano $\LE_0, \LE \in \LExp$
 due espressioni.
 L'espressione $\LE_0\substt{\LE}{x}$ è un elemento di $\LExp$ definito
 per induzione strutturale su $\LE_0$ come segue:
@@ -158,7 +152,8 @@ per induzione strutturale su $P$ come segue:
 \end{definizione}
 
 \subsection{Valutazione semantica di LExp}
-$\Sigma$ rappresenta lo store utile in quanto nelle espressioni possono comparire variabili del programma, mentre $\Gamma$ e' l'ambiente delle variabili $\Ghost$ definita come $\fund{\Gamma}{\Ghost}{\Zset}$. Funzione di valutazione semantica delle espressioni:
+Per definire la semantica di ogni oggetto sintattico del linguaggio, abbiamo bisogno di: $\Sigma$, che rappresenta lo store utile in quanto nelle espressioni possono comparire variabili del programma e $\Gamma$, l'ambiente delle variabili $\Ghost$ definita come $\fund{\Gamma}{\Ghost}{\Zset}$.
+La funzione di valutazione semantica delle espressioni è definita come segue:
 \[
    \fund{\llbracket \cdot \rrbracket ^\LExp}{\LExp}{((\Sigma \times \Gamma) \rightarrow \Zset)}
 \]
@@ -266,7 +261,7 @@ Dove:
    \end{cases}
 \end{align*}
 \subsection{Verità di una tripla di Floyd-Hoare}
-Ora abbiamo tutti gli elementi per definire quando una tripla di Hoare è vera.
+Ora che abbiamo tutti gli elementi, possiamo definire quando una tripla di Floyd-Hoare è vera.
 \[
    \llbracket \{P\}C\{Q\} \rrbracket = \ttv;
 \]
@@ -360,7 +355,7 @@ Questo grazie al \textbf{Lemma}:
 \[
    <\LE,s>\rightarrow ^0<\LE,s> \equiv <n,s>.
 \]
-Per definizione di $\rightarrow ^0$ chiusura riflessiva.\\
+Questo per definizione di $\rightarrow ^0$ chiusura riflessiva.\\
 \textit{Passo induttivo}\\
 \text{Con: $k = h+1$}
 \[
@@ -425,9 +420,10 @@ Allora:
 \end{align*}
 Questo grazie al \textbf{Lemma}:
 \begin{align*}
-   <C_1;C_2,s>\rightarrow ^k<\mathrm{skip},s'>\Rightarrow\forall k_1,k_2 \in\Nset 
-   &\itc<C_1,s>\rightarrow ^{k_1}<\mathrm{skip},s'> \\
-   &\land <C_2,s'>\rightarrow ^{k_2}<\mathrm{skip},s''>.
+   \forall C_1,C_2 \in \Com \itc 
+   &\forall s,s' \in \Sigma \itc \forall n \in \Nset <C_1;C_2,s>\rightarrow ^k<\mathrm{skip},s'> \\
+   &\Rightarrow \exists n_1,n_2 \in \Nset \st \exists s'' \in \Sigma \st \\
+   &<C_1,s>\rightarrow ^{k_1}<\mathrm{skip},s'> \land <C_2,s'>\rightarrow ^{k_2}<\mathrm{skip},s''> \land k = k_1 + k_2.
 \end{align*}
 \begin{proof}
 
