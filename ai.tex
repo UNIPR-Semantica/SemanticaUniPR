@@ -16,7 +16,7 @@ astratta che andiamo a definire è
 
 \subsection{Dominio astratto}
 
-Il dominio astratto $\Sign$ cattura semplici relazion rispetto al
+Il dominio astratto $\Sign$ cattura semplici relazioni rispetto al
 numero $0$, ad esempio $\cdot < 0$, $\cdot = 0$, \dots
 L'ordinamento del dominio è indicato nel diagramma di Hasse di
 figura~\ref{fig:ordering-rels-lattice}.
@@ -93,20 +93,15 @@ La funzione $\gamma$ è monotona.
 	$ \gamma(a) \subseteq \Zset = \gamma(\top), \forall a \in A $
 \end{proof}
 
-\section{Funzione di astrazione $\alpha$}
+\subsection{Funzione di astrazione}
 
-\subsection{Definizione di $\alpha$}
-\begin{center}
-	$ \alpha : (\calP{(\Zset), \subseteq)} \rightarrow A $
-\end{center}
-\begin{center}
-	$ \forall S \in \calP(\Zset) : \alpha(S) = \sqcup \{ \beta(n) \mid n \in S \} $
-\end{center}
-Si nota che la definizione di $\alpha$ viene fatta attraverso la funzione $\beta$, definita come segue:
-\begin{center}
-	$ \beta: \Zset \rightarrow A  $
-\end{center}
-
+\begin{definizione} \summary{($\fund{\alpha}{\wp(\Zset)}{\Sign}$.)}
+La funzione $\fund{\alpha}{\wp(\Zset)}{\Sign}$ viene definita attraverso
+la funzione $\beta$:
+\[
+	\fund{\beta}{\Zset}{\Sign}
+\]
+che si comporta nel seguente modo:
 \begin{align*}
 	\forall n \in \Zset: \beta(n) &=
 	\begin{cases}
@@ -115,75 +110,72 @@ Si nota che la definizione di $\alpha$ viene fatta attraverso la funzione $\beta
 		<,	&\text{se $n < 0$.}
 	\end{cases} 
 \end{align*}
+Quindi, la funzione $\alpha$ rappresenta il $\lub$ della
+funzione $\beta$ applicata ad ogni elemento di $S$:
+\[
+	\forall S \in \wp(\Zset) : \alpha(S) = \sqcup \{\, \beta(n) \mid n \in S \,\}
+\]
+Questo fatto giustifica le approssimazioni compiute nel processo
+di astrazione.
+\end{definizione}
 
-\subsection{Monotonia di $\alpha$}
-Dimostriamo la monotonia di $\alpha$.
-[completare]
-\begin{center}
-	$ \forall S_1, S_2 \in \calP(\Zset) : S_1 \subseteq S_2 \Rightarrow \alpha(S_1) \sqsubseteq \alpha(S_2) $
-\end{center}
-\begin{center}
-	$ S_1 \subseteq S_2 \Rightarrow \beta(S_1) \subseteq \beta(S_2) $, perché $\beta$ è  una funzione
-\end{center}
-\begin{center}
-	$ \alpha(S_1) = \alpha(S_2) $ per proprietà del lub.
-\end{center}
+\begin{proposizione}
+La funzione $\alpha$ è monotona.
+\end{proposizione}
+\begin{proof}
+	$ \forall S_1, S_2 \in \wp(\Zset) : S_1 \subseteq S_2 \Rightarrow \alpha(S_1) \sqsubseteq \alpha(S_2)\text{;} $ \\
+	$ S_1 \subseteq S_2 \Rightarrow \beta(S_1) \subseteq \beta(S_2) \text{, perché } \beta \text{ è  una funzione;} $ \\
+	$ \alpha(S_1) = \alpha(S_2) \text{per proprietà del lub.} $
+\end{proof}
 
 \subsection{Inserzione di Galois}
-Siamo in un'inserzione di Galois? Il primo passo da verificare è che $\gamma \circ \alpha$ è estensiva. 
 
-\begin{center}
-	$ \forall S \in \calP(\Zset) : \gamma \circ \alpha(S) \supseteq S $
-\end{center}
-
-\begin{center}
-	$ \gamma(\alpha(S)) \supseteq S $
-\end{center}
-
-\begin{center}
-	$ \gamma(\sqcup \{ \beta(n) \mid n \in S \} ) \supseteq S $
-\end{center}
-
-Consideriamo $\gamma$ additiva: dovremmo prendere i vari casi e dimostrare che, ad esempio, l'unione fra $\gamma(=)$ e $\gamma(<)$ è $\gamma(\leq)$.
-
+\begin{proof}
+Siamo in un'inserzione di Galois? Il primo passo da verificare è che $\compfun{\gamma}{\alpha}$ è estensiva. 
+\begin{align*}
+	\forall S \in \calP(\Zset) : \compfun{\gamma}{\alpha}(S) &\supseteq S \\
+	\gamma\bigl(\alpha(S)\bigr) &\supseteq S \\
+	\gamma\bigl(\sqcup \{\, \beta(n) \mid n \in S \,\} \bigr) &\supseteq S
+\end{align*}
+Consideriamo $\gamma$ additiva: dovremmo prendere i vari casi e
+dimostrare che, ad esempio, l'unione fra
+$\gamma(=)$ e $\gamma(<)$ è $\gamma(\leq)$.
 Questo perché l'unione è il lub di quell'insieme:
-
-\begin{center}
-	$ \union \{ \gamma(\beta(n)) \mid n \in \Zset \} \supseteq S $
-\end{center}
+\[
+	\union \{\, \gamma\bigl(\beta(n)\bigr) \mid n \in \Zset \,\} \supseteq S
+\]
 Per dimostrarlo possiamo sfuttare il lemma:
-
-\begin{center}
-	$ \forall n \in \Zset : n \in \gamma(\beta(n)) $
-\end{center}
+\begin{lemma}
+	$ \forall n \in \Zset : n \in \gamma\bigl(\beta(n)\bigr) $
+\end{lemma}
 Facendo i vari casi, questo completa la dimostrazione.
+\end{proof}
 
-Infine, dobbiamo mostrare che $\alpha \circ \gamma$ corrisponde all'identità:
-\begin{center}
-	$ \alpha \circ \gamma(\bot) = \bot $
-\end{center}
-\begin{center}
-	$ \alpha \circ \gamma(\top) = \top $
-\end{center}
-\begin{center}
-	$ \alpha \circ \gamma(\geq) = \geq $
-\end{center}
+\begin{proof}
+Infine, mostriamo banalmente che $\compfun{\alpha}{\gamma}$ corrisponde all'identità:
+\begin{align*}
+	\compfun{\alpha}{\gamma}(\bot) &= \bot \\
+	\compfun{\alpha}{\gamma}(\top) &= \top \\
+	\compfun{\alpha}{\gamma}(\geq) &= \geq
+\end{align*}
+\end{proof}
 
-\section{Operazioni astratte}
-Le operazioni astratte vanno definite seguendo le operazioni concrete; esse si applicano tra elementi del dominio astratto.
+\subsection{Operazioni astratte}
+Le operazioni astratte vanno definite seguendo le operazioni concrete;
+esse si applicano tra elementi del dominio astratto.
+Descriviamo in seguito le operazioni più interessanti applicabili
+al nostro dominio astratto.
 
-\subsection{Moltiplicazione astratta}
-
+\begin{definizione}\summary{Moltiplicazione astratta}
 La moltiplicazione astratta è definita come segue:
-
-\begin{center}
-	$ \absmul = \lambda a_1,a_2 \in A . \alpha(\gamma(a_1) \conmul \gamma(a_2)) $
-\end{center}
+\[
+	\absmul = \lambda a_1,a_2 \in A . \alpha\bigl(\gamma(a_1) \conmul \gamma(a_2)\bigr)
+\]
 con $\conmul$ moltiplicazione concreta, definita come segue:
-
-\begin{center}
-	$ S_1 \conmul S_2 = \{ n_1 * n_2 \mid n_1 \in S_1, n_2 \in S_2 \} $
-\end{center}
+\[
+	S_1 \conmul S_2 = \{\, n_1 * n_2 \mid n_1 \in S_1, n_2 \in S_2 \,\}
+\]
+\end{definizione}
 
 \begin{center}
 	\begin{tabular}{ c | c c c c c c c c }
@@ -193,7 +185,6 @@ con $\conmul$ moltiplicazione concreta, definita come segue:
 		$\leq$ & $\top$ & $\geq$ & $\top$ & $\leq$ & $\geq$ & $=$ & $\leq$ & $\bot$\\
 		$\neq$ & $\top$ & $\top$ & $\neq$ & $\top$ & $\neq$ & $=$ & $\neq$ & $\bot$ \\
 		$\geq$ & $\top$ & $\leq$ & $\top$ & $\geq$ & $\leq$ & $=$ & $\geq$ & $\bot$ \\
-
 		$<$ & $\top$ & $\geq$ & $\neq$ & $\leq$ & $>$ & $=$ & $<$ & $\bot$ \\
 		$=$ & $=$ & $=$ & $=$ & $=$ & $=$ & $=$ & $=$ & $\bot$\\
 		$>$ & $\top$ & $\leq$ & $\neq$ & $\geq$ & $<$ & $=$ & $>$ & $\bot$\\
@@ -201,241 +192,196 @@ con $\conmul$ moltiplicazione concreta, definita come segue:
 	\end{tabular}
 \end{center}
 
-Come si può notare, la tabella risultante è simmetrica: questo perché l'operatore di moltiplicazione astratta è commutativo.
+Come si può notare, la tabella risultante è simmetrica:
+questo perché l'operatore di moltiplicazione astratta è commutativo.
 
-\subsection{Somma astratta}
-
+\begin{definizione}\summary{Somma astratta}
 La somma astratta è definita come segue:
-
-\begin{center}
-	$ \absadd = \lambda a_1,a_2 \in A . \alpha(\gamma(a_1) \conadd \gamma(a_2)) $
-\end{center}
+\[
+	\absadd = \lambda a_1,a_2 \in A . \alpha\bigl(\gamma(a_1) \conadd \gamma(a_2)\bigr)
+\]
 con $\conadd$ somma concreta, definita come segue:
 
-\begin{center}
-	$ S_1 \conadd S_2 = \{ n_1 + n_2 \mid n_1 \in S_1, n_2 \in S_2 \} $
-\end{center}
+\[
+	S_1 \conadd S_2 = \{\, n_1 + n_2 \mid n_1 \in S_1, n_2 \in S_2 \,\}
+\]
+\end{definizione}
 
 \begin{center}
-	\begin{tabular}{| c | c | c | c | c | c | c | c | c | }
-		\hline
+	\begin{tabular}{c | c c c c c c c c}
 		$\absadd$ & $\top$ & $\leq$ & $\neq$ & $\geq$ & $<$ & $=$ & $>$ & $\bot$ \\
 		\hline
 		$\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\bot$ \\
-		\hline
 		$\leq$ & $\top$ & $\leq$ & $\top$ & $\top$ & $<$ & $\leq$ & $\top$ & $\bot$\\
-		\hline
 		$\neq$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\neq$ & $\top$ & $\bot$ \\
-		\hline
 		$\geq$ & $\top$ & $\top$ & $\top$ & $\geq$ & $\top$ & $\geq$ & $>$ & $\bot$\\
-		\hline
 		$<$ & $\top$ & $<$ & $\top$ & $\top$ & $<$ & $<$ & $\top$ & $\bot$\\
-		\hline
 		$=$ & $\top$ & $\leq$ & $\neq$ & $\geq$ & $<$ & $=$ & $>$ & $\bot$\\
-		\hline
 		$>$ & $\top$ & $\top$ & $\top$ & $>$ & $\top$ & $>$ & $>$ & $\bot$ \\
-		\hline
-		$\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ \\
-		\hline
+		$\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$
 	\end{tabular}
 \end{center}
 
-Osservando il numero di ricorrenze di $\top$ all'interno della tabella e confrontandolo con quello all'interno della tabella della moltiplicazione astratta, si nota che su questo dominio la moltiplicazione astratta è più precisa della somma astratta.
+Osservando il numero di ricorrenze di $\top$ all'interno della tabella
+e confrontandolo con quello all'interno della tabella
+della moltiplicazione astratta, si nota che su questo dominio
+la moltiplicazione astratta è più precisa della somma astratta.
 
-\subsection{Divisione intera astratta}
-
+\begin{definizione}\summary{Divisione intera astratta}
 La divisione intera astratta viene definita come segue:
-
-\begin{center}
-	$ \absdiv = \lambda a_1,a_2 \in A . \alpha(\gamma(a_1) \condiv \gamma(a_2)) $
-\end{center}
-
+\[
+	\absdiv = \lambda a_1,a_2 \in A . \alpha\bigl(\gamma(a_1) \condiv \gamma(a_2)\bigr)
+\]
 con $\condiv$ divisione intera concreta, definita come segue:
-
-\begin{center}
-	$ S_1 \condiv S_2 = \{ n_1 / n_2 \mid n_1 \in S_1, n_2 \in S_2 \backslash \{0\} \} $
-\end{center}
+\[
+	S_1 \condiv S_2 = \bigl\{\, n_1 / n_2 \mid n_1 \in S_1, n_2 \in S_2 \backslash \{0\} \,\bigr\}
+\]
+\end{definizione}
 Nella seguente tabella, gli indici delle colonne indicano il dividendo e gli indici delle righe indicano il divisore.
-
 \begin{center}
-	\begin{tabular}{| c | c | c | c | c | c | c | c | c | }
-		\hline
+	\begin{tabular}{c | c c c c c c c c }
 		$\absdiv$ & $\top$ & $\leq$ & $\neq$ & $\geq$ & $<$ & $=$ & $>$ & $\bot$ \\
 		\hline
 		$\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $=$ & $\top$ & $\bot$\\
-		\hline
 		$\leq$ & $\top$ & $\geq$ & $\top$ & $\leq$ & $\geq$ & $=$ & $\leq$ & $\bot$\\
-		\hline
 		$\neq$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $=$ & $\top$ & $\bot$\\
-		\hline
 		$\geq$ & $\top$ & $\leq$ & $\top$ & $\geq$ & $\leq$ & $=$ & $\geq$ & $\bot$\\
-		\hline
 		$<$ & $\top$ & $\geq$ & $\top$ & $\leq$ & $\geq$ & $=$ & $\leq$ & $\bot$\\
-		\hline
 		$=$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$\\
-		\hline
 		$>$ & $\top$ & $\leq$ & $\top$ & $\geq$ & $\leq$ & $=$ & $\geq$ & $\bot$\\
-		\hline
-		$\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$\\
-		\hline
+		$\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$
 	\end{tabular}
 \end{center}
 
-\subsection{Meno unario astratto}
-
-Il meno unario astratto ($\absuminus$) può essere definito per semplificare la definizione di meno binario astratto ($\abssub$). Infatti l'operazione astratta
-\begin{center}
-	$ a \abssub b $
-\end{center}
+\begin{definizione}\summary{Meno unario astratto}
+Il meno unario astratto ($\absuminus$) può essere definito
+per semplificare la definizione di meno binario astratto ($\abssub$).
+Infatti l'operazione astratta:
+\[
+	a \abssub b
+\]
 può essere riscritta come:
+\[
+	a  \abssub b = a \absadd (\absuminus b)
+\]
+\end{definizione}
 
 \begin{center}
-	$ a  \abssub b = a \absadd (\absuminus b) $
-\end{center}
-
-\begin{center}
-	\begin{tabular}{| c | c | c | c | c | c | c | c | c | }
-		\hline
+	\begin{tabular}{ c | c c c c c c c c }
 		$\absuminus$ & $\top$ & $\leq$ & $\neq$ & $\geq$ & $<$ & $=$ & $>$ & $\bot$ \\
 		\hline
-		  & $\top$ & $\geq$ & $\neq$ & $\leq$ & $>$ & $=$ & $<$ & $\bot$\\
-		\hline
+		  & $\top$ & $\geq$ & $\neq$ & $\leq$ & $>$ & $=$ & $<$ & $\bot$
 	\end{tabular}
 \end{center}
 
 \section{Dominio astratto dei booleani}
 
-
-\newcommand*{\AbBool}{\mathrm{AbBool}}
-
-%\newcommand*{\signtop}{\top}
-%\newcommand*{\signbot}{\bot}
-\newcommand*{\signone}{\mathord{1}}
-\newcommand*{\signzero}{\mathord{0}}
-
 Consideriamo ora come dominio astratto quello dei booleani.
-
 [aggiungere immagine per dominio astratto dei booleani]
 
 \section{Operazioni astratte su booleani}
 
-Il dominio astratto dei booleani ci permette di ragionare su altre operazioni astratte; poiché si parla di booleani le operazioni interessanti saranno quelle di confronto. 
+Il dominio astratto dei booleani ci permette di ragionare
+su altre operazioni astratte;
+poiché si parla di booleani le operazioni interessanti
+saranno quelle di confronto. 
 
-\subsection{Uguaglianza astratta}
-
+\begin{definizione}\summary{Uguaglianza astratta}
+\end{definizione}
 \begin{center}
-	\begin{tabular}{| c | c | c | c | c | c | c | c | c | }
-		\hline
-		$=_a$ & $\top$ & $\leq$ & $\neq$ & $\geq$ & $<$ & $=$ & $>$ & $\bot$ \\
+	\begin{tabular}{ c | c c c c c c c c }
+		$\abseq$ & $\top$ & $\leq$ & $\neq$ & $\geq$ & $<$ & $=$ & $>$ & $\bot$ \\
 		\hline
 		$\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\bot$ \\
-		\hline
 		$\leq$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $0$ & $\bot$\\
-		\hline
 		$\neq$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $0$ & $\top$ & $\bot$\\
-		\hline
 		$\geq$ & $\top$ & $\top$ & $\top$ & $\top$ & $0$ & $\top$ & $\top$ & $\bot$\\
-		\hline
 		$<$ & $\top$ & $\top$ & $\top$ & $0$ & $\top$ & $\top$ & $0$ & $\bot$\\
-		\hline
 		$=$ & $\top$ & $\top$ & $0$ & $\top$ & $0$ & $1$ & $0$ & $\bot$\\
-		\hline
 		$>$ & $\top$ & $0$ & $\top$ & $\top$ & $0$ & $\top$ & $\top$ & $\bot$\\
-		\hline
-		$\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$\\
-		\hline
+		$\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$
 	\end{tabular}
 \end{center}
 
+
+\begin{definizione}\summary{Diverso astratto}
 Per definire l'operazione astratta di diverso basta definire quella di negato astratto:
-\begin{center}
-	$ c_1 \neq c_2 \iff \neg (c_2 = c_2) $
-\end{center}
+\begin{align*}
+	c_1 \neq c_2 &\iff \neg (c_2 = c_2) \\
+	a_1 \absneq a_2 &\iff \absneg (a_1 =_a a_2)
+\end{align*}
+\end{definizione}
+
+\begin{definizione}\summary{Disuguaglianza astratta}
+Nella seguente tabella, gli indici delle colonne indicano
+l'elemento a sinistra della disuguaglianza e gli indici delle righe
+indicano l'elemento a destra.
+\end{definizione}
 
 \begin{center}
-	$ a_1 \neq _a a_2 \iff \neg _a (a_1 =_a a_2) $
-\end{center}
-
-\subsection{Disuguaglianza astratta $\preceq$}
-
-Rappresentiamo la disuguaglianza larga astratta con il seguente simbolo: $\preceq$.
-
-Nella seguente tabella, gli indici delle colonne indicano l'elemento a sinistra della disuguaglianza e gli indici delle righe indicano l'elemento a destra.
-
-\begin{center}
-	\begin{tabular}{| c | c | c | c | c | c | c | c | c | }
+	\begin{tabular}{ c | c c c c c c c c }
+		$\absleq$ & $\top$ & $\leq$ & $\neq$ & $\geq$ & $<$ & $=$ & $>$ & $\bot$ \\
 		\hline
-		$\preceq$ & $\top$ & $\leq$ & $\neq$ & $\geq$ & $<$ & $=$ & $>$ & $\bot$ \\
-		\hline
-		$\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\bot$\\
-		\hline
-		$\leq$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $0$ & $\bot$\\
-		\hline
+		$\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\bot$ \\
+		$\leq$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $0$ & $\bot$ \\
 		$\neq$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\top$ & $\bot$\\
-		\hline
 		$\geq$ & $\top$ & $1$ & $\top$ & $\top$ & $1$ & $1$ & $\top$ & $\bot$ \\
-		\hline
 		$<$ & $\top$ & $\top$ & $\top$ & $0$ & $\top$ & $0$ & $0$ & $\bot$\\
-		\hline
 		$=$ & $\top$ & $1$ & $\top$ & $\top$ & $1$ & $1$ & $0$ & $\bot$ \\
-		\hline
 		$>$ & $\top$ & $1$ & $\top$ & $\top$ & $1$ & $0$ & $\top$ & $\bot$ \\
-		\hline
-		$\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$\\
-		\hline
+		$\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$
 	\end{tabular}
 \end{center}
 
-\section{Semantica astratta small-step}
+\subsection{Introduzione alla semantica astratta small-step}
+Dopo aver definito le operazioni astratte,
+definiamo una semantica astratta per $\AExp$, $\BExp$ e $\Com$.
 
-Diamo una semantica astratta per $\Exp$, $\Bool$ e $\Com$.
+\begin{definizione}\summary{Store astratto}
+\[
+	\fund{\Sigma^\#}{\Var}{A}
+\]
+\end{definizione}
 
-Innanzitutto definiamo lo store astratto $\Sigma^\#:$
-
-\begin{center}
-	$ \Sigma^\# : \Var \rightarrow A $
-\end{center}
-
-La semantica astratta non può essere definita come quella concreta:
-\begin{center}
-	$ \llbracket P \rrbracket (s) = s' $, se $ \langle P,\ s \rangle \rightarrow^* \langle skip,\ s \rangle $
-\end{center}
+\begin{definizione}\summary{Semantica astratta}
+\[	
+	\llbracket P \rrbracket (s) = s' \text{, se } \langle P, s \rangle \rightarrow^* \langle skip, s \rangle
+\]
+\end{definizione}
 
 Ora abbiamo non determinismo:
-\begin{center}
-	$ \llbracket \cdot \rrbracket^\# : \Com^\# \mapsto (\Sigma^\# \rightarrowtail \Sigma^\#) $
-\end{center}
+\begin{align*}
+	\llbracket \cdot \rrbracket^\# &: \Com^\# \mapsto (\Sigma^\# \rightarrowtail \Sigma^\#) \\
+	\llbracket P \rrbracket^\# (s) &=  \sqcup _{\Sigma^\#} \bigl\{ s^\#_1 \in \Sigma^\# \mid \langle \alpha(P), s^\# \rangle \rightarrow \langle skip,\ s^\#_1 \rangle \bigr\}
+\end{align*}
 
-\begin{center}
-	$ \llbracket P \rrbracket^\# (s) =  \sqcup _{\Sigma^\#} \{ s^\#_1 \in \Sigma^\# \mid \langle \alpha(P),\ s^\# \rangle \rightarrow \langle skip,\ s^\#_1 \rangle \} $
-\end{center}
+\begin{definizione}\summary{Ordinamento su $\Sigma^\#$}
+\[
+	\sqsubseteq\, \subseteq \Sigma^\# \times \Sigma^\#
+\]
+\end{definizione}
+\begin{align*}
+	\forall s_1^\#,\ s_2^\# \in \Sigma^\# : s_1^\# \sqsubseteq_{\Sigma^\#} s_2^\# \iff &\bigl(dom(s_1^\#) = dom(s_2^\#) \land \forall x \in dom(s_1^\#) : \\
+	& s_1^\#(x) \sqsubseteq_\Sign s_2^\#(x) \bigr)
+\end{align*}
 
-Ora manca da definire l'ordinamento su $ \Sigma^\# $:
-\begin{center}
-	$ \sqsubseteq\ \subseteq \Sigma^\# \stimes \Sigma^\# $
-\end{center}
-
-\begin{center}
-	$ \forall s_1^\#,\ s_2^\# \in \Sigma^\# : s_1^\# \sqsubseteq_{\Sigma^\#} s_2^\# \iff ( dom(s_1^\#) = dom(s_2^\#) \land \forall x \in dom(s_1^\#) : s_1^\#(x) \sqsubseteq_A s_2^\#(x) ) $
-\end{center}
-
-\subsection{Semantica di $\Exp$}
+\subsection{Semantica di $\AExp$}
 
 \begin{center}
 	(ABS-EXP.LEFT)
 	\prooftree
-		\langle E_1,\ s \rangle \rightarrow \langle E_1',\ s' \rangle
+		\langle E_1, s \rangle \rightarrow \langle E_1', s' \rangle
 		\justifies
-		\langle (E_1 + E_2),\ s \rangle \rightarrow \langle (E_1 + E_2'),\ s \rangle		
+		\langle (E_1 + E_2), s \rangle \rightarrow \langle (E_1 + E_2'), s \rangle		
 	\endprooftree
 \end{center}
 
 \begin{center}
 	(ABS-EXP.RIGHT)
 	\prooftree
-		\langle E_2,\ s \rangle \rightarrow \langle E_2',\ s' \rangle
+		\langle E_2, s \rangle \rightarrow \langle E_2', s' \rangle
 		\justifies
-		\langle (a + E_2),\ s \rangle \rightarrow \langle (a + E_2'),\ s\rangle
+		\langle (a + E_2), s \rangle \rightarrow \langle (a + E_2'), s\rangle
 	\endprooftree
 \end{center}
 
@@ -443,46 +389,44 @@ Ora manca da definire l'ordinamento su $ \Sigma^\# $:
 	(ABS-ADD)
 	\prooftree
 		\justifies
-		\langle (a_1 + a_2),\ s \rangle \rightarrow \langle a_3,\ s \rangle 
+		\langle (a_1 + a_2), s \rangle \rightarrow \langle a_3, s \rangle 
 		\using a_3 = a_1 \absadd a_2
 	\endprooftree
 \end{center}
 
-\subsection{Semantica di $\Bool$}
+\subsection{Semantica di $\BExp$}
 
-Prima di poter definire la semantica di $\Bool$ rispetto all'operatore astratto $\absand$, definiamo l'operatore $\absand$:
+\begin{definizione}\summary{And cortocircuitato astratto}
+Prima di definire la semantica per le espressioni booleane,
+definiamo un operatore di controllo cortocircuitato.
+\end{definizione}
 
 \begin{center}
-	\begin{tabular}{| c | c | c | c | c |}
-		\hline
+	\begin{tabular}{ c | c c c c }
 		$\absand$ & $\top$ & 1 & 0 & $\bot$ \\
 		\hline
 		$\top$ & $\top$ & $\top$ & 0 & $\bot$ \\
-		\hline
 		1 & $\top$ & 1 & 0 & $\bot$ \\
-		\hline
 		0 & 0 & 0 & 0 & $\bot$ \\
-		\hline
-		$\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$ \\
-		\hline
+		$\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$
 	\end{tabular}
 \end{center} 
-
+\subsubsection{Semantica}
 \begin{center}
 	(AND-SHORT.LEFT)
 	\prooftree
-		\langle B_1,\ s \rangle \rightarrow \langle B_1',\ s' \rangle
+		\langle B_1, s \rangle \rightarrow \langle B_1', s' \rangle
 		\justifies
-		\langle (B_1 \land B_2),\ s \rangle \rightarrow \langle (B_1' \land B_2),\ s' \rangle
+		\langle (B_1 \land B_2), s \rangle \rightarrow \langle (B_1' \land B_2), s' \rangle
 	\endprooftree
 \end{center}
 
 \begin{center}
 	(AND-SHORT.TOP)
 	\prooftree
-		\langle B_2,\ s \rangle \rightarrow \langle B_2',\ s' \rangle
+		\langle B_2, s \rangle \rightarrow \langle B_2', s' \rangle
 		\justifies
-		\langle (\top \land B_2),\ s \rangle \rightarrow \langle (\top \land B_2'),\ s' \rangle
+		\langle (\top \land B_2), s \rangle \rightarrow \langle (\top \land B_2'), s' \rangle
 	\endprooftree
 \end{center}
 
@@ -490,7 +434,7 @@ Prima di poter definire la semantica di $\Bool$ rispetto all'operatore astratto 
 	(AND-SHORT.TRUE)
 	\prooftree
 		\justifies
-		\langle (1 \land B_2),\ s \rangle \rightarrow \langle B_2,\ s \rangle
+		\langle (1 \land B_2), s \rangle \rightarrow \langle B_2, s \rangle
 	\endprooftree
 \end{center}
 
@@ -498,7 +442,7 @@ Prima di poter definire la semantica di $\Bool$ rispetto all'operatore astratto 
 	(AND-SHORT.FALSE)
 	\prooftree
 		\justifies
-		\langle (0 \land B_2),\ s \rangle \rightarrow \langle 0,\ s \rangle
+		\langle (0 \land B_2), s \rangle \rightarrow \langle 0, s \rangle
 	\endprooftree
 \end{center}
 
@@ -506,7 +450,7 @@ Prima di poter definire la semantica di $\Bool$ rispetto all'operatore astratto 
 	(ABS-AND-SHORT.TOP)
 	\prooftree
 		\justifies
-		\langle (\top \land b_2),\ s \rangle \rightarrow \langle (\top \absand b_2),\ s \rangle
+		\langle (\top \land b_2), s \rangle \rightarrow \langle (\top \absand b_2), s \rangle
 	\endprooftree
 \end{center}
 
@@ -515,9 +459,9 @@ Prima di poter definire la semantica di $\Bool$ rispetto all'operatore astratto 
 \begin{center}
 	(ASSIGN)
 	\prooftree
-		\langle E,\ s \rangle \rightarrow \langle E',\ s' \rangle
+		\langle E, s \rangle \rightarrow \langle E', s' \rangle
 		\justifies
-		\langle x \weq E,\ s \rangle \rightarrow \langle x \weq E',\ s' \rangle
+		\langle x \weq E, s \rangle \rightarrow \langle x \weq E', s' \rangle
 	\endprooftree
 \end{center}
 
@@ -525,16 +469,16 @@ Prima di poter definire la semantica di $\Bool$ rispetto all'operatore astratto 
 	(ASSIGN-SKIP)
 	\prooftree
 		\justifies
-		\langle x \weq a,\ s \rangle \rightarrow \langle skip,\ s[x \mapsto a] \rangle
+		\langle x \weq a, s \rangle \rightarrow \langle \text{skip}, s[x \mapsto a] \rangle
 	\endprooftree
 \end{center}
 
 \begin{center}
-	(IF-BOOL)
+	(COND-BOOL)
 	\prooftree
-		\langle B,\ s \rangle \rightarrow \langle B',\ s' \rangle
+		\langle B, s \rangle \rightarrow \langle B', s' \rangle
 		\justifies
-		\langle if\ B\ then\ C_1\ else\ C_2,\ s \rangle \rightarrow \langle if\ B'\ then\ C_1\ else\ C_2,\ s' \rangle
+		\langle \condif{B}{C_1}{C_2}, s \rangle \rightarrow \langle \condif{B'}{C_1}{C_2}, s' \rangle
 	\endprooftree
 \end{center}
 
@@ -542,7 +486,7 @@ Prima di poter definire la semantica di $\Bool$ rispetto all'operatore astratto 
 	(IF-TRUE)
 	\prooftree
 		\justifies
-		\langle if\ b\ then\ C_1\ else\ C_2,\ s \rangle \rightarrow \langle C_1,\ s \rangle
+		\langle \condif{b}{C_1}{C_2}, s \rangle \rightarrow \langle C_1, s \rangle
 		\using b \sqsubseteq_B 1
 	\endprooftree
 \end{center}
@@ -551,7 +495,7 @@ Prima di poter definire la semantica di $\Bool$ rispetto all'operatore astratto 
 	(IF-FALSE)
 	\prooftree
 		\justifies
-		\langle if\ b\ then\ C_1\ else\ C_2,\ s \rangle \rightarrow \langle C_2,\ s \rangle
+		\langle \condif{b}{C_1}{C_2}, s \rangle \rightarrow \langle C_2, s \rangle
 		\using b \sqsubseteq_B 0
 	\endprooftree
 \end{center}

@@ -13,6 +13,10 @@
 %% operatore di sostituzione s[n/x]
 \newcommand*{\subst}[3]{#1[\nicefrac{#2}{#3}]}
 \newcommand*{\substt}[2]{[\nicefrac{#1}{#2}]}
+% macro da verificare per la composizione funzionale (trombi)
+\newcommand*{\compfun}[2]{\mathrm{#1}\mathop{\circ}\mathrm{#2}}
+% e per if then else
+\newcommand*{\condif}[3]{\text{if }\mathrm{#1}\text{ then }\mathrm{#2}\text{ else }\mathrm{#3}}
 
 %% Proof trees.
 \input prooftree
@@ -311,6 +315,8 @@
 %% Abstract functions and operations.
 % Domains
 \newcommand*{\Sign}{\mathrm{Sign}}
+\newcommand*{\AbBool}{\mathrm{AbBool}}
+
 % Aritmethic
 \newcommand*{\absuminus}{\mathop{\ominus}\nolimits}
 \newcommand*{\absadd}{\mathbin{\oplus}}
