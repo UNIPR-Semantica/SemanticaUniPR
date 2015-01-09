@@ -224,11 +224,11 @@ l'insieme degli store è quindi definito come:
 impedisce l'uso della varibile nel programma).
 
 \subsection{Sintassi}
-Aggiungiamo alla sintassi del WHILE il comando try-catch e il throw:
+Aggiungiamo alla sintassi del WHILE i comandi try-catch e throw:
 
 Siano $x \in \Var$ e $E \in \AExp$
 \begin{align*}
-\Com \ni C ::= \dots \vbar \kw{try} C_1 \kw{catch}(x) \vbar \kw{throw} E
+\Com \ni C ::= \dots \vbar \kw{try} C_1 \kw{catch}(x) C_2\vbar \kw{throw} E
 \end{align*}
 
 \subsection{Semantica formale}
@@ -288,7 +288,7 @@ Siano $x \in \Var$ e $E \in \AExp$
   \endprooftree
 \end{align*}
 Quando viene eseguito il blocco catch, per uscire dalla modalità
-eccezionale dobbiamo riportare la variabile $\$ecc$ ad uno stato
+eccezionale, dobbiamo riportare la variabile $\$ecc$ ad uno stato
 indefinito. \'E necessario definire un operatore di
 uccisione di variabile:
 \[
@@ -304,15 +304,15 @@ uccisione di variabile:
 \begin{align*}
   &\prooftree \config{C_1}{s} \ssarrow \config{C_1'}{s'}
   \justifies \config{\kw{try} C_1 \kw{catch}(x) C_2}{s} \ssarrow
-    \config{\kw{try} C_1' \kw{catch}(x) C_2}{s}
+    \config{\kw{try} C_1' \kw{catch}(x) C_2}{s'}
   \thickness=0.08em
-  \using s(\$ecc) \divrg \land s(\$ecc) \divrg
+  \using s(\$ecc) \divrg \land\ s'(\$ecc) \divrg
   \endprooftree
   \\ \\
   &\prooftree \config{C_1}{s} \ssarrow \config{C_1'}{s'}
   \justifies \config{\kw{try} C_1 \kw{catch}(x) C_2}{s} \ssarrow
     \config{C_2}{\bigl(s'\substt{s(\$ecc)}{x}\bigr) \backslash \$ecc}
   \thickness=0.08em
-  \using s(\$ecc) \divrg \land s(\$ecc) \convrg
+  \using s(\$ecc) \divrg \land\ s'(\$ecc) \convrg
   \endprooftree
 \end{align*}
