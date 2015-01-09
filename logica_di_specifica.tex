@@ -38,7 +38,9 @@ dove $x \in\Ghost$.
 \subsection{Variabili libere}
 In logica matematica e in particolare in un linguaggio del primo ordine si dice che una variabile occorre libera in una formula ben formata se nella formula tale variabile appare al di fuori del dominio di un quantificatore sulla variabile stessa. Una variabile $\Ghost$ può essere libera per questo ce ne interessiamo.
 Definiamo due funzioni con lo stesso nome (sovraccaricate) per calcolare le variabili libere in una formula.
-Sia $\fund{\FV}{\LExp}{\wp(\Ghost)}$ una funzione per catturare le variabili libere in una espressione della logica, definita per induzione strutturale :
+
+\begin{definizione} \summary{($\FV$ per $\LExp$.)}
+Sia $\fund{\FV}{\LExp}{\wp(\Ghost)}$ la funzione per catturare le variabili libere in una espressione della logica, definita per induzione strutturale :
 \begin{align*}
    \FV(x)
       &=
@@ -59,8 +61,12 @@ Sia $\fund{\FV}{\LExp}{\wp(\Ghost)}$ una funzione per catturare le variabili lib
    \FV(\lfloor \LE \rfloor)
       &= \FV(\LE).
 \end{align*}
+\end{definizione}
 
-Sia $\fund{\FV}{\Pred}{\wp(\Ghost)}$ la seconda funzione per catturare le variabili libere nei predicati della logica, definita anch'essa per induzione strutturale:
+\begin{definizione} \summary{($\FV$ per $\Pred$.)}
+Sia $\fund{\FV}{\Pred}{\wp(\Ghost)}$ la seconda funzione per catturare
+le variabili libere nei predicati della logica,
+definita anch'essa per induzione strutturale:
 \begin{align*}
    \FV(\true)
       &= \emptyset;\\
@@ -85,13 +91,14 @@ Sia $\fund{\FV}{\Pred}{\wp(\Ghost)}$ la seconda funzione per catturare le variab
    \FV(P_1 \Leftarrow P_2)
       &= \FV(P_1) \union \FV(P_2).
 \end{align*}
+\end{definizione}
 
 \subsection{Definizione semantica}
 Per definire la semantica di un tale linguaggio logico abbiamo bisogno
 di formalizzare l'operazione di sostituzione sintattica di termini
 al posto di variabili.
 
-\begin{definizione} \summary{(Sostituzione per LExp.)}
+\begin{definizione} \summary{(Sostituzione per $\LExp$.)}
 Sia $x \in \Var \union \Ghost$ una variabile e siano $\LE_0, \LE \in \LExp$
 due espressioni.
 L'espressione $\LE_0\substt{\LE}{x}$ è un elemento di $\LExp$ definito
@@ -120,7 +127,7 @@ La definizione si estende in modo ovvio ad ogni altro operatore presente
 nella sintassi delle espressioni.
 \end{definizione}
 
-\begin{definizione} \summary{(Sostituzione per Pred.)}
+\begin{definizione} \summary{(Sostituzione per $\Pred$.)}
 Sia $x \in \Var \union \Ghost$ una variabile, $\LE \in \LExp$ un'espressione
 e $P \in \Pred$ un predicato.
 L'espressione $P\substt{\LE}{x}$ è un elemento di $\Pred$ definito
@@ -152,7 +159,10 @@ per induzione strutturale su $P$ come segue:
 \end{definizione}
 
 \subsection{Valutazione semantica di LExp}
-Per definire la semantica di ogni oggetto sintattico del linguaggio, abbiamo bisogno di: $\Sigma$, che rappresenta lo store utile in quanto nelle espressioni possono comparire variabili del programma e $\Gamma$, l'ambiente delle variabili $\Ghost$ definita come $\fund{\Gamma}{\Ghost}{\Zset}$.
+Per definire la semantica di ogni oggetto sintattico del linguaggio, abbiamo bisogno di: $\Sigma$,
+che rappresenta l'insieme degli stati, utile in quanto nelle espressioni possono comparire
+variabili del programma e $\Gamma$, l'ambiente delle variabili $\Ghost$
+definita come $\fund{\Gamma}{\Ghost}{\Zset}$.
 La funzione di valutazione semantica delle espressioni è definita come segue:
 \[
    \fund{\llbracket \cdot \rrbracket ^\LExp}{\LExp}{((\Sigma \times \Gamma) \rightarrow \Zset)}
@@ -184,7 +194,7 @@ Funzione di valutazione semantica dei predicati:
 \[
    \fund{\llbracket \cdot \rrbracket ^{\Pred}}{\Pred}{((\Sigma \times \Gamma) \rightarrow \{\ttv,\ffv\})}
 \]
-Usando ancora l'induzione strutturale su ogni predicato:
+Definita per induzione sulla struttura di $\Pred$:
 \begin{align*}
    \llbracket \true \rrbracket(s,t)
       &= \ttv;\\
@@ -260,12 +270,13 @@ Dove:
             \ttv,&\text{altrimenti}.
    \end{cases}
 \end{align*}
+
 \subsection{Verità di una tripla di Floyd-Hoare}
 Ora che abbiamo tutti gli elementi, possiamo definire quando una tripla di Floyd-Hoare è vera.
 \[
    \llbracket \{P\}C\{Q\} \rrbracket = \ttv;
 \]
-\textbf{Caso semplice: }Supponiamo di non avere variabili $\Ghost$:
+\textit{Esempio del caso semplice. }Supponiamo quindi di non avere variabili $\Ghost$:
 \[
    \FV(P) \union \FV(Q)= \emptyset;
 \]
@@ -273,11 +284,11 @@ Quindi :
 \begin{align*}
    \llbracket \{P\} C\{Q\} \rrbracket 
       = \ttv \Leftrightarrow (\forall s,s'\in \Sigma \itc(
-      &\llbracket P \rrbracket( s,\emptyset) = \ttv\land <C,s>\rightarrow ^*<\mathrm{skip},s'>)\\
+      &\llbracket P \rrbracket( s,\emptyset) = \ttv\land \config{C}{s} \ssarrow ^*\config{skip}{s'}\\
       \Rightarrow&\llbracket Q \rrbracket(s',\emptyset)=\ttv);
 \end{align*}
-\textbf{Caso Completo: }Caso in cui sono effettivamente presenti variabili $\Ghost$, ma prima riflettiamo.
-Nelle triple di Hoare se ci sono variabili non quantificate, esse vengono universalmente quantificate (con un $\forall$) in maniera implicita.
+\textit{Esempio del caso completo. }Sono effettivamente presenti variabili $\Ghost$, ma prima riflettiamo.
+Nelle triple di Floyd-Hoare se ci sono variabili non quantificate, esse vengono universalmente quantificate con un $\forall$ in maniera implicita.
 \[
    \FV(P) \union \FV(Q) \neq \emptyset;
 \]
@@ -286,7 +297,7 @@ Quindi :
     \llbracket \{P\} C\{Q\} \rrbracket 
        = \ttv \Leftrightarrow \forall t \in \Gamma_{\FV(P)\union \FV(Q)}\itc
        &(\forall  s,s'\in \Sigma\itc(\llbracket P \rrbracket(s,t) = \ttv\\
-       &\land <C,s>\rightarrow ^*<\mathrm{skip},s'>)\\
+       &\land \config{C}{s} \ssarrow ^*\config{skip}{s'}\\
        &\Rightarrow\llbracket Q \rrbracket(s',t)=\ttv);
 \end{align*}
 Dove:
@@ -296,7 +307,7 @@ Dove:
 \subsection{Correttezza della logica di Floyd-Hoare}
 Se la tripla di Hoare ha dimostrazione, allora essa è vera.
 \[
-   \forall P,Q \in \Pred \itc \forall C \in \Com : \vdash\{P\}C\{Q\} \Rightarrow \llbracket \{P\}C\{Q\}\rrbracket;
+   \forall P,Q \in \Pred \itc \forall C \in \Com : \vdash \{P\}C\{Q\} \Rightarrow \llbracket \{P\}C\{Q\}\rrbracket;
 \]
 Si dimostra per induzione strutturale sull'albero che dimostra \{P\}C\{Q\}:
 \textbf{Skip}
@@ -312,14 +323,14 @@ Si dimostra per induzione strutturale sull'albero che dimostra \{P\}C\{Q\}:
 \begin{align*}
    \llbracket \{P\}\mathrm{skip}\{P\} \rrbracket \Leftrightarrow \forall t \in \Gamma_{\FV(P)}\itc
       &\forall s,s'\in \Sigma \itc(\llbracket P \rrbracket(s,t) = \ttv\\
-      &\land <\mathrm{skip},s>\rightarrow ^*<\mathrm{skip},s'>)\\
+      &\land \config{skip}{s} \ssarrow ^*\config{skip}{s'}\\
       &\Rightarrow\llbracket P \rrbracket(s',t)=\ttv);
 \end{align*}
 
 \begin{proof}
 Dato che la premessa è vera abbiamo che $s=s'$, dunque:
 \[
-   \llbracket P \rrbracket(s,t)=\ttv =\llbracket P \rrbracket(s',t).
+   \llbracket P \rrbracket(s,t)= \ttv = \llbracket P \rrbracket(s',t).
 \]
 \end{proof}
 \textbf{Assegnamento}
@@ -336,59 +347,61 @@ Dato che la premessa è vera abbiamo che $s=s'$, dunque:
    \llbracket \{Q\substt{\LE}{x}\}x:=\LE\{Q\} \rrbracket \Leftrightarrow
       &\forall t \in \Gamma_{\FV(\LE)\union \FV(Q)}\itc\forall s,s'\in \Sigma \itc\\
       &(\llbracket Q \rrbracket\substt{\LE}{x}(s,t) = \ttv\\
-      &\land <x:=\LE,s>\rightarrow ^*<\mathrm{skip},s'>)\\
+      &\land \config{x:=\LE}{s} \ssarrow ^*\config{skip}{s'}\\
       &\Rightarrow\llbracket Q \rrbracket(s',t)=\ttv);
 \end{align*}
-Questo grazie al \textbf{Lemma}:
+Questo grazie al \textit{Lemma}:
 \begin{align*}
    \forall k \in \Nset \itc
-      &(<x:=\LE,s> \rightarrow ^k<\mathrm{skip},s'>\\
-      &\Rightarrow \exists n \in \Zset\st <\LE,s>\rightarrow ^{k-1}<n,s>\land s'=s\substt{n}{x});
+      &( \config{x:=\LE}{s} \ssarrow ^k\config{skip}{s'}\\
+      &\Rightarrow \exists n \in \Zset\st \config{\LE}{s} \ssarrow ^{k-1}\config{n}{s}
+      \land s'=s \substt{n}{x});
 \end{align*}
+
 \begin{proof}
-\text{Con: $k = 0$ è banalmente vera poiché l'antecedente è falso.}\\
-\text{Con: $k = 1$ abbiamo:}
+Caso base: con $k = 0$ è banalmente vera poiché l'antecedente è falso;\\
+Con: $k = 1$ abbiamo:
 \[
-   <x:=\LE,s>\rightarrow ^1<\mathrm{skip},s'>;
+   \config{x:=\LE}{s} \ssarrow ^{1}\config{skip}{s'};
 \]
-\text{ma allora $\LE \in \Zset$ e $s'=s\substt{n}{x},$ quindi $\exists n=\LE$ tali che:}
+ma allora $\LE \in \Zset$ e $s'=s\substt{n}{x},$ quindi $\exists n=\LE$ tali che:
 \[
-   <\LE,s>\rightarrow ^0<\LE,s> \equiv <n,s>.
+   \config{\LE}{s} \ssarrow ^{0}\config{\LE}{s} \equiv \config{n}{s}.
 \]
 Questo per definizione di $\rightarrow ^0$ chiusura riflessiva.\\
-\textit{Passo induttivo}\\
-\text{Con: $k = h+1$}
+Passo induttivo: $k = h+1$
 \[
-   <x:=\LE,s>\rightarrow ^{h+1}<\mathrm{skip},s'>;
+   \config{x:=\LE}{s} \ssarrow ^{h+1}\config{skip}{s'};
 \]
 Allora si può ricondurre ad $h+1$ passi per poi applicare l'ipotesi induttiva:
 \[
-   <x:=\LE,s>\rightarrow ^1<x:=\LE',s>;
+   \config{x:=\LE}{s} \ssarrow ^{1}\config{x:=\LE'}{s};
 \]
 Ora:
 \[
-   <x:=\LE',s>\rightarrow ^h<\mathrm{skip},s'>;
+   \config{x:=\LE'}{s} \ssarrow ^{h}\config{skip}{s'};
 \]
 per ipotesi induttiva si ha che:
 \[
-   \exists n \in\Zset\itc <\LE',s>\rightarrow ^{h-1}<n,s>;
+   \exists n \in\Zset\itc \config{\LE'}{s} \ssarrow ^{h-1}\config{n}{s};
 \]
 e inoltre:
 \[
-   s'=s\substt{n}{x};
+   s'=s \substt{n}{x};
 \]
 Allora aggiungendo l'ultimo passo:
 \[
-   <x:=\LE,s>\rightarrow ^1<x:=\LE',s>\rightarrow ^h<\mathrm{skip},s'>;
+   \config{x:=\LE}{s} \ssarrow ^{1}\config{x:=\LE'}{s} \ssarrow ^{h} \config{skip}{s'};
 \]
 \[
-   <\LE,s>\rightarrow ^1<\LE',s>\rightarrow ^{h-1}<n,s'>;
+   \config{\LE}{s} \ssarrow ^{1}\config{\LE'}{s} \ssarrow ^{h-1} \config{n}{s'};
 \]
 Allora:
 \[
-   <\LE,s>\rightarrow ^h<\mathrm{skip},s'>.
+   \config{\LE}{s} \ssarrow ^{h} \config{skip}{s'}.
 \]
 \end{proof}
+
 \textbf{Composizione Sequenziale}
 \[
 \prooftree
@@ -406,24 +419,25 @@ Allora:
 \begin{align*}
    \llbracket \{P\} C_1;C_2\{R\} \rrbracket \Leftrightarrow \forall t \in \Gamma_{\FV(P)\union\FV(R)}\itc
       &(\forall s,s'\in \Sigma \itc(\llbracket P \rrbracket(s,t) = \ttv\\
-      &\land <C_1;C_2,s>\rightarrow ^*<\mathrm{skip},s'>)\\
+      &\land    \config{C_1;C_2}{s} \ssarrow ^*\config{skip}{s'}\\
       &\Rightarrow\llbracket R \rrbracket(s',t)=\ttv);
 \end{align*}
 \begin{align*}
    \llbracket \{P\}C_1\{Q\} \rrbracket \land \llbracket \{Q\}C_2\{R\} \rrbracket \Leftrightarrow
       &\forall t \in \Gamma_{\FV(P)\union\FV(R)\union\FV(Q)}\itc\\
       &\forall s,s'\in \Sigma \itc(\llbracket P \rrbracket(s,t) = \ttv\\
-      &\land <C_1,s>\rightarrow ^*<\mathrm{skip},s'>\\
+      &\land \config{C_1}{s} \ssarrow ^*\config{skip}{s'}\\
       &\land \llbracket Q\rrbracket(s',t)=\ttv \\
-      &\land <C_2,s'>\rightarrow ^*<\mathrm{skip},s''>)\\
+      &\land \config{C_2}{s'} \ssarrow ^*\config{skip}{s''})\\
       &\Rightarrow \llbracket R \rrbracket(s'',t)=\ttv;
 \end{align*}
-Questo grazie al \textbf{Lemma}:
+Questo grazie al \textit{Lemma}:
 \begin{align*}
    \forall C_1,C_2 \in \Com \itc 
-   &\forall s,s' \in \Sigma \itc \forall n \in \Nset <C_1;C_2,s>\rightarrow ^k<\mathrm{skip},s'> \\
+   &\forall s,s' \in \Sigma \itc \forall n \in \Nset \config{C_1;C_2}{s} \ssarrow ^n\config{skip}{s'} \\
    &\Rightarrow \exists n_1,n_2 \in \Nset \st \exists s'' \in \Sigma \st \\
-   &<C_1,s>\rightarrow ^{k_1}<\mathrm{skip},s'> \land <C_2,s'>\rightarrow ^{k_2}<\mathrm{skip},s''> \land k = k_1 + k_2.
+   &\config{C_1}{s} \ssarrow ^{n_1}\config{skip}{s'} \land \config{C_2}{s'} \ssarrow ^{n_2}\config{skip}{s''}
+   \land n = n_1 + n_2.
 \end{align*}
 \begin{proof}
 
