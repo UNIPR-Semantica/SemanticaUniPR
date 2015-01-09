@@ -16,7 +16,9 @@ astratta che andiamo a definire è
 
 \subsection{Dominio astratto}
 
-Il dominio astratto $\Sign$ cattura semplici relazioni rispetto al
+Il dominio astratto cattura alcune caratteristiche del dominio concreto,
+tralasciando quelle restanti; in questo caso
+$\Sign$ cattura semplici relazioni rispetto al
 numero $0$, ad esempio $\cdot < 0$, $\cdot = 0$, \dots
 L'ordinamento del dominio è indicato nel diagramma di Hasse di
 figura~\ref{fig:ordering-rels-lattice}.
@@ -88,22 +90,23 @@ da:
 La funzione $\gamma$ è monotona.
 \end{proposizione}
 \begin{proof}
-	$ \gamma(\bot) = \o \subseteq \gamma(a) , \forall a \in A $ \\
+	$ \gamma(\bot) = \o \subseteq \gamma(a) , \forall a \in \Sign $ \\
 	$ \gamma(=) = \{0\} \subseteq \gamma(\geq) $ \\
-	$ \gamma(a) \subseteq \Zset = \gamma(\top), \forall a \in A $
+	$ \gamma(a) \subseteq \Zset = \gamma(\top), \forall a \in \Sign $
 \end{proof}
 
 \subsection{Funzione di astrazione}
 
 \begin{definizione} \summary{($\fund{\alpha}{\wp(\Zset)}{\Sign}$.)}
-La funzione $\fund{\alpha}{\wp(\Zset)}{\Sign}$ viene definita attraverso
-la funzione $\beta$:
+La funzione $\fund{\alpha}{\wp(\Zset)}{\Sign}$ mappa un insieme
+di elementi concreti nel più preciso valore astratto che rappresenta
+tale insieme; viene definita attraverso la funzione $\beta$:
 \[
 	\fund{\beta}{\Zset}{\Sign}
 \]
 che si comporta nel seguente modo:
 \begin{align*}
-	\forall n \in \Zset: \beta(n) &=
+	\forall n \in \Zset \itc \beta(n) &=
 	\begin{cases}
 		>,	&\text{se $n  >  0$;} \\
 		=,	&\text{se $n = 0$;} \\
@@ -113,7 +116,7 @@ che si comporta nel seguente modo:
 Quindi, la funzione $\alpha$ rappresenta il $\lub$ della
 funzione $\beta$ applicata ad ogni elemento di $S$:
 \[
-	\forall S \in \wp(\Zset) : \alpha(S) = \sqcup \{\, \beta(n) \mid n \in S \,\}
+	\forall S \in \wp(\Zset) \itc \alpha(S) = \sqcup \{\, \beta(n) \mid n \in S \,\}
 \]
 Questo fatto giustifica le approssimazioni compiute nel processo
 di astrazione.
@@ -123,17 +126,24 @@ di astrazione.
 La funzione $\alpha$ è monotona.
 \end{proposizione}
 \begin{proof}
-	$ \forall S_1, S_2 \in \wp(\Zset) : S_1 \subseteq S_2 \Rightarrow \alpha(S_1) \sqsubseteq \alpha(S_2)\text{;} $ \\
-	$ S_1 \subseteq S_2 \Rightarrow \beta(S_1) \subseteq \beta(S_2) \text{, perché } \beta \text{ è  una funzione;} $ \\
-	$ \alpha(S_1) = \alpha(S_2) \text{per proprietà del lub.} $
+	\begin{align*}
+		\forall S_1, S_2 \in \wp(\Zset) \itc S_1 \subseteq S_2 &\Rightarrow \alpha(S_1) \sqsubseteq \alpha(S_2)\text{;} \\
+		S_1 \subseteq S_2 &\Rightarrow \beta(S_1) \subseteq \beta(S_2) \text{, perché } \beta \text{ è  una funzione;} \\
+		\alpha(S_1) &= \alpha(S_2) \text{per proprietà del lub.}
+	\end{align*}
 \end{proof}
 
 \subsection{Inserzione di Galois}
 
+Oltre alla monotonia delle funzioni di astrazione e concretizzazione,
+è interessante sapere se stiamo lavorando con un'inserzione di Galois.
+Mostrare questo fatto vuol dire, per prima cosa,
+verificare è che $\compfun{\gamma}{\alpha}$ è estensiva. 
+
 \begin{proof}
-Siamo in un'inserzione di Galois? Il primo passo da verificare è che $\compfun{\gamma}{\alpha}$ è estensiva. 
+$\compfun{\gamma}{\alpha}$ è estensiva.
 \begin{align*}
-	\forall S \in \calP(\Zset) : \compfun{\gamma}{\alpha}(S) &\supseteq S \\
+	\forall S \in \calP(\Zset) \itc \compfun{\gamma}{\alpha}(S) &\supseteq S \\
 	\gamma\bigl(\alpha(S)\bigr) &\supseteq S \\
 	\gamma\bigl(\sqcup \{\, \beta(n) \mid n \in S \,\} \bigr) &\supseteq S
 \end{align*}
@@ -146,7 +156,7 @@ Questo perché l'unione è il lub di quell'insieme:
 \]
 Per dimostrarlo possiamo sfuttare il lemma:
 \begin{lemma}
-	$ \forall n \in \Zset : n \in \gamma\bigl(\beta(n)\bigr) $
+	$ \forall n \in \Zset \itc n \in \gamma\bigl(\beta(n)\bigr) $
 \end{lemma}
 Facendo i vari casi, questo completa la dimostrazione.
 \end{proof}
@@ -169,11 +179,11 @@ al nostro dominio astratto.
 \begin{definizione}\summary{Moltiplicazione astratta}
 La moltiplicazione astratta è definita come segue:
 \[
-	\absmul = \lambda a_1,a_2 \in A . \alpha\bigl(\gamma(a_1) \conmul \gamma(a_2)\bigr)
+	\absmul \defeq \lambda a_1,a_2 \in \Sign \st \alpha\bigl(\gamma(a_1) \conmul \gamma(a_2)\bigr)
 \]
 con $\conmul$ moltiplicazione concreta, definita come segue:
 \[
-	S_1 \conmul S_2 = \{\, n_1 * n_2 \mid n_1 \in S_1, n_2 \in S_2 \,\}
+	S_1 \conmul S_2 \defeq \{\, n_1 * n_2 \mid n_1 \in S_1, n_2 \in S_2 \,\}
 \]
 \end{definizione}
 
@@ -198,12 +208,12 @@ questo perché l'operatore di moltiplicazione astratta è commutativo.
 \begin{definizione}\summary{Somma astratta}
 La somma astratta è definita come segue:
 \[
-	\absadd = \lambda a_1,a_2 \in A . \alpha\bigl(\gamma(a_1) \conadd \gamma(a_2)\bigr)
+	\absadd \defeq \lambda a_1,a_2 \in \Sign \st \alpha\bigl(\gamma(a_1) \conadd \gamma(a_2)\bigr)
 \]
 con $\conadd$ somma concreta, definita come segue:
 
 \[
-	S_1 \conadd S_2 = \{\, n_1 + n_2 \mid n_1 \in S_1, n_2 \in S_2 \,\}
+	S_1 \conadd S_2 \defeq \{\, n_1 + n_2 \mid n_1 \in S_1, n_2 \in S_2 \,\}
 \]
 \end{definizione}
 
@@ -230,11 +240,11 @@ la moltiplicazione astratta è più precisa della somma astratta.
 \begin{definizione}\summary{Divisione intera astratta}
 La divisione intera astratta viene definita come segue:
 \[
-	\absdiv = \lambda a_1,a_2 \in A . \alpha\bigl(\gamma(a_1) \condiv \gamma(a_2)\bigr)
+	\absdiv \defeq \lambda a_1,a_2 \in \Sign \st \alpha\bigl(\gamma(a_1) \condiv \gamma(a_2)\bigr)
 \]
 con $\condiv$ divisione intera concreta, definita come segue:
 \[
-	S_1 \condiv S_2 = \bigl\{\, n_1 / n_2 \mid n_1 \in S_1, n_2 \in S_2 \backslash \{0\} \,\bigr\}
+	S_1 \condiv S_2 \defeq \bigl\{\, n_1 / n_2 \mid n_1 \in S_1, n_2 \in S_2 \backslash \{0\} \,\bigr\}
 \]
 \end{definizione}
 Nella seguente tabella, gli indici delle colonne indicano il dividendo e gli indici delle righe indicano il divisore.
@@ -277,16 +287,34 @@ può essere riscritta come:
 \section{Dominio astratto dei booleani}
 
 Consideriamo ora come dominio astratto quello dei booleani.
+Il dominio astratto dei booleani $\AbBool$ viene definito per poter
+estendere l'insieme delle operazioni su $\Sign$; alcune operazioni,
+in particolare quelle di confronto tra elementi di $\Sign$,
+restituiscono un risultato appartenente a $\AbBool$.
 [aggiungere immagine per dominio astratto dei booleani]
 
 \section{Operazioni astratte su booleani}
 
-Il dominio astratto dei booleani ci permette di ragionare
-su altre operazioni astratte;
+Come accennato, il dominio astratto dei booleani ci permette di
+ragionare su altre operazioni astratte;
 poiché si parla di booleani le operazioni interessanti
-saranno quelle di confronto. 
+saranno quelle di confronto.
+Le operazioni astratte sui booleani sono definite come segue:
+\begin{definizione}\summary{Operazioni astratte su booleani}
+\[
+	\fund{\eqcirc}{\Sign \times \Sign}{\AbBool}
+\]
+\end{definizione}
 
 \begin{definizione}\summary{Uguaglianza astratta}
+L'uguaglianza astratta viene definita come segue:
+\[
+	\abseq \defeq \lambda a_1,a_2 \in \Sign \st \alpha\bigl(\gamma(a_1) \coneq \gamma(a_2)\bigr)
+\]
+con $\coneq$ uguaglianza concreta, definita come segue:
+\[
+	S_1 \coneq S_2 \defeq \{\, n_1 = n_2 \mid n_1 \in S_1, n_2 \in S_2 \,\}
+\]
 \end{definizione}
 \begin{center}
 	\begin{tabular}{ c | c c c c c c c c }
@@ -313,10 +341,17 @@ Per definire l'operazione astratta di diverso basta definire quella di negato as
 \end{definizione}
 
 \begin{definizione}\summary{Disuguaglianza astratta}
+\[
+	\absleq \defeq \lambda a_1,a_2 \in \Sign \st \alpha\bigl(\gamma(a_1) \conineq \gamma(a_2)\bigr)
+\]
+con $\conineq$ uguaglianza concreta, definita come segue:
+\[
+	S_1 \conineq S_2 \defeq \{\, n_1 \leq n_2 \mid n_1 \in S_1, n_2 \in S_2 \,\}
+\]
+\end{definizione}
 Nella seguente tabella, gli indici delle colonne indicano
 l'elemento a sinistra della disuguaglianza e gli indici delle righe
 indicano l'elemento a destra.
-\end{definizione}
 
 \begin{center}
 	\begin{tabular}{ c | c c c c c c c c }
@@ -335,64 +370,93 @@ indicano l'elemento a destra.
 
 \subsection{Introduzione alla semantica astratta small-step}
 Dopo aver definito le operazioni astratte,
-definiamo una semantica astratta per $\AExp$, $\BExp$ e $\Com$.
+definiamo una semantica astratta per $\AExp$, $\BExp$ e $\Com$; cioè
+le componenti sintattiche del linguaggio WHILE.
+Definire una semantica astratta vuol dire capire come
+``eseguire astrattamente'' il programma sul dominio astratto,
+per osservare le proprietà che il dominio astratto modella.
 
 \begin{definizione}\summary{Store astratto}
+Uno \emph{store astratto} $s \in \Sigma^\#$ è un'approssimazione
+delle celle di memoria usate dal linguaggio WHILE per memorizzare
+le variabili di tipo intero.
 \[
-	\fund{\Sigma^\#}{\Var}{A}
+	\fund{\Sigma^\#}{\Var}{\Sign}
 \]
 \end{definizione}
 
-\begin{definizione}\summary{Semantica astratta}
+\begin{definizione}\summary{Semantica concreta}
+La semantica concreta di un programma in linguaggio WHILE
+consisteva in una serie di transizioni per ridurre il programma
+alla configurazione terminale $\kw{skip}$:
 \[	
-	\llbracket P \rrbracket (s) = s' \text{, se } \langle P, s \rangle \rightarrow^* \langle skip, s' \rangle
+	\llbracket P \rrbracket (s) = s' \text{, se } \langle P, s \rangle \rightarrow^* \langle \kw{skip}, s' \rangle
 \]
 \end{definizione}
-
-Ora abbiamo non determinismo:
-\begin{align*}
-	\llbracket \cdot \rrbracket^\# &: \Com^\# \mapsto (\Sigma^\# \rightarrowtail \Sigma^\#) \\
-	\llbracket P \rrbracket^\# (s) &=  \sqcup _{\Sigma^\#} \bigl\{ s^\#_1 \in \Sigma^\# \mid \langle \alpha(P), s^\# \rangle \rightarrow \langle skip,\ s^\#_1 \rangle \bigr\}
-\end{align*}
+La semantica concreta il programma $P$ aveva un solo insieme di passi
+per poter raggiungere la configurazione $\kw{skip}$;
+la semantica astratta introduce invece il non determinismo, in quanto
+approssimazione della semantica concreta:
+\begin{definizione}\summary{Semantica astratta}
+È una funzione totale che va da un insieme di comandi astratti $\Com^\#$
+ad una funzione parziale tra l'insieme degli stati astratti $\Sigma^\#:$
+\[
+	\llbracket \cdot \rrbracket^\# : \Com^\# \mapsto (\Sigma^\# \rightarrowtail \Sigma^\#)
+\]
+La semantica astratta di un programma diventa dunque la miglior
+approssimazione (grazie alle proprietà del $\lub$) del programma,
+dunque può essere vista come l'astrazione più precisa del programma:
+\[
+	\llbracket P \rrbracket^\# (s) =  \sqcup _{\Sigma^\#} \bigl\{ s^\#_1 \in \Sigma^\# \mid \langle \alpha(P), s^\# \rangle \rightarrow \langle \kw{skip},\ s^\#_1 \rangle \bigr\}
+\]
+\end{definizione}
 
 \begin{definizione}\summary{Ordinamento su $\Sigma^\#$}
+Si definisce ora l'ordinamento sull'insieme degli store astratti:
 \[
-	\sqsubseteq\, \subseteq \Sigma^\# \times \Sigma^\#
+	\sqsubseteq_{\Sigma^\#}\, \subseteq \Sigma^\# \times \Sigma^\#
 \]
 \end{definizione}
+Nel dettaglio:
 \begin{align*}
-	\forall s_1^\#,\ s_2^\# \in \Sigma^\# : s_1^\# \sqsubseteq_{\Sigma^\#} s_2^\# \iff &\bigl(dom(s_1^\#) = dom(s_2^\#) \land \forall x \in dom(s_1^\#) : \\
+	\forall s_1^\#,\ s_2^\# \in \Sigma^\#
+		\itc s_1^\# \sqsubseteq_{\Sigma^\#} s_2^\# \iff &\bigl(\dom(s_1^\#) = \dom(s_2^\#) \land \forall x \in \dom(s_1^\#) \itc \\
 	& s_1^\#(x) \sqsubseteq_\Sign s_2^\#(x) \bigr)
 \end{align*}
 
+Completate tali definizioni, è possibile ipotizzare un insieme di regole
+che costruiscano la semantica astratta del linguaggio WHILE. La forma
+scelta per presentare tale semantica è quella operazionale small-step.
+
 \subsection{Semantica di $\AExp$}
 
-\begin{center}
-	(ABS-EXP.LEFT)
+\[
+	\rulename{ABS-EXP.LEFT}
 	\prooftree
 		\langle E_1, s \rangle \rightarrow \langle E_1', s' \rangle
 		\justifies
 		\langle (E_1 + E_2), s \rangle \rightarrow \langle (E_1 + E_2'), s \rangle		
 	\endprooftree
-\end{center}
+\]
 
-\begin{center}
-	(ABS-EXP.RIGHT)
+\[
+	\rulename{ABS-EXP.RIGHT}
 	\prooftree
 		\langle E_2, s \rangle \rightarrow \langle E_2', s' \rangle
 		\justifies
 		\langle (a + E_2), s \rangle \rightarrow \langle (a + E_2'), s\rangle
 	\endprooftree
-\end{center}
+\]
 
-\begin{center}
-	(ABS-ADD)
+\[
+	\rulename{ABS-ADD}
 	\prooftree
+		\nohyp
 		\justifies
 		\langle (a_1 + a_2), s \rangle \rightarrow \langle a_3, s \rangle 
 		\using a_3 = a_1 \absadd a_2
 	\endprooftree
-\end{center}
+\]
 
 \subsection{Semantica di $\BExp$}
 
@@ -412,90 +476,96 @@ definiamo un operatore di controllo cortocircuitato.
 	\end{tabular}
 \end{center} 
 \subsubsection{Semantica}
-\begin{center}
-	(AND-SHORT.LEFT)
+\[
+	\rulename{AND-SHORT.LEFT}
 	\prooftree
 		\langle B_1, s \rangle \rightarrow \langle B_1', s' \rangle
 		\justifies
 		\langle (B_1 \land B_2), s \rangle \rightarrow \langle (B_1' \land B_2), s' \rangle
 	\endprooftree
-\end{center}
+\]
 
-\begin{center}
-	(AND-SHORT.TOP)
+\[
+	\rulename{AND-SHORT.TOP}
 	\prooftree
 		\langle B_2, s \rangle \rightarrow \langle B_2', s' \rangle
 		\justifies
 		\langle (\top \land B_2), s \rangle \rightarrow \langle (\top \land B_2'), s' \rangle
 	\endprooftree
-\end{center}
+\]
 
-\begin{center}
-	(AND-SHORT.TRUE)
+\[
+	\rulename{AND-SHORT.TRUE}
 	\prooftree
+		\nohyp
 		\justifies
 		\langle (1 \land B_2), s \rangle \rightarrow \langle B_2, s \rangle
 	\endprooftree
-\end{center}
+\]
 
-\begin{center}
-	(AND-SHORT.FALSE)
+\[
+	\rulename{AND-SHORT.FALSE}
 	\prooftree
+		\nohyp
 		\justifies
 		\langle (0 \land B_2), s \rangle \rightarrow \langle 0, s \rangle
 	\endprooftree
-\end{center}
+\]
 
-\begin{center}
-	(ABS-AND-SHORT.TOP)
+\[
+	\rulename{ABS-AND-SHORT.TOP}
 	\prooftree
+		\nohyp
 		\justifies
 		\langle (\top \land b_2), s \rangle \rightarrow \langle (\top \absand b_2), s \rangle
 	\endprooftree
-\end{center}
+\]
 
 \subsection{Semantica di $\Com$}
 
-\begin{center}
-	(ASSIGN)
+\[
+	\rulename{ASSIGN}
 	\prooftree
 		\langle E, s \rangle \rightarrow \langle E', s' \rangle
 		\justifies
 		\langle x \weq E, s \rangle \rightarrow \langle x \weq E', s' \rangle
 	\endprooftree
-\end{center}
+\]
 
-\begin{center}
-	(ASSIGN-SKIP)
+\[
+	\rulename{ASSIGN-SKIP}
 	\prooftree
+		\nohyp
 		\justifies
-		\langle x \weq a, s \rangle \rightarrow \langle \text{skip}, s[x \mapsto a] \rangle
+		\langle x \weq a, s \rangle \rightarrow \langle \kw{skip}, s[x \mapsto a] \rangle
 	\endprooftree
-\end{center}
+\]
 
-\begin{center}
-	(COND-BOOL)
+\[
+	\rulename{COND-BOOL}
 	\prooftree
 		\langle B, s \rangle \rightarrow \langle B', s' \rangle
 		\justifies
 		\langle \condif{B}{C_1}{C_2}, s \rangle \rightarrow \langle \condif{B'}{C_1}{C_2}, s' \rangle
 	\endprooftree
-\end{center}
+\]
 
-\begin{center}
-	(IF-TRUE)
+\[
+	\rulename{IF-TRUE}
 	\prooftree
+		\nohyp
 		\justifies
 		\langle \condif{b}{C_1}{C_2}, s \rangle \rightarrow \langle C_1, s \rangle
 		\using b \sqsubseteq_B 1
 	\endprooftree
-\end{center}
+\]
 
-\begin{center}
-	(IF-FALSE)
+\[
+	\rulename{IF-FALSE}
 	\prooftree
+		\nohyp
 		\justifies
 		\langle \condif{b}{C_1}{C_2}, s \rangle \rightarrow \langle C_2, s \rangle
 		\using b \sqsubseteq_B 0
 	\endprooftree
-\end{center}
+\]

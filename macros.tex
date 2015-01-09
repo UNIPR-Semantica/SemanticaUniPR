@@ -16,7 +16,7 @@
 % macro da verificare per la composizione funzionale (trombi)
 \newcommand*{\compfun}[2]{\mathrm{#1}\mathop{\circ}\mathrm{#2}}
 % e per if then else
-\newcommand*{\condif}[3]{\text{if }\mathrm{#1}\text{ then }\mathrm{#2}\text{ else }\mathrm{#3}}
+\newcommand*{\condif}[3]{\kw{if}\mathrm{#1}\kw{then}\mathrm{#2}\kw{else}\mathrm{#3}}
 
 %% Proof trees.
 \input prooftree
@@ -306,8 +306,8 @@
 \newcommand*{\condiv}{\mathbin{\boxslash}}
 \newcommand*{\conmod}{\mathbin{\boxbar}}
 % Boolean
-\newcommand*{\coneq}{\mathbin{\triangleq}}
-\newcommand*{\conineq}{\mathbin{\trianglelefteq}}
+\newcommand*{\coneq}{\mathbin{\circeq}}
+\newcommand*{\conineq}{\mathbin{\leqq}}
 \newcommand*{\conneg}{\mathbin{\daleth}}
 \newcommand*{\conor}{\mathbin{\triangledown}}
 \newcommand*{\conand}{\mathbin{\vartriangle}}
