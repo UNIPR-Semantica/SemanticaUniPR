@@ -51,45 +51,88 @@ dai seguenti schemi:
 \endprooftree
 \]
 
-L'operatore $\Downarrow$ può essere letto come 'valuta a' e permette
+L'operatore $\Downarrow$ può essere letto come ``valuta a'' e permette
 in un solo colpo di compiere tutti i passi affinché un comando o un'espressione
-giunga al termine della propria computazione. Operando in questo modo,
-ci è possibile provare, tramite dimostrazioni ad albero, asserzioni come la seguente:
+giunga al termine della propria computazione.
+
+Le definizioni semantiche date sono dette ``schemi'' perché vanno
+opportunamente instanziate. Vediamone alcuni esempi; la seguente è
+un'istanza corretta della B-NUM:
+
+\[
+\prooftree
+  \nohyp
+\justifies
+  3 \Downarrow 3
+\endprooftree
+\]
+
+La seguente è invece un'istanza corretta della B-ADD:
+
+\[
+\prooftree
+  \prooftree
+    \nohyp
+  \justifies
+     3 \Downarrow 3
+  \endprooftree
+  \quad
+  \prooftree
+    \nohyp
+  \justifies
+     2 \Downarrow 2
+  \endprooftree
+\justifies
+  (3+2) \Downarrow 5
+\using
+  5 = 3+2
+\endprooftree
+\]
+
+La seguente è invece un'istanza scorretta (cioè non dimostrabile) della B-ADD:
+
+\[
+\prooftree
+  3 \Downarrow 6
+  \quad
+  2 \Downarrow 4
+\justifies
+  (3+4) \Downarrow 10
+\using
+  10 = 6+4
+\endprooftree
+\]
+
+
+Operando in questo modo, ci è possibile realizzare dimostrazioni ad albero
+come la seguente:
 
 $$
 \prooftree
-	\prooftree
-   		\justifies
-   			3 \Downarrow 3
-   		\using
-   			(B-NUM)
-	\endprooftree
-	\;
-	\;
-	\prooftree
-		\prooftree
-   			\justifies
-   				2 \Downarrow 2
-   			\using
-   				(B-NUM)
-		\endprooftree
-		\;
-		\;
-		\prooftree
-   			\justifies
-   				3 \Downarrow 3
-   			\using
-   				(B-NUM)
-		\endprooftree
-   		\justifies
-   			(2+1) \Downarrow 3
-   		\using
-   			(B-ADD)
-		\endprooftree
+  \prooftree
    \justifies
-   		(3+(2+1)) \Downarrow 6
+     3 \Downarrow 3
+  \endprooftree
+  \quad
+  \prooftree
+	\prooftree
+   	  \justifies
+   		2 \Downarrow 2
+	\endprooftree
+	\quad
+	\prooftree
+   	  \justifies
+   		1 \Downarrow 1
+	\endprooftree
+   	\justifies
+   	  (2+1) \Downarrow 3
    	\using
-   		(B-ADD)
+   	  3 = 2+1
+  \endprooftree
+  \justifies
+    (3+(2+1)) \Downarrow 6
+   	\using
+   	  6 = 3+(2+1)
 \endprooftree
 $$
 
@@ -130,15 +173,13 @@ $m_1, m_2, p_1, p_2 \in Num$ tali che:
   m_1 + m_2 &= m_3, & E_1 &\Downarrow m_1, & E_2 &\Downarrow m_2, \\
   p_1 + p_2 &= p_3, & E_1 &\Downarrow p_1, & E_2 &\Downarrow p_2.
 \end{align*}
-		  Ma allora, per ipotesi induttiva:
-		  \begin{align*}
-		  & m_1 = p_1 \\
-		    \land & \; m_2 = p_2 \\
-		    \land & \; m_1+m_2=m_3 \\
-		    \land & \; p_1 + p_2 = p_3
-		  \end{align*}
-		  Da cui deduciamo che:
-		  $ m_1 + m_2 = p_1 + p_2 \Rightarrow m_3 = p_3$ come volevamo dimostrare.
+Ma allora, per ipotesi induttiva:
+\begin{align*}
+m_1 &= p_1, & m_1+m_2 &= m_3 \\
+m_2 &= p_2, & p_1 + p_2 &= p_3
+\end{align*}
+Da cui deduciamo che $ m_1 + m_2 = p_1 + p_2$, per cui
+$m_3 = p_3$ come volevamo dimostrare.
 \end{proof}
 
 \section{Normalizzazione}\marginpar{Mancino}
@@ -147,29 +188,31 @@ $n$ tale che $E \Downarrow n$.
 
 Osserviamo che, in generale, ci sono esempi in cui non è possibile normalizzare:
 $$ while \; true \; do \; skip \; \Downarrow \; ? $$
-A destra dell'operatore di 'valuta a' non posso scriverci nulla, il ciclo non termina.
+A destra dell'operatore di ``valuta a'' non posso scriverci nulla, il ciclo non termina.
 Un altro esempio è il seguente:
 $$ \nicefrac{0}{0} \; \Downarrow \; ? $$
-A destra dell'operatore di 'valuta a' posso scrivere la codifica del disastro (se esiste)
+A destra dell'operatore di ``valuta a'' posso scrivere la codifica del disastro (se esiste)
 altrimenti, come nel caso precedente, non possiamo scriverci nulla.
 
 \begin{teorema}[Normalizzazione]
-La semantica big step di Exp gode della proprietà di normalizzazione, ossia
-$\forall E \in Exp, \; \exists \; n \in Num \text{ tale che } E \Downarrow n$.
+La semantica big-step del frammento di $\AExp$ data nella
+sezione~\textup{\ref{sec:primo-esempio-semantica-big-step}}
+gode della proprietà di normalizzazione, ossia per ogni
+$E \in Exp$ esiste  $n \in \Zset$ tale che $E \Downarrow n$.
 \end{teorema}
 
 \section{Semantica big step per While}\marginpar{Mancino}
-Se invece di usare un linguaggio didattico semplice come quello descritto nel capitolo
-precedente volessimo definire tramite la big step la semantica del linguaggio while
-avremo, logicamente, che una coppia \emph{(comando, stato)} viene valutata ad un
-nuovo stato, ossia, dato un comando C e uno stato s, in generale:
+Invece di usare un semplice frammento di linguaggio come quello descritto nel capitolo
+precedente possiamo anche definire tramite la big-step la semantica del linguaggio WHILE.
+Precisiamo allora che una coppia (\emph{comando, stato}) viene valutata ad un
+nuovo stato, ossia, dato un comando $C$ e uno stato $s$, in generale:
 
 $$
 \langle C,s \rangle \Downarrow s'
 $$
 
-Con questa premessa, definendo con E la generica espressione, con C
-il generico comando e con s il generico stato,
+Con questa premessa, definendo con $E$ la generica espressione, con $C$
+il generico comando e con $s$ il generico stato,
 è facile immaginare il comportamento di tutti i comandi per while:
 
 \begin{align*}
@@ -207,7 +250,8 @@ il generico comando e con s il generico stato,
 \endprooftree
 \end{align*}
 
-Infine rimane la regola del while per la quale, ovviamente, abbiamo due casi distinti:
+Infine rimane la regola del while, da cui il linguaggio prende il nome,
+per la quale abbiamo due comportamenti distinti:
 
 \begin{align*}
 \prooftree
@@ -226,7 +270,7 @@ Infine rimane la regola del while per la quale, ovviamente, abbiamo due casi dis
 
 \section{Effetti collaterali}\marginpar{Mancino}
 In questo paragrafo ridefiniamo la semantica data precedentemente
-per il linguaggio While introducendo degli effetti collaterali.
+per il linguaggio WHILE introducendo degli effetti collaterali.
 
 \begin{definizione} \summary{(Effetti collaterali.)}
 Si dice che si verifica un \emph{effetto collaterale} quando
@@ -235,12 +279,12 @@ scoping locale.
 \end{definizione}
 
 In questo caso, dobbiamo ricordarci che, rispetto alle definizioni date
-nel paragrafo precedente, detto C il generico comando, E la generica espressione,
-s il generico stato, si ha:
+nel paragrafo precedente, detto $C$ il generico comando, $E$ la generica espressione,
+$s$ il generico stato, si ha:
 
 \begin{align*}
-& \langle C,s \rangle \Downarrow s' \\
-& \langle E,s \rangle \Downarrow \langle n,s \rangle
+\langle C,s \rangle &\Downarrow s' \\
+\langle E,s \rangle &\Downarrow \langle n,s \rangle
 \end{align*}
 
 Partendo da questo assunto non è quindi difficile ricostruire la semantica:
