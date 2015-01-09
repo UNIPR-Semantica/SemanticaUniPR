@@ -2,7 +2,7 @@
 
 \section{Array} \marginpar{Segalini}
 
-[Breve introduzione\dots Aggiungere nel linguaggio while gli array]
+Aggiungere nel linguaggio while gli array.
 
 \subsection{Sintassi}
 
@@ -70,7 +70,7 @@ Semantica di $x(E)$ denotazionale senza conversione scalare-array:
       \in \Lambda \land \calE\llbracket E \rrbracket(s)\convrg$;} \\
     \divrg, &\text{se $s(x) \in \Lambda \land \calE\llbracket E
       \rrbracket(s)\divrg$;} \\
-    \divrg, &\text{se $s(x)\divrg$;}
+    \divrg, &\text{se $s(x)\divrg$.}
   \end{cases}
 \]
 \subsubsection{Operazionale small-step}
@@ -105,7 +105,7 @@ se $x$ è uno scalare:
   \endprooftree
 \end{align*}
 \[
-\text{dove } a = \lambdaop i.0
+\text{dove } a = \lambdaop i.0.
 \]
 Semantica di $x(E)$ alternativa che trasforma lo scalare $x$ in un
 array vuoto (composto interamente da 0), eccezione fatta per la
@@ -123,8 +123,8 @@ posizione $n$-ma la quale conterrà il valore di $x$:
 \begin{align*}
   \text{dove } a = \lambdaop i.
     \begin{cases}
-      s(x), &\text{se $i = n$} \\
-      0,    &\text{altrimenti}
+      s(x), &\text{se $i = n$;} \\
+      0,    &\text{altrimenti.}
     \end{cases}
 \end{align*}
 Semantica di $x(E_0) \weq E_1$ small step che permetta la conversione di uno
@@ -159,8 +159,8 @@ se $x$ è un array:
 \begin{align*}
   \text{dove } a = \lambdaop i.
   \begin{cases}
-    k, &\text{se $i = n$} \\
-    s(x)(i), &\text{se $i \neq n$}
+    k, &\text{se $i = n$;} \\
+    s(x)(i), &\text{se $i \neq n$.}
   \end{cases}
 \end{align*}
 se $x$ è uno scalare (assegnamento distruttivo):
@@ -194,41 +194,43 @@ alla posizione~0 del nuovo array:
 \begin{align*}
   \text{dove } a = \lambdaop i.
   \begin{cases}
-    k, &\text{se $i = n$} \\
-    0, &\text{se $i \neq n$} \\
-    s(x), &\text{se $i = 0 \land h \neq 0$}
+    k, &\text{se $i = n$;} \\
+    0, &\text{se $i \neq n$;} \\
+    s(x), &\text{se $i = 0 \land h \neq 0$.}
   \end{cases}
 \end{align*}
 
 \section{Eccezioni} \marginpar{Segalini}
 
-[Breve introduzione\dots Aggiungere nel linguaggio while le eccezioni...]
-
+Aggungiamo le \emph{eccezioni} nel linguaggio WHILE. Le eccezioni in
+questo linguaggio sono identificate da interi ($\kw{throw} E$).
 
 Creiamo un nuovo insieme di possibili variabili utilizzabili in WHILE
 chiamato $\Var'$. Questo insieme contiene tutte le variabili di $\Var$
 ed una variabile speciale, non utilizzabile nei programmi, chiamata
-$\$ecc$.
+$\$ecc$. Questa variabile contiene l'identificativo dell'eccezione
+lanciata oppure è indefinita se la modalità di esecuzione è non
+eccezionale.
 
 \begin{align*}
   &\$ecc \not \in \Var \\
-  &\Var' \defeq \Var \union \{\$ecc\}
+  &\Var' \defeq \Var \union \{\$ecc\}.
 \end{align*}
 l'insieme degli store è quindi definito come:
 
 \[
-  \pard{\Sigma}{\Var'}{\Zset}
+  \pard{\Sigma}{\Var'}{\Zset}.
 \]
 \emph{N.B.:} nella sintassi delle espressioni ($E \in \AExp ::= \dots
 \vbar x$) la $x$ appartiene a $\Var$ e non $\Var'$ (questo
-impedisce l'uso della varibile nel programma).
+impedisce l'uso della varibile $\$ecc$ nel programma).
 
 \subsection{Sintassi}
 Aggiungiamo alla sintassi del WHILE i comandi try-catch e throw:
 
 Siano $x \in \Var$ e $E \in \AExp$
 \begin{align*}
-\Com \ni C ::= \dots \vbar \kw{try} C_1 \kw{catch}(x) C_2\vbar \kw{throw} E
+\Com \ni C ::= \dots \vbar \kw{try} C_1 \kw{catch}(x) C_2\vbar \kw{throw} E.
 \end{align*}
 
 \subsection{Semantica formale}
@@ -297,8 +299,8 @@ uccisione di variabile:
 \[
   \forall s \in \Sigma \itc \forall x \in \Var' \itc 
     \forall y \in \Var' \itc (s \backslash x)(y) = \begin{cases}
-        s(y),   &\text{se $x \neq y$} \\
-        \divrg, &\text{se $x = y$}   
+        s(y),   &\text{se $x \neq y$;} \\
+        \divrg, &\text{se $x = y$.}   
       \end{cases}
 \]
 \begin{align*}
