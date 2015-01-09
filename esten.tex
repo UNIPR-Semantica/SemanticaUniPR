@@ -133,22 +133,20 @@ posizione $n$-ma la quale conterrà il valore di $x$:
 Semantica di $x(E_0) \weq E_1$ small step che permetta la conversione di uno
 scalare in un array:
 
-\[
+\begin{gather*}
   \prooftree
     \config{E_0}{s} \ssarrow \config{E_0'}{s'}
   \justifies
     \config{x(E_0) \weq E_1}{s} \ssarrow \config{x(E_0') \weq E_1}{s'}
     \thickness=0.08em
-  \endprooftree
-\]
-\[
+  \endprooftree \\[12pt]
   \prooftree
     \config{E_1}{s} \ssarrow \config{E_1'}{s'}
   \justifies
     \config{x(n) \weq E_1}{s} \ssarrow \config{x(n) \weq E_1'}{s'}
     \thickness=0.08em
   \endprooftree
-\]
+\end{gather*}
 se $x$ è un array:
 \[
   \prooftree

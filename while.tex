@@ -37,6 +37,20 @@ $t \in \Bool \defeq \{ \ttv, \ffv \}$;
 \end{align*}
 \end{description}
 
+Si noti che aver posto $\Integer \defeq \Zset$ ci permette di superare
+la complicazione inerente la distinzione tra \emph{numerali} (gli elementi
+di $\Integer$) e i \emph{numeri} (gli elementi di $\Zset$).
+Tale distinzione, seppure importante, appesantirebbe la presentazione
+senza nessun reale vantaggio, essendo ben note le rappresentazione
+dei numeri usate nei comuni linguaggi di programmazione e gli algoritmi
+per convertire tali rappresentazioni nei rispettivi rappresentati.
+
+I punti di sospensione nelle produzioni indicano la possibilità di
+arricchire il linguaggio con nuovi costrutti.  Alcune estensioni
+significative, come le variabili di tipo array e la gestione
+delle eccezioni, saranno considerate nel seguito.
+
+
 \section{Semantica informale} \marginpar{Mancino}
 
 La semantica di questo linguaggio, ora definito solo sintatticamente,
@@ -46,22 +60,72 @@ intuitiva.
 
 La variabili sono celle di memoria che possono contenere solo interi
 (i booleani non sono memorizzabili in WHILE).
-Ad ogni istante
-viene tenuta traccia dello stato (o store) delle variabili per mezzo di una
-funzione così definita
-$ \forall x, \forall y, \forall n$:
+Le celle di memoria sono organizzate in uno \emph{store},
+modellato da una funzione parziale dall'insieme delle variabili
+agli interi.  Uno store $s$ è dunque un elemento di $\Var \rightarrow \Zset$
+indefinito per al più un numero finito di variabili.
+Formalmente, l'insieme di tutti gli store è dato da
+\[
+  \Sigma \defeq \bigl\{\,
+                  s \in (\Var \rightarrow \Zset)
+                \bigm|
+                  |\dom(s)| < \aleph_0
+                \,\bigr\}.
+\]
+Lo \emph{stato} del programma è univocamente identificato da due componenti:
+quella inerente il controllo, che rappresenta il punto del programma
+dalla quale l'esecuzione procede, e quella inerente i dati, modellata
+dallo store.  Data la semplicità del linguaggio WHILE, la parte controllo
+dello stato può essere fatta coincidere con la porzione di programma
+che deve ancora essere eseguita.
 
-$$ s[x \rightarrow n](y) =
-	\begin{cases} n, & \mbox{ se } y=x \\
-				  s(y) & \mbox{ altrimenti}
-	\end{cases}
-$$
+Come accade per ogni linguaggio imperativo, l'operazione fondamentale
+del linguaggio WHILE è la modifica dello store.  Questa viene modellata
+come un modificatore puntuale di funzione: dato uno store iniziale $s$,
+una variabile alla quale assegnare $x$ ed un valore da assegnare $n$,
+$s[x \mapsto n]$ denota lo store risultante dall'assegnamento.
+Formalmente, per ogni $s \in \Sigma$, $x, y \in \Var$ e $n \in \Zset$,
+\[
+  s[x \mapsto n](y)
+    \defeq
+      \begin{cases}
+        n,    &\text{se $y = x$;} \\
+        s(y), &\text{altrimenti.}
+      \end{cases}
+\]
 
-Le espressioni aritmetiche sono insiemi di numeri e/o variabili legati da segni di operazione.
-Allo stesso modo le espressioni booleane sono insiemi di variabili e/o valori booleani legati da
-operatori logici.
-I punti di sospensione, sia nel caso di espressioni aritmetiche che booleane,
-garantiscono la possibilità di introdurre nuove espressioni.
-I comandi sono istruzioni che modificano lo stato. In particolare, ad esempio,
-$\kw{skip}$ è il comando che lascia lo store invariato, mentre $x:=E$ è il comando che 
-assegna ad x il risultato dell'espressione E.
+Si osservi come l'omissione dell'operazione di divisione non sia casuale:
+si è voluto evitare di affrontare il problema della eventuale divisione
+per zero, cosa senz'altro fattibile ma che avrebbe complicato notevolmente
+la presentazione.
+
+L'ordine di valutazione delle sottoespressioni può o meno essere specificato
+e, per quanto riguarda gli operatori logici binari, la semantica può essere
+quella classica oppure quella cortocircuitata: le varie possibilità
+saranno accennate nel seguito.
+
+Il comando $\kw{skip}$ è un comando che lascia lo store invariato.
+La sua utilità è legata alla possibilità di rappresentare il condizionale
+a un braccio mediante il condizionale a due braccia, usando $\kw{skip}$ per
+il ramo else, e alla possibilità di avere un corpo del $\kw{while}$ che
+non fa nulla.  A rigore, $\kw{skip}$ è ridondante: ogni programma
+che usa $\kw{skip}$ può essere riscritto sostituendo $\kw{skip}$
+con $x_u := 777$, dove $x_u$ è una variabile che non compare nel
+programma originario.
+
+Il comando $x := E$ è l'assegnamento del valore dell'espressione $E$
+alla variabile $x$.  Il costrutto $C_0; C_1$ rappresenta la composizione
+sequenziale di $C_0$ e $C_1$ vale a dire che viene eseguito $C_0$ e,
+se e quando questo termina, viene eseguito $C_1$ a partire dallo store
+risultante dalla esecuzione di $C_0$.  Inoltre è \emph{come se} ogni
+effetto dell'esecuzione di $C_0$ sia terminato prima che inizi la
+computazione di $C_1$.
+
+Il comando $\kw{while} B \kw{do} C$, che dà il nome al linguaggio,
+causa la valutazione dell'espressione booleana $B$, detta \emph{guardia};
+se questa dà \emph{vero} viene eseguito il comando $C$, detto \emph{corpo},
+e poi si torna a valutare la guardia; se questa dà \emph{vero}\dots
+Nel linguaggio WHILE in ``versione base'', quindi, l'unico modo per
+uscire da un $\kw{while}$ è che la valutazione della guardia dia \emph{falso}.
+Come vedremo, l'estensione con la gestione delle eccezioni cambierà le cose
+a questo riguardo.
