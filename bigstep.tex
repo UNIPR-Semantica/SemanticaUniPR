@@ -1,45 +1,55 @@
 \chapter{Semantica operazionale ``big step''}
 \marginpar{Mancino}
-In questo capitolo introduciamo la semantica operazionale "big step" (letteralmente 'a grandi passi'),
+
+In questo capitolo introduciamo la semantica operazionale \emph{big-step}
+(letteralmente ``a grandi passi''),
 un particolare tipo di semantica operazionale che descrive formalmente
-come il risultato complessivo dell'esecuzione di un'operazione è ottenuto. 
-Per fare questo, sfrutta schemi di assiomi e regole che hanno la seguente forma:
-
-$$
+come il risultato complessivo dell'esecuzione di un'operazione è ottenuto.
+Per fare questo, sfrutta schemi di assiomi e regole che vengono presentati
+come
+\[
+\rulename{nome regola}
 \prooftree
-	premessa_1
-	\cdots
-	premessa_k
-   \justifies
-   		conclusioni
-	\using
-		(nome \; regola)
+  \textrm{premessa}_1
+  \quad\cdots\quad
+  \textrm{premessa}_k
+\justifies
+  \textrm{conclusione}
+\using
+  (\textrm{side condition})
 \endprooftree
-$$
+\]
+La semantica di questa scrittura è che la congiunzione logica di
+`$\textrm{premessa}_1$', \dots, `$\textrm{premessa}_k$' implica
+`$\textrm{conclusione}$' a patto che valga `$\textrm{side condition}$'.
 
-\section{Un primo esempio di applicazione}\marginpar{Mancino}
-Consideriamo un linguaggio con la seguente sintassi:
-$$ Exp \ni E ::= n \bigm| (E+E) \bigm| \cdots $$
-dove $n$ si espande nei naturali $1, 2, \dots$ 
-e dove i punti di sospensione garantiscono la possibilità di inserire nuove espressioni.
-Allora una sua possibile semantica big step potrebbe essere, ad esempio:
+\section{Un primo esempio di semantica big-step}\marginpar{Mancino}
+\label{sec:primo-esempio-semantica-big-step}
+Consideriamo il frammento di WHILE con la seguente sintassi:
+\[
+  \AExp \ni E ::= n \vbar E+E
+\]
+dove $n \in \Integer$.
+Una possibile semantica big-step di questo frammento è data
+dai seguenti schemi:
 
-\begin{align*}
+\[
+\rulename{B-NUM}
 \prooftree
-   \justifies
-   		n \Downarrow n
-	\using
-		(B-NUM)
+  \nohyp
+\justifies
+  n \Downarrow n
 \endprooftree
-&&
+\qquad
+\rulename{B-ADD}
 \prooftree
-	E_1 \Downarrow n_1 \; \; E_2 \Downarrow n_2
-   \justifies
-   		(E_1 + E_2) \Downarrow n_3
-	\using
-		(B-ADD)
+  E_1 \Downarrow n_1 \quad E_2 \Downarrow n_2
+\justifies
+  (E_1 + E_2) \Downarrow n_3
+\using
+  n_3 = n_1 + n_2
 \endprooftree
-\end{align*}
+\]
 
 L'operatore $\Downarrow$ può essere letto come 'valuta a' e permette
 in un solo colpo di compiere tutti i passi affinché un comando o un'espressione
@@ -62,7 +72,7 @@ $$
    				2 \Downarrow 2
    			\using
    				(B-NUM)
-		\endprooftree		
+		\endprooftree
 		\;
 		\;
 		\prooftree
@@ -70,7 +80,7 @@ $$
    				3 \Downarrow 3
    			\using
    				(B-NUM)
-		\endprooftree	
+		\endprooftree
    		\justifies
    			(2+1) \Downarrow 3
    		\using
@@ -90,33 +100,36 @@ In sostanza, per dimostrare la conclusione dobbiamo far valere tutte le premesse
 applicando le regole.
 
 \section{Determinatezza}\marginpar{Mancino}
-La proprietà di determinatezza asserisce che un qualunque oggetto sintattico non può
-avere due semantiche differenti. In particolare, possiamo dimostrare il seguente
 
-\begin{teorema}[Determinatezza]
-La semantica big step di Exp gode della proprietà di determinatezza, ossia
-$\forall E \in Exp, \; \forall \; n, n' \in Num \text{ tali che }
- E\Downarrow n \; \land \; E \Downarrow n' \; \Rightarrow n = n'$
+La proprietà di determinatezza asserisce che un qualunque oggetto
+sintattico non può avere due semantiche differenti. In particolare,
+possiamo dimostrare il seguente
+
+\begin{teorema} \summary{(Determinatezza.)}
+La semantica big-step del frammento di $\AExp$ data nella
+sezione~\textup{\ref{sec:primo-esempio-semantica-big-step}}
+gode della proprietà di determinatezza, ossia
+per ogni $E \in \AExp$ e per ogni $n, n' \in \Zset$,
+se $E \Downarrow n$ e $E \Downarrow n'$ allora $n = n'$.
 \end{teorema}
 
 \begin{proof}
-Per induzione strutturale sulla struttura di E:
-\begin{itemize}
-	\item Base $(n \in Num)$ - 
-		  In questo caso abbiamo che $n \Downarrow n_1$ e che $n \Downarrow n_2$.
-		  Dalla regola semantica del caso base allora sarebbe $n=n_1$ e $n=n_2$.
-		  Quindi, per la transitività dell'uguaglianza otteniamo $n_1 = n_2$.
-	\item Passo induttivo $(E \in Exp$ con $E=E_1 + E_2$) - 
-		  In questo caso abbiamo che $(E_1 + E_2) \Downarrow m_3$ e che $(E_1+E_2) \Downarrow p_3$.
-		  Questo implica che $ \exists \; m_1,m_2,p_1,p_2 \in Num$ tali che:
-		  \begin{align*}
-		   & m_1 + m_2 = m_3 \\
-		     \land \; & p_1+p_2 = p_3 \\
-		     \land \; & E_1 \Downarrow m_1 \\
-		     \land \; & E_2 \Downarrow m_2 \\ 
-		     \land \; & E_1 \Downarrow p_1 \\ 
-		     \land \; & E_2 \Downarrow p_2
-		    \end{align*}
+La dimostrazione è per induzione strutturale sulla struttura di E.
+
+Case base: $n \in \Zset$.
+In questo caso abbiamo che $n \Downarrow n_1$ e che $n \Downarrow n_2$.
+Lo schema B-NUM implica che $n = n_1$ e $n = n_2$ e,
+per la transitività dell'uguaglianza, $n_1 = n_2$.
+
+Passo induttivo: $E \in \AExp$ con $E = E_1 + E_2$.
+In questo caso abbiamo che $(E_1 + E_2) \Downarrow m_3$
+e $(E_1 + E_2) \Downarrow p_3$.
+Lo schema B-ADD implica che esistono
+$m_1, m_2, p_1, p_2 \in Num$ tali che:
+\begin{align*}
+  m_1 + m_2 &= m_3, & E_1 &\Downarrow m_1, & E_2 &\Downarrow m_2, \\
+  p_1 + p_2 &= p_3, & E_1 &\Downarrow p_1, & E_2 &\Downarrow p_2.
+\end{align*}
 		  Ma allora, per ipotesi induttiva:
 		  \begin{align*}
 		  & m_1 = p_1 \\
@@ -126,7 +139,6 @@ Per induzione strutturale sulla struttura di E:
 		  \end{align*}
 		  Da cui deduciamo che:
 		  $ m_1 + m_2 = p_1 + p_2 \Rightarrow m_3 = p_3$ come volevamo dimostrare.
-\end{itemize}
 \end{proof}
 
 \section{Normalizzazione}\marginpar{Mancino}

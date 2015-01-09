@@ -21,6 +21,7 @@
 %% Proof trees.
 \input prooftree
 \newcommand*{\nohyp}{\phantom{x}}
+\newcommand*{\rulename}[1]{\text{\footnotesize (#1)}\;}
 
 %% C++.
 \newcommand*{\Cplusplus}{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}
@@ -179,7 +180,7 @@
 
 %% Lubs, glbs, and fixed points.
 \newcommand*{\lub}{\mathop{\mathrm{lub}}\nolimits}
-%\newcommand*{\glb}{\mathop{\mathrm{glb}}\nolimits}
+\newcommand*{\glb}{\mathop{\mathrm{glb}}\nolimits}
 \newcommand*{\lfp}{\mathop{\mathrm{lfp}}\nolimits}
 \newcommand*{\gfp}{\mathop{\mathrm{gfp}}\nolimits}
 
@@ -348,7 +349,7 @@
 \newcommand{\summary}[1]{\textrm{\textbf{\textup{#1}}}}
 
 % Annotations in equations
-\newcommand{\law}[1]{{\hspace*{\fill}\mbox{\footnotesize\rm{[#1]}}}}
+\newcommand{\law}[1]{{\hspace*{\fill}\text{\footnotesize\rm{[#1]}}}}
 
 %% Filter function extracting the relevant and irrelevant parts.
 \newcommand*{\sel}{\mathop{\mathrm{sel}}\nolimits}

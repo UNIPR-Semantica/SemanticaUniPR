@@ -136,25 +136,55 @@ Quando il poset $(P, \preceq)$ \`e implicito dal contesto
 e $A \sseq P$ scriveremo $\chain(A)$ intendendo con questo
 che $(A, \preceq)$ \`e una catena.
 
-\begin{definizione} \summary{(Limite superiore/inferiore, sup/inf.)}
+\begin{definizione} \summary{(Limite superiore/inferiore, sup/inf, lub/glb.)}
 Sia $(P, \preceq)$ un poset e sia $A \sseq P$.
 Un elemento $p \in P$ \`e un \emph{limite superiore} per $A$
 se $a \preceq p$ per ogni $a\in A$.
-Un elemento $p \in P$ \`e il \emph{sup} di $A$, scritto $p = \sup(A)$,
+Un elemento $p \in P$ \`e un \emph{sup} (o \emph{lub}) di $A$,
+scritto $p \in \sup A$ (o $p \in \lub A$),
 se $p$ \`e un limite superiore per $A$ e,
 per ogni altro limite superiore $p'$ per $A$,
 risulta $p \preceq p'$.
 In modo del tutto analogo un elemento $p \in P$ \`e un \emph{limite inferiore}
 per $A$ se $p \preceq a$ per ogni $a \in A$.
-Un elemento $p \in P$ \`e detto \emph{inf} di $A$,
-scritto $p = \inf(A)$, se $p$ \`e un limite inferiore per $A$ e,
+Un elemento $p \in P$ \`e un \emph{inf} (o \emph{glb}) di $A$,
+scritto $p \in \inf A$ (o $p \in \glb A$),
+se $p$ \`e un limite inferiore per $A$ e,
 per ogni altro limite inferiore $p'$ per $A$, risulta $p' \preceq p$.
 \end{definizione}
+
+%%%%%%%%%%%%%%5
+\begin{proposizione} \summary{(Unicità di $\lub$ e $\glb$.)}
+Sia $(S, \preceq)$ un poset e sia $T \subseteq S$.
+Se $u, v \in \lub T$ allora $u = v$.
+Analogamente, se $u, v \in \glb T$ allora $u = v$.
+\end{proposizione}
+\begin{proof}
+Siano $u, v \in \lub T$.  Per definizione di $\lub$ abbiamo
+\begin{align*}
+  (\forall x \in T \itc x \preceq u)
+    \land
+      \forall u' \in S
+        &\itc (\forall x \in T \itc x \preceq u') \itc u \preceq u', \\
+  (\forall x \in T \itc x \preceq v)
+    \land
+      \forall v' \in S
+        &\itc (\forall x \in T \itc x \preceq v') \itc v \preceq v'.
+\end{align*}
+Da queste discende $u \preceq v$ e $v \preceq u$ il che,
+per l'antisimmetria di $\preceq$ implica $u = v$.
+
+La dimostrazione inerente l'unicità di $\glb T$ è analoga.
+\end{proof}
+
+Il risultato appena dimostrato ci consente di scrivere $p = \lub T$ e
+$p = \glb T$, nel caso tali $\lub$ e $\glb$ esistano,
+invece di $p \in \lub T$ e $p \in \glb T$.
 
 \begin{definizione} \summary{(CPO.)}
 \label{def:cpo}
 Un poset $(D, \preceq)$ \`e un \emph{CPO} se e solo se
-ha un elemento minimo e, per ogni catena $K \sseq D$, esiste $\sup(K) \in D$.
+ha un elemento minimo e, per ogni catena $K \sseq D$, esiste $\lub K \in D$.
 \end{definizione}
 
 \begin{definizione}  \summary{(Reticolo.)}
@@ -197,29 +227,29 @@ per ogni $x, y \in L$, le seguenti identit\`a:
 
 \begin{definizione}
 Un poset $P$ \`e \emph{completo} se, per ogni $A \sseq P$ esistono in $P$ sia
-$\sup(A)$ che $\inf(A)$. Tutti i poset completi sono reticoli e un reticolo
+$\lub A$ che $\glb A$. Tutti i poset completi sono reticoli e un reticolo
 $L$ che \`e completo come poset \`e detto \emph{reticolo completo}.
 \end{definizione}
 
 \begin{proposizione}
 \label{prop:complete-lattice0}
 \textup{\cite{BurrisS81}}
-Sia $P$ un poset tale che esista $\sup(A)$ per ogni $A \sseq P$,
-oppure tale che esista $\inf(A)$ per ogni $A \sseq P$.
+Sia $P$ un poset tale che esista $\lub A$ per ogni $A \sseq P$,
+oppure tale che esista $\glb A$ per ogni $A \sseq P$.
 Allora $P$ \`e un reticolo completo.
 \end{proposizione}
 
-Nella precedente proposizione l'esistenza di $\sup(\emptyset)$ garantisce
+Nella precedente proposizione l'esistenza di $\lub \emptyset$ garantisce
 l'esistenza di un elemento minimo in $P$ e, similmente, l'esistenza di
-$\inf(\emptyset)$ garantisce l'esistenza di un elemento massimo in $P$.
+$\glb \emptyset$ garantisce l'esistenza di un elemento massimo in $P$.
 Si pu\`o perci\`o riformulare la proposizione \ref{prop:complete-lattice0}
 in un modo equivalente.
 
 \begin{proposizione}
 \label{prop:complete-lattice}
 \textup{\cite{BurrisS81}} Un poset $P$ \`e completo se possiede un elemento minimo
-ed esiste $\sup(A)$ per ogni $A$ sottoinsieme non vuoto di $P$, oppure se
-possiede un elemento massimo ed esiste $\inf(A)$ per ogni $A$ sottoinsieme non
+ed esiste $\lub A$ per ogni $A$ sottoinsieme non vuoto di $P$, oppure se
+possiede un elemento massimo ed esiste $\glb A$ per ogni $A$ sottoinsieme non
 vuoto di~$P$.
 \end{proposizione}
 
@@ -239,7 +269,7 @@ con due operatori binari e due operatori nullari
 \end{definizione}
 Si osservi che se $(L, \otimes, \oplus)$ \`e un reticolo completo, allora
 \[
-    \bigl(L, \otimes, \oplus, \sup(L), \inf(L)\bigr)
+    \bigl(L, \otimes, \oplus, \lub L, \glb L\bigr)
 \]
 \`e un reticolo limitato.
 Si utilizzer\`a talvolta la nozione di reticolo limitato e
@@ -370,32 +400,13 @@ il che è assurdo.
 \theoremstyle{definizione}
 \newtheorem{esercizio}{Esercizio}
 
-\subsection{Unicità lub}
-\begin{esercizio}[Unicità lub]
-  Sia $(S, \preceq)$ un \emph{PO}, sia $T \subseteq S \Rightarrow (\exists lub\ T \Rightarrow lub\ T$ è unico)
-\end{esercizio}
-\begin{proof}
-  \begin{center}
-    Siano u,u' $\in$ S due lub di T\\
-    $\Downarrow$\\
-    $(\forall x \in T : x \preceq u) \land \forall u' \in S :
-    (\forall x' \in T : x' \preceq u') : u \preceq u'$
-  \end{center}
-  Ma anche:
-  \begin{center}
-    $(\forall x \in T : x \preceq u') \land \forall u \in S :
-    (\forall x' \in T : x' \preceq u) : u' \preceq u$\\
-    $\Downarrow$\\
-    $u \preceq u' \land u' \preceq u \Rightarrow u = u'$
-  \end{center}
-\end{proof}
 
 \subsection{Se il lub appartiene a un insieme è il massimo}
 \begin{esercizio}[$lub\ T \in T \Rightarrow lub\ T = max\ T$]
   Sia $(S, \preceq)$ un ordinamento parziale, sia $T \subseteq S$ e\\
   sia $u \in S lub\ T \Rightarrow (u \in T \Rightarrow u = max\ T)$
   \begin{proof}
-    $\forall x \in T : x \preceq u \land u \in T \Rightarrow \not \exists y \in T : y \succeq u \Rightarrow u = max\ T$
+    $\forall x \in T : x \preceq u \land u \in T \Rightarrow \nexists y \in T : y \succeq u \Rightarrow u = max\ T$
   \end{proof}
 \end{esercizio}
 
