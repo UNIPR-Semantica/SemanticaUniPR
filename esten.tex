@@ -87,6 +87,7 @@ Semantica di $x(E)$ small step su di un array:
 se $x$ è un array:
 }
   &\prooftree
+  \nohyp
   \justifies
     \config{x(n)}{s} \ssarrow \config{s(x)(n)}{s}
   \thickness=0.08em
@@ -97,6 +98,7 @@ se $x$ è un array:
 se $x$ è uno scalare:
 }
   &\prooftree
+  \nohyp
   \justifies
     \config{x(n)}{s} \ssarrow \config{0}{s'}
   \thickness=0.08em
@@ -113,6 +115,7 @@ posizione $n$-ma la quale conterrà il valore di $x$:
 
 \[
   \prooftree
+  \nohyp
   \justifies
     \config{x(n)}{s} \ssarrow \config{s(x)}{s'}
   \thickness=0.08em
@@ -149,6 +152,7 @@ scalare in un array:
 se $x$ è un array:
 \[
   \prooftree
+  \nohyp
   \justifies
     \config{x(n)\ \weq\ k}{s} \ssarrow \config{\kw{skip}}{s'}
   \thickness=0.08em
@@ -166,6 +170,7 @@ se $x$ è un array:
 se $x$ è uno scalare (assegnamento distruttivo):
 \[
   \prooftree
+  \nohyp
   \justifies
     \config{x(n)\ \weq\ k}{s} \ssarrow \config{\kw{skip}}{s'}
   \thickness=0.08em
@@ -184,6 +189,7 @@ oppure conserviamo il valore contenuto in $x$ e lo salviamo
 alla posizione~0 del nuovo array:
 \[
   \prooftree
+  \nohyp
   \justifies
     \config{x(n)\ \weq\ k}{s} \ssarrow \config{\kw{skip}}{s'}
   \thickness=0.08em
@@ -242,48 +248,55 @@ Siano $x \in \Var$ e $E \in \AExp$
   \thickness=0.08em
   \using s(\$ecc) \divrg
   \endprooftree
-  \\ \\
+  \\
   &\prooftree
+  \nohyp
   \justifies \config{\kw{throw} n}{s} \ssarrow 
     \config{\kw{skip}}{s \substt{n}{\$ecc}}
   \thickness=0.08em
   \using s(\$ecc) \divrg
   \endprooftree
-  \\ \\
+  \\
   &\prooftree
+  \nohyp
   \justifies \config{x \weq E}{s} \ssarrow \config{\kw{skip}}{s}
   \thickness=0.08em
   \using s(\$ecc) \convrg
   \endprooftree 
-  \\ \\
+  \\
   &\prooftree
+  \nohyp
   \justifies \config{C_1 \weq C_2}{s} \ssarrow \config{\kw{skip}}{s}
   \thickness=0.08em
   \using s(\$ecc) \convrg
   \endprooftree
-  \\ \\
+  \\
   &\prooftree
+  \nohyp
   \justifies \config{\kw{if} B \kw{then} C_1 \kw{else} C_2}{s} 
     \ssarrow \config{\kw{skip}}{s}
   \thickness=0.08em
   \using s(\$ecc) \convrg
   \endprooftree
-  \\ \\
+  \\
   &\prooftree
+  \nohyp
   \justifies \config{\kw{while} B \kw{do} C}{s}
      \ssarrow \config{\kw{skip}}{s}
   \thickness=0.08em
   \using s(\$ecc) \convrg
   \endprooftree
-  \\ \\
+  \\
   &\prooftree
+  \nohyp
   \justifies \config{\kw{try} C_1 \kw{catch}(x) C_2}{s}
      \ssarrow \config{\kw{skip}}{s}
   \thickness=0.08em
   \using s(\$ecc) \convrg
   \endprooftree
-  \\ \\
+  \\
   &\prooftree
+  \nohyp
   \justifies \config{\kw{throw} E}{s} \ssarrow \config{\kw{skip}}{s}
   \thickness=0.08em
   \using s(\$ecc) \convrg
@@ -304,6 +317,14 @@ uccisione di variabile:
       \end{cases}
 \]
 \begin{align*}
+  &\prooftree 
+  \nohyp
+  \justifies \config{\kw{try} \kw{skip} \kw{catch}(x) C}{s} \ssarrow
+    \config{\kw{skip}}{s}
+  \thickness=0.08em
+  \using s(\$ecc) \divrg
+  \endprooftree
+  \\ \\ 
   &\prooftree \config{C_1}{s} \ssarrow \config{C_1'}{s'}
   \justifies \config{\kw{try} C_1 \kw{catch}(x) C_2}{s} \ssarrow
     \config{\kw{try} C_1' \kw{catch}(x) C_2}{s'}
@@ -313,7 +334,7 @@ uccisione di variabile:
   \\ \\
   &\prooftree \config{C_1}{s} \ssarrow \config{C_1'}{s'}
   \justifies \config{\kw{try} C_1 \kw{catch}(x) C_2}{s} \ssarrow
-    \config{C_2}{\bigl(s'\substt{s(\$ecc)}{x}\bigr) \backslash \$ecc}
+    \config{C_2}{\bigl(s'\substt{s'(\$ecc)}{x}\bigr) \backslash \$ecc}
   \thickness=0.08em
   \using s(\$ecc) \divrg \land\ s'(\$ecc) \convrg
   \endprooftree
