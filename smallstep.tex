@@ -1,607 +1,569 @@
-\chapter{Semantica operazionale ``small step''}
+\chapter{Semantica operazionale ``small-step''}
 \marginpar{Marano}
-In questo capitolo parleremo della semantica operazionale "small step", una semantica che descrive formalmente dopo ogni piccolo passo di calcolo che comando
-viene eseguito e come viene modificato lo store. Per fare ciò sfrutta assiomi e regole che hanno la stessa forma di quelle viste nel capitolo precedente
+In questo capitolo parleremo della semantica operazionale ``small-step'', una semantica che descrive formalmente dopo ogni piccolo passo di calcolo
+che comando viene eseguito e come viene modificato lo store. Per fare ciò sfrutta assiomi e regole che hanno la stessa forma di quelle viste nel
+capitolo precedente
 
-$$
+\[
+\rulename{nome regola}
 \prooftree
-premessa_1
-\cdots
-premessa_k
+  \textrm{premessa}_1
+  \quad\cdots\quad
+  \textrm{premessa}_k
 \justifies
-conclusioni
+  \textrm{conclusione}
 \using
-(nome \; regola)
+  (\textrm{side condition})
 \endprooftree
-$$
+\]
 
 \section{Introduzione}\marginpar{Marano}
 Se quindi abbiamo un linguaggio con la seguente sintassi
 $$ Exp \ni E ::= n \bigm| (E+E) \bigm| \cdots $$
-dove $n$ si espande nei naturali $1, 2, \dots$ (nei puntini di sospensione si può inserire qualsiasi espressione).
-Allora una possibile semantica small step è:
+in cui i puntini di indicano, come al solito, che si può inserire una qualsiasi espressione arricchendo così la sintassi e dandone successivamente una
+semantica. Considerando che $n \in \Zset$, una possibile semantica small step è:
 
-\begin{align*}
-  \prooftree
-  \justifies
-  n \rightarrow n
-  \using
-  (S-NUM)
-  \endprooftree
-  &&
-  \prooftree
-  E_1 \rightarrow E_1'
-  \justifies
-  (E_1 + E_2) \rightarrow (E_1' + E_2)
-  \using
-  (S-LEFT)
-  \endprooftree
-\\ \\
-  \prooftree
-  E_2 \rightarrow E_2'
-  \justifies
-  (E_1 + E_2) \rightarrow (E_1 + E_2')
-  \using
-  (S-RIGHT)
-  \endprooftree
-  &&
-  \prooftree
-  \justifies
-  (1 + 2) \rightarrow 3
-  \using
-  (S-ADD)
-  \endprooftree
-\end{align*}
+\[
+\rulename{S-NUM}
+\prooftree
+	\nohyp
+\justifies
+  n \ssarrow n
+\endprooftree
+\qquad
+\rulename{S-LEFT}
+\prooftree
+	E_1 \ssarrow E_1'
+\justifies
+	(E_1 + E_2) \ssarrow (E_1' + E_2)
+\endprooftree
+\pts
+\rulename{S-RIGHT}
+\prooftree
+	E_2 \ssarrow E_2'
+\justifies
+	(E_1 + E_2) \ssarrow (E_1 + E_2')
+\endprooftree
+\qquad
+\rulename{S-ADD}
+\prooftree
+	\nohyp
+\justifies
+	(1 + 2) \ssarrow 3
+\endprooftree
+\]
 
-L'operatore $\rightarrow$ quindi rappresenta a tutti gli effetti un passo di computazione.
+L'operatore $\ssarrow$ quindi rappresenta a tutti gli effetti un passo di computazione.
 Con questa semantica abbiamo lo stesso potere espressivo della semantica Big step ma,
 essendo più verbosa, da più informazione sulla sequenzialità e sui "risultati intermedi".
 Vediamo un esempio di dimostrazione:
 
-\begin{align*}
+\[
+\rulename{S-ADD}
 \prooftree
+	\rulename{S-ADD}
 	\prooftree
-   		\justifies
-   			(1+2) \rightarrow 3
-   		\using
-   			(S-ADD)
+		\nohyp
+	\justifies
+		(1+2) \ssarrow 3
 	\endprooftree
 \justifies
-       	((1+2)+(3+4)) \rightarrow (3+(3+4))
-\using
-	(S-ADD)
+    	((1+2)+(3+4)) \ssarrow (3+(3+4))
 \endprooftree
-\\ \\
+\pts
+\rulename{S-ADD}
 \prooftree
+	\rulename{S-ADD}
 	\prooftree
-   		\justifies
-   			(3+4) \rightarrow 7
-   		\using
-   			(S-ADD)
+		\nohyp
+   	\justifies
+		(3+4) \ssarrow 7
 	\endprooftree
 \justifies
-       	(3+(3+4)) \rightarrow (3+7)
-\using
-	(S-ADD)
+    	(3+(3+4)) \ssarrow (3+7)
 \endprooftree
-\\ \\
+\pts
 \prooftree
 	\justifies
-		(3+7) \rightarrow 10
+		(3+7) \ssarrow 10
 	\using
 		(S-ADD)
 \endprooftree
-\end{align*}
+\]
 
-Possiamo subito osservare che differentemente dalla semantica Big Step
-nella semantica Small Step si usano tanti alberi di dimostrazione più piccoli per dimostrare
+Possiamo subito osservare che differentemente dalla semantica big-step
+nella semantica small-step si usano tanti alberi di dimostrazione più piccoli per dimostrare
 ogni asserzione. 
 
-\section{Determinatezza della semantica Small Step} \marginpar{Marano}
-Dimostriamo ora che la semantica Small Step gode della proprietà
-della determinatezza, ogni oggetto sintattico può avere perciò
-al massimo una semantica. Prima dimostriamo però il seguente
+\section{Determinatezza della semantica small-step} \marginpar{Marano}
+Dimostriamo ora che la semantica small-step gode della proprietà della determinatezza, ogni oggetto sintattico può avere perciò al massimo una semantica. Prima dimostriamo però il seguente
 
 \begin{teorema}
-$\forall E_1, E_2, E \in Exp . E \rightarrow _1 E_1 \land E \rightarrow _1 E_2 \Rightarrow E_1 = E_2 $
+$\forall E_1, E_2, E \in \AExp . E \ssarrow _1 E_1 \land E \ssarrow _1 E_2 \Rightarrow E_1 = E_2 $
 \end{teorema}
 
 \begin{proof}
-  Dimostriamo per induzione strutturale
-  \begin{itemize}
-  \item Caso Base ($E \in Num$) - $E = n \Rightarrow E \nrightarrow$, ovvero E non transisce.
-  \item Passo induttivo ($E \in Exp$) - $E = E_1 + E_2$ \\
-    perciò $E_1 + E_2 \rightarrow \begin{cases} E_1 \oplus E_2, & \mbox{se }E_1, E_2 \in \mbox{ Num} \\
-    E_1 + E_2', & \mbox{se }E_1 \in \mbox{ Num} \land E_2 \rightarrow E_2' \\
-    E_1' + E_2, & \mbox{se }E_2 \in \mbox{ Num} \land E_1 \rightarrow E_1' \end{cases}$\\
-    È ovvio che questi tre casi sono mutuamente esclusivi.
-  \end{itemize}
+	 Dimostriamo per induzione strutturale
+  
+Caso Base: $E = n \in \Zset$.
+In tal caso E non transisce perciò $E \nssarrow$.
+  
+Passo induttivo: $E \in \AExp$.
+Perciò $E = E_1 + E_2$, dunque\\
+$E_1 + E_2 \rightarrow \begin{cases} E_1 \oplus E_2, & \text{se }E_1, E_2 \in \Zset \\
+E_1 + E_2', & \text{se }E_1 \in \Zset \land E_2 \ssarrow E_2' \\
+E_1' + E_2, & \text{se }E_2 \in \Zset \land E_1 \ssarrow E_1' \end{cases}$\\
+
+È ovvio che questi tre casi sono mutuamente esclusivi.
 \end{proof}
 
 Ora possiamo dimostrare il seguente
 
 \begin{teorema}[Determinatezza]
-La semantica Small Step di Exp gode della proprietà di determinatezza, ovvero
-$\forall E \in Exp, \; \forall \; n, n' \in Num \text{ tali che }\\
- E\rightarrow ^* n \; \land \; E \rightarrow ^* n' \; \Rightarrow n = n'$
+La semantica small-step di $\AExp$ gode della proprietà di determinatezza, ovvero
+$\forall E \in \AExp, \; \forall \; n, n' \in \Zset \text{ tali che } E \ssarrow ^* n \; \land \; E \ssarrow ^* n' \; \Rightarrow n = n'$
 \end{teorema}
 
 \begin{proof}
-  Sappiamo che $E \rightarrow E_1^{(1)} \rightarrow E_1^{(2)} \rightarrow \dots \rightarrow E_1^{(k)} = n_1$ e che 
-  $E \rightarrow E_2^{(1)} \rightarrow E_2^{(2)} \rightarrow \dots \rightarrow E_2^{(h)} = n_2$.
-  Ma per il lemma appena dimostrato sappiamo che $E_1^{(k)} = E_2^{(h)} \text{ con } h = k \Rightarrow n_1 = n_2$
+Sappiamo che $E \ssarrow E_1^{(1)} \ssarrow E_1^{(2)} \ssarrow \dots \ssarrow E_1^{(k)} = n_1$ e che $E \ssarrow E_2^{(1)} \ssarrow E_2^{(2)} \ssarrow \dots \ssarrow E_2^{(h)} = n_2$.
+Ma per il lemma appena dimostrato sappiamo dunque che $E_1^{(k)} = E_2^{(h)} \text{ con } h = k$, perciò possiamo affermare che $n_1 = n_2$
 \end{proof}
 
-\section{Normalizzazione della semantica Small Step} \marginpar{Marano}
-Altra proprietà molto importante per una semantica è la normalizzazione:
+\section{Normalizzazione della semantica small-step} \marginpar{Marano}
+Altra proprietà molto importante per una semantica è la normalizzazione: tale proprietà afferma che
 ogni oggetto semantico ha almeno una semantica. Perciò per ogni espressione $E$
-esiste almeno un risultato $n$ tale che $E \rightarrow ^* n$.
+esiste almeno un risultato $n$ tale che $E \ssarrow ^* n$.
 Dimostriamo prima però il seguente
 
 \begin{teorema}
-  $\forall E \in Exp : E \in Num \land \exists E' \in Num \Rightarrow E \rightarrow E'$
-  Questa proprietà ci aiuterà nella dimostrazione del successivo teorema ma dobbiamo anche dimostrare che le espressioni non possono transire per sempre,
-  ovvero che $\forall E \in Exp : \exists k \in \mathbb{N} . E \rightarrow ^k F \land F \nrightarrow$
+$\forall E \in Exp \itc E \in \Zset \land \exists E' \in \Zset \Rightarrow E \ssarrow E'$
+Questa proprietà ci aiuterà nella dimostrazione del successivo teorema ma dobbiamo anche dimostrare che le espressioni non possono transire per sempre, ovvero che $\forall E \in Exp \itc \exists k \in \Nset . E \ssarrow ^k F \land F \nssarrow$
 \end{teorema}
 
 \begin{proof}
-  Definiamo perciò una funzione $f : Exp \rightarrow \mathbb{N}$ che calcola il numero di "+", ovvero il numero di passi da fare per arrivare fino a una
-  espressione che non possa più transire, f restituisce ovvero il \emph{k} definito nella tesi del teorema. Definiamo per induzione strutturale:
-  \begin{itemize}
-    \item Caso Base ($E \in Num$) - $E = n \in Num \Rightarrow f(n) = 0$
-    \item Passo Induttivo ($E = \not \in Num$) - $\exists E_1, E_2 \in Exp\ .\ E = E_1 + E_2 \Rightarrow f(E) = f(E_1 + E_2) = f(E_1) + f(E_2) + 1$
-  \end{itemize}
-  Dimostriamo ora che questa funzione calcola proprio ciò che volevamo, ovviamente lo dimostriamo per induzione strutturale:
-  \begin{itemize}
-  \item Caso Base ($E \in Num$) - $E = n \Rightarrow E \nrightarrow \Rightarrow f(E) = k = 0$
-  \item Passo Induttivo ($E = \not \in Num$) - $E = E_1 + E_2 \Rightarrow \\ E_1 + E_2 \rightarrow ^i n_1 + E_2 \rightarrow ^j n_1 + n_2 \rightarrow n \\
-    \Rightarrow k = i + j + 1 = f(E_1) + f(E_2) + 1 = f(E_1 + E_2) = f(E)$
-  \end{itemize}
+Definiamo perciò una funzione $\fund{f}{\AExp}{\Nset}$ che calcola il numero di "+", ovvero il numero di passi da fare per arrivare fino a una espressione che non possa più transire, $f$ restituisce ovvero il $k$ definito nella tesi del teorema. Definiamo per induzione strutturale:
+
+Caso Base: $E = n \in \Zset$.
+Visto che $n$ non può transire è ovvio che $f(n) = 0$, infatti in $n$ non è presente alcun "+".
+
+Passo Induttivo: $E = \not \in \Zset$.
+$E \in \AExp$ perciò esistono $E_1, E_2 \in \AExp . E = E_1 + E_2$, in tal caso $f(E) = f(E_1 + E_2) = f(E_1) + f(E_2) + 1$
+
+Dimostriamo ora che questa funzione calcola proprio ciò che volevamo, ovviamente lo dimostriamo per induzione strutturale:
+
+Caso Base: $E = n \in \Zset$.
+Come detto sopra $n$ non può transire perciò $f(n) = 0$.
+
+Passo Induttivo: $E = \not \in \Zset$.
+$E \in \AExp$ perciò esistono $E_1, E_2 \in AExp . E = E_1 + E_2$, quindi $E_1 + E_2 \ssarrow ^i n_1 + E_2 \ssarrow ^j n_1 + n_2 \ssarrow n$. Ma allora è ovvio che $k = i + j + 1 = f(E_1) + f(E_2) + 1 = f(E_1 + E_2) = f(E)$ e che $k$ è proprio il numero di "+" presenti in $E$.
 \end{proof}
 
 \begin{teorema}[Normalizzazione]
-  $\forall E \in Exp\ \exists n \in Num\ .\ E \rightarrow ^* n$
+  $\forall E \in \AExp\ \exists n \in \Zset . E \ssarrow ^* n$
 \end{teorema}
 
 \begin{proof}
-  La proprietà deriva direttamente dai due lemmi dimostrati precedentemente
+  La proprietà deriva direttamente dai due lemmi dimostrati precedentemente.
 \end{proof}
 
-\section{Semantica Small Step per While} \marginpar{Marano}
-Diamo ora una semantica al linguaggio While tramite la small step, dovremo
-perciò valutare non più una singola espressione ma una coppia formata da
-comando e stato. Per ora tralasciamo la possibilità di effetti collaterali.
-$$
-\langle C,s \rangle \rightarrow \langle C',s' \rangle
-$$
-Indichiamo perciò con E la generica espressione, con C il generico comando 
-e con s il generico stato:
+\section{Semantica small-step per WHILE} \marginpar{Marano}
+Diamo ora una semantica al linguaggio WHILE tramite la small-step, dovremo perciò valutare non più una singola espressione ma una coppia formata da comando e store. Per ora tralasciamo la possibilità di effetti collaterali e indichiamo in questa maniera la transizione tra una configurazione e la successiva.
+$
+\config{C}{s} \ssarrow \config{C'}{s'}
+$
 
-\begin{align*}
-(S-SKIP)
-&&
+Indichiamo perciò con $E$ la generica espressione appartenente a $\AExp$, con $C$ il generico comando appartenente a $\Com$ e con $s$ il generico store appartenente a $\Sigma$:
+
+\[
+\rulename{S-SKIP}
 \prooftree
+	\nohyp
 \justifies
-\langle skip,\ s \rangle \rightarrow s
+	\config{skip}{s} \ssarrow s
 \endprooftree
-\\ \\
-(S-EXP.NUM)
-&&
+\pts
+\rulename{S-EXP.NUM}
 \prooftree
-   \justifies
-   \langle x,\ s \rangle \rightarrow \langle n,\ s \rangle
-   \using
+	\nohyp
+\justifies
+	\config{x}{s} \ssarrow \config{n}{s}
+\using
    s(x) = n 
 \endprooftree
-\\ \\
-(S-EXP.LEFT)
-&&
+\pts
+\rulename{S-EXP.LEFT}
 \prooftree
-	\langle E_1,\ s \rangle \rightarrow \langle E_1',\ s \rangle
-   \justifies
-	\langle (E_1 + E_2),\ s \rangle \rightarrow \langle (E_1' + E_2),\ s \rangle
+	\config{E_1,s} \ssarrow \config{E_1'}{s}
+\justifies
+	\config{(E_1 + E_2)}{s} \ssarrow \config{(E_1' + E_2)}{s}
 \endprooftree
-\\ \\
-(S-EXP.RIGHT)
-&&
+\pt
+\rulename{S-EXP.RIGHT}
 \prooftree
-	\langle E_2,\ s \rangle \rightarrow \langle E_2',\ s \rangle
-   \justifies
-	\langle (E_1 + E_2),\ s \rangle \rightarrow \langle (E_1 + E_2'),\ s \rangle
+	\config{E_2}{s} \ssarrow \config{E_2'}{s}
+\justifies
+	\config{(E_1 + E_2)}{s} \ssarrow \config{(E_1 + E_2')}{s}
 \endprooftree
-\\ \\
-(S-ADD)
-&&
+\pts
+\rulename{S-ADD}
 \prooftree
-   \justifies
-   \langle (n_1 + n_2),\ s \rangle \rightarrow \langle n_3,\ s \rangle
-   \using
-   n_3 = n_1 + n_2
+	\nohyp
+\justifies
+	\config{(n_1 + n_2)}{s} \ssarrow \config{n_3}{s}
+\using
+	n_3 = n_1 + n_2
 \endprooftree
-\\ \\
-(S-ASS.EXP)
-&&
+\pts
+\rulename{S-ASS.EXP}
 \prooftree
-	\langle E,\ s \rangle \rightarrow \langle E',\ s \rangle
-   \justifies
-   	\langle x:= E,\ s \rangle \rightarrow \langle x:= E',\ s \rangle
+	\config{E}{s} \ssarrow \config{E'}{s}
+\justifies
+	\config{x \weq E}{s} \ssarrow \config{x \weq E'}{s} 
 \endprooftree
-\\ \\
-(S-ASS.NUM)
-&&
+\pts
+\rulename{S-ASS.NUM}
 \prooftree
-   \justifies
-   	\langle x:= n,\ s \rangle \rightarrow \langle skip,\ s[x \rightarrow n] \rangle
+	\nohyp
+\justifies
+  	\config{x \weq n}{s} \ssarrow \config{skip}{s[x \mapsto n]}
 \endprooftree
-\\ \\
-(S-SEQ.LEFT)
-&&
+\pts
+\rulename{S-SEQ.LEFT}
 \prooftree
-	\langle C_1,\ s \rangle \rightarrow \langle C_1',\ s' \rangle
-   \justifies
-   	\langle C_1 ; C_2,\ s \rangle \rightarrow \langle C_1' ; C_2,\ s' \rangle
+	\config{C_1}{s} \ssarrow \config{C_1'}{s'}
+\justifies
+  	\config{C_1 ; C_2}{s} \ssarrow \config{C_1' ; C_2}{s'}
 \endprooftree
-\\ \\
-(S-SEQ.SKIP)
-&&
+\pts
+\rulename{S-SEQ.SKIP}
 \prooftree
-   \justifies
-   	\langle skip ; C_2,\ s \rangle \rightarrow \langle C_2,\ s' \rangle
+	\nohyp
+\justifies
+   	\config{skip ; C_2}{s} \ssarrow \config{C_2}{s'}
 \endprooftree
-\\ \\
-(S-COND.BOOL)
-&&
+\pts
+\rulename{S-COND.BOOL}
 \prooftree
-	\langle B,\ s \rangle \rightarrow \langle B',\ s \rangle
-   \justifies
-   	\langle if\ B\ then\ C_1\ else\ C_2,\ s \rangle \rightarrow \langle if\ B'\ then\ C_1\ else\ C_2,\ s \rangle
+	\config{B}{s} \ssarrow \config{B'}{s}
+\justifies
+   	\config{\condif{B}{C_1}{C_2}}{s} \ssarrow \config{{\condif{B'}{C_1}{C_2}}{s}
 \endprooftree
-\\ \\
-(S-COND.TRUE)
-&&
+\pts
+\rulename{S-COND.TRUE}
 \prooftree
-   \justifies
-   	\langle if\ true\ then\ C_1\ else\ C_2,\ s \rangle \rightarrow \langle C_1,\ s \rangle
+	\nohyp
+\justifies
+   	\config{\condif{\true}{C_1}{C_2}}{s} \ssarrow \config{C_1}{s}
 \endprooftree
-\\ \\
-(S-COND.FALSE)
-&&
+\pts
+\rulename{S-COND.FALSE}
 \prooftree
-   \justifies
-   	\langle if\ false\ then\ C_1\ else\ C_2,\ s \rangle \rightarrow \langle C_2,\ s \rangle
+	\nohyp
+\justifies
+  	\config{\condif{\false}{C_1}{C_2}}{s} \ssarrow \config{C_2}{s}
 \endprooftree
-\\ \\
-(S-WHILE.BOOL)
-&&
+\pts
+\rulename{S-WHILE.BOOL}
 \prooftree
-	\langle B,\ s \rangle \rightarrow \langle B',\ s \rangle
-   \justifies
-   	\langle while\ B\ do\ C,\ s \rangle \rightarrow \langle while\ B'\ do\ C,\ s \rangle
+	\config{B}{s} \ssarrow \config{B'}{s}
+\justifies
+   	\config{\while{B}{C}}{s} \ssarrow \config{\while{B'}{C}}{s}
 \endprooftree
-\\ \\
-(S-WHILE.FALSE)
-&&
+\pts
+\rulename{S-WHILE.FALSE}
 \prooftree
-   \justifies
-   	\langle while\ false\ do\ C,\ s \rangle \rightarrow \langle skip,\ s \rangle
+	\nohyp
+\justifies
+   	\config{\while{\false}{C}}{s} \ssarrow \config{skip}{s}
 \endprooftree
-\\ \\
-(S-WHILE)
-&&
+\pts
+\rulename{S-WHILE}
 \prooftree
-   \justifies
-   	\langle while\ B\ do\ C,\ s \rangle \rightarrow \langle if\ B\ then\ (C ; while\ B\ do\ C)\ else\ skip,\ s \rangle
+	\nohyp
+\justifies
+  	\config{\while{B}{C}}{s} \ssarrow \config{\condif{B}{(C ; \while{B}{C})}{skip}}{s}
 \endprooftree
-\\ \\
-(S-LOG.AND.BOOl)
-&&
+\pts
+\rulename{S-LOG.AND.BOOl}
 \prooftree
-	\langle B_1,\ s \rangle \rightarrow \langle B_1',\ s \rangle
-   \justifies
-   	\langle B_1\ \land\ B_2,\ s \rangle \rightarrow \langle B_1'\ \land\ B_2,\ s \rangle
+	\config{B_1}{s} \ssarrow \config{B_1'}{s}
+\justifies
+   	\config{B_1\ \land\ B_2}{s} \ssarrow \config{B_1'\ \land\ B_2}{s}
 \endprooftree
-\\ \\
-(S-LOG.AND.TRUE)
-&&
+\pts
+\rulename{S-LOG.AND.TRUE}
 \prooftree
-	\langle B_2,\ s \rangle \rightarrow \langle B_2',\ s \rangle
-   \justifies
-   	\langle true\ \land\ B_2,\ s \rangle \rightarrow \langle true\ \land\ B_2',\ s \rangle
+	\config{B_2}{s} \ssarrow \config{B_2'}{s}
+\justifies
+   	\config{\true\ \land\ B_2}{s} \ssarrow \config{\true\ \land\ B_2'}{s}
 \endprooftree
-\\ \\
-(S-LOG.AND.FALSE)
-&&
+\pts
+\rulename{S-LOG.AND.FALSE}
 \prooftree
-	\langle B_2,\ s \rangle \rightarrow \langle B_2',\ s \rangle
-   \justifies
-   	\langle false\ \land\ B_2,\ s \rangle \rightarrow \langle false\ \land\ B_2',\ s \rangle
+	\config{B_2}{s} \ssarrow \config{B_2'}{s} 
+\justifies
+   	\config{\false\ \land\ B_2}{s} \ssarrow \config{\false\ \land\ B_2'}{s}
 \endprooftree
-\\ \\ 
-(S-LOG.OR.BOOl)
-&&
+\pts 
+\rulename{S-LOG.OR.BOOl}
 \prooftree
-	\langle B_1,\ s \rangle \rightarrow \langle B_1',\ s \rangle
-   \justifies
-   	\langle B_1\ \lor\ B_2,\ s \rangle \rightarrow \langle B_1'\ \lor\ B_2,\ s \rangle
+	\config{B_1}{s} \ssarrow \config{B_1'}{s}
+\justifies
+   	\config{B_1\ \lor\ B_2}{s} \ssarrow \config{B_1'\ \lor\ B_2}{s}
 \endprooftree
-\\ \\
-(S-LOG.OR.TRUE)
-&&
+\pts
+\rulename{S-LOG.OR.TRUE}
 \prooftree
-	\langle B_2,\ s \rangle \rightarrow \langle B_2',\ s \rangle
-   \justifies
-   	\langle true\ \lor\ B_2,\ s \rangle \rightarrow \langle true\ \lor\ B_2',\ s \rangle
+	\config{B_2}{s} \ssarrow \config{B_2'}{s}
+\justifies
+   	\config{\true\ \lor\ B_2}{s} \ssarrow \config{\true\ \lor\ B_2'}{s}
 \endprooftree
-\\ \\
-(S-LOG.OR.FALSE)
-&&
+\pts
+\rulename{S-LOG.OR.FALSE}
 \prooftree
-	\langle B_2,\ s \rangle \rightarrow \langle B_2',\ s \rangle
-   \justifies
-   	\langle false\ \lor\ B_2,\ s \rangle \rightarrow \langle false\ \lor\ B_2',\ s \rangle
+	\config{B_2}{s} \ssarrow \config{B_2'}{s}
+\justifies
+   	\config{\false\ \lor\ B_2}{s} \ssarrow \config{\false\ \lor\ B_2'}{s}
 \endprooftree
-\\ \\
-(S-CORT.AND.BOOl)
-&&
+\pts
+\rulename{S-CORT.AND.BOOl}
 \prooftree
-	\langle B_1,\ s \rangle \rightarrow \langle B_1',\ s \rangle
-   \justifies
-   	\langle B_1\ \& \&\ B_2,\ s \rangle \rightarrow \langle B_1'\ \& \&\ B_2,\ s \rangle
+	\config{B_1}{s} \ssarrow \config{B_1'}{s}
+\justifies
+   	\config{B_1\ \& \&\ B_2}{s} \ssarrow \config{B_1'\ \& \&\ B_2}{s}
 \endprooftree
-\\ \\
-(S-CORT.AND.TRUE)
-&&
+\pts
+\rulename{S-CORT.AND.TRUE}
 \prooftree
-	\langle B_2,\ s \rangle \rightarrow \langle B_2',\ s \rangle
-   \justifies
-   	\langle true\ \& \&\ B_2,\ s \rangle \rightarrow \langle B_2',\ s \rangle
+	\config{B_2}{s} \ssarrow \config{B_2'}{s}
+\justifies
+   	\config{\true\ \& \&\ B_2}{s} \ssarrow \config{B_2'}{s}
 \endprooftree
-\\ \\
-(S-CORT.AND.FALSE)
-&&
+\pts
+\rulename{S-CORT.AND.FALSE}
 \prooftree
-	\langle B_2,\ s \rangle \rightarrow \langle B_2',\ s \rangle
-   \justifies
-   	\langle false\ \& \&\ B_2,\ s \rangle \rightarrow \langle false,\ s \rangle
+	\config{B_2}{s} \ssarrow \config{B_2'}{s}
+\justifies
+   	\config{\false\ \& \&\ B_2}{s} \ssarrow \config{\false}{s}
 \endprooftree
-\\ \\ 
-(S-CORT.OR.BOOl)
-&&
+\pts 
+\rulename{S-CORT.OR.BOOl}
 \prooftree
-	\langle B_1,\ s \rangle \rightarrow \langle B_1',\ s \rangle
-   \justifies
-   	\langle B_1\ ||\ B_2,\ s \rangle \rightarrow \langle B_1'\ ||\ B_2,\ s \rangle
+	\config{B_1}{s} \ssarrow \config{B_1'}{s}
+\justifies
+   	\config{B_1\ ||\ B_2}{s} \ssarrow \config{B_1'\ ||\ B_2}{s}
 \endprooftree
-\\ \\
-(S-CORT.OR.TRUE)
-&&
+\pts
+\rulename{S-CORT.OR.TRUE}
 \prooftree
-	\langle B_2,\ s \rangle \rightarrow \langle B_2',\ s \rangle
-   \justifies
-   	\langle true\ ||\ B_2,\ s \rangle \rightarrow \langle true,\ s \rangle
+	\config{B_2}{s} \ssarrow \config{B_2'}{s}
+\justifies
+   	\config{\true\ ||\ B_2}{s} \ssarrow \config{\true}{s}
 \endprooftree
-\\ \\
-(S-CORT.OR.FALSE)
-&&
+\pts
+\rulename{S-CORT.OR.FALSE}
 \prooftree
-	\langle B_2,\ s \rangle \rightarrow \langle B_2',\ s \rangle
-   \justifies
-   	\langle false\ ||\ B_2,\ s \rangle \rightarrow \langle B_2',\ s \rangle
+	\config{B_2}{s} \ssarrow \config{B_2'}{s}
+\justifies
+   	\config{\false\ ||\ B_2}{s} \ssarrow \config{B_2'}{s}
 \endprooftree
-\end{align*}
+\]
 
 \section{Effetti collaterali}\marginpar{Marano}
-Cerchiamo ora di considerare gli effetti collaterali e
-osservare come viene modificata la semantica del linguaggio
-While. Fino ad ora solo i comandi potevano modificare lo stato
-ma adesso anche la valutazione di espressioni e di booleani ma
-non l'accesso in memoria.
-Abbiamo già visto nel paragrafo precedente la definizione di
-\emph{effetto collaterale} e cosa comporta.
-Ecco quindi la nuova semantica del linguaggio While:
+Cerchiamo ora di considerare gli effetti collaterali e osservare come viene modificata la semantica del linguaggio
+WHILE. Fino ad ora solo i comandi potevano modificare lo store ma adesso anche la valutazione di espressioni e di booleani ma non l'accesso in memoria. Abbiamo già visto nel paragrafo precedente la definizione di effetto collaterale e cosa comporta. Ecco quindi la nuova semantica del linguaggio WHILE:
 
-\begin{align*}
-(S-SKIP)
-&&
+\[
+\rulename{S-SKIP}
 \prooftree
+	\nohyp
 \justifies
-\langle skip,\ s \rangle \rightarrow s
+	\config{skip}{s} \ssarrow s
 \endprooftree
-\\ \\
-(S-EXP.NUM)
-&&
+\pts
+\rulename{S-EXP.NUM}
 \prooftree
-   \justifies
-   \langle x,\ s \rangle \rightarrow \langle n,\ s \rangle
-   \using
+	\nohyp
+\justifies
+	\config{x}{s} \ssarrow \config{n}{s}
+\using
    s(x) = n 
 \endprooftree
-\\ \\
-(S-EXP.LEFT)
-&&
+\pts
+\rulename{S-EXP.LEFT}
 \prooftree
-	\langle E_1,\ s \rangle \rightarrow \langle E_1',\ s' \rangle
-   \justifies
-	\langle (E_1 + E_2),\ s \rangle \rightarrow \langle (E_1' + E_2),\ s' \rangle
+	\config{E_1,s} \ssarrow \config{E_1'}{s'}
+\justifies
+	\config{(E_1 + E_2)}{s} \ssarrow \config{(E_1' + E_2)}{s'}
 \endprooftree
-\\ \\
-(S-EXP.RIGHT)
-&&
+\pt
+\rulename{S-EXP.RIGHT}
 \prooftree
-	\langle E_2,\ s \rangle \rightarrow \langle E_2',\ s' \rangle
-   \justifies
-	\langle (E_1 + E_2),\ s \rangle \rightarrow \langle (E_1 + E_2'),\ s' \rangle
+	\config{E_2}{s} \ssarrow \config{E_2'}{s'}
+\justifies
+	\config{(E_1 + E_2)}{s} \ssarrow \config{(E_1 + E_2')}{s'}
 \endprooftree
-\\ \\
-(S-ADD)
-&&
+\pts
+\rulename{S-ADD}
 \prooftree
-   \justifies
-   \langle (n_1 + n_2),\ s \rangle \rightarrow \langle n_3,\ s' \rangle
-   \using
-   n_3 = n_1 + n_2
+	\nohyp
+\justifies
+	\config{(n_1 + n_2)}{s} \ssarrow \config{n_3}{s}
+\using
+	n_3 = n_1 + n_2
 \endprooftree
-\\ \\
-(S-ASS.EXP)
-&&
+\pts
+\rulename{S-ASS.EXP}
 \prooftree
-	\langle E,\ s \rangle \rightarrow \langle E',\ s' \rangle
-   \justifies
-   	\langle x:= E,\ s \rangle \rightarrow \langle x:= E',\ s' \rangle
+	\config{E}{s} \ssarrow \config{E'}{s'}
+\justifies
+	\config{x \weq E}{s} \ssarrow \config{x \weq E'}{s'} 
 \endprooftree
-\\ \\
-(S-ASS.NUM)
-&&
+\pts
+\rulename{S-ASS.NUM}
 \prooftree
-   \justifies
-   	\langle x:= n,\ s \rangle \rightarrow \langle skip,\ s[x \rightarrow n] \rangle
+	\nohyp
+\justifies
+  	\config{x \weq n}{s} \ssarrow \config{skip}{s[x \mapsto n]}
 \endprooftree
-\\ \\
-(S-SEQ.LEFT)
-&&
+\pts
+\rulename{S-SEQ.LEFT}
 \prooftree
-	\langle C_1,\ s \rangle \rightarrow \langle C_1',\ s' \rangle
-   \justifies
-   	\langle C_1 ; C_2,\ s \rangle \rightarrow \langle C_1' ; C_2,\ s' \rangle
+	\config{C_1}{s} \ssarrow \config{C_1'}{s'}
+\justifies
+  	\config{C_1 ; C_2}{s} \ssarrow \config{C_1' ; C_2}{s'}
 \endprooftree
-\\ \\
-(S-SEQ.SKIP)
-&&
+\pts
+\rulename{S-SEQ.SKIP}
 \prooftree
-   \justifies
-   	\langle skip ; C_2,\ s \rangle \rightarrow \langle C_2,\ s' \rangle
+	\nohyp
+\justifies
+   	\config{skip ; C_2}{s} \ssarrow \config{C_2}{s'}
 \endprooftree
-\\ \\
-(S-COND.BOOL)
-&&
+\pts
+\rulename{S-COND.BOOL}
 \prooftree
-	\langle B,\ s \rangle \rightarrow \langle B',\ s' \rangle
-   \justifies
-   	\langle if\ B\ then\ C_1\ else\ C_2,\ s \rangle \rightarrow \langle if\ B'\ then\ C_1\ else\ C_2,\ s' \rangle
+	\config{B}{s} \ssarrow \config{B'}{s'}
+\justifies
+   	\config{\condif{B}{C_1}{C_2}}{s} \ssarrow \config{{\condif{B'}{C_1}{C_2}}{s'}
 \endprooftree
-\\ \\
-(S-COND.TRUE)
-&&
+\pts
+\rulename{S-COND.TRUE}
 \prooftree
-   \justifies
-   	\langle if\ true\ then\ C_1\ else\ C_2,\ s \rangle \rightarrow \langle C_1,\ s \rangle
+	\nohyp
+\justifies
+   	\config{\condif{\true}{C_1}{C_2}}{s} \ssarrow \config{C_1}{s}
 \endprooftree
-\\ \\
-(S-COND.FALSE)
-&&
+\pts
+\rulename{S-COND.FALSE}
 \prooftree
-   \justifies
-   	\langle if\ false\ then\ C_1\ else\ C_2,\ s \rangle \rightarrow \langle C_2,\ s \rangle
+	\nohyp
+\justifies
+  	\config{\condif{\false}{C_1}{C_2}}{s} \ssarrow \config{C_2}{s}
 \endprooftree
-\\ \\
-(S-WHILE.BOOL)
-&&
+\pts
+\rulename{S-WHILE.BOOL}
 \prooftree
-	\langle B,\ s \rangle \rightarrow \langle B',\ s' \rangle
-   \justifies
-   	\langle while\ B\ do\ C,\ s \rangle \rightarrow \langle while\ B'\ do\ C,\ s' \rangle
+	\config{B}{s} \ssarrow \config{B'}{s'}
+\justifies
+   	\config{\while{B}{C}}{s} \ssarrow \config{\while{B'}{C}}{s'}
 \endprooftree
-\\ \\
-(S-WHILE.FALSE)
-&&
+\pts
+\rulename{S-WHILE.FALSE}
 \prooftree
-   \justifies
-   	\langle while\ false\ do\ C,\ s \rangle \rightarrow \langle skip,\ s \rangle
+	\nohyp
+\justifies
+   	\config{\while{\false}{C}}{s} \ssarrow \config{skip}{s}
 \endprooftree
-\\ \\
-(S-LOG.AND.BOOL)
-&&
+\pts
+\rulename{S-WHILE}
 \prooftree
-	\langle B_1,\ s \rangle \rightarrow \langle B_1',\ s' \rangle
-   \justifies
-   	\langle B_1\ \land\ B_2,\ s \rangle \rightarrow \langle B_1'\ \land\ B_2,\ s' \rangle
+	\nohyp
+\justifies
+  	\config{\while{B}{C}}{s} \ssarrow \config{\condif{B}{(C ; \while{B}{C})}{skip}}{s}
 \endprooftree
-\\ \\
-(S-LOG.AND.TRUE)
-&&
+\pts
+\rulename{S-LOG.AND.BOOl}
 \prooftree
-	\langle B_2,\ s \rangle \rightarrow \langle B_2',\ s' \rangle
-   \justifies
-   	\langle true\ \land\ B_2,\ s \rangle \rightarrow \langle true\ \land\ B_2',\ s' \rangle
+	\config{B_1}{s} \ssarrow \config{B_1'}{s'}
+\justifies
+   	\config{B_1\ \land\ B_2}{s} \ssarrow \config{B_1'\ \land\ B_2}{s'}
 \endprooftree
-\\ \\
-(S-LOG.AND.FALSE)
-&&
+\pts
+\rulename{S-LOG.AND.TRUE}
 \prooftree
-	\langle B_2,\ s \rangle \rightarrow \langle B_2',\ s' \rangle
-   \justifies
-   	\langle false\ \land\ B_2,\ s \rangle \rightarrow \langle false\ \land\ B_2',\ s' \rangle
+	\config{B_2}{s} \ssarrow \config{B_2'}{s'}
+\justifies
+   	\config{\true\ \land\ B_2}{s} \ssarrow \config{\true\ \land\ B_2'}{s'}
 \endprooftree
-\\ \\ 
-(S-LOG.OR.BOOl)
-&&
+\pts
+\rulename{S-LOG.AND.FALSE}
 \prooftree
-	\langle B_1,\ s \rangle \rightarrow \langle B_1',\ s' \rangle
-   \justifies
-   	\langle B_1\ \lor\ B_2,\ s \rangle \rightarrow \langle B_1'\ \lor\ B_2,\ s' \rangle
+	\config{B_2}{s} \ssarrow \config{B_2'}{s'} 
+\justifies
+   	\config{\false\ \land\ B_2}{s} \ssarrow \config{\false\ \land\ B_2'}{s'}
 \endprooftree
-\\ \\
-(S-LOG.OR.TRUE)
-&&
+\pts 
+\rulename{S-LOG.OR.BOOl}
 \prooftree
-	\langle B_2,\ s \rangle \rightarrow \langle B_2',\ s' \rangle
-   \justifies
-   	\langle true\ \lor\ B_2,\ s \rangle \rightarrow \langle true\ \lor\ B_2',\ s' \rangle
+	\config{B_1}{s} \ssarrow \config{B_1'}{s'}
+\justifies
+   	\config{B_1\ \lor\ B_2}{s} \ssarrow \config{B_1'\ \lor\ B_2}{s'}
 \endprooftree
-\\ \\
-(S-LOG.OR.FALSE)
-&&
+\pts
+\rulename{S-LOG.OR.TRUE}
 \prooftree
-	\langle B_2,\ s \rangle \rightarrow \langle B_2',\ s' \rangle
-   \justifies
-   	\langle false\ \lor\ B_2,\ s \rangle \rightarrow \langle false\ \lor\ B_2',\ s' \rangle
+	\config{B_2}{s} \ssarrow \config{B_2'}{s'}
+\justifies
+   	\config{\true\ \lor\ B_2}{s} \ssarrow \config{\true\ \lor\ B_2'}{s'}
 \endprooftree
-\\ \\
-(S-CORT.AND.BOOl)
-&&
+\pts
+\rulename{S-LOG.OR.FALSE}
 \prooftree
-	\langle B_1,\ s \rangle \rightarrow \langle B_1',\ s' \rangle
-   \justifies
-   	\langle B_1\ \& \&\ B_2,\ s \rangle \rightarrow \langle B_1'\ \& \&\ B_2,\ s' \rangle
+	\config{B_2}{s} \ssarrow \config{B_2'}{s'}
+\justifies
+   	\config{\false\ \lor\ B_2}{s} \ssarrow \config{\false\ \lor\ B_2'}{s'}
 \endprooftree
-\\ \\
-(S-CORT.AND.TRUE)
-&&
+\pts
+\rulename{S-CORT.AND.BOOl}
 \prooftree
-	\langle B_2,\ s \rangle \rightarrow \langle B_2',\ s' \rangle
-   \justifies
-   	\langle true\ \& \&\ B_2,\ s \rangle \rightarrow \langle B_2',\ s' \rangle
+	\config{B_1}{s} \ssarrow \config{B_1'}{s'}
+\justifies
+   	\config{B_1\ \& \&\ B_2}{s} \ssarrow \config{B_1'\ \& \&\ B_2}{s'}
 \endprooftree
-\\ \\
-(S-CORT.AND.FALSE)
-&&
+\pts
+\rulename{S-CORT.AND.TRUE}
 \prooftree
-	\langle B_2,\ s \rangle \rightarrow \langle B_2',\ s' \rangle
-   \justifies
-   	\langle false\ \& \&\ B_2,\ s \rangle \rightarrow \langle false,\ s' \rangle
+	\config{B_2}{s} \ssarrow \config{B_2'}{s'}
+\justifies
+   	\config{\true\ \& \&\ B_2}{s} \ssarrow \config{B_2'}{s'}
 \endprooftree
-\\ \\ 
-(S-CORT.OR.BOOL)
-&&
+\pts
+\rulename{S-CORT.AND.FALSE}
 \prooftree
-	\langle B_1,\ s \rangle \rightarrow \langle B_1',\ s' \rangle
-   \justifies
-   	\langle B_1\ ||\ B_2,\ s \rangle \rightarrow \langle B_1'\ ||\ B_2,\ s' \rangle
+	\config{B_2}{s} \ssarrow \config{B_2'}{s'}
+\justifies
+   	\config{\false\ \& \&\ B_2}{s} \ssarrow \config{\false}{s'}
 \endprooftree
-\\ \\
-(S-CORT.OR.TRUE)
-&&
+\pts 
+\rulename{S-CORT.OR.BOOl}
 \prooftree
-	\langle B_2,\ s \rangle \rightarrow \langle B_2',\ s' \rangle
-   \justifies
-   	\langle true\ ||\ B_2,\ s \rangle \rightarrow \langle true,\ s' \rangle
+	\config{B_1}{s} \ssarrow \config{B_1'}{s'}
+\justifies
+   	\config{B_1\ ||\ B_2}{s} \ssarrow \config{B_1'\ ||\ B_2}{s'}
 \endprooftree
-\\ \\
-(S-CORT.OR.FALSE)
-&&
+\pts
+\rulename{S-CORT.OR.TRUE}
 \prooftree
-	\langle B_2,\ s \rangle \rightarrow \langle B_2',\ s' \rangle
-   \justifies
-   	\langle false\ ||\ B_2,\ s \rangle \rightarrow \langle B_2',\ s' \rangle
+	\config{B_2}{s} \ssarrow \config{B_2'}{s'}
+\justifies
+   	\config{\true\ ||\ B_2}{s} \ssarrow \config{\true}{s'}
 \endprooftree
-\end{align*}
+\pts
+\rulename{S-CORT.OR.FALSE}
+\prooftree
+	\config{B_2}{s} \ssarrow \config{B_2'}{s'}
+\justifies
+   	\config{\false\ ||\ B_2}{s} \ssarrow \config{B_2'}{s'}
+\endprooftree
+\]
