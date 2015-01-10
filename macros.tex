@@ -8,12 +8,13 @@
 \newcommand*{\config}[2]{\langle\ #1,\ #2\ \rangle}
 %% assegnamento del while :=
 \newcommand*{\weq}{:=}
+\newcommand*{\assign}[3]{#1[#2\mapsto#3]} % comodo per s[x -> n]
 %% transizione della small step
 \newcommand*{\ssarrow}{\longrightarrow}
-\newcommand*{\nssarrow}{\centernot\longrightarrow}
+\newcommand*{\nssarrow}{\not \longrightarrow}
 %% operatore di sostituzione s[n/x]
-\newcommand*{\subst}[3]{#1[#2\mapsto#3]}
-\newcommand*{\substt}[2]{[#1\mapsto#2]}
+\newcommand*{\subst}[3]{#1[\nicefrac{#2}{#3}]}
+\newcommand*{\substt}[2]{[\nicefrac{#1}{#2}]}
 % macro da verificare per la composizione funzionale (trombi)
 \newcommand*{\compfun}[2]{\mathrm{#1}\mathop{\circ}\mathrm{#2}}
 % e per if then else

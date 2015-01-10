@@ -136,6 +136,22 @@ Quando il poset $(P, \preceq)$ \`e implicito dal contesto
 e $A \sseq P$ scriveremo $\chain(A)$ intendendo con questo
 che $(A, \preceq)$ \`e una catena.
 
+\begin{proposizione} \summary{(Ogni catena finita ha un massimo.)}
+Sia $(C, \preceq)$ una catena finita, allora sicuramente tale catena ammette massimo.
+\end{proposizione}
+\begin{proof}
+Essendo $C$ finita siamo sicuri che $|C| < \aleph_0$, definiamo dunque un insieme I $\subseteq \Nset \itc C = \left\{a_i\right\}_{i \in I}$. Dunque esiste un $i \in I \itc \forall j \in I \itc a_j \preceq a_i$. Ma allora $a_i = max\ C$.
+\end{proof}
+
+
+\begin{proposizione} \summary{(Ogni sottoinsieme di una catena è una catena.)}
+Sia $(C, \preceq)$ una catena, allora ogni suo sottoinsieme è una catena, ovvero $\forall X \subseteq C \chain(X)$.
+\end{proposizione}
+\begin{proof}
+È ovvio che essendo $X$ un sottoinsieme di $C$ esso avrà cardinalità minore o uguale a $C$, dunque $|X| \leq |C| \leq \aleph_0 \Rightarrow |X| \leq \aleph_0$. Abbiamo quindi dimostrato che $X$ è sicuramente numerabile, dobbiamo solo dimostrare che è totalmente ordinato:
+$\forall x,y \in X \Rightarrow x,y \in C \Rightarrow x \preceq y \lor y \preceq x$
+\end{proof}
+
 \begin{definizione} \summary{(Limite superiore/inferiore, sup/inf, lub/glb.)}
 Sia $(P, \preceq)$ un poset e sia $A \sseq P$.
 Un elemento $p \in P$ \`e un \emph{limite superiore} per $A$
@@ -153,7 +169,7 @@ se $p$ \`e un limite inferiore per $A$ e,
 per ogni altro limite inferiore $p'$ per $A$, risulta $p' \preceq p$.
 \end{definizione}
 
-%%%%%%%%%%%%%%5
+%%%%%%%%%%%%%%
 \begin{proposizione} \summary{(Unicità di $\lub$ e $\glb$.)}
 Sia $(S, \preceq)$ un poset e sia $T \subseteq S$.
 Se $u, v \in \lub T$ allora $u = v$.
@@ -180,6 +196,25 @@ La dimostrazione inerente l'unicità di $\glb T$ è analoga.
 Il risultato appena dimostrato ci consente di scrivere $p = \lub T$ e
 $p = \glb T$, nel caso tali $\lub$ e $\glb$ esistano,
 invece di $p \in \lub T$ e $p \in \glb T$.
+
+%%%%%%%%%%%%%%%
+\begin{proposizione} \summary{($\lub T \in T \Rightarrow \lub T = \max T$.)}
+Sia $(S, \preceq)$ un ordinamento parziale, sia $T \subseteq S$ e sia $u \in S \lub\ T$, allora il $\lub T$ è anche massimo dell'insieme.
+\end{proposizione}
+\begin{proof}
+Applicando la definizione di $\lub$ otteniamo che:
+$\forall x \in T \itc x \preceq u \land u \in T \Rightarrow \nexists y \in T \itc y \succeq u$
+Non esistendo dunque alcun elemento in $T$ maggiore di $u$ è ovvio che $u = \max T$.
+\end{proof}
+
+\begin{proposizione} \summary{($\exists \max S \Rightarrow \lub S = \max S$.)}
+Sia $(S, \preceq)$ un ordinamento parziale, allora se esiste $u = \max S$ $u$ è anche il $\lub$ di tale insieme.
+\end{proposizione}
+\begin{proof}
+Applichiamo dapprima la definizione di $\max$ ipotizzando che $u = \max S$:
+$\forall x \in S \itc x \preceq u$. Dunque $u = ub\ S$, $u$ è un upper bound per l'insieme. Ora dobbiamo solo dimostrare che è proprio il minimo dei maggioranti: sappiamo che $\not \exists u' \in S \itc \forall y \in S \itc y \preceq u'$, non esiste dunque un altro maggiorante $u'$ (a meno che non coincida con $u$). $u$ è perciò l'unico maggiorante, dunque $u = \lub S$.
+\end{proof}
+
 
 \begin{definizione} \summary{(CPO.)}
 \label{def:cpo}
@@ -323,6 +358,53 @@ $f$ è \emph{additiva} se, per $X \subseteq S$ qualsiasi,
 \end{definizione}
 
 
+\begin{proposizione} \summary{(Se $f$ è continua allora è anche monotona.)}
+Siano $(S, \preceq)$ e $(T, \sqsubseteq)$ due CPO e sia $\fund{f}{S}{T}$, se $f$ è continua allora è anche monotona.
+\end{proposizione}
+\begin{proof}
+Siano $x,y \in S \itc x \preceq y$ allora definiamo $X = \left\{x,y\right\}$. Siamo sicuri che vale $\chain(X)$ per come è stato definito l'insieme, dunque risulta banale che $\lub X = y \land \exists \lub f(X) \land f(y) = \lub f(X)$. Perciò $f$ è monotona.
+\end{proof}
+
+\begin{proposizione} \summary{(f monotona $\Arrownot \Rightarrow$ f continua.)}
+Siano $(S, \preceq)$ e $(T, \sqsubseteq)$ due CPO e sia $\fund{f}{S}{T}$, se $f$ è monotona non è detto che sia anche continua.
+\end{proposizione}
+\begin{proof}
+Scegliamo un controesempio con $(\Nset \cup \infty, \leq)$ e $(\left\{0,1\right\},\leq)$ e
+\[
+\fund{f}{\Nset \cup \infty}{\left\{0,1\right\}} \lambda x.
+	\begin{cases}
+        0 & \text{ se } x \in \Nset; \\
+        1 & \text{ se } x = \infty;
+    \end{cases}
+\]
+Scegliamo come catena proprio l'insieme $\Nset$, dunque:
+$\Nset \subseteq \Nset \cup \left\{\infty\right\} \land \chain(\Nset)$ perciò $\lub f(\Nset) = \lub \left\{0\right\}$ ma $f(\lub \Nset) = f(\infty) = 1$.
+\end{proof}
+
+\begin{proposizione} \summary{(L'immagine di una catena tramite funzione monotona è una catena.)}
+Siano $(X, \sqsubseteq_X)$ e $(Y, \sqsubseteq_Y)$ due poset e sia $\fund{f}{X}{Y}$ monotona e $C \subset X . \chain(C)$, allora vale anche $\chain(f(C))$
+\end{proposizione}
+\begin{proof}
+Sia $I \subseteq \Nset \itc C = \left\{a_i\right\}_{i \in I}$, allora $f(C) = \left\{f(a_i) | i \in I\right\}$ e
+$|f(C)| \leq |I| \leq |\Nset|$, perciò $f(C)$ è numerabile. Siano $i,j \in I$ allora abbiamo due casi:
+\begin{itemize}
+	\setlength{\itemindent}{20mm}
+	\item $i \leq j \Rightarrow a_i \sqsubseteq_X a_j \Rightarrow f(a_i) \sqsubseteq_Y f(a_j)$
+	\item $j \leq i \Rightarrow a_j \sqsubseteq_X a_i \Rightarrow f(a_j) \sqsubseteq_Y f(a_i)$
+\end{itemize}
+In entrambi i casi abbiamo dimostrato che $f(C)$ è totalmente ordinato, ovvero che $\forall i,j \in I \itc f(a_i) \sqsubseteq_Y f(a_j) \lor f(a_j) \sqsubseteq_Y f(a_j)$. $f(C)$ è quindi una catena.
+\end{proof}
+
+\begin{proposizione} \summary{(Composizione di funzioni continue.)}
+Siano $(A, \sqsubseteq_A), \; (B, \sqsubseteq_B) \; e \; (D, \sqsubseteq_D) $ dei CPO e siano $\fund{f}{A}{B}$ e $\fund{g}{B}{D}$ funzioni continue, allora $\fund{\compfun{g}{f}}{A}{D}$ è continua.
+\end{proposizione}
+\begin{proof}
+Sia $C \subseteq A \itc \chain(C)$ allora sappiamo che esiste $\lub f(C)$ e che $\lub f(C) = f(\lub C)$.
+Dall'esercizio precedente sappiamo che $f(C)$ è una catena, perciò esiste $\lub g(f(C))$ e $g(\lub f(C)) = \lub g(f(C))$.
+Ma allora $\compfun{g}{f}(\lub C) = g(f(\lub C)) = g(\lub f(C)) = \lub g(f(C)) = \lub \compfun{g}{f}(C)$.
+$\compfun{g}{f}$ è perciò continua.
+\end{proof}
+
 \section{Punti fissi}
 
 \begin{definizione} \summary{(Punto fisso.)}\marginpar{Mancino}
@@ -396,54 +478,10 @@ il che è assurdo.
 \end{teorema}
 
 \section{Esercizi sui CPO}\marginpar{Marano}
+%% DA SPOSTARE E AGGIUSTARE %%
 
-\theoremstyle{definizione}
-\newtheorem{esercizio}{Esercizio}
-
-
-\subsection{Se il lub appartiene a un insieme è il massimo}
-\begin{esercizio}[$lub\ T \in T \Rightarrow lub\ T = max\ T$]
-  Sia $(S, \preceq)$ un ordinamento parziale, sia $T \subseteq S$ e\\
-  sia $u \in S lub\ T \Rightarrow (u \in T \Rightarrow u = max\ T)$
-  \begin{proof}
-    $\forall x \in T : x \preceq u \land u \in T \Rightarrow \nexists y \in T : y \succeq u \Rightarrow u = max\ T$
-  \end{proof}
-\end{esercizio}
-
-\subsection{Il massimo di un insieme è anche il lub}
-\begin{esercizio}[$\exists max\ S \Rightarrow lub\ S = max\ S$]
-  Sia $(S, \preceq)$ un ordinamento parziale
-  \begin{center}
-    $\Downarrow$\\
-    $\exists max\ S \Rightarrow lub\ S = max\ S$
-  \end{center}
-  \begin{proof}
-    È banale guardando la definizione di massimo e di lub:\\
-    Sia $u \in S : u = max\ S \Rightarrow \forall x \in S : x \preceq u \Rightarrow u = ub\ S$.\\
-    È anche lub visto che $\not \exists u' \in S : \forall y \in S : y \preceq u'$ con $ u' \neq u$
-  \end{proof}
-\end{esercizio}
-
-\subsection{Ogni catena finita ha massimo}
-\begin{esercizio}
-  Sia $(C, \preceq)$ un \emph{PO} $: Chain(C) \land |C| < \aleph_0 \Rightarrow \exists max\ C$
-  \begin{proof}
-    Sia I $\subseteq \Nset : C = \left\{a_i\right\}_{i \in I} \Rightarrow \exists i \in I : \forall j \in I : a_j \preceq a_i \Rightarrow a_i = max\ C$
-    \end{proof}
-\end{esercizio}
-
-\subsection{Ogni sottoinsieme di una catena è una catena}
-\begin{esercizio}
-  Sia $(C, \preceq)$ un \emph{PO} $: Chain(C) \Rightarrow (X \subseteq C \Rightarrow Chain(X))$
-  \begin{proof}
-    $X \subseteq C \Rightarrow |X| \leq |C| \leq \aleph_0 \Rightarrow |X| \leq \aleph_0$. $\forall x,y \in X \Rightarrow x,y \in C \Rightarrow x \preceq y \lor y \preceq x$\\
-    X è dunque numerabile e totalmente ordinato
-  \end{proof}
-\end{esercizio}
-
-\subsection{$(ST, \sqsubseteq)$ è un CPO}
-\begin{esercizio}[$(ST, \sqsubseteq)$ è un CPO]
-  Sia ST l'insieme degli \emph{State Transformer} e
+\begin{proposizione} \summary{($(ST, \sqsubseteq)$ è un CPO.)}
+Sia ST l'insieme degli State Transformer e
   \begin{center}
     sia $\sqsubseteq\ \subseteq ST \times ST :
     \forall f,g \in ST : f \sqsubseteq g \Longleftrightarrow \forall s \in \sum :
@@ -451,6 +489,7 @@ il che è assurdo.
     $\Downarrow$\\
     $(ST, \sqsubseteq)$ è un \emph{CPO}
   \end{center}
+\end{proposizione}
   \begin{proof}
     Sia $\bot \in ST : \forall s \in \sum : \bot(s)\uparrow \Rightarrow \forall f \in ST : \bot \sqsubseteq f \Rightarrow \bot = min\ ST $\\
     Sia I $\subseteq \Nset : C = \left\{a_i\right\}_{i \in I} \Rightarrow$ se $|I| < \aleph_0 \Rightarrow$ il lub è l'elemento massimo nella catena.\\
@@ -469,74 +508,3 @@ il che è assurdo.
       $(ST, \sqsubseteq)$ ha minimo e ogni sua catena ha lub $\Rightarrow (ST, \sqsubseteq)$ è un \emph{CPO}
     \end{center}
   \end{proof}
-\end{esercizio}
-
-
-\subsection{$f$  continua $\Rightarrow f$  monotona}
-\begin{esercizio}[$f$  continua $\Rightarrow f$  monotona]
-  Siano $(S, \preceq)$ e $(T, \sqsubseteq)$ due \emph{CPO} e sia $f: S \rightarrow T $
-  \begin{center}
-    $\Downarrow$\\
-    $(f\ continua \Rightarrow f\ monotona)$
-  \end{center}
-  \begin{proof}
-    Siano $x,y \in S : x \preceq y \Rightarrow $ definiamo $X = \left\{x,y\right\}$. Siamo sicuri che vale $Chain(X)$ per come è stato definito l'insieme $\Rightarrow lub\ X = y \land \exists lub\ f(X) \land f(y) = lub\ f(x) \Rightarrow f(x) \sqsubseteq f(y) \Rightarrow f$ è monotona.
-  \end{proof}
-\end{esercizio}
-
-
-\subsection{f monotona $\Arrownot \Rightarrow$ f continua}
-\begin{esercizio}[f monotona $\Arrownot \Rightarrow$ f continua]
-  Siano $(S, \preceq)$ e $(T, \sqsubseteq)$ due \emph{CPO} e sia $f: S \rightarrow T$
-  \begin{center}
-    $\Downarrow$\\
-    $(f\ monotona \Arrownot \Rightarrow f\ continua)$
-  \end{center}
-  \begin{proof}
-    Scegliamo un controesempio con $(\Nset \cup \infty, \leq)$ e $(\left\{0,1\right\},\leq)$ e
-    \begin{center}
-      $f: \Nset \cup \infty \rightarrow \left\{0,1\right\} \lambda x.$
-      $\begin{cases}
-        0 & \text{ se } x \in \Nset
-        \\
-        1 & \text{ se } x = \infty
-      \end{cases}
-      $
-    \end{center}
-    $\Nset \subseteq \Nset \cup \left\{\infty\right\} \land Chain(\Nset) \Rightarrow lub\ f(\Nset) = lub\ \left\{0\right\}$ ma $f(lub\ \Nset) = f(\infty) = 1$
-  \end{proof}
-\end{esercizio}
-
-\
-\subsection{L'immagine di una catena è una catena}
-\begin{esercizio}
-  Siano $(X, \sqsubseteq_X)$ e $(Y, \sqsubseteq_Y)$ due \emph{PO} e sia $f: X \rightarrow Y$ monotona
-  \begin{center}
-    $\Downarrow$\\
-    $(\forall C \subseteq X : Chain(C) \Rightarrow Chain(f(C))$
-  \end{center}
-  \begin{proof}
-    Sia $I \subseteq \Nset : C = \left\{a_i\right\}_{i \in I} \subseteq X \Rightarrow f(C) = \left\{f(a_i) | i \in I\right\} \Rightarrow |f(C)| \leq |I| \leq |\Nset| \Rightarrow f(C)$ è numerabile.\\
-    Siano $i,j \in I \Rightarrow $
-    \begin{itemize}
-      \setlength{\itemindent}{20mm}
-    \item $i \leq j \Rightarrow a_i \sqsubseteq_X a_j \Rightarrow f(a_i) \sqsubseteq_Y f(a_j)$
-    \item $j \leq i \Rightarrow a_j \sqsubseteq_X a_i \Rightarrow f(a_j) \sqsubseteq_Y f(a_i)$
-    \end{itemize}
-    $\Rightarrow \forall i,j \in I : f(a_i) \sqsubseteq_Y f(a_j) \lor f(a_j) \sqsubseteq_Y f(a_j) \Rightarrow Chain(f(C))$
-  \end{proof}
-\end{esercizio}
-
-\subsection{Composizione di funzioni continue}
-\begin{esercizio}[Composizione di funzioni continue]
-  Siano $ (A, \sqsubseteq_A), \; (B, \sqsubseteq_B) \; e \; (D, \sqsubseteq_D) $ dei \emph{CPO} e siano $ f: A \rightarrow B $ e $ g: B \rightarrow D $ funzioni continue $ \Rightarrow g \circ f : A \rightarrow D $ è continua.
-  \begin{proof}
-    Sia $C \subseteq A : Chain(C) \Rightarrow \exists lub \; f(C) \land lub \; f(C) = f(lub \; C)$.
-    Dall'esercizio precedente sappiamo che:
-    \begin{center}
-      $ Chain(f(C)) \Rightarrow (\exists lub \; g(f(C)) \land g(lub \; f(C)) = lub \; g(f(C))) $\\
-      $ \Rightarrow g \circ f(lub \; C) = g(f(lub \; C)) = g(lub \; f(C)) = lub \; g(f(C)) = lub \; g \circ f(C) $\\
-      $ \Rightarrow g \circ f$ è continua.
-    \end{center}
-  \end{proof}
-\end{esercizio}

@@ -23,7 +23,7 @@ $$ Exp \ni E ::= n \bigm| (E+E) \bigm| \cdots $$
 in cui i puntini di indicano, come al solito, che si può inserire una qualsiasi espressione arricchendo così la sintassi e dandone successivamente una
 semantica. Considerando che $n \in \Zset$, una possibile semantica small step è:
 
-\[
+\begin{gather*}
 \rulename{S-NUM}
 \prooftree
 	\nohyp
@@ -51,14 +51,14 @@ semantica. Considerando che $n \in \Zset$, una possibile semantica small step è
 \justifies
 	(1 + 2) \ssarrow 3
 \endprooftree
-\]
+\end{gather*}
 
 L'operatore $\ssarrow$ quindi rappresenta a tutti gli effetti un passo di computazione.
 Con questa semantica abbiamo lo stesso potere espressivo della semantica Big step ma,
 essendo più verbosa, da più informazione sulla sequenzialità e sui "risultati intermedi".
 Vediamo un esempio di dimostrazione:
 
-\[
+\begin{gather*}
 \rulename{S-ADD}
 \prooftree
 	\rulename{S-ADD}
@@ -89,7 +89,7 @@ Vediamo un esempio di dimostrazione:
 	\using
 		(S-ADD)
 \endprooftree
-\]
+\end{gather*}
 
 Possiamo subito osservare che differentemente dalla semantica big-step
 nella semantica small-step si usano tanti alberi di dimostrazione più piccoli per dimostrare
@@ -174,7 +174,7 @@ $
 
 Indichiamo perciò con $E$ la generica espressione appartenente a $\AExp$, con $C$ il generico comando appartenente a $\Com$ e con $s$ il generico store appartenente a $\Sigma$:
 
-\[
+\begin{gather*}
 \rulename{S-SKIP}
 \prooftree
 	\nohyp
@@ -197,7 +197,7 @@ Indichiamo perciò con $E$ la generica espressione appartenente a $\AExp$, con $
 \justifies
 	\config{(E_1 + E_2)}{s} \ssarrow \config{(E_1' + E_2)}{s}
 \endprooftree
-\pt
+\pts
 \rulename{S-EXP.RIGHT}
 \prooftree
 	\config{E_2}{s} \ssarrow \config{E_2'}{s}
@@ -246,7 +246,7 @@ Indichiamo perciò con $E$ la generica espressione appartenente a $\AExp$, con $
 \prooftree
 	\config{B}{s} \ssarrow \config{B'}{s}
 \justifies
-   	\config{\condif{B}{C_1}{C_2}}{s} \ssarrow \config{{\condif{B'}{C_1}{C_2}}{s}
+   	\config{\condif{B}{C_1}{C_2}}{s} \ssarrow \config{\condif{B'}{C_1}{C_2}}{s}
 \endprooftree
 \pts
 \rulename{S-COND.TRUE}
@@ -367,13 +367,13 @@ Indichiamo perciò con $E$ la generica espressione appartenente a $\AExp$, con $
 \justifies
    	\config{\false\ ||\ B_2}{s} \ssarrow \config{B_2'}{s}
 \endprooftree
-\]
+\end{gather*}
 
 \section{Effetti collaterali}\marginpar{Marano}
 Cerchiamo ora di considerare gli effetti collaterali e osservare come viene modificata la semantica del linguaggio
 WHILE. Fino ad ora solo i comandi potevano modificare lo store ma adesso anche la valutazione di espressioni e di booleani ma non l'accesso in memoria. Abbiamo già visto nel paragrafo precedente la definizione di effetto collaterale e cosa comporta. Ecco quindi la nuova semantica del linguaggio WHILE:
 
-\[
+\begin{gather*}
 \rulename{S-SKIP}
 \prooftree
 	\nohyp
@@ -396,7 +396,7 @@ WHILE. Fino ad ora solo i comandi potevano modificare lo store ma adesso anche l
 \justifies
 	\config{(E_1 + E_2)}{s} \ssarrow \config{(E_1' + E_2)}{s'}
 \endprooftree
-\pt
+\pts
 \rulename{S-EXP.RIGHT}
 \prooftree
 	\config{E_2}{s} \ssarrow \config{E_2'}{s'}
@@ -445,7 +445,7 @@ WHILE. Fino ad ora solo i comandi potevano modificare lo store ma adesso anche l
 \prooftree
 	\config{B}{s} \ssarrow \config{B'}{s'}
 \justifies
-   	\config{\condif{B}{C_1}{C_2}}{s} \ssarrow \config{{\condif{B'}{C_1}{C_2}}{s'}
+   	\config{\condif{B}{C_1}{C_2}}{s} \ssarrow \config{\condif{B'}{C_1}{C_2}}{s'}
 \endprooftree
 \pts
 \rulename{S-COND.TRUE}
@@ -566,4 +566,4 @@ WHILE. Fino ad ora solo i comandi potevano modificare lo store ma adesso anche l
 \justifies
    	\config{\false\ ||\ B_2}{s} \ssarrow \config{B_2'}{s'}
 \endprooftree
-\]
+\end{gather*}
