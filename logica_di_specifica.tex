@@ -66,7 +66,7 @@ Sia $\fund{\FV}{\LExp}{\wp(\Ghost)}$ la funzione per catturare le variabili libe
 \begin{definizione} \summary{($\FV$ per $\Pred$.)}
 Sia $\fund{\FV}{\Pred}{\wp(\Ghost)}$ la seconda funzione per catturare
 le variabili libere nei predicati della logica,
-definita anch'essa per induzione strutturale:
+definita per induzione strutturale:
 \begin{align*}
    \FV(\true)
       &= \emptyset;\\
@@ -93,7 +93,7 @@ definita anch'essa per induzione strutturale:
 \end{align*}
 \end{definizione}
 
-\subsection{Definizione semantica}
+\subsection{Sostituzione sintattica}
 Per definire la semantica di un tale linguaggio logico abbiamo bisogno
 di formalizzare l'operazione di sostituzione sintattica di termini
 al posto di variabili.
@@ -158,16 +158,18 @@ per induzione strutturale su $P$ come segue:
 \end{align*}
 \end{definizione}
 
-\subsection{Valutazione semantica di LExp}
+\subsection{Valutazione semantica}
 Per definire la semantica di ogni oggetto sintattico del linguaggio, abbiamo bisogno di: $\Sigma$,
 che rappresenta l'insieme degli stati, utile in quanto nelle espressioni possono comparire
 variabili del programma e $\Gamma$, l'ambiente delle variabili $\Ghost$
 definita come $\fund{\Gamma}{\Ghost}{\Zset}$.
+
+\begin{definizione} \summary{(Valutazione semantica per $\LExp$.)}
 La funzione di valutazione semantica delle espressioni è definita come segue:
 \[
    \fund{\llbracket \cdot \rrbracket ^\LExp}{\LExp}{((\Sigma \times \Gamma) \rightarrow \Zset)}
 \]
-Diamo una definizione per induzione strutturale su ogni espressione:
+Diamo una definizione per induzione strutturale su $\LExp$:
 \begin{align*}
    \llbracket x \rrbracket(s,t)
       &=
@@ -188,13 +190,14 @@ Diamo una definizione per induzione strutturale su ogni espressione:
    \llbracket \lfloor \LE \rfloor \rrbracket(s,t)
      &= \bigl \lfloor \llbracket \LE \rrbracket \bigr \rfloor(s,t).
 \end{align*}
+\end{definizione}
 
-\subsection{Valutazione semantica di Pred}
-Funzione di valutazione semantica dei predicati:
+\begin{definizione} \summary{(Valutazione semantica per $\Pred$.)}
+La funzione di valutazione semantica dei predicati è definita come segue:
 \[
    \fund{\llbracket \cdot \rrbracket ^{\Pred}}{\Pred}{((\Sigma \times \Gamma) \rightarrow \{\ttv,\ffv\})}
 \]
-Definita per induzione sulla struttura di $\Pred$:
+Diamo una definizione per induzione strutturale su $\Pred$:
 \begin{align*}
    \llbracket \true \rrbracket(s,t)
       &= \ttv;\\
@@ -270,6 +273,7 @@ Dove:
             \ttv,&\text{altrimenti}.
    \end{cases}
 \end{align*}
+\end{definizione}
 
 \subsection{Verità di una tripla di Floyd-Hoare}
 Ora che abbiamo tutti gli elementi, possiamo definire quando una tripla di Floyd-Hoare è vera.
@@ -305,7 +309,7 @@ Dove:
    \forall v \subset \Ghost,\Gamma_{v} =\{t \in \Gamma \text{ t.c; $\dom(t) = v$\}}.
 \]
 \subsection{Correttezza della logica di Floyd-Hoare}
-Se la tripla di Hoare ha dimostrazione, allora essa è vera.
+Se la tripla di Floyd-Hoare ha dimostrazione, allora essa è vera.
 \[
    \forall P,Q \in \Pred \itc \forall C \in \Com : \vdash \{P\}C\{Q\} \Rightarrow \llbracket \{P\}C\{Q\}\rrbracket;
 \]
