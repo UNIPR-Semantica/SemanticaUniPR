@@ -189,7 +189,7 @@ La proprietà di normalizzazione asserisce che per ogni espressione $E$ esiste a
 $n$ tale che $E \Downarrow n$.
 
 Osserviamo che, in generale, ci sono esempi in cui non è possibile normalizzare:
-\[ \textrm{ $\kw{while}$ true $\kw{do}$ skip $\Downarrow$ ?} \]
+\[ \textrm{ $\kw{while}$ true $\kw{do}$ $\kw{skip}$ $\Downarrow$ ?} \]
 A destra dell'operatore di ``valuta a'' non posso scriverci nulla, il ciclo non termina.
 Un altro esempio è il seguente:
 $$ \nicefrac{5}{0} \; \Downarrow \; ? $$
@@ -221,7 +221,7 @@ Per lo schema d'assioma esiste sempre $n$ che è appunto lui stesso:
 Passo induttivo: $E \in \AExp$ con $E = E_1 + E_2$.
 Per ipotesi induttiva abbiamo che:
 \[
-\exists n_1, n_2 \in Zset \st E_1 \Downarrow n_1 \land E_2 \Downarrow n_2.
+\exists n_1, n_2 \in \Zset \st E_1 \Downarrow n_1 \land E_2 \Downarrow n_2.
 \]
 Dimostriamo che esiste un $n_3 \in \Zset$ tale che $E_1 + E_2
 \Downarrow n_3$. Esso esiste sempre dallo schema di regola (B-ADD) il
