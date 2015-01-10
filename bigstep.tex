@@ -71,16 +71,13 @@ un'istanza corretta della B-NUM:
 La seguente è invece un'istanza corretta della B-ADD:
 
 \[
-\rulename{B-ADD}
 \prooftree
-  \rulename{B-NUM}
   \prooftree
     \nohyp
   \justifies
      3 \Downarrow 3
   \endprooftree
   \quad
-  \rulename{B-NUM}
   \prooftree
     \nohyp
   \justifies
@@ -112,7 +109,7 @@ La seguente è invece un'istanza scorretta (cioè non dimostrabile) della B-ADD:
 Operando in questo modo, ci è possibile realizzare dimostrazioni ad albero
 come la seguente:
 
-$$
+\[
 \prooftree
   \prooftree
    \justifies
@@ -139,7 +136,7 @@ $$
    	\using
    	  6 = 3+(2+1)
 \endprooftree
-$$
+\]
 
 La dimostrazione, come si vede, è un albero che va dal basso verso l'alto, dove
 in fondo troviamo ciò che vogliamo dimostrare e, applicando le due regole date precedentemente,
@@ -173,7 +170,7 @@ Passo induttivo: $E \in \AExp$ con $E = E_1 + E_2$.
 In questo caso abbiamo che $(E_1 + E_2) \Downarrow m_3$
 e $(E_1 + E_2) \Downarrow p_3$.
 Lo schema B-ADD implica che esistono
-$m_1, m_2, p_1, p_2 \in Num$ tali che:
+$m_1, m_2, p_1, p_2 \in \Zset$ tali che:
 \begin{align*}
   m_1 + m_2 &= m_3, & E_1 &\Downarrow m_1, & E_2 &\Downarrow m_2, \\
   p_1 + p_2 &= p_3, & E_1 &\Downarrow p_1, & E_2 &\Downarrow p_2.
@@ -192,10 +189,10 @@ La proprietà di normalizzazione asserisce che per ogni espressione $E$ esiste a
 $n$ tale che $E \Downarrow n$.
 
 Osserviamo che, in generale, ci sono esempi in cui non è possibile normalizzare:
-$$ while \; true \; do \; skip \; \Downarrow \; ? $$
+\[ \textrm{ $\kw{while}$ true $\kw{do}$ skip $\Downarrow$ ?} \]
 A destra dell'operatore di ``valuta a'' non posso scriverci nulla, il ciclo non termina.
 Un altro esempio è il seguente:
-$$ \nicefrac{0}{0} \; \Downarrow \; ? $$
+$$ \nicefrac{5}{0} \; \Downarrow \; ? $$
 A destra dell'operatore di ``valuta a'' posso scrivere la codifica del disastro (se esiste)
 altrimenti, come nel caso precedente, non possiamo scriverci nulla.
 
@@ -208,50 +205,53 @@ $E \in Exp$ esiste  $n \in \Zset$ tale che $E \Downarrow n$.
 
 \section{Semantica big-step per While}\marginpar{Mancino}
 Invece di usare un semplice frammento di linguaggio come quello descritto nel capitolo
-precedente possiamo anche definire tramite la big-step la semantica del linguaggio WHILE.
+precedente possiamo definire tramite la big-step la semantica del linguaggio WHILE.
 Precisiamo allora che una coppia (\emph{comando, stato}) viene valutata ad un
 nuovo stato, ossia, dato un comando $C$ e uno stato $s$, in generale:
 
-$$
+\[
 \langle C,s \rangle \Downarrow s'
-$$
+\]
 
 Con questa premessa, definendo con $E$ la generica espressione, con $C$
 il generico comando e con $s$ il generico stato,
-è facile immaginare il comportamento di tutti i comandi per while:
+è facile immaginare il comportamento di tutti i comandi per WHILE:
 
 \begin{align*}
 \prooftree
-   \justifies
-   		\langle skip,s \rangle \Downarrow s
+  \justifies
+    \langle \kw{skip},s \rangle \Downarrow s
 \endprooftree
 &&
 \prooftree
-	E \Downarrow n
-   \justifies
-   		\langle x:=E,s \rangle \Downarrow s[n \rightarrow x]
+  E \Downarrow n
+  \justifies
+   	\langle x:=E,s \rangle \Downarrow s[n \rightarrow x]
 \endprooftree
 \end{align*}
 
 \begin{align*}
 \prooftree
-	B \Downarrow true \; \; \langle C_1,s \rangle \Downarrow s'
+   B \Downarrow \textrm{true} 
+   \quad \langle C_1,s \rangle \Downarrow s'
    \justifies
-   		\langle if \; B \; then \; C_1 \; else \; C_2, s \rangle \Downarrow s'
+   	 \langle \textrm{$\kw{if}$ $B$ $\kw{then}$ $C_1$ $\kw{else}$ $C_2$}, s \rangle \Downarrow s'
 \endprooftree
 &&
 \prooftree
-	B \Downarrow false \; \; \langle C_2,s \rangle \Downarrow s'
+   B \Downarrow \textrm{ff} 
+   \quad \langle C_2,s \rangle \Downarrow s'
    \justifies
-   		\langle if \; B \; then \; C_1 \; else \; C_2, s \rangle \Downarrow s'
+   	 \langle \textrm{$\kw{if}$ $B$ $\kw{then}$ $C_1$ $\kw{else}$ $C_2$}, s \rangle \Downarrow s'
 \endprooftree
 \end{align*}
 
 \begin{align*}
 \prooftree
-	\langle C_1,s \rangle \Downarrow s' \; \; \langle C_2,s' \rangle \Downarrow s''
-   \justifies
-   		\langle C_1; \; C_2,s \rangle \Downarrow s''
+  \langle C_1,s \rangle \Downarrow s' 
+  \quad \langle C_2,s' \rangle \Downarrow s''
+  \justifies
+   	\langle \textrm{$C_1$; $C_2$},s \rangle \Downarrow s''
 \endprooftree
 \end{align*}
 
@@ -260,16 +260,17 @@ per la quale abbiamo due comportamenti distinti:
 
 \begin{align*}
 \prooftree
-	B \Downarrow true \; \; \langle C;s \rangle \Downarrow s' \; \;
-	\langle while \; B \; do \; C, s' \rangle \Downarrow s''
-   \justifies
-   		\langle while \; B \; do \; C,s \rangle \Downarrow s''
+  B \Downarrow \textrm{true} 
+  \quad \langle C;s \rangle \Downarrow s' 
+  \quad \langle \textrm{$\kw{while}$ $B$ $\kw{do}$ $C$}, s' \rangle \Downarrow s''
+  \justifies
+   	\langle \textrm{$\kw{while}$ $B$ $\kw{do}$ $C$,$s$} \rangle \Downarrow s''
 \endprooftree
 &&
 \prooftree
-	B \Downarrow false
-   \justifies
-   		\langle while \; B \; do \; C, s \rangle \Downarrow s
+  B \Downarrow \textrm{ff}
+  \justifies
+   	\langle \textrm{$\kw{while}$ $B$ $\kw{do}$ $C$, $s$} \rangle \Downarrow s
 \endprooftree
 \end{align*}
 
@@ -296,30 +297,32 @@ Partendo da questo assunto non è quindi difficile ricostruire la semantica:
 
 \begin{align*}
 \prooftree
-   \justifies
-   		\langle skip,s \rangle \Downarrow s
+  \justifies
+   	\langle \kw{skip},s \rangle \Downarrow s
 \endprooftree
 &&
 \prooftree
-	\langle E,s \rangle \Downarrow \langle n,s' \rangle
-   \justifies
-   		\langle x:=E,s \rangle \Downarrow s'[n \rightarrow x]
+  \langle E,s \rangle \Downarrow \langle n,s' \rangle
+  \justifies
+   	\langle x:=E,s \rangle \Downarrow s'[n \rightarrow x]
 \endprooftree
 \end{align*}
 
 \begin{align*}
 \prooftree
-	\langle B,s \rangle \Downarrow \langle true,s' \rangle \; \; \langle C_1,s' \rangle \Downarrow s''
-   \justifies
-   		\langle if \; B \; then \; C_1 \; else \; C_2, s \rangle \Downarrow s''
+  \langle B,s \rangle \Downarrow \langle \textrm{tt},s' \rangle 
+  \quad \langle C_1,s' \rangle \Downarrow s''
+  \justifies
+   	\langle \textrm{$\kw{if}$ $B$ $\kw{then}$ $C_1$ $\kw{else}$ $C_2$, $s$} \rangle \Downarrow s''
 \endprooftree
 &&
 \prooftree
-	\langle B,s \rangle \Downarrow \langle true,s' \rangle \; \; \langle C;s' \rangle \Downarrow s'' \; \;
-	\langle while \; B \; do \; C, s' \rangle \Downarrow s'''
-   \justifies
-   		\langle while \; B \; do \; C,s \rangle \Downarrow s'''
+  \langle B,s \rangle \Downarrow \langle \textrm{tt},s' \rangle
+  \quad \langle C;s' \rangle \Downarrow s''
+  \quad \langle \textrm{$\kw{while}$ $B$ $\kw{do}$ $C$, $s'$} \rangle \Downarrow s'''
+  \justifies
+   	\langle \textrm{$\kw{while}$ $B$ $\kw{do}$ $C$,$s$} \rangle \Downarrow s'''
 \endprooftree
 \end{align*}
 
-E così via per le restanti.
+E così via per i restanti schemi.
