@@ -1,4 +1,7 @@
 \chapter{Relazioni tra le semantiche}
+In questo capitolo verranno introdotti alcuni esercizi e alcune osservazioni
+che non riguardano una specifica semantica vista nei capitoli precedenti,
+ma le affrontano un po' tutte.
 
 \subsection{Esercizio 1} \marginpar{Mancino}
 Aggiungere al linguaggio WHILE visto a lezione l'espressione:
@@ -11,55 +14,61 @@ Di seguito illustriamo le regole e gli assiomi in semantica Small Step:
 \prooftree
   \langle B,s \rangle \textrm{ $\rightarrow$ } \langle B', s' \rangle
   \justifies
-     \langle B \; ? \; E_2 \; : \; E_3, s \rangle \; \rightarrow \; \langle B' \; ? \; E_2 \; : E_3, s' \rangle
-   \thickness=0.08em
+    \langle \textrm{$B$ ? $E_2$ : $E_3$, $s$ $\rangle$
+    $\rightarrow$ $\langle$ $B'$ ? $E_2$ : $E_3$, $s'$ $\rangle$}
+  \thickness=0.08em
 \endprooftree 
 \]
 
 \[
 \prooftree
-      	\justifies
-      		\langle true \; ? \; E_2 \; : E_3, s \rangle \; \rightarrow \; \langle E_2, s' \rangle
-	\thickness=0.08em
-	\endprooftree
+  \justifies
+    \textrm{ $\langle$ tt ? $E_2$ : $E_3$, $s$
+    $\rangle$ $\rightarrow$ $\langle$ $E_2$, $s'$ $\rangle$}
+  \thickness=0.08em
+\endprooftree
 \]
 
 \[ 
 \prooftree
   \justifies
-    \langle false \; ? \; E_2 \; : E_3, s \rangle \; \rightarrow \; \langle E_3, s' \rangle
-   \thickness=0.08em
+    \textrm{$\langle$ ff ? $E_2$ : $E_3$, $s$
+    $\rangle$ $\rightarrow$ $\langle$ $E_3$, $s'$ $\rangle$}
+  \thickness=0.08em
 \endprooftree
 \]
 
 Di seguito illustriamo le regole e gli assiomi in semantica Big Step:
 \[
 \prooftree
-  \langle B,s \rangle \Downarrow \langle true, s' \rangle \quad
+  \langle B,s \rangle \Downarrow \langle \textrm{tt}, s' \rangle \quad
   \langle E_2,s' \rangle \Downarrow \langle n, s'' \rangle
   \justifies
-     \langle B \; ? \; E_2 \; : E_3, s \rangle \Downarrow \langle n, s'' \rangle
+     \langle \textrm{$B$ ? $E_2$ : $E_3$, $s$ $\rangle$
+     $\Downarrow \langle n$, $s'' \rangle$}
   \thickness=0.08em
-  \endprooftree
+\endprooftree
 \]
 
 \[
 \prooftree
-  \langle B,s \rangle \Downarrow \langle false, s' \rangle \quad
+  \langle B,s \rangle \Downarrow \langle \textrm{ff}, s' \rangle \quad
   \langle E_3,s' \rangle \Downarrow \langle n, s'' \rangle
   \justifies
-     \langle B \; ? \; E_2 \; : E_3, s \rangle \Downarrow \langle n, s'' \rangle
+     \langle \textrm{$B$ ? $E_2$ : $E_3$, $s \rangle \Downarrow \langle n, s'' \rangle$}
   \thickness=0.08em
 \endprooftree
 \]
 
 Di seguito illustriamo la definizione dell'espressione in semantica denotazionale:
 \[
-\llbracket B \; ? \; E_2 \; : \; E_3 \rrbracket (s) \; =
+\llbracket \textrm{$B$ ? $E_2$ : $E_3 \rrbracket (s) $} =
 \begin{cases}
-	\varepsilon \llbracket E_2 \rrbracket (s) & se \; \emph{B} \llbracket B \rrbracket (s) = tt \\
-	\varepsilon \llbracket E_3 \rrbracket (s) & se \; \emph{B} \llbracket B \rrbracket (s) = ff \\
-	\bot & altrimenti
+    \varepsilon \llbracket E_2 \rrbracket (s)
+    & \textrm{se } \emph{B} \llbracket B \rrbracket (s) = \textrm{tt} \\
+    \varepsilon \llbracket E_3 \rrbracket (s)
+    & \textrm{se } \emph{B} \llbracket B \rrbracket (s) = \textrm{ff} \\
+    \bot & \textrm{altrimenti}
 \end{cases}
 \]
 \end{proof}
