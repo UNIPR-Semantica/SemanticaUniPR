@@ -203,6 +203,50 @@ gode della proprietà di normalizzazione, ossia per ogni
 $E \in Exp$ esiste  $n \in \Zset$ tale che $E \Downarrow n$.
 \end{teorema}
 
+\begin{proof} \marginpar{Segalini}
+Per induzione sulla struttura di $\AExp$:
+
+Caso base: $n \in \Zset$.
+Per lo schema d'assioma esiste sempre $n$ che è appunto lui stesso:
+\[
+\rulename{B-NUM}
+\prooftree
+  \nohyp
+\justifies
+  n \Downarrow n
+\endprooftree
+\]
+
+
+Passo induttivo: $E \in \AExp$ con $E = E_1 + E_2$.
+Per ipotesi induttiva abbiamo che:
+\[
+\exists n_1, n_2 \in Zset \st E_1 \Downarrow n_1 \land E_2 \Downarrow n_2.
+\]
+Dimostriamo che esiste un $n_3 \in \Zset$ tale che $E_1 + E_2
+\Downarrow n_3$. Esso esiste sempre dallo schema di regola (B-ADD) il
+quale afferma che $n_3 = n_1 + n_2$:
+\[
+\prooftree
+  \prooftree
+    \nohyp
+  \justifies
+     E_1 \Downarrow n_1
+  \endprooftree
+  \quad
+  \prooftree
+    \nohyp
+  \justifies
+     E_2 \Downarrow n_2
+  \endprooftree
+\justifies
+  (E_1 + E_2) \Downarrow n_3
+\using
+  n_3 = n_1 + n_2
+\endprooftree
+\]
+\end{proof}
+
 \section{Semantica big-step per While}\marginpar{Mancino}
 Invece di usare un semplice frammento di linguaggio come quello descritto nel capitolo
 precedente possiamo definire tramite la big-step la semantica del linguaggio WHILE.
