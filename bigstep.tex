@@ -60,6 +60,7 @@ opportunamente instanziate. Vediamone alcuni esempi; la seguente è
 un'istanza corretta della B-NUM:
 
 \[
+\rulename{B-NUM}
 \prooftree
   \nohyp
 \justifies
@@ -70,13 +71,16 @@ un'istanza corretta della B-NUM:
 La seguente è invece un'istanza corretta della B-ADD:
 
 \[
+\rulename{B-ADD}
 \prooftree
+  \rulename{B-NUM}
   \prooftree
     \nohyp
   \justifies
      3 \Downarrow 3
   \endprooftree
   \quad
+  \rulename{B-NUM}
   \prooftree
     \nohyp
   \justifies
@@ -92,6 +96,7 @@ La seguente è invece un'istanza corretta della B-ADD:
 La seguente è invece un'istanza scorretta (cioè non dimostrabile) della B-ADD:
 
 \[
+\rulename{B-ADD}
 \prooftree
   3 \Downarrow 6
   \quad
@@ -159,7 +164,7 @@ se $E \Downarrow n$ e $E \Downarrow n'$ allora $n = n'$.
 \begin{proof}
 La dimostrazione è per induzione strutturale sulla struttura di E.
 
-Case base: $n \in \Zset$.
+Caso base: $n \in \Zset$.
 In questo caso abbiamo che $n \Downarrow n_1$ e che $n \Downarrow n_2$.
 Lo schema B-NUM implica che $n = n_1$ e $n = n_2$ e,
 per la transitività dell'uguaglianza, $n_1 = n_2$.
