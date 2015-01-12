@@ -1,4 +1,3 @@
-
 \chapter{Nozioni preliminari}
 
 [Introduzione al capitolo da scrivere.]
@@ -476,35 +475,3 @@ ma questo implicherebbe che $\lub C$ non sia il least upper bound di C,
 il che è assurdo.
   \end{proof}
 \end{teorema}
-
-\section{Esercizi sui CPO}\marginpar{Marano}
-%% DA SPOSTARE E AGGIUSTARE %%
-
-\begin{proposizione} \summary{($(ST, \sqsubseteq)$ è un CPO.)}
-Sia ST l'insieme degli State Transformer e
-  \begin{center}
-    sia $\sqsubseteq\ \subseteq ST \times ST :
-    \forall f,g \in ST : f \sqsubseteq g \Longleftrightarrow \forall s \in \sum :
-    f(s)\downarrow \Rightarrow f(s) = g(s)$\\
-    $\Downarrow$\\
-    $(ST, \sqsubseteq)$ è un \emph{CPO}
-  \end{center}
-\end{proposizione}
-  \begin{proof}
-    Sia $\bot \in ST : \forall s \in \sum : \bot(s)\uparrow \Rightarrow \forall f \in ST : \bot \sqsubseteq f \Rightarrow \bot = min\ ST $\\
-    Sia I $\subseteq \Nset : C = \left\{a_i\right\}_{i \in I} \Rightarrow$ se $|I| < \aleph_0 \Rightarrow$ il lub è l'elemento massimo nella catena.\\
-    Se |I| = $\aleph_0$ definisco $\forall x \in \sum : f_l(x) =
-    \begin{cases}
-      f_h(x) & \text{se } \exists h \in I : f_h(x)\downarrow
-      \\
-      \uparrow & \text{altrimenti}
-    \end{cases} $
-    \begin{center}
-      $\Downarrow$\\
-      $u = lub\ C \Longleftrightarrow (\forall i \in I : f_i \sqsubseteq u) \land (\forall u' \in ST : (\forall j \in I : f_j \sqsubseteq u') \Rightarrow u \sqsubseteq u')$\\
-      Sia $i \in I : \forall s \in \sum : f_i(s)\downarrow \Rightarrow (u(s)\downarrow \land u(s)=f_i(s))$\\
-      Sia $s \in \sum : u(s)\downarrow \Rightarrow (\exists k \in I : f_k(s)\downarrow \land f_k(s)=u(s))$\\
-      $\forall j \in I : f_j \sqsubseteq f_l \Rightarrow f_l = lub\ C$\\
-      $(ST, \sqsubseteq)$ ha minimo e ogni sua catena ha lub $\Rightarrow (ST, \sqsubseteq)$ è un \emph{CPO}
-    \end{center}
-  \end{proof}
