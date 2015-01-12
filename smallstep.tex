@@ -59,9 +59,7 @@ essendo più verbosa, da più informazione sulla sequenzialità e sui "risultati
 Vediamo un esempio di dimostrazione:
 
 \begin{gather*}
-\rulename{S-ADD}
 \prooftree
-	\rulename{S-ADD}
 	\prooftree
 		\nohyp
 	\justifies
@@ -71,9 +69,7 @@ Vediamo un esempio di dimostrazione:
     	((1+2)+(3+4)) \ssarrow (3+(3+4))
 \endprooftree
 \pts
-\rulename{S-ADD}
 \prooftree
-	\rulename{S-ADD}
 	\prooftree
 		\nohyp
    	\justifies
@@ -86,8 +82,6 @@ Vediamo un esempio di dimostrazione:
 \prooftree
 	\justifies
 		(3+7) \ssarrow 10
-	\using
-		(S-ADD)
 \endprooftree
 \end{gather*}
 
@@ -175,6 +169,7 @@ $
 Indichiamo perciò con $E$ la generica espressione appartenente a $\AExp$, con $C$ il generico comando appartenente a $\Com$ e con $s$ il generico store appartenente a $\Sigma$:
 
 \begin{gather*}
+\allowdisplaybreaks
 \rulename{S-SKIP}
 \prooftree
 	\nohyp
@@ -193,7 +188,7 @@ Indichiamo perciò con $E$ la generica espressione appartenente a $\AExp$, con $
 \pts
 \rulename{S-EXP.LEFT}
 \prooftree
-	\config{E_1,s} \ssarrow \config{E_1'}{s}
+	\config{E_1}{s} \ssarrow \config{E_1'}{s}
 \justifies
 	\config{(E_1 + E_2)}{s} \ssarrow \config{(E_1' + E_2)}{s}
 \endprooftree
@@ -392,7 +387,7 @@ WHILE. Fino ad ora solo i comandi potevano modificare lo store ma adesso anche l
 \pts
 \rulename{S-EXP.LEFT}
 \prooftree
-	\config{E_1,s} \ssarrow \config{E_1'}{s'}
+	\config{E_1}{s} \ssarrow \config{E_1'}{s'}
 \justifies
 	\config{(E_1 + E_2)}{s} \ssarrow \config{(E_1' + E_2)}{s'}
 \endprooftree

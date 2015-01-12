@@ -6,6 +6,8 @@
 \newcommand*{\divrg}{\uparrow}
 %% configurazioni della semantica <skip, s>
 \newcommand*{\config}[2]{\langle\ #1,\ #2\ \rangle}
+%% configurazione della semantica denotazionale C[com](s)
+\newcommand*{\denot}[3]{#1 \llbracket #2 \rrbracket (#3)}
 %% assegnamento del while :=
 \newcommand*{\weq}{:=}
 \newcommand*{\assign}[3]{#1[#2\mapsto#3]} % comodo per s[x -> n]
@@ -47,6 +49,7 @@
 \newcommand*{\BExp}{\mathrm{BExp}}
 \newcommand*{\Com}{\mathrm{Com}}
 \newcommand*{\Exp}{\mathrm{Exp}}
+\newcommand*{\ST}{\mathrm{ST}}
 
 %% Sets of configurations
 \newcommand*{\NTe}{\Gamma_\mathrm{e}}
