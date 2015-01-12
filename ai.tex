@@ -74,7 +74,9 @@ figura~\ref{fig:ordering-rels-lattice}.
 \subsection{Funzione di concretizzazione}
 
 La funzione di concretizzazione definisce la semantica di ogni
-elemento di $\Sign$.
+elemento di $\Sign$. Più in generale, la funzione $\gamma$ mappa ogni
+valore astratto nell'insieme di valori concreti che tale valore astratto
+rappresenta.
 \begin{definizione} \summary{($\fund{\gamma}{\Sign}{\wp(\Zset)}$.)}
 La funzione $\fund{\gamma}{\Sign}{\wp(\Zset)}$ è definita
 da:
@@ -291,7 +293,36 @@ Il dominio astratto dei booleani $\AbBool$ viene definito per poter
 estendere l'insieme delle operazioni su $\Sign$; alcune operazioni,
 in particolare quelle di confronto tra elementi di $\Sign$,
 restituiscono un risultato appartenente a $\AbBool$.
-[aggiungere immagine per dominio astratto dei booleani]
+L'ordinamento del dominio è indicato nel diagramma di Hasse di
+figura~\ref{fig:ordering-bool-lattice}.
+
+\begin{figure}
+\begin{center}
+\setlength{\unitlength}{1.8mm}
+\begin{picture}(28, 28)
+{\thicklines
+\put(14, 2){\circle{4}}
+\put(14, 2){\makebox(0, 0){$\signbot$}}
+
+\put( 2, 14){\circle{4}}
+\put( 2, 14){\makebox(0, 0){$1$}}
+\put(26, 14){\circle{4}}
+\put(26, 14){\makebox(0, 0){$0$}}
+
+\put(14, 26){\circle{4}}
+\put(14, 26){\makebox(0, 0){$\signtop$}}
+
+\put(15.42, 24.58){\line(1, -1){9.16}}
+\put( 3.42, 12.58){\line(1, -1){9.16}}
+
+\put( 3.42, 15.42){\line(1, 1){9.16}}
+\put(15.42,  3.42){\line(1, 1){9.16}}
+}
+\end{picture}
+\end{center}
+\caption{Diagramma di Hasse del dominio $\AbBool$.}
+\label{fig:ordering-bool-lattice}
+\end{figure}
 
 \section{Operazioni astratte su booleani}
 
@@ -372,7 +403,9 @@ indicano l'elemento a destra.
 Dopo aver definito le operazioni astratte,
 definiamo una semantica astratta per $\AExp$, $\BExp$ e $\Com$; cioè
 le componenti sintattiche del linguaggio WHILE.
-Definire una semantica astratta vuol dire capire come
+L'interpretazione della semantica di un programma con i valori
+astratti è un'interpretazione astratta; in altre parole,
+definire una semantica astratta vuol dire capire come
 ``eseguire astrattamente'' il programma sul dominio astratto,
 per osservare le proprietà che il dominio astratto modella.
 
@@ -396,7 +429,7 @@ alla configurazione terminale $\kw{skip}$:
 La semantica concreta il programma $P$ aveva un solo insieme di passi
 per poter raggiungere la configurazione $\kw{skip}$;
 la semantica astratta introduce invece il non determinismo, in quanto
-approssimazione della semantica concreta:
+approssimazione della semantica concreta.
 \begin{definizione}\summary{Semantica astratta}
 È una funzione totale che va da un insieme di comandi astratti $\Com^\#$
 ad una funzione parziale tra l'insieme degli stati astratti $\Sigma^\#:$
