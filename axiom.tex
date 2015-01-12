@@ -1,6 +1,33 @@
 \chapter{Semantica assiomatica}
 
-[Da scrivere.]
+In questo capitolo introdurremo la semantica assiomatica, un particolare
+tipo di semantica che permette di dimostrare proprietà di programmi.
+
+\section{Correttezza parziale}\marginpar{Mancino}
+\begin{definizione}\summary{(Correttezza parziale)}
+Un'\emph{asserzione di correttezza parziale} è una tripla di Hoare:
+\[
+  \{P\} C \{Q\}
+\]
+dove $P$ e $Q$ sono espressioni logiche dette 
+rispettivamente \emph{precondizione} e \emph{postcondizione},
+mentre $C$ è un comando. Il significato di questa scrittura è
+il seguente: se viene eseguito il comando $C$ in uno stato che
+soddisfa $P$ e $C$ termina, allora dopo l'esecuzione di $C$
+sarà vera $Q$.
+\end{definizione}
+
+Esempi di triple di Hoare sono le seguenti:
+\begin{align*}
+\{ & x = 3 \} x = 4 \{ x = 4 \} & \text{\quad vera in C++}\\
+\{ & x = 3 \} x = 4 \{ y = 3 \} & \text{\quad falsa in C++}\\
+\{ & P \} \text{$\kw{skip}$} \{ P \}
+\end{align*}
+
+Come si può notare dai precedenti esempi, ciò che asserisce una
+tripla di Hoare può essere vera o falsa, ma la verità o la falsità
+dipende dal linguaggio di programmazione.
+
 
 \section{Logica di specifica}\marginpar{Lombardi}
 \input{logica_di_specifica}
