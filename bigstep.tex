@@ -117,24 +117,24 @@ come la seguente:
   \endprooftree
   \quad
   \prooftree
-	\prooftree
-   	  \justifies
-   		2 \Downarrow 2
-	\endprooftree
-	\quad
-	\prooftree
-   	  \justifies
-   		1 \Downarrow 1
-	\endprooftree
-   	\justifies
-   	  (2+1) \Downarrow 3
-   	\using
-   	  3 = 2+1
+        \prooftree
+          \justifies
+                2 \Downarrow 2
+        \endprooftree
+        \quad
+        \prooftree
+          \justifies
+                1 \Downarrow 1
+        \endprooftree
+        \justifies
+          (2+1) \Downarrow 3
+        \using
+          3 = 2+1
   \endprooftree
   \justifies
     (3+(2+1)) \Downarrow 6
-   	\using
-   	  6 = 3+(2+1)
+        \using
+          6 = 3+(2+1)
 \endprooftree
 \]
 
@@ -270,7 +270,7 @@ il generico comando e con $s$ il generico stato,
 \prooftree
   E \Downarrow n
   \justifies
-   	\langle x:=E,s \rangle \Downarrow s[n \rightarrow x]
+        \langle x:=E,s \rangle \Downarrow s[n \rightarrow x]
 \endprooftree
 \end{align*}
 
@@ -279,14 +279,14 @@ il generico comando e con $s$ il generico stato,
    B \Downarrow \textrm{true} 
    \quad \langle C_1,s \rangle \Downarrow s'
    \justifies
-   	 \langle \textrm{$\kw{if}$ $B$ $\kw{then}$ $C_1$ $\kw{else}$ $C_2$}, s \rangle \Downarrow s'
+         \langle \textrm{$\kw{if}$ $B$ $\kw{then}$ $C_1$ $\kw{else}$ $C_2$}, s \rangle \Downarrow s'
 \endprooftree
 &&
 \prooftree
    B \Downarrow \textrm{ff} 
    \quad \langle C_2,s \rangle \Downarrow s'
    \justifies
-   	 \langle \textrm{$\kw{if}$ $B$ $\kw{then}$ $C_1$ $\kw{else}$ $C_2$}, s \rangle \Downarrow s'
+         \langle \textrm{$\kw{if}$ $B$ $\kw{then}$ $C_1$ $\kw{else}$ $C_2$}, s \rangle \Downarrow s'
 \endprooftree
 \end{align*}
 
@@ -295,7 +295,7 @@ il generico comando e con $s$ il generico stato,
   \langle C_1,s \rangle \Downarrow s' 
   \quad \langle C_2,s' \rangle \Downarrow s''
   \justifies
-   	\langle \textrm{$C_1$; $C_2$},s \rangle \Downarrow s''
+        \langle \textrm{$C_1$; $C_2$},s \rangle \Downarrow s''
 \endprooftree
 \end{align*}
 
@@ -308,13 +308,13 @@ per la quale abbiamo due comportamenti distinti:
   \quad \langle C;s \rangle \Downarrow s' 
   \quad \langle \textrm{$\kw{while}$ $B$ $\kw{do}$ $C$}, s' \rangle \Downarrow s''
   \justifies
-   	\langle \textrm{$\kw{while}$ $B$ $\kw{do}$ $C$,$s$} \rangle \Downarrow s''
+        \langle \textrm{$\kw{while}$ $B$ $\kw{do}$ $C$,$s$} \rangle \Downarrow s''
 \endprooftree
 &&
 \prooftree
   B \Downarrow \textrm{ff}
   \justifies
-   	\langle \textrm{$\kw{while}$ $B$ $\kw{do}$ $C$, $s$} \rangle \Downarrow s
+        \langle \textrm{$\kw{while}$ $B$ $\kw{do}$ $C$, $s$} \rangle \Downarrow s
 \endprooftree
 \end{align*}
 
@@ -342,13 +342,13 @@ Partendo da questo assunto non è quindi difficile ricostruire la semantica:
 \begin{align*}
 \prooftree
   \justifies
-   	\langle \kw{skip},s \rangle \Downarrow s
+        \langle \kw{skip},s \rangle \Downarrow s
 \endprooftree
 &&
 \prooftree
   \langle E,s \rangle \Downarrow \langle n,s' \rangle
   \justifies
-   	\langle x:=E,s \rangle \Downarrow s'[n \rightarrow x]
+        \langle x:=E,s \rangle \Downarrow s'[n \rightarrow x]
 \endprooftree
 \end{align*}
 
@@ -357,7 +357,7 @@ Partendo da questo assunto non è quindi difficile ricostruire la semantica:
   \langle B,s \rangle \Downarrow \langle \textrm{tt},s' \rangle 
   \quad \langle C_1,s' \rangle \Downarrow s''
   \justifies
-   	\langle \textrm{$\kw{if}$ $B$ $\kw{then}$ $C_1$ $\kw{else}$ $C_2$, $s$} \rangle \Downarrow s''
+        \langle \textrm{$\kw{if}$ $B$ $\kw{then}$ $C_1$ $\kw{else}$ $C_2$, $s$} \rangle \Downarrow s''
 \endprooftree
 &&
 \prooftree
@@ -365,7 +365,7 @@ Partendo da questo assunto non è quindi difficile ricostruire la semantica:
   \quad \langle C;s' \rangle \Downarrow s''
   \quad \langle \textrm{$\kw{while}$ $B$ $\kw{do}$ $C$, $s'$} \rangle \Downarrow s'''
   \justifies
-   	\langle \textrm{$\kw{while}$ $B$ $\kw{do}$ $C$,$s$} \rangle \Downarrow s'''
+        \langle \textrm{$\kw{while}$ $B$ $\kw{do}$ $C$,$s$} \rangle \Downarrow s'''
 \endprooftree
 \end{align*}
 

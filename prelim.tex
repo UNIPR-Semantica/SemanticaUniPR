@@ -371,7 +371,7 @@ Siano $(S, \preceq)$ e $(T, \sqsubseteq)$ due CPO e sia $\fund{f}{S}{T}$, se $f$
 Scegliamo un controesempio con $(\Nset \cup \infty, \leq)$ e $(\left\{0,1\right\},\leq)$ e
 \[
 \fund{f}{\Nset \cup \infty}{\left\{0,1\right\}} \lambda x.
-	\begin{cases}
+        \begin{cases}
         0 & \text{ se } x \in \Nset; \\
         1 & \text{ se } x = \infty;
     \end{cases}
@@ -387,9 +387,9 @@ Siano $(X, \sqsubseteq_X)$ e $(Y, \sqsubseteq_Y)$ due poset e sia $\fund{f}{X}{Y
 Sia $I \subseteq \Nset \itc C = \left\{a_i\right\}_{i \in I}$, allora $f(C) = \left\{f(a_i) | i \in I\right\}$ e
 $|f(C)| \leq |I| \leq |\Nset|$, perciò $f(C)$ è numerabile. Siano $i,j \in I$ allora abbiamo due casi:
 \begin{itemize}
-	\setlength{\itemindent}{20mm}
-	\item $i \leq j \Rightarrow a_i \sqsubseteq_X a_j \Rightarrow f(a_i) \sqsubseteq_Y f(a_j)$
-	\item $j \leq i \Rightarrow a_j \sqsubseteq_X a_i \Rightarrow f(a_j) \sqsubseteq_Y f(a_i)$
+        \setlength{\itemindent}{20mm}
+        \item $i \leq j \Rightarrow a_i \sqsubseteq_X a_j \Rightarrow f(a_i) \sqsubseteq_Y f(a_j)$
+        \item $j \leq i \Rightarrow a_j \sqsubseteq_X a_i \Rightarrow f(a_j) \sqsubseteq_Y f(a_i)$
 \end{itemize}
 In entrambi i casi abbiamo dimostrato che $f(C)$ è totalmente ordinato, ovvero che $\forall i,j \in I \itc f(a_i) \sqsubseteq_Y f(a_j) \lor f(a_j) \sqsubseteq_Y f(a_j)$. $f(C)$ è quindi una catena.
 \end{proof}

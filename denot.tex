@@ -5,20 +5,20 @@
 In questo capitolo daremo una semantica denotazionale al linguaggio WHILE. Vedremo quindi la semantica di ogni elemento sintattico sotto forma di struttura matematica, per fare ciò definiremo varie funzioni che manipolano funzioni.
 Ogni comando è perciò visto come uno \emph{State Transformer}, ovvero una funzione che prende uno store come argomento e, se per tale store è definita, allora mi restituisce un altro store. È quindi una funzione parziale, possiamo farla diventare totale ampliando il codominio con un nuovo simbolo $\bot$ che rappresenta il caso indefinito di stack o di ciclo infinito. Definiamo quindi il nuovo codominio $\Sigma_\bot = \Sigma \cup \left\{\bot\right\}$.
 \begin{align*}
-	&\pard{\ST}{\Sigma}{\Sigma}
-	&\fund{\ST}{\Sigma}{\Sigma_\bot} 
+        &\pard{\ST}{\Sigma}{\Sigma}
+        &\fund{\ST}{\Sigma}{\Sigma_\bot} 
 \end{align*}
 
 Questo è dunque il dominio semantico dei comandi del linguaggio WHILE, vediamo ora i domini semantici per le espressioni e per i booleani che sono definiti in modo esattamente analogo.
 
 \begin{align*}
-	&\pard{P}{\Sigma}{B}
-	&\fund{P}{\Sigma}{B_\bot} 
+        &\pard{P}{\Sigma}{B}
+        &\fund{P}{\Sigma}{B_\bot} 
 \end{align*}
 
 \begin{align*}
-	&\pard{E}{\Sigma}{\Nset}
-	&\fund{E}{\Sigma}{\Nset_\bot} 
+        &\pard{E}{\Sigma}{\Nset}
+        &\fund{E}{\Sigma}{\Nset_\bot} 
 \end{align*}
 
 Vediamo quindi le funzioni semantiche per il linguaggio WHILE, queste sono funzioni di ordine superiore che prendono come argomento una funzione e restituiscono un'altra funzione. Ciò accade sempre visto che si tratta di funzioni totali poiché tutti i comandi, i booleani e le espressioni hanno una semantica (tralasciamo per semplicità quelli sintatticamente errati).
@@ -36,9 +36,9 @@ Abbiamo visto come è fatta la funzione semantica per le espressioni ma ora dobb
 $$ \denot{\calE}{n}{s} \defeq \llbracket n \rrbracket_{Num}$$
 La semantica della somma invece associa alla somma di due espressioni la somma della semantica di queste due espressioni, se tali semantiche esistono:
 $$ \denot{\calE}{E_1 + E_2}{s} \defeq \begin{cases}
-	\denot{\calE}{E_1}{s} + \denot{\calE}{E_2}{s} & \text{se } \denot{\calE}{E_1}{s} \neq \bot \land \denot{\calE}{E_2}{s} \neq \bot;\\
-	\bot & \text{se } \denot{\calE}{E_1}{s} = \bot \lor \denot{\calE}{E_2}{s} = \bot;\\
-	\end{cases}
+        \denot{\calE}{E_1}{s} + \denot{\calE}{E_2}{s} & \text{se } \denot{\calE}{E_1}{s} \neq \bot \land \denot{\calE}{E_2}{s} \neq \bot;\\
+        \bot & \text{se } \denot{\calE}{E_1}{s} = \bot \lor \denot{\calE}{E_2}{s} = \bot;\\
+        \end{cases}
 $$
 Vedremo in seguito come poter eliminare questa e altre funzioni per casi definendo nuove funzioni come per esempio la somma $\conadd$ in $\Nset_\bot$.
 
@@ -47,22 +47,22 @@ Ora vediamo la semantica dei vari comandi presenti nel linguaggio WHILE:
 
 \begin{align*}
 &\denot{\calC}{x \weq E}{s} \defeq \begin{cases}
-	\assign{s}{x}{\denot{\calE}{E}{s}} & \text{se } \denot{\calE}{E}{s} \neq \bot;\\
-	\bot & \text{altrimenti};
-	\end{cases}
+        \assign{s}{x}{\denot{\calE}{E}{s}} & \text{se } \denot{\calE}{E}{s} \neq \bot;\\
+        \bot & \text{altrimenti};
+        \end{cases}
 \pts
 &\denot{\calC}{\kw{skip}}{s} \defeq s
 \pts
 &\denot{\calC}{C_1 ; C_2}{s} \defeq \begin{cases}
-	\bot & \text{se } \denot{\calC}{C_1}{s} = \bot;\\
-	\denot{\calC}{C_2}{\denot{\calC}{C_1}{s}} & \text{altrimenti};\\
-	\end{cases}
+        \bot & \text{se } \denot{\calC}{C_1}{s} = \bot;\\
+        \denot{\calC}{C_2}{\denot{\calC}{C_1}{s}} & \text{altrimenti};\\
+        \end{cases}
 \pts
 &\denot{\calC}{\condif{B}{C_1}{C_2}}{s} \defeq \begin{cases}
-	\denot{\calC}{C_1}{s} & \text{se } \denot{\calB}{B}{s} = \ttv ;\\
-	\denot{\calC}{C_2}{s} & \text{se } \denot{\calB}{B}{s} = \ffv ;\\
-	\bot & \text{altrimenti};
-	\end{cases}
+        \denot{\calC}{C_1}{s} & \text{se } \denot{\calB}{B}{s} = \ttv ;\\
+        \denot{\calC}{C_2}{s} & \text{se } \denot{\calB}{B}{s} = \ffv ;\\
+        \bot & \text{altrimenti};
+        \end{cases}
 \pts
 &\denot{\calC}{\while{B}{C}}{s} \defeq \denot{\calC}{\condif{B}{(C ; \while{B}{C}}{\kw{skip}}}{s}
 \end{align*}
@@ -72,9 +72,9 @@ Daremo in seguito una semantica più precisa del comando while e vedremo anche c
 \section{Eliminazione funzioni per casi} \marginpar{Marano}
 Vediamo ora come ridefinire alcune di queste semantiche in modo da non avere funzioni per casi, per ottenere tale risultato basta ampliare la definizione di alcuni operatori. Prendiamo per esempio la semantica della somma, in tal caso basta definire l'operatore di somma tra $\Nset_\bot$ in modo che se sommo due numeri naturali ottengo lo stesso risultato che otterrei normalmente con la somma che conosciamo, mentre se sommo $\bot$ con un naturale o con un altro $\bot$ ottengo ancora $\bot$:
 $$\fund{\conadd}{\Nset_\bot \times \Nset_\bot}{\Nset_\bot} \defeq \lambda n_1, n_2 \in \Nset_\bot . \begin{cases}
-	n_1 + n_2 & \text{se } n_1, n_2 \in \Nset;\\
-	\bot & \text{altrimenti;}
-	\end{cases}$$
+        n_1 + n_2 & \text{se } n_1, n_2 \in \Nset;\\
+        \bot & \text{altrimenti;}
+        \end{cases}$$
 Ora quindi possiamo semplicemente dire che la semantica della somma è:
 $$\denot{\calE}{E_1 + E_2}{s} = \denot{\calE}{E_1}{s} \conadd \denot{\calE}{E_2}{s}$$
 
@@ -82,16 +82,16 @@ Esattamente allo stesso modo ora definiremo delle funzioni che mappano State Tra
 \begin{gather*}
 \fund{\mathrm{seq}}{\ST \times \ST}{\ST} \\
 \mathrm{seq}(f,g)(s) \defeq \begin{cases}
-	\bot & \text{se } f(s) = \bot;\\
-	g(f(s)) & \text{altrimenti};
-	\end{cases}\\
+        \bot & \text{se } f(s) = \bot;\\
+        g(f(s)) & \text{altrimenti};
+        \end{cases}\\
 \pts
 \fund{\mathrm{cond}}{P \times \ST \times \ST}{\ST} \\
 \mathrm{cond}(p,f,g)(s) \defeq \begin{cases}
-	f(s) & \text{se } p(s) = \ttv;\\
-	g(s) & \text{se } p(s) = \ffv;\\
-	\bot & \text{altrimenti};
-	\end{cases}\\
+        f(s) & \text{se } p(s) = \ttv;\\
+        g(s) & \text{se } p(s) = \ffv;\\
+        \bot & \text{altrimenti};
+        \end{cases}\\
 \end{gather*}
 
 Perciò rivediamo le semantiche di questi due comandi:
@@ -110,7 +110,7 @@ Sia ST l'insieme degli State Transformer e sia $\reld{\sqsubseteq}{ST}{ST}$ una 
 \begin{proof}
 Poniamo dunque $\bot$ minimo di ST visto che è lo State Transformer meno definito: $\bot \in ST \itc \forall s \in \Sigma \itc \bot(s)\divrg$ perciò è ovvio che $\forall f \in ST \itc \bot \sqsubseteq f$, dunque $\bot = \min ST$. 
 Sia $I \subseteq \Nset \itc C = \left\{a_i\right\}_{i \in I}$ allora se $I$ è numerabile ($|I| < \aleph_0$) allora il $\lub$ è l'elemento massimo nella catena. Se invece $|I| = \aleph_0$ definisco:
-	$\forall x \in \Sigma \itc f_l(x) =
+        $\forall x \in \Sigma \itc f_l(x) =
     \begin{cases}
       f_h(x) & \text{se } \exists i \in I : f_h(x)\convrg;\\
       \divrg & \text{altrimenti}
@@ -129,16 +129,16 @@ La semantica della valutazione di una costante ovviamente non varia, come non va
 \begin{align*}
 &\denot{\calE}{E_1 + E_2}{s} \defeq \denot{\calE}{E_1}{s} \conadd \denot{\calE}{E_2}{\denot{\calE}{E_1}{s}}\\
 &\denot{\calC}{x \weq E}{s} \defeq \begin{cases}\\
-	\assign{\denot{\calE}{E}{s}}{x}{\denot{\calE}{E}{s}} & \text{se } \denot{\calE}{E}{s} \neq \bot;\\
-	\bot & \text{altrimenti};
-	\end{cases}\\
+        \assign{\denot{\calE}{E}{s}}{x}{\denot{\calE}{E}{s}} & \text{se } \denot{\calE}{E}{s} \neq \bot;\\
+        \bot & \text{altrimenti};
+        \end{cases}\\
 &\denot{\calC}{\kw{skip}}{s} \defeq s\\
 &\denot{\calC}{C_1 ; C_2}{s} \defeq \mathrm{seq}(\calC \llbracket C_1 \rrbracket, \calC \llbracket C_2 \rrbracket)(s)\\
 &\denot{\calC}{\condif{B}{C_1}{C_2}}{s} \defeq \begin{cases}\\
-	\denot{\calC}{C_1}{\denot{\calB}{B}{s}} & \text{se } \denot{\calB}{B}{s} = \ttv ;\\
-	\denot{\calC}{C_2}{\denot{\calB}{B}{s}} & \text{se } \denot{\calB}{B}{s} = \ffv ;\\
-	\bot & \text{altrimenti};
-	\end{cases}\\
+        \denot{\calC}{C_1}{\denot{\calB}{B}{s}} & \text{se } \denot{\calB}{B}{s} = \ttv ;\\
+        \denot{\calC}{C_2}{\denot{\calB}{B}{s}} & \text{se } \denot{\calB}{B}{s} = \ffv ;\\
+        \bot & \text{altrimenti};
+        \end{cases}\\
 &\denot{\calC}{\while{B}{C}}{s} \defeq \denot{\calC}{\condif{B}{(C ; \while{B}{C}}{\kw{skip}}}{\denot{\calB}{B}{s}}
 \end{align*}
 
