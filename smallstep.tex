@@ -26,30 +26,30 @@ semantica. Considerando che $n \in \Zset$, una possibile semantica small step è
 \begin{gather*}
 \rulename{S-NUM}
 \prooftree
-	\nohyp
+        \nohyp
 \justifies
   n \ssarrow n
 \endprooftree
 \qquad
 \rulename{S-LEFT}
 \prooftree
-	E_1 \ssarrow E_1'
+        E_1 \ssarrow E_1'
 \justifies
-	(E_1 + E_2) \ssarrow (E_1' + E_2)
+        (E_1 + E_2) \ssarrow (E_1' + E_2)
 \endprooftree
 \pts
 \rulename{S-RIGHT}
 \prooftree
-	E_2 \ssarrow E_2'
+        E_2 \ssarrow E_2'
 \justifies
-	(E_1 + E_2) \ssarrow (E_1 + E_2')
+        (E_1 + E_2) \ssarrow (E_1 + E_2')
 \endprooftree
 \qquad
 \rulename{S-ADD}
 \prooftree
-	\nohyp
+        \nohyp
 \justifies
-	(1 + 2) \ssarrow 3
+        (1 + 2) \ssarrow 3
 \endprooftree
 \end{gather*}
 
@@ -60,28 +60,28 @@ Vediamo un esempio di dimostrazione:
 
 \begin{gather*}
 \prooftree
-	\prooftree
-		\nohyp
-	\justifies
-		(1+2) \ssarrow 3
-	\endprooftree
+        \prooftree
+                \nohyp
+        \justifies
+                (1+2) \ssarrow 3
+        \endprooftree
 \justifies
-    	((1+2)+(3+4)) \ssarrow (3+(3+4))
+        ((1+2)+(3+4)) \ssarrow (3+(3+4))
 \endprooftree
 \pts
 \prooftree
-	\prooftree
-		\nohyp
-   	\justifies
-		(3+4) \ssarrow 7
-	\endprooftree
+        \prooftree
+                \nohyp
+        \justifies
+                (3+4) \ssarrow 7
+        \endprooftree
 \justifies
-    	(3+(3+4)) \ssarrow (3+7)
+        (3+(3+4)) \ssarrow (3+7)
 \endprooftree
 \pts
 \prooftree
-	\justifies
-		(3+7) \ssarrow 10
+        \justifies
+                (3+7) \ssarrow 10
 \endprooftree
 \end{gather*}
 
@@ -97,7 +97,7 @@ $\forall E_1, E_2, E \in \AExp . E \ssarrow _1 E_1 \land E \ssarrow _1 E_2 \Righ
 \end{teorema}
 
 \begin{proof}
-	 Dimostriamo per induzione strutturale
+         Dimostriamo per induzione strutturale
   
 Caso Base: $E = n \in \Zset$.
 In tal caso E non transisce perciò $E \nssarrow$.
@@ -172,195 +172,195 @@ Indichiamo perciò con $E$ la generica espressione appartenente a $\AExp$, con $
 \allowdisplaybreaks
 \rulename{S-SKIP}
 \prooftree
-	\nohyp
+        \nohyp
 \justifies
-	\config{skip}{s} \ssarrow s
+        \config{skip}{s} \ssarrow s
 \endprooftree
 \pts
 \rulename{S-EXP.NUM}
 \prooftree
-	\nohyp
+        \nohyp
 \justifies
-	\config{x}{s} \ssarrow \config{n}{s}
+        \config{x}{s} \ssarrow \config{n}{s}
 \using
    s(x) = n 
 \endprooftree
 \pts
 \rulename{S-EXP.LEFT}
 \prooftree
-	\config{E_1}{s} \ssarrow \config{E_1'}{s}
+        \config{E_1}{s} \ssarrow \config{E_1'}{s}
 \justifies
-	\config{(E_1 + E_2)}{s} \ssarrow \config{(E_1' + E_2)}{s}
+        \config{(E_1 + E_2)}{s} \ssarrow \config{(E_1' + E_2)}{s}
 \endprooftree
 \pts
 \rulename{S-EXP.RIGHT}
 \prooftree
-	\config{E_2}{s} \ssarrow \config{E_2'}{s}
+        \config{E_2}{s} \ssarrow \config{E_2'}{s}
 \justifies
-	\config{(E_1 + E_2)}{s} \ssarrow \config{(E_1 + E_2')}{s}
+        \config{(E_1 + E_2)}{s} \ssarrow \config{(E_1 + E_2')}{s}
 \endprooftree
 \pts
 \rulename{S-ADD}
 \prooftree
-	\nohyp
+        \nohyp
 \justifies
-	\config{(n_1 + n_2)}{s} \ssarrow \config{n_3}{s}
+        \config{(n_1 + n_2)}{s} \ssarrow \config{n_3}{s}
 \using
-	n_3 = n_1 + n_2
+        n_3 = n_1 + n_2
 \endprooftree
 \pts
 \rulename{S-ASS.EXP}
 \prooftree
-	\config{E}{s} \ssarrow \config{E'}{s}
+        \config{E}{s} \ssarrow \config{E'}{s}
 \justifies
-	\config{x \weq E}{s} \ssarrow \config{x \weq E'}{s} 
+        \config{x \weq E}{s} \ssarrow \config{x \weq E'}{s} 
 \endprooftree
 \pts
 \rulename{S-ASS.NUM}
 \prooftree
-	\nohyp
+        \nohyp
 \justifies
-  	\config{x \weq n}{s} \ssarrow \config{skip}{s[x \mapsto n]}
+        \config{x \weq n}{s} \ssarrow \config{skip}{s[x \mapsto n]}
 \endprooftree
 \pts
 \rulename{S-SEQ.LEFT}
 \prooftree
-	\config{C_1}{s} \ssarrow \config{C_1'}{s'}
+        \config{C_1}{s} \ssarrow \config{C_1'}{s'}
 \justifies
-  	\config{C_1 ; C_2}{s} \ssarrow \config{C_1' ; C_2}{s'}
+        \config{C_1 ; C_2}{s} \ssarrow \config{C_1' ; C_2}{s'}
 \endprooftree
 \pts
 \rulename{S-SEQ.SKIP}
 \prooftree
-	\nohyp
+        \nohyp
 \justifies
-   	\config{skip ; C_2}{s} \ssarrow \config{C_2}{s'}
+        \config{skip ; C_2}{s} \ssarrow \config{C_2}{s'}
 \endprooftree
 \pts
 \rulename{S-COND.BOOL}
 \prooftree
-	\config{B}{s} \ssarrow \config{B'}{s}
+        \config{B}{s} \ssarrow \config{B'}{s}
 \justifies
-   	\config{\condif{B}{C_1}{C_2}}{s} \ssarrow \config{\condif{B'}{C_1}{C_2}}{s}
+        \config{\condif{B}{C_1}{C_2}}{s} \ssarrow \config{\condif{B'}{C_1}{C_2}}{s}
 \endprooftree
 \pts
 \rulename{S-COND.TRUE}
 \prooftree
-	\nohyp
+        \nohyp
 \justifies
-   	\config{\condif{\true}{C_1}{C_2}}{s} \ssarrow \config{C_1}{s}
+        \config{\condif{\true}{C_1}{C_2}}{s} \ssarrow \config{C_1}{s}
 \endprooftree
 \pts
 \rulename{S-COND.FALSE}
 \prooftree
-	\nohyp
+        \nohyp
 \justifies
-  	\config{\condif{\false}{C_1}{C_2}}{s} \ssarrow \config{C_2}{s}
+        \config{\condif{\false}{C_1}{C_2}}{s} \ssarrow \config{C_2}{s}
 \endprooftree
 \pts
 \rulename{S-WHILE.BOOL}
 \prooftree
-	\config{B}{s} \ssarrow \config{B'}{s}
+        \config{B}{s} \ssarrow \config{B'}{s}
 \justifies
-   	\config{\while{B}{C}}{s} \ssarrow \config{\while{B'}{C}}{s}
+        \config{\while{B}{C}}{s} \ssarrow \config{\while{B'}{C}}{s}
 \endprooftree
 \pts
 \rulename{S-WHILE.FALSE}
 \prooftree
-	\nohyp
+        \nohyp
 \justifies
-   	\config{\while{\false}{C}}{s} \ssarrow \config{skip}{s}
+        \config{\while{\false}{C}}{s} \ssarrow \config{skip}{s}
 \endprooftree
 \pts
 \rulename{S-WHILE}
 \prooftree
-	\nohyp
+        \nohyp
 \justifies
-  	\config{\while{B}{C}}{s} \ssarrow \config{\condif{B}{(C ; \while{B}{C})}{skip}}{s}
+        \config{\while{B}{C}}{s} \ssarrow \config{\condif{B}{(C ; \while{B}{C})}{skip}}{s}
 \endprooftree
 \pts
 \rulename{S-LOG.AND.BOOl}
 \prooftree
-	\config{B_1}{s} \ssarrow \config{B_1'}{s}
+        \config{B_1}{s} \ssarrow \config{B_1'}{s}
 \justifies
-   	\config{B_1\ \land\ B_2}{s} \ssarrow \config{B_1'\ \land\ B_2}{s}
+        \config{B_1\ \land\ B_2}{s} \ssarrow \config{B_1'\ \land\ B_2}{s}
 \endprooftree
 \pts
 \rulename{S-LOG.AND.TRUE}
 \prooftree
-	\config{B_2}{s} \ssarrow \config{B_2'}{s}
+        \config{B_2}{s} \ssarrow \config{B_2'}{s}
 \justifies
-   	\config{\true\ \land\ B_2}{s} \ssarrow \config{\true\ \land\ B_2'}{s}
+        \config{\true\ \land\ B_2}{s} \ssarrow \config{\true\ \land\ B_2'}{s}
 \endprooftree
 \pts
 \rulename{S-LOG.AND.FALSE}
 \prooftree
-	\config{B_2}{s} \ssarrow \config{B_2'}{s} 
+        \config{B_2}{s} \ssarrow \config{B_2'}{s} 
 \justifies
-   	\config{\false\ \land\ B_2}{s} \ssarrow \config{\false\ \land\ B_2'}{s}
+        \config{\false\ \land\ B_2}{s} \ssarrow \config{\false\ \land\ B_2'}{s}
 \endprooftree
 \pts 
 \rulename{S-LOG.OR.BOOl}
 \prooftree
-	\config{B_1}{s} \ssarrow \config{B_1'}{s}
+        \config{B_1}{s} \ssarrow \config{B_1'}{s}
 \justifies
-   	\config{B_1\ \lor\ B_2}{s} \ssarrow \config{B_1'\ \lor\ B_2}{s}
+        \config{B_1\ \lor\ B_2}{s} \ssarrow \config{B_1'\ \lor\ B_2}{s}
 \endprooftree
 \pts
 \rulename{S-LOG.OR.TRUE}
 \prooftree
-	\config{B_2}{s} \ssarrow \config{B_2'}{s}
+        \config{B_2}{s} \ssarrow \config{B_2'}{s}
 \justifies
-   	\config{\true\ \lor\ B_2}{s} \ssarrow \config{\true\ \lor\ B_2'}{s}
+        \config{\true\ \lor\ B_2}{s} \ssarrow \config{\true\ \lor\ B_2'}{s}
 \endprooftree
 \pts
 \rulename{S-LOG.OR.FALSE}
 \prooftree
-	\config{B_2}{s} \ssarrow \config{B_2'}{s}
+        \config{B_2}{s} \ssarrow \config{B_2'}{s}
 \justifies
-   	\config{\false\ \lor\ B_2}{s} \ssarrow \config{\false\ \lor\ B_2'}{s}
+        \config{\false\ \lor\ B_2}{s} \ssarrow \config{\false\ \lor\ B_2'}{s}
 \endprooftree
 \pts
 \rulename{S-CORT.AND.BOOl}
 \prooftree
-	\config{B_1}{s} \ssarrow \config{B_1'}{s}
+        \config{B_1}{s} \ssarrow \config{B_1'}{s}
 \justifies
-   	\config{B_1\ \& \&\ B_2}{s} \ssarrow \config{B_1'\ \& \&\ B_2}{s}
+        \config{B_1\ \& \&\ B_2}{s} \ssarrow \config{B_1'\ \& \&\ B_2}{s}
 \endprooftree
 \pts
 \rulename{S-CORT.AND.TRUE}
 \prooftree
-	\config{B_2}{s} \ssarrow \config{B_2'}{s}
+        \config{B_2}{s} \ssarrow \config{B_2'}{s}
 \justifies
-   	\config{\true\ \& \&\ B_2}{s} \ssarrow \config{B_2'}{s}
+        \config{\true\ \& \&\ B_2}{s} \ssarrow \config{B_2'}{s}
 \endprooftree
 \pts
 \rulename{S-CORT.AND.FALSE}
 \prooftree
-	\config{B_2}{s} \ssarrow \config{B_2'}{s}
+        \config{B_2}{s} \ssarrow \config{B_2'}{s}
 \justifies
-   	\config{\false\ \& \&\ B_2}{s} \ssarrow \config{\false}{s}
+        \config{\false\ \& \&\ B_2}{s} \ssarrow \config{\false}{s}
 \endprooftree
 \pts 
 \rulename{S-CORT.OR.BOOl}
 \prooftree
-	\config{B_1}{s} \ssarrow \config{B_1'}{s}
+        \config{B_1}{s} \ssarrow \config{B_1'}{s}
 \justifies
-   	\config{B_1\ ||\ B_2}{s} \ssarrow \config{B_1'\ ||\ B_2}{s}
+        \config{B_1\ ||\ B_2}{s} \ssarrow \config{B_1'\ ||\ B_2}{s}
 \endprooftree
 \pts
 \rulename{S-CORT.OR.TRUE}
 \prooftree
-	\config{B_2}{s} \ssarrow \config{B_2'}{s}
+        \config{B_2}{s} \ssarrow \config{B_2'}{s}
 \justifies
-   	\config{\true\ ||\ B_2}{s} \ssarrow \config{\true}{s}
+        \config{\true\ ||\ B_2}{s} \ssarrow \config{\true}{s}
 \endprooftree
 \pts
 \rulename{S-CORT.OR.FALSE}
 \prooftree
-	\config{B_2}{s} \ssarrow \config{B_2'}{s}
+        \config{B_2}{s} \ssarrow \config{B_2'}{s}
 \justifies
-   	\config{\false\ ||\ B_2}{s} \ssarrow \config{B_2'}{s}
+        \config{\false\ ||\ B_2}{s} \ssarrow \config{B_2'}{s}
 \endprooftree
 \end{gather*}
 
@@ -371,194 +371,194 @@ WHILE. Fino ad ora solo i comandi potevano modificare lo store ma adesso anche l
 \begin{gather*}
 \rulename{S-SKIP}
 \prooftree
-	\nohyp
+        \nohyp
 \justifies
-	\config{skip}{s} \ssarrow s
+        \config{skip}{s} \ssarrow s
 \endprooftree
 \pts
 \rulename{S-EXP.NUM}
 \prooftree
-	\nohyp
+        \nohyp
 \justifies
-	\config{x}{s} \ssarrow \config{n}{s}
+        \config{x}{s} \ssarrow \config{n}{s}
 \using
    s(x) = n 
 \endprooftree
 \pts
 \rulename{S-EXP.LEFT}
 \prooftree
-	\config{E_1}{s} \ssarrow \config{E_1'}{s'}
+        \config{E_1}{s} \ssarrow \config{E_1'}{s'}
 \justifies
-	\config{(E_1 + E_2)}{s} \ssarrow \config{(E_1' + E_2)}{s'}
+        \config{(E_1 + E_2)}{s} \ssarrow \config{(E_1' + E_2)}{s'}
 \endprooftree
 \pts
 \rulename{S-EXP.RIGHT}
 \prooftree
-	\config{E_2}{s} \ssarrow \config{E_2'}{s'}
+        \config{E_2}{s} \ssarrow \config{E_2'}{s'}
 \justifies
-	\config{(E_1 + E_2)}{s} \ssarrow \config{(E_1 + E_2')}{s'}
+        \config{(E_1 + E_2)}{s} \ssarrow \config{(E_1 + E_2')}{s'}
 \endprooftree
 \pts
 \rulename{S-ADD}
 \prooftree
-	\nohyp
+        \nohyp
 \justifies
-	\config{(n_1 + n_2)}{s} \ssarrow \config{n_3}{s}
+        \config{(n_1 + n_2)}{s} \ssarrow \config{n_3}{s}
 \using
-	n_3 = n_1 + n_2
+        n_3 = n_1 + n_2
 \endprooftree
 \pts
 \rulename{S-ASS.EXP}
 \prooftree
-	\config{E}{s} \ssarrow \config{E'}{s'}
+        \config{E}{s} \ssarrow \config{E'}{s'}
 \justifies
-	\config{x \weq E}{s} \ssarrow \config{x \weq E'}{s'} 
+        \config{x \weq E}{s} \ssarrow \config{x \weq E'}{s'} 
 \endprooftree
 \pts
 \rulename{S-ASS.NUM}
 \prooftree
-	\nohyp
+        \nohyp
 \justifies
-  	\config{x \weq n}{s} \ssarrow \config{skip}{s[x \mapsto n]}
+        \config{x \weq n}{s} \ssarrow \config{skip}{s[x \mapsto n]}
 \endprooftree
 \pts
 \rulename{S-SEQ.LEFT}
 \prooftree
-	\config{C_1}{s} \ssarrow \config{C_1'}{s'}
+        \config{C_1}{s} \ssarrow \config{C_1'}{s'}
 \justifies
-  	\config{C_1 ; C_2}{s} \ssarrow \config{C_1' ; C_2}{s'}
+        \config{C_1 ; C_2}{s} \ssarrow \config{C_1' ; C_2}{s'}
 \endprooftree
 \pts
 \rulename{S-SEQ.SKIP}
 \prooftree
-	\nohyp
+        \nohyp
 \justifies
-   	\config{skip ; C_2}{s} \ssarrow \config{C_2}{s'}
+        \config{skip ; C_2}{s} \ssarrow \config{C_2}{s'}
 \endprooftree
 \pts
 \rulename{S-COND.BOOL}
 \prooftree
-	\config{B}{s} \ssarrow \config{B'}{s'}
+        \config{B}{s} \ssarrow \config{B'}{s'}
 \justifies
-   	\config{\condif{B}{C_1}{C_2}}{s} \ssarrow \config{\condif{B'}{C_1}{C_2}}{s'}
+        \config{\condif{B}{C_1}{C_2}}{s} \ssarrow \config{\condif{B'}{C_1}{C_2}}{s'}
 \endprooftree
 \pts
 \rulename{S-COND.TRUE}
 \prooftree
-	\nohyp
+        \nohyp
 \justifies
-   	\config{\condif{\true}{C_1}{C_2}}{s} \ssarrow \config{C_1}{s}
+        \config{\condif{\true}{C_1}{C_2}}{s} \ssarrow \config{C_1}{s}
 \endprooftree
 \pts
 \rulename{S-COND.FALSE}
 \prooftree
-	\nohyp
+        \nohyp
 \justifies
-  	\config{\condif{\false}{C_1}{C_2}}{s} \ssarrow \config{C_2}{s}
+        \config{\condif{\false}{C_1}{C_2}}{s} \ssarrow \config{C_2}{s}
 \endprooftree
 \pts
 \rulename{S-WHILE.BOOL}
 \prooftree
-	\config{B}{s} \ssarrow \config{B'}{s'}
+        \config{B}{s} \ssarrow \config{B'}{s'}
 \justifies
-   	\config{\while{B}{C}}{s} \ssarrow \config{\while{B'}{C}}{s'}
+        \config{\while{B}{C}}{s} \ssarrow \config{\while{B'}{C}}{s'}
 \endprooftree
 \pts
 \rulename{S-WHILE.FALSE}
 \prooftree
-	\nohyp
+        \nohyp
 \justifies
-   	\config{\while{\false}{C}}{s} \ssarrow \config{skip}{s}
+        \config{\while{\false}{C}}{s} \ssarrow \config{skip}{s}
 \endprooftree
 \pts
 \rulename{S-WHILE}
 \prooftree
-	\nohyp
+        \nohyp
 \justifies
-  	\config{\while{B}{C}}{s} \ssarrow \config{\condif{B}{(C ; \while{B}{C})}{skip}}{s}
+        \config{\while{B}{C}}{s} \ssarrow \config{\condif{B}{(C ; \while{B}{C})}{skip}}{s}
 \endprooftree
 \pts
 \rulename{S-LOG.AND.BOOl}
 \prooftree
-	\config{B_1}{s} \ssarrow \config{B_1'}{s'}
+        \config{B_1}{s} \ssarrow \config{B_1'}{s'}
 \justifies
-   	\config{B_1\ \land\ B_2}{s} \ssarrow \config{B_1'\ \land\ B_2}{s'}
+        \config{B_1\ \land\ B_2}{s} \ssarrow \config{B_1'\ \land\ B_2}{s'}
 \endprooftree
 \pts
 \rulename{S-LOG.AND.TRUE}
 \prooftree
-	\config{B_2}{s} \ssarrow \config{B_2'}{s'}
+        \config{B_2}{s} \ssarrow \config{B_2'}{s'}
 \justifies
-   	\config{\true\ \land\ B_2}{s} \ssarrow \config{\true\ \land\ B_2'}{s'}
+        \config{\true\ \land\ B_2}{s} \ssarrow \config{\true\ \land\ B_2'}{s'}
 \endprooftree
 \pts
 \rulename{S-LOG.AND.FALSE}
 \prooftree
-	\config{B_2}{s} \ssarrow \config{B_2'}{s'} 
+        \config{B_2}{s} \ssarrow \config{B_2'}{s'} 
 \justifies
-   	\config{\false\ \land\ B_2}{s} \ssarrow \config{\false\ \land\ B_2'}{s'}
+        \config{\false\ \land\ B_2}{s} \ssarrow \config{\false\ \land\ B_2'}{s'}
 \endprooftree
 \pts 
 \rulename{S-LOG.OR.BOOl}
 \prooftree
-	\config{B_1}{s} \ssarrow \config{B_1'}{s'}
+        \config{B_1}{s} \ssarrow \config{B_1'}{s'}
 \justifies
-   	\config{B_1\ \lor\ B_2}{s} \ssarrow \config{B_1'\ \lor\ B_2}{s'}
+        \config{B_1\ \lor\ B_2}{s} \ssarrow \config{B_1'\ \lor\ B_2}{s'}
 \endprooftree
 \pts
 \rulename{S-LOG.OR.TRUE}
 \prooftree
-	\config{B_2}{s} \ssarrow \config{B_2'}{s'}
+        \config{B_2}{s} \ssarrow \config{B_2'}{s'}
 \justifies
-   	\config{\true\ \lor\ B_2}{s} \ssarrow \config{\true\ \lor\ B_2'}{s'}
+        \config{\true\ \lor\ B_2}{s} \ssarrow \config{\true\ \lor\ B_2'}{s'}
 \endprooftree
 \pts
 \rulename{S-LOG.OR.FALSE}
 \prooftree
-	\config{B_2}{s} \ssarrow \config{B_2'}{s'}
+        \config{B_2}{s} \ssarrow \config{B_2'}{s'}
 \justifies
-   	\config{\false\ \lor\ B_2}{s} \ssarrow \config{\false\ \lor\ B_2'}{s'}
+        \config{\false\ \lor\ B_2}{s} \ssarrow \config{\false\ \lor\ B_2'}{s'}
 \endprooftree
 \pts
 \rulename{S-CORT.AND.BOOl}
 \prooftree
-	\config{B_1}{s} \ssarrow \config{B_1'}{s'}
+        \config{B_1}{s} \ssarrow \config{B_1'}{s'}
 \justifies
-   	\config{B_1\ \& \&\ B_2}{s} \ssarrow \config{B_1'\ \& \&\ B_2}{s'}
+        \config{B_1\ \& \&\ B_2}{s} \ssarrow \config{B_1'\ \& \&\ B_2}{s'}
 \endprooftree
 \pts
 \rulename{S-CORT.AND.TRUE}
 \prooftree
-	\config{B_2}{s} \ssarrow \config{B_2'}{s'}
+        \config{B_2}{s} \ssarrow \config{B_2'}{s'}
 \justifies
-   	\config{\true\ \& \&\ B_2}{s} \ssarrow \config{B_2'}{s'}
+        \config{\true\ \& \&\ B_2}{s} \ssarrow \config{B_2'}{s'}
 \endprooftree
 \pts
 \rulename{S-CORT.AND.FALSE}
 \prooftree
-	\config{B_2}{s} \ssarrow \config{B_2'}{s'}
+        \config{B_2}{s} \ssarrow \config{B_2'}{s'}
 \justifies
-   	\config{\false\ \& \&\ B_2}{s} \ssarrow \config{\false}{s'}
+        \config{\false\ \& \&\ B_2}{s} \ssarrow \config{\false}{s'}
 \endprooftree
 \pts 
 \rulename{S-CORT.OR.BOOl}
 \prooftree
-	\config{B_1}{s} \ssarrow \config{B_1'}{s'}
+        \config{B_1}{s} \ssarrow \config{B_1'}{s'}
 \justifies
-   	\config{B_1\ ||\ B_2}{s} \ssarrow \config{B_1'\ ||\ B_2}{s'}
+        \config{B_1\ ||\ B_2}{s} \ssarrow \config{B_1'\ ||\ B_2}{s'}
 \endprooftree
 \pts
 \rulename{S-CORT.OR.TRUE}
 \prooftree
-	\config{B_2}{s} \ssarrow \config{B_2'}{s'}
+        \config{B_2}{s} \ssarrow \config{B_2'}{s'}
 \justifies
-   	\config{\true\ ||\ B_2}{s} \ssarrow \config{\true}{s'}
+        \config{\true\ ||\ B_2}{s} \ssarrow \config{\true}{s'}
 \endprooftree
 \pts
 \rulename{S-CORT.OR.FALSE}
 \prooftree
-	\config{B_2}{s} \ssarrow \config{B_2'}{s'}
+        \config{B_2}{s} \ssarrow \config{B_2'}{s'}
 \justifies
-   	\config{\false\ ||\ B_2}{s} \ssarrow \config{B_2'}{s'}
+        \config{\false\ ||\ B_2}{s} \ssarrow \config{B_2'}{s'}
 \endprooftree
 \end{gather*}
