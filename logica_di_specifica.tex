@@ -1,7 +1,7 @@
 \subsection{Definizione sintattica}
 
 Definiamo precisamente un linguaggio logico per le
-precondizioni e postcondizioni di una logica di Floyd-Hoare.
+\emph{precondizioni} e \emph{postcondizioni} di una logica di Floyd-Hoare.
 Sia $x \in \Var \union \Ghost$, dove $\Var$ è l'insieme delle variabili del
 programma e $\Ghost$ è un insieme di cosiddette ``variabili fantasma''
 (variabili della logica) tale che $\Var \inters \Ghost = \emptyset$.
@@ -40,7 +40,7 @@ In logica matematica e in particolare in un linguaggio del primo ordine si dice 
 Definiamo due funzioni con lo stesso nome (sovraccaricate) per calcolare le variabili libere in una formula.
 
 \begin{definizione} \summary{($\FV$ per $\LExp$.)}
-Sia $\fund{\FV}{\LExp}{\wp(\Ghost)}$ la funzione per catturare le variabili libere in una espressione della logica, definita per induzione strutturale :
+Definiamo la funzione $\fund{\FV}{\LExp}{\wp(\Ghost)}$ per catturare le variabili libere in una espressione della logica, definita per induzione strutturale :
 \begin{align*}
    \FV(x)
       &=
@@ -64,7 +64,7 @@ Sia $\fund{\FV}{\LExp}{\wp(\Ghost)}$ la funzione per catturare le variabili libe
 \end{definizione}
 
 \begin{definizione} \summary{($\FV$ per $\Pred$.)}
-Sia $\fund{\FV}{\Pred}{\wp(\Ghost)}$ la seconda funzione per catturare
+Definiamo la funzione $\fund{\FV}{\Pred}{\wp(\Ghost)}$ per catturare
 le variabili libere nei predicati della logica,
 definita per induzione strutturale:
 \begin{align*}
@@ -159,17 +159,16 @@ per induzione strutturale su $P$ come segue:
 \end{definizione}
 
 \subsection{Valutazione semantica}
-Per definire la semantica di ogni oggetto sintattico del linguaggio, abbiamo bisogno di: $\Sigma$,
-che rappresenta l'insieme degli stati, utile in quanto nelle espressioni possono comparire
-variabili del programma e $\Gamma$, l'ambiente delle variabili $\Ghost$
+Per definire la semantica di ogni oggetto sintattico del linguaggio,
+abbiamo bisogno di: un insieme degli stati denotato con $\Sigma$ utile in quanto nelle espressioni possono comparire variabili del programma e un ambiente delle variabili denotato con $\Gamma$
 definita come $\fund{\Gamma}{\Ghost}{\Zset}$.
 
 \begin{definizione} \summary{(Valutazione semantica per $\LExp$.)}
-La funzione di valutazione semantica delle espressioni è definita come segue:
+Definiamo la funzione di valutazione semantica delle espressioni 
 \[
    \fund{\llbracket \cdot \rrbracket ^\LExp}{\LExp}{((\Sigma \times \Gamma) \rightarrow \Zset)}
 \]
-Diamo una definizione per induzione strutturale su $\LExp$:
+definita per induzione strutturale su $\LExp$:
 \begin{align*}
    \llbracket x \rrbracket(s,t)
       &=
@@ -197,7 +196,7 @@ La funzione di valutazione semantica dei predicati è definita come segue:
 \[
    \fund{\llbracket \cdot \rrbracket ^{\Pred}}{\Pred}{((\Sigma \times \Gamma) \rightarrow \{\ttv,\ffv\})}
 \]
-Diamo una definizione per induzione strutturale su $\Pred$:
+definita per induzione strutturale su $\Pred$:
 \begin{align*}
    \llbracket \true \rrbracket(s,t)
       &= \ttv;\\
@@ -280,7 +279,7 @@ Ora che abbiamo tutti gli elementi, possiamo definire quando una tripla di Floyd
 \[
    \llbracket \{P\}C\{Q\} \rrbracket = \ttv;
 \]
-\textit{Esempio del caso semplice. }Supponiamo quindi di non avere variabili $\Ghost$:
+\textit{Esempio del caso semplice.}Supponiamo quindi di non avere variabili $\Ghost$:
 \[
    \FV(P) \union \FV(Q)= \emptyset;
 \]
@@ -291,7 +290,7 @@ Quindi :
       &\llbracket P \rrbracket( s,\emptyset) = \ttv\land \config{C}{s} \ssarrow ^*\config{skip}{s'}\\
       \Rightarrow&\llbracket Q \rrbracket(s',\emptyset)=\ttv);
 \end{align*}
-\textit{Esempio del caso completo. }Sono effettivamente presenti variabili $\Ghost$, ma prima riflettiamo.
+\textit{Esempio del caso completo.}Sono effettivamente presenti variabili $\Ghost$, ma prima riflettiamo.
 Nelle triple di Floyd-Hoare se ci sono variabili non quantificate, esse vengono universalmente quantificate con un $\forall$ in maniera implicita.
 \[
    \FV(P) \union \FV(Q) \neq \emptyset;
@@ -408,17 +407,16 @@ Allora:
 
 \textbf{Composizione Sequenziale}
 \[
-\prooftree
-   \{P\} C_1\{Q\}
+  \prooftree
+     \{P\} C_1\{Q\}
    \hspace{1mm}
-   \{Q\} C_2\{R\}
-\justifies
-   \{P\}C_1;C_2\{R\}
-\thickness=0.08em
-\shiftright 0em
-\using
-	CS
-\endprooftree
+     \{Q\} C_2\{R\}
+   \justifies
+     \{P\}C_1;C_2\{R\}
+   \thickness=0.08em
+   \shiftright 0em
+   \using
+  \endprooftree
 \]
 \begin{align*}
    \llbracket \{P\} C_1;C_2\{R\} \rrbracket \Leftrightarrow \forall t \in \Gamma_{\FV(P)\union\FV(R)}\itc
@@ -443,6 +441,3 @@ Questo grazie al \textit{Lemma}:
    &\config{C_1}{s} \ssarrow ^{n_1}\config{skip}{s'} \land \config{C_2}{s'} \ssarrow ^{n_2}\config{skip}{s''}
    \land n = n_1 + n_2.
 \end{align*}
-\begin{proof}
-
-\end{proof}
