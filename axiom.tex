@@ -28,9 +28,23 @@ Come si può notare dai precedenti esempi, ciò che asserisce una
 tripla di Hoare può essere vera o falsa, ma la verità o la falsità
 dipende dal linguaggio di programmazione.
 
+\section{Correttezza totale}\marginpar{Lombardi}
+\begin{definizione}\summary{(Correttezza totale)}
+Un'\emph{asserzione di correttezza totale} è una tripla di Hoare:
+\[
+  [P] C [Q]
+\]
+A differenza della correttezza parziale
+sappiamo che $C$ termina sempre, quindi se $C$ viene eseguito in
+uno stato che soddisfa $P$ allora dopo la cura vale $Q$. 
+La correttezza totale può essere scritta in maniera informale, ovvero:
+\[
+   \text{Correttezza totale = correttezza parziale + terminazione.}
+\]
+\end{definizione}
 
 \section{Logica di specifica}\marginpar{Lombardi}
-\input{logica_di_specifica}
+\input{logica}
 
 \subsection{Programma propriamente annotato}\marginpar{Mancino}
 \begin{definizione}

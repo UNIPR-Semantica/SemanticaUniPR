@@ -353,13 +353,15 @@ Dato che la premessa è vera abbiamo che $s=s'$, dunque:
       &\land \config{x:=\LE}{s} \ssarrow ^*\config{skip}{s'}\\
       &\Rightarrow\llbracket Q \rrbracket(s',t)=\ttv);
 \end{align*}
-Questo grazie al \textit{Lemma}:
+Questo grazie al \textit{Lemma 1}.
+\begin{lemma}
 \begin{align*}
    \forall k \in \Nset \itc
       &( \config{x:=\LE}{s} \ssarrow ^k\config{skip}{s'}\\
       &\Rightarrow \exists n \in \Zset\st \config{\LE}{s} \ssarrow ^{k-1}\config{n}{s}
       \land s'=s \substt{n}{x});
 \end{align*}
+\end{lemma}
 
 \begin{proof}
 Caso base: con $k = 0$ è banalmente vera poiché l'antecedente è falso;\\
@@ -433,7 +435,8 @@ Allora:
       &\land \config{C_2}{s'} \ssarrow ^*\config{skip}{s''})\\
       &\Rightarrow \llbracket R \rrbracket(s'',t)=\ttv;
 \end{align*}
-Questo grazie al \textit{Lemma}:
+Questo grazie al \textit{Lemma 2}.
+\begin{lemma}
 \begin{align*}
    \forall C_1,C_2 \in \Com \itc 
    &\forall s,s' \in \Sigma \itc \forall n \in \Nset \config{C_1;C_2}{s} \ssarrow ^n\config{skip}{s'} \\
@@ -441,3 +444,4 @@ Questo grazie al \textit{Lemma}:
    &\config{C_1}{s} \ssarrow ^{n_1}\config{skip}{s'} \land \config{C_2}{s'} \ssarrow ^{n_2}\config{skip}{s''}
    \land n = n_1 + n_2.
 \end{align*}
+\end{lemma}
