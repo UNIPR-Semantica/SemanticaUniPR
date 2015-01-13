@@ -1,0 +1,461 @@
+\subsection{Definizione sintattica}
+
+Definiamo precisamente un linguaggio logico per le
+\emph{precondizioni} e \emph{postcondizioni} di una logica di Floyd-Hoare.
+Sia $x \in \Var \union \Ghost$, dove $\Var$ è l'insieme delle variabili del
+programma e $\Ghost$ è un insieme di cosiddette ``variabili fantasma''
+(variabili della logica) tale che $\Var \inters \Ghost = \emptyset$.
+Sia $c \in C \sslt \Rset$ una generica costante numerica presa dall'insieme
+$C$ delle costanti rappresentabili nel linguaggio.
+L'insieme delle espressioni aritmetiche della logica, denotato con $\LExp$,
+è ora definibile per mezzo di una grammatica in forma BNF del tipo
+\[
+  \LE \in \LExp ::= x
+                \vbar c
+                \vbar \LE_1 + \LE_2
+                \vbar \sqrt{\LE}
+                \vbar \LE^{\LE_2}
+                \vbar \LE!
+                \vbar \lfloor \LE \rfloor
+                \vbar \dots
+\]
+L'insieme dei predicati della logica, denotato con $\Pred$, è definito anch'esso con una grammatica in forma BNF del tipo
+\begin{align*}
+P \in \Pred &::= \true
+            \vbar \false
+            \vbar\LE_1 = \LE_2
+            \vbar \dots
+            \vbar P_1 \land P_2
+            \vbar P_1 \lor P_2
+            \vbar \neg P \\
+            &\vbar \forall x \itc P
+            \vbar \exists x \st P
+            \vbar P_1 \Rightarrow P_2
+            \vbar P_1 \Leftrightarrow P_2 \vbar P_1 \Leftarrow P_2
+\end{align*}
+dove $x \in\Ghost$.
+
+\subsection{Variabili libere}
+In logica matematica e in particolare in un linguaggio del primo ordine si dice che una variabile occorre libera in una formula ben formata se nella formula tale variabile appare al di fuori del dominio di un quantificatore sulla variabile stessa. Una variabile $\Ghost$ può essere libera per questo ce ne interessiamo.
+Definiamo due funzioni con lo stesso nome (sovraccaricate) per calcolare le variabili libere in una formula.
+
+\begin{definizione} \summary{($\FV$ per $\LExp$.)}
+Definiamo la funzione $\fund{\FV}{\LExp}{\wp(\Ghost)}$ per catturare le variabili libere in una espressione della logica, definita per induzione strutturale :
+\begin{align*}
+   \FV(x)
+      &=
+        \begin{cases}
+            \emptyset,&\text{se $x  \in \Var$};\\
+            \{x\},    &\text{se $x  \in \Ghost$};
+        \end{cases} \\
+   \FV(c)
+      &= \emptyset;\\
+   \FV(\LE_1 + \LE_2)
+      &= \FV(\LE_1) \union \FV(\LE_2);\\
+   \FV(\sqrt{\LE})
+      &= \FV(\LE);\\
+   \FV(\LE_1^{\LE_2})
+      &= \FV(\LE_1) \union \FV(\LE_2);\\
+   \FV(\LE!)
+      &= \FV(\LE);\\
+   \FV(\lfloor \LE \rfloor)
+      &= \FV(\LE).
+\end{align*}
+\end{definizione}
+
+\begin{definizione} \summary{($\FV$ per $\Pred$.)}
+Definiamo la funzione $\fund{\FV}{\Pred}{\wp(\Ghost)}$ per catturare
+le variabili libere nei predicati della logica,
+definita per induzione strutturale:
+\begin{align*}
+   \FV(\true)
+      &= \emptyset;\\
+   \FV(\false)
+      &= \emptyset;\\
+   \FV(\LE_1 = \LE_2)
+      &= \FV(\LE_1) \union \FV(\LE_2);\\
+   \FV(P_1 \land P_2)
+      &= \FV(P_1) \union \FV(P_2);\\
+   \FV(P_1 \lor P_2)
+      &= \FV(P_1) \union \FV(P_2);\\
+   \FV(\neg P)
+      &= \FV(P);\\
+   \FV(\forall x \itc P)
+      &= \FV(P)\setminus \{x\};\\
+   \FV(\exists x \st P)
+      &= \FV(P)\setminus \{x\};\\
+   \FV(P_1 \Rightarrow P_2)
+      &= \FV(P_1) \union \FV(P_2);\\
+   \FV(P_1 \Leftrightarrow P_2)
+      &= \FV(P_1) \union \FV(P_2);\\
+   \FV(P_1 \Leftarrow P_2)
+      &= \FV(P_1) \union \FV(P_2).
+\end{align*}
+\end{definizione}
+
+\subsection{Sostituzione sintattica}
+Per definire la semantica di un tale linguaggio logico abbiamo bisogno
+di formalizzare l'operazione di sostituzione sintattica di termini
+al posto di variabili.
+
+\begin{definizione} \summary{(Sostituzione per $\LExp$.)}
+Sia $x \in \Var \union \Ghost$ una variabile e siano $\LE_0, \LE \in \LExp$
+due espressioni.
+L'espressione $\LE_0\substt{\LE}{x}$ è un elemento di $\LExp$ definito
+per induzione strutturale su $\LE_0$ come segue:
+\begin{align*}
+   x_0\substt{\LE}{x}
+    &=
+      \begin{cases}
+        \LE, &\text{se $x_0 = x$;} \\
+        x_0, &\text{se $x_0 \neq x$;}
+      \end{cases} \\
+   c\substt{\LE}{x}
+    &= c;\\
+  (\LE_1 + \LE_2)\substt{\LE}{x}
+     &= \bigl(\LE_1\substt{\LE}{x}\bigr) + \bigl(\LE_2\substt{\LE}{x}\bigr);\\
+  \sqrt{\LE_1}\substt{\LE}{x}
+     &= \sqrt{{\LE_1}\substt{\LE}{x}};\\
+  \LE_1^{\LE_2}\substt{\LE}{x}
+     &= \LE_1\substt{\LE}{x}^{\LE_2\substt{\LE}{x}};\\
+  {\LE_1}!\substt{\LE}{x}
+     &= {{\LE_1}\substt{\LE}{x}}!;\\
+  \lfloor \LE_1 \rfloor\substt{\LE}{x}
+     &= \bigl\lfloor \LE_1\substt{\LE}{x} \bigr\rfloor.\\
+\end{align*}
+La definizione si estende in modo ovvio ad ogni altro operatore presente
+nella sintassi delle espressioni.
+\end{definizione}
+
+\begin{definizione} \summary{(Sostituzione per $\Pred$.)}
+Sia $x \in \Var \union \Ghost$ una variabile, $\LE \in \LExp$ un'espressione
+e $P \in \Pred$ un predicato.
+L'espressione $P\substt{\LE}{x}$ è un elemento di $\Pred$ definito
+per induzione strutturale su $P$ come segue:
+\begin{align*}
+  \true\substt{\LE}{x}
+    &= \true;\\
+  \false\substt{\LE}{x}
+    &= \false;\\
+  (\LE_1 = \LE_2)\substt{\LE}{x}
+    &= \bigl(\LE_1\substt{\LE}{x}\bigr) = \bigl(\LE_2\substt{\LE}{x}\bigr);\\
+  (P_1 \land P_2)\substt{\LE}{x}
+    &= \bigl(\LE_1\substt{\LE}{x}\bigr) \land \bigl(\LE_2\substt{\LE}{x}\bigr);\\
+  (P_1 \lor P_2)\substt{\LE}{x}
+    &= \bigl(\LE_1\substt{\LE}{x}\bigr) \lor \bigl(\LE_2\substt{\LE}{x}\bigr);\\
+  (\neg P)\substt{\LE}{x}
+    &= \neg \bigl(P \substt{\LE}{x}\bigr);\\
+  (\forall y\itc P)\substt{\LE}{x}
+    &= \forall z\itc \bigl(P \substt{z}{y}\bigr)\substt{\LE}{x} \text{ con: $z\notin\FV(\LE), z\notin\FV(P), z\neq x$};\\
+  (\exists  y\st P)\substt{\LE}{x}
+    &= \exists z\st \bigl(P \substt{z}{y}\bigr)\substt{\LE}{x} \text{ con: $z\notin\FV(\LE), z\notin\FV(P), z\neq x$};\\
+  (P_1 \Rightarrow P_2)\substt{\LE}{x}
+    &= \bigl(P_1\substt{\LE}{x}\bigr) \Rightarrow \bigl(P_2\substt{\LE}{x}\bigr);\\
+  (P_1 \Leftrightarrow P_2)\substt{\LE}{x}
+    &= \bigl(P_1\substt{\LE}{x}\bigr) \Leftrightarrow \bigl(P_2\substt{\LE}{x}\bigr);\\
+  (P_1 \Leftarrow P_2)\substt{\LE}{x}
+    &= \bigl(P_1\substt{\LE}{x}\bigr) \Leftarrow \bigl(P_2\substt{\LE}{x}\bigr).
+\end{align*}
+\end{definizione}
+
+\subsection{Valutazione semantica}
+Per definire la semantica di ogni oggetto sintattico del linguaggio,
+abbiamo bisogno di: un insieme degli stati denotato con $\Sigma$ utile in quanto nelle espressioni possono comparire variabili del programma e un ambiente delle variabili denotato con $\Gamma$
+definita come $\fund{\Gamma}{\Ghost}{\Zset}$.
+
+\begin{definizione} \summary{(Valutazione semantica per $\LExp$.)}
+Definiamo la funzione di valutazione semantica delle espressioni 
+\[
+   \fund{\llbracket \cdot \rrbracket ^\LExp}{\LExp}{((\Sigma \times \Gamma) \rightarrow \Zset)}
+\]
+definita per induzione strutturale su $\LExp$:
+\begin{align*}
+   \llbracket x \rrbracket(s,t)
+      &=
+        \begin{cases}
+                 s(x), &\text{se $x \in \Var$};\\
+                 t(x), &\text{se $x \in \Ghost$};
+        \end{cases}\\
+   \llbracket  c \rrbracket(s,t)
+     &=  c;\\
+   \llbracket \LE_1 + \LE_2 \rrbracket(s,t)
+     &= \llbracket \LE_1 \rrbracket(s,t) + \llbracket \LE_2 \rrbracket(s,t);\\
+   \llbracket \sqrt{\LE} \rrbracket(s,t)
+     &= \sqrt{\llbracket \LE \rrbracket}(s,t);\\
+   \llbracket \LE^{\LE_2} \rrbracket(s,t)
+     &= \llbracket \LE \rrbracket^{\llbracket \LE_2 \rrbracket}(s,t);\\
+   \llbracket \LE! \rrbracket(s,t)
+     &= \llbracket \LE \rrbracket!(s,t);\\
+   \llbracket \lfloor \LE \rfloor \rrbracket(s,t)
+     &= \bigl \lfloor \llbracket \LE \rrbracket \bigr \rfloor(s,t).
+\end{align*}
+\end{definizione}
+
+\begin{definizione} \summary{(Valutazione semantica per $\Pred$.)}
+La funzione di valutazione semantica dei predicati è definita come segue:
+\[
+   \fund{\llbracket \cdot \rrbracket ^{\Pred}}{\Pred}{((\Sigma \times \Gamma) \rightarrow \{\ttv,\ffv\})}
+\]
+definita per induzione strutturale su $\Pred$:
+\begin{align*}
+   \llbracket \true \rrbracket(s,t)
+      &= \ttv;\\
+   \llbracket \false \rrbracket(s,t)
+      &= \ffv;\\
+   \llbracket \LE_1 = \LE_2\rrbracket(s,t)
+      &=
+        \begin{cases}
+                \ttv, &\text{se $\llbracket\LE_1\rrbracket(s,t) = \llbracket \LE_2 \rrbracket(s,t)$};\\
+                \ffv, &\text{altrimenti};
+        \end{cases}\\
+    \llbracket P_1 \land P_2\rrbracket(s,t)
+      &=
+        \begin{cases}
+                \ttv, &\text{se $\llbracket P_1\rrbracket(s,t) = \llbracket P_2\rrbracket(s,t) = \true$};\\
+                \ffv, &\text{altrimenti};
+        \end{cases}\\
+    \llbracket P_1 \lor P_2\rrbracket(s,t)
+      &=
+        \begin{cases}
+                \ffv, &\text{se $\llbracket P_1\rrbracket(s,t) = \llbracket P_2\rrbracket(s,t) = \false$};\\
+                \ttv, &\text{altrimenti};
+        \end{cases} \\
+    \llbracket \neg P\rrbracket(s,t)
+       &=
+        \begin{cases}
+                \ttv,&\text{se $\llbracket P\rrbracket(s,t) = \ffv$};\\
+                \ffv,&\text{se $\llbracket P\rrbracket(s,t) = \ttv$};
+        \end{cases}
+\end{align*}
+Poniamo attenzione ai due casi particolari:
+\begin{align*}
+   \llbracket\forall x \itc P\rrbracket(s,t)
+      &=
+        \begin{cases}
+                \ttv, &\text{se $\forall k\in\Zset\itc(\llbracket P\rrbracket(s,t\substt{k}{x}) = \ttv$});\\
+                \ffv, &\text{se $\exists k\in\Zset\st(\llbracket P\rrbracket(s,t\substt{k}{x}) = \ffv$});
+        \end{cases}\\
+   \llbracket \exists x \st P\rrbracket(s,t)
+      &=
+        \begin{cases}
+                \ttv,  &\text{se $\exists k\in \Zset\st(\llbracket P\rrbracket(s,t\substt{k}{x}) = \ttv$});\\
+                \ffv,  &\text{se $\forall k\in \Zset\itc(\llbracket P\rrbracket(s,t\substt{k}{x}) = \ffv$});
+        \end{cases}
+\end{align*}
+Dove:
+\begin{align*}
+   \forall x,y\in\Ghost\itc\forall t \in\Gamma\itc\forall k\in\Zset \itc t\substt{k}{x}(y)
+      &=
+        \begin{cases}
+                 k,   &\text{se $x = y$};\\
+                 t(y),&\text{se $x  \neq  y$};
+        \end{cases}
+\end{align*}
+\begin{align*}
+    \llbracket P_1 \Rightarrow P_2 \rrbracket(s,t)
+       &=
+        \begin{cases}
+            \ffv, &\text{se $\llbracket P_1\rrbracket(s,t) = \true \land \llbracket P_2\rrbracket(s,t) = \false$};\\
+            \ttv, &\text{altrimenti};
+        \end{cases}\\
+    \llbracket P_1 \Leftrightarrow P_2\rrbracket(s,t)
+       &=
+        \begin{cases}
+            \ttv,&\text{se $\llbracket P_1\rrbracket(s,t) = \llbracket P_2\rrbracket(s,t) = \true$}\\
+                 &\text{$\lor\llbracket P_1\rrbracket(s,t) = \llbracket P_2 \rrbracket(s,t) = \false$};\\
+            \ffv, &\text{altrimenti};
+        \end{cases}\\
+   \llbracket P_1 \Leftarrow P_2\rrbracket(s,t)
+      &=
+        \begin{cases}
+            \ffv,&\text{se $\llbracket P_1\rrbracket(s,t) = \false \land \llbracket P_2\rrbracket(s,t) = \true$};\\
+            \ttv,&\text{altrimenti}.
+   \end{cases}
+\end{align*}
+\end{definizione}
+
+\subsection{Verità di una tripla di Floyd-Hoare}
+Ora che abbiamo tutti gli elementi, possiamo definire quando una tripla di Floyd-Hoare è vera.
+\[
+   \llbracket \{P\}C\{Q\} \rrbracket = \ttv;
+\]
+\textit{Esempio del caso semplice.}Supponiamo quindi di non avere variabili $\Ghost$:
+\[
+   \FV(P) \union \FV(Q)= \emptyset;
+\]
+Quindi :
+\begin{align*}
+   \llbracket \{P\} C\{Q\} \rrbracket 
+      = \ttv \Leftrightarrow (\forall s,s'\in \Sigma \itc(
+      &\llbracket P \rrbracket( s,\emptyset) = \ttv\land \config{C}{s} \ssarrow ^*\config{skip}{s'}\\
+      \Rightarrow&\llbracket Q \rrbracket(s',\emptyset)=\ttv);
+\end{align*}
+\textit{Esempio del caso completo.}Sono effettivamente presenti variabili $\Ghost$, ma prima riflettiamo.
+Nelle triple di Floyd-Hoare se ci sono variabili non quantificate, esse vengono universalmente quantificate con un $\forall$ in maniera implicita.
+\[
+   \FV(P) \union \FV(Q) \neq \emptyset;
+\]
+Quindi :
+\begin{align*}
+    \llbracket \{P\} C\{Q\} \rrbracket 
+       = \ttv \Leftrightarrow \forall t \in \Gamma_{\FV(P)\union \FV(Q)}\itc
+       &(\forall  s,s'\in \Sigma\itc(\llbracket P \rrbracket(s,t) = \ttv\\
+       &\land \config{C}{s} \ssarrow ^*\config{skip}{s'}\\
+       &\Rightarrow\llbracket Q \rrbracket(s',t)=\ttv);
+\end{align*}
+Dove:
+\[
+   \forall v \subset \Ghost,\Gamma_{v} =\{t \in \Gamma \text{ t.c; $\dom(t) = v$\}}.
+\]
+\subsection{Correttezza della logica di Floyd-Hoare}
+Se la tripla di Floyd-Hoare ha dimostrazione, allora essa è vera.
+\[
+   \forall P,Q \in \Pred \itc \forall C \in \Com : \vdash \{P\}C\{Q\} \Rightarrow \llbracket \{P\}C\{Q\}\rrbracket;
+\]
+Si dimostra per induzione strutturale sull'albero che dimostra \{P\}C\{Q\}:
+\textbf{Skip}
+\[
+ \prooftree
+ \justifies
+    \{P\}\mathrm{skip}\{P\}
+ \thickness=0.08em
+ \shiftright 2em
+ \using
+ \endprooftree
+\]
+\begin{align*}
+   \llbracket \{P\}\mathrm{skip}\{P\} \rrbracket \Leftrightarrow \forall t \in \Gamma_{\FV(P)}\itc
+      &\forall s,s'\in \Sigma \itc(\llbracket P \rrbracket(s,t) = \ttv\\
+      &\land \config{skip}{s} \ssarrow ^*\config{skip}{s'}\\
+      &\Rightarrow\llbracket P \rrbracket(s',t)=\ttv);
+\end{align*}
+
+\begin{proof}
+Dato che la premessa è vera abbiamo che $s=s'$, dunque:
+\[
+   \llbracket P \rrbracket(s,t)= \ttv = \llbracket P \rrbracket(s',t).
+\]
+\end{proof}
+\textbf{Assegnamento}
+\[
+ \prooftree
+ \justifies
+    \{Q\substt{\LE}{x}\}x:=\LE\{Q\}
+ \thickness=0.08em
+ \shiftright 2em
+ \using
+ \endprooftree
+\]
+\begin{align*}
+   \llbracket \{Q\substt{\LE}{x}\}x:=\LE\{Q\} \rrbracket \Leftrightarrow
+      &\forall t \in \Gamma_{\FV(\LE)\union \FV(Q)}\itc\forall s,s'\in \Sigma \itc\\
+      &(\llbracket Q \rrbracket\substt{\LE}{x}(s,t) = \ttv\\
+      &\land \config{x:=\LE}{s} \ssarrow ^*\config{skip}{s'}\\
+      &\Rightarrow\llbracket Q \rrbracket(s',t)=\ttv);
+\end{align*}
+Questo grazie al \textit{Lemma}:
+\begin{align*}
+   \forall k \in \Nset \itc
+      &( \config{x:=\LE}{s} \ssarrow ^k\config{skip}{s'}\\
+      &\Rightarrow \exists n \in \Zset\st \config{\LE}{s} \ssarrow ^{k-1}\config{n}{s}
+      \land s'=s \substt{n}{x});
+\end{align*}
+
+\begin{proof}
+Caso base: con $k = 0$ è banalmente vera poiché l'antecedente è falso;\\
+Con: $k = 1$ abbiamo:
+\[
+   \config{x:=\LE}{s} \ssarrow ^{1}\config{skip}{s'};
+\]
+ma allora $\LE \in \Zset$ e $s'=s\substt{n}{x},$ quindi $\exists n=\LE$ tali che:
+\[
+   \config{\LE}{s} \ssarrow ^{0}\config{\LE}{s} \equiv \config{n}{s}.
+\]
+Questo per definizione di $\rightarrow ^0$ chiusura riflessiva.\\
+Passo induttivo: $k = h+1$
+\[
+   \config{x:=\LE}{s} \ssarrow ^{h+1}\config{skip}{s'};
+\]
+Allora si può ricondurre ad $h+1$ passi per poi applicare l'ipotesi induttiva:
+\[
+   \config{x:=\LE}{s} \ssarrow ^{1}\config{x:=\LE'}{s};
+\]
+Ora:
+\[
+   \config{x:=\LE'}{s} \ssarrow ^{h}\config{skip}{s'};
+\]
+per ipotesi induttiva si ha che:
+\[
+   \exists n \in\Zset\itc \config{\LE'}{s} \ssarrow ^{h-1}\config{n}{s};
+\]
+e inoltre:
+\[
+   s'=s \substt{n}{x};
+\]
+Allora aggiungendo l'ultimo passo:
+\[
+   \config{x:=\LE}{s} \ssarrow ^{1}\config{x:=\LE'}{s} \ssarrow ^{h} \config{skip}{s'};
+\]
+\[
+   \config{\LE}{s} \ssarrow ^{1}\config{\LE'}{s} \ssarrow ^{h-1} \config{n}{s'};
+\]
+Allora:
+\[
+   \config{\LE}{s} \ssarrow ^{h} \config{skip}{s'}.
+\]
+\end{proof}
+
+\textbf{Composizione Sequenziale}
+\[
+  \prooftree
+     \{P\} C_1\{Q\}
+   \hspace{1mm}
+<<<<<<< HEAD
+     \{Q\} C_2\{R\}
+   \justifies
+     \{P\}C_1;C_2\{R\}
+   \thickness=0.08em
+   \shiftright 0em
+   \using
+  \endprooftree
+=======
+   \{Q\} C_2\{R\}
+\justifies
+   \{P\}C_1;C_2\{R\}
+\thickness=0.08em
+\shiftright 0em
+\using
+        CS
+\endprooftree
+>>>>>>> origin/master
+\]
+\begin{align*}
+   \llbracket \{P\} C_1;C_2\{R\} \rrbracket \Leftrightarrow \forall t \in \Gamma_{\FV(P)\union\FV(R)}\itc
+      &(\forall s,s'\in \Sigma \itc(\llbracket P \rrbracket(s,t) = \ttv\\
+      &\land    \config{C_1;C_2}{s} \ssarrow ^*\config{skip}{s'}\\
+      &\Rightarrow\llbracket R \rrbracket(s',t)=\ttv);
+\end{align*}
+\begin{align*}
+   \llbracket \{P\}C_1\{Q\} \rrbracket \land \llbracket \{Q\}C_2\{R\} \rrbracket \Leftrightarrow
+      &\forall t \in \Gamma_{\FV(P)\union\FV(R)\union\FV(Q)}\itc\\
+      &\forall s,s'\in \Sigma \itc(\llbracket P \rrbracket(s,t) = \ttv\\
+      &\land \config{C_1}{s} \ssarrow ^*\config{skip}{s'}\\
+      &\land \llbracket Q\rrbracket(s',t)=\ttv \\
+      &\land \config{C_2}{s'} \ssarrow ^*\config{skip}{s''})\\
+      &\Rightarrow \llbracket R \rrbracket(s'',t)=\ttv;
+\end{align*}
+Questo grazie al \textit{Lemma}:
+\begin{align*}
+   \forall C_1,C_2 \in \Com \itc 
+   &\forall s,s' \in \Sigma \itc \forall n \in \Nset \config{C_1;C_2}{s} \ssarrow ^n\config{skip}{s'} \\
+   &\Rightarrow \exists n_1,n_2 \in \Nset \st \exists s'' \in \Sigma \st \\
+   &\config{C_1}{s} \ssarrow ^{n_1}\config{skip}{s'} \land \config{C_2}{s'} \ssarrow ^{n_2}\config{skip}{s''}
+   \land n = n_1 + n_2.
+<<<<<<< HEAD
+\end{align*}
+=======
+\end{align*}
+\begin{proof}
+
+\end{proof}
+>>>>>>> origin/master
