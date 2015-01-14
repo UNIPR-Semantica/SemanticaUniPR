@@ -87,27 +87,37 @@ Vediamo un esempio di dimostrazione:
 
 Possiamo subito osservare che differentemente dalla semantica big-step
 nella semantica small-step si usano tanti alberi di dimostrazione più piccoli per dimostrare
-ogni asserzione. 
+ogni asserzione.
 
 \section{Determinatezza della semantica small-step} \marginpar{Marano}
-Dimostriamo ora che la semantica small-step gode della proprietà della determinatezza, ogni oggetto sintattico può avere perciò al massimo una semantica. Prima dimostriamo però il seguente
+Dimostriamo ora che la semantica small-step gode della proprietà della
+determinatezza: ogni oggetto sintattico può avere perciò al massimo
+una semantica. Prima dimostriamo però il seguente
 
 \begin{teorema}
-$\forall E_1, E_2, E \in \AExp . E \ssarrow _1 E_1 \land E \ssarrow _1 E_2 \Rightarrow E_1 = E_2 $
+Per ogni $E, E_1, E_2 \in \AExp$, se $E \ssarrow E_1$ e $E \ssarrow E_2$
+allora $E_1 = E_2$.
 \end{teorema}
 
 \begin{proof}
-         Dimostriamo per induzione strutturale
-  
-Caso Base: $E = n \in \Zset$.
-In tal caso E non transisce perciò $E \nssarrow$.
-  
-Passo induttivo: $E \in \AExp$.
-Perciò $E = E_1 + E_2$, dunque\\
-$E_1 + E_2 \rightarrow \begin{cases} E_1 \oplus E_2, & \text{se }E_1, E_2 \in \Zset \\
-E_1 + E_2', & \text{se }E_1 \in \Zset \land E_2 \ssarrow E_2' \\
-E_1' + E_2, & \text{se }E_2 \in \Zset \land E_1 \ssarrow E_1' \end{cases}$\\
+La dimostrazone è per induzione strutturale su $E \in \AExp$.
 
+Caso base: $E = n \in \Zset$.
+In tal caso abbiamo $E \nssarrow$, dunque l'antecedente dell'implicazione
+è falso e l'implicazione è vera.
+
+Passo induttivo: $E = E_1 + E_2$.
+Ci sono dunque tre casi, a seconda della natura di $E_1$ ed $E_2$:
+\[
+  E_1 + E_2
+    \rightarrow
+      \begin{cases}
+        n,          &\text{se $E_1 = n_1$, $E_2 = n_2$,
+                           $\Zset \ni n = n_1 + n_2$;} \\
+        E_1' + E_2, &\text{se $E_1 \ssarrow E_1'$;} \\
+        E_1 + E_2', &\text{se $E_1 \in \Zset$, $E_2 \ssarrow E_2'$.}
+      \end{cases}
+\]
 È ovvio che questi tre casi sono mutuamente esclusivi.
 \end{proof}
 
@@ -176,7 +186,7 @@ Indichiamo perciò con $E$ la generica espressione appartenente a $\AExp$, con $
 \justifies
         \config{x}{s} \ssarrow \config{n}{s}
 \using
-   s(x) = n 
+   s(x) = n
 \endprooftree
 \]
 \subsection*{}
@@ -223,7 +233,7 @@ Indichiamo perciò con $E$ la generica espressione appartenente a $\AExp$, con $
 \prooftree
         \config{E}{s} \ssarrow \config{E'}{s}
 \justifies
-        \config{x \weq E}{s} \ssarrow \config{x \weq E'}{s} 
+        \config{x \weq E}{s} \ssarrow \config{x \weq E'}{s}
 \endprooftree
 \]
 \subsection*{}
@@ -329,13 +339,13 @@ Indichiamo perciò con $E$ la generica espressione appartenente a $\AExp$, con $
 \[
 \rulename{S-LOG.AND.FALSE}
 \prooftree
-        \config{B_2}{s} \ssarrow \config{B_2'}{s} 
+        \config{B_2}{s} \ssarrow \config{B_2'}{s}
 \justifies
         \config{\false\ \land\ B_2}{s} \ssarrow \config{\false\ \land\ B_2'}{s}
 \endprooftree
 \]
 \subsection*{}
-\[ 
+\[
 \rulename{S-LOG.OR.BOOl}
 \prooftree
         \config{B_1}{s} \ssarrow \config{B_1'}{s}
@@ -389,7 +399,7 @@ Indichiamo perciò con $E$ la generica espressione appartenente a $\AExp$, con $
 \endprooftree
 \]
 \subsection*{}
-\[ 
+\[
 \rulename{S-CORT.OR.BOOl}
 \prooftree
         \config{B_1}{s} \ssarrow \config{B_1'}{s}
@@ -428,7 +438,7 @@ WHILE. Fino ad ora solo i comandi potevano modificare lo store ma adesso anche l
 \justifies
         \config{x}{s} \ssarrow \config{n}{s}
 \using
-   s(x) = n 
+   s(x) = n
 \endprooftree
 \]
 \subsection*{}
@@ -475,7 +485,7 @@ WHILE. Fino ad ora solo i comandi potevano modificare lo store ma adesso anche l
 \prooftree
         \config{E}{s} \ssarrow \config{E'}{s'}
 \justifies
-        \config{x \weq E}{s} \ssarrow \config{x \weq E'}{s'} 
+        \config{x \weq E}{s} \ssarrow \config{x \weq E'}{s'}
 \endprooftree
 \]
 \subsection*{}
@@ -581,13 +591,13 @@ WHILE. Fino ad ora solo i comandi potevano modificare lo store ma adesso anche l
 \[
 \rulename{S-LOG.AND.FALSE}
 \prooftree
-        \config{B_2}{s} \ssarrow \config{B_2'}{s'} 
+        \config{B_2}{s} \ssarrow \config{B_2'}{s'}
 \justifies
         \config{\false\ \land\ B_2}{s} \ssarrow \config{\false\ \land\ B_2'}{s'}
 \endprooftree
 \]
 \subsection*{}
-\[ 
+\[
 \rulename{S-LOG.OR.BOOl}
 \prooftree
         \config{B_1}{s} \ssarrow \config{B_1'}{s'}
@@ -641,7 +651,7 @@ WHILE. Fino ad ora solo i comandi potevano modificare lo store ma adesso anche l
 \endprooftree
 \]
 \subsection*{}
-\[ 
+\[
 \rulename{S-CORT.OR.BOOl}
 \prooftree
         \config{B_1}{s} \ssarrow \config{B_1'}{s'}

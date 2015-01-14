@@ -318,26 +318,26 @@ per la quale abbiamo due comportamenti distinti:
 \endprooftree
 \end{align*}
 
-\section{Effetti collaterali}\marginpar{Mancino}
-In questo paragrafo ridefiniamo la semantica data precedentemente
-per il linguaggio WHILE introducendo degli effetti collaterali.
+\section{Espressioni con effetti collaterali}\marginpar{Mancino}
 
-\begin{definizione} \summary{(Effetti collaterali.)}
-Si dice che si verifica un \emph{effetto collaterale} quando
-una funzione modifica un valore o uno stato al di fuori del proprio
-scoping locale.
+In questo paragrafo ridefiniamo la semantica data precedentemente
+per il linguaggio WHILE ammettendo espressioni con effetti collaterali.
+
+\begin{definizione} \summary{(Espressione con effetti collaterali.)}
+Un'espressione si dice \emph{avere effetti collaterali} se la sua
+valutazione (oltre a restituire un valore) provoca la modifica
+dello store.
 \end{definizione}
 
-In questo caso, dobbiamo ricordarci che, rispetto alle definizioni date
-nel paragrafo precedente, detto $C$ il generico comando, $E$ la generica espressione,
-$s$ il generico stato, si ha:
+Dobbiamo dunque modificare la relazione $\Downarrow$:
+nel paragrafo precedente si trattava di
+$\reld{\Downarrow}{(\AExp \times \Sigma)}{\Nset}$,
+qui diventa
+$\reld{\Downarrow}{(\AExp \times \Sigma)}{(\Nset \times \Sigma)}$.
+Scriveremo quindi giudizi della forma
+$\langle E,s \rangle \Downarrow \langle n, s \rangle$.
 
-\begin{align*}
-\langle C,s \rangle &\Downarrow s' \\
-\langle E,s \rangle &\Downarrow \langle n,s \rangle
-\end{align*}
-
-Partendo da questo assunto non è quindi difficile ricostruire la semantica:
+Partendo da questa osservazione non è difficile definire la semantica:
 
 \begin{align*}
 \prooftree

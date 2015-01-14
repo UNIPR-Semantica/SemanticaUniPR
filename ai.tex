@@ -92,9 +92,24 @@ da:
 La funzione $\gamma$ è monotona.
 \end{proposizione}
 \begin{proof}
-        $ \gamma(\bot) = \o \subseteq \gamma(a) , \forall a \in \Sign $ \\
-        $ \gamma(=) = \{0\} \subseteq \gamma(\geq) $ \\
-        $ \gamma(a) \subseteq \Zset = \gamma(\top), \forall a \in \Sign $
+Bisogna mostrare che, se $x, y \in \Sign$ e $x$ precede $y$ nel diagramma
+di figura~\ref{fig:ordering-rels-lattice}, allora
+$\gamma(x) \subseteq \gamma(y)$.
+Questo può essere facilmente stabilito per casi, tutti banali.
+Eccone alcuni:
+\begin{itemize}
+\item
+se $x = \bot$ allora, per ogni $y \in \Sign$,
+$\gamma(\bot) = \emptyset \subseteq \gamma(y)$
+per definizione di~$\emptyset$;
+\item
+se $y = \top$ allora, per ogni $x \in \Sign$,
+$\gamma(x) \subseteq \Zset = \gamma(\top)$
+per definizione di contenimento insiemistico;
+\item
+se $x = (=)$ e $y = (\geq)$, allora
+$\gamma(=) = \{0\} \subseteq \gamma(\geq)$.
+\end{itemize}
 \end{proof}
 
 \subsection{Funzione di astrazione}
@@ -142,12 +157,22 @@ Oltre alla monotonia delle funzioni di astrazione e concretizzazione,
 Mostrare questo fatto vuol dire, per prima cosa,
 verificare è che $\compfun{\gamma}{\alpha}$ è estensiva. 
 
-\begin{proof}
+\begin{proposizione}
 $\compfun{\gamma}{\alpha}$ è estensiva.
+\end{proposizione}
+\begin{proof}
+Sia $S \in \calP(\Zset)$ arbitrario.
+Abbiamo:
 \begin{align*}
-        \forall S \in \calP(\Zset) \itc \compfun{\gamma}{\alpha}(S) &\supseteq S \\
-        \gamma\bigl(\alpha(S)\bigr) &\supseteq S \\
-        \gamma\bigl(\sqcup \{\, \beta(n) \mid n \in S \,\} \bigr) &\supseteq S
+  \compfun{\gamma}{\alpha}(S)
+    &= \gamma\bigl(\alpha(S)\bigr)
+         &\law{definizione di $\circ$} \\
+    &= \gamma\bigl(\sqcup \{\, \beta(n) \mid n \in S \,\} \bigr)
+         &\law{definizione di $\alpha$} \\
+    &= \union \Bigl\{\, \gamma\bigl(\beta(n)\bigr) \Bigm| n \in S \,\Bigr\}
+         &\law{additività di $\gamma$} \\
+    &\supseteq S
+         &\law{poiché $n \in \gamma\bigl(\beta(n)\bigr)$.}
 \end{align*}
 Consideriamo $\gamma$ additiva: dovremmo prendere i vari casi e
 dimostrare che, ad esempio, l'unione fra

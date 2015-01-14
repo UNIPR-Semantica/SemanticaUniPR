@@ -5,43 +5,64 @@ tipo di semantica che permette di dimostrare proprietà di programmi.
 
 \section{Correttezza parziale}\marginpar{Mancino}
 \begin{definizione}\summary{(Correttezza parziale)}
-Un'\emph{asserzione di correttezza parziale} è una tripla di Hoare:
+Un \emph{giudizio di correttezza parziale} è una tripla
+della forma
 \[
-  \{P\} C \{Q\}
+  \{P\} C \{Q\},
 \]
-dove $P$ e $Q$ sono espressioni logiche dette 
-rispettivamente \emph{precondizione} e \emph{postcondizione},
-mentre $C$ è un comando. Il significato di questa scrittura è
+dove $P$ e $Q$ sono espressioni logiche dette,
+rispettivamente, \emph{precondizione} e \emph{postcondizione},
+e $C$ è un comando. Il significato di questa scrittura è
 il seguente: se viene eseguito il comando $C$ in uno stato che
-soddisfa $P$ e $C$ termina, allora dopo l'esecuzione di $C$
-sarà vera $Q$.
+soddisfa $P$ e $C$ termina, allora lo stato risultante dall'esecuzione di $C$
+soddisferà $Q$.
 \end{definizione}
 
-Esempi di triple di Hoare sono le seguenti:
-\begin{align*}
-\{ & x = 3 \} x = 4 \{ x = 4 \} & \text{\quad vera in C++}\\
-\{ & x = 3 \} x = 4 \{ y = 3 \} & \text{\quad falsa in C++}\\
-\{ & P \} \text{$\kw{skip}$} \{ P \}
-\end{align*}
+Esempi di giudizi di correttezza parziale sono i seguenti:
+\begin{itemize}
+\item
+$\{ x = 3 \} x := 4 \{ x = 4 \}$, vera in ogni plausibile linguaggio imperativo;
+\item
+$\{ x = 3 \} x := 4 \{ y = 3 \}$, vera in WHILE ma, in generale,
+falsa in altri linguaggi (si consideri il caso, in C++, in cui $y$ sia
+un riferimento a $x$);
+\item
+$\{ P \} \kw{skip} \{ P \}$, vera in WHILE, il che caratterizza
+$\kw{skip}$ come un comando che preserva la verità di ogni asserzione.
+\end{itemize}
 
-Come si può notare dai precedenti esempi, ciò che asserisce una
-tripla di Hoare può essere vera o falsa, ma la verità o la falsità
-dipende dal linguaggio di programmazione.
+Come si può notare dai precedenti esempi, ciò che asserisce un
+giudizio di correttezza parziale può essere vero o falso
+in dipendenza dalla semantica del linguaggio di programmazione
+considerato.
+Definire la verità/falsità di tali giudizi è quindi il modo
+per definire tale semantica che va sotto il nome di
+\emph{semantica assiomatica}.
 
 \section{Correttezza totale}\marginpar{Lombardi}
 \begin{definizione}\summary{(Correttezza totale)}
-Un'\emph{asserzione di correttezza totale} è una tripla di Hoare:
+Un \emph{giudizio di correttezza totale} è una tripla della forma
 \[
-  [P] C [Q]
+  [P] C [Q].
 \]
-A differenza della correttezza parziale
-sappiamo che $C$ termina sempre, quindi se $C$ viene eseguito in
-uno stato che soddisfa $P$ allora dopo la cura vale $Q$. 
-La correttezza totale può essere scritta in maniera informale, ovvero:
-\[
-   \text{Correttezza totale = correttezza parziale + terminazione.}
-\]
+A differenza della correttezza parziale la verità di tale giudizio
+implica che $C$, se eseguito in uno stato che soddisfa $P$,
+termina sempre e risulta in uno store che soddisfa $Q$.
 \end{definizione}
+
+I giudizi di correttezza parziale e quelli di correttezza totale
+sono anche detti \emph{triple di Hoare}, dal nome del matematico,
+C.A.R.\ Hoare che le ha introdotte.
+
+Nel seguito ci occuperemo principalmente di correttezza parziale.
+Come detto, ciò che manca per arrivare alla correttezza totale
+è una prova di terminazione.  I due aspetti sono relativamente
+ortogonali e possono essere affrontati separatamente l'uno
+dall'altro.  Informalmente si può scrivere l'equazione:
+\[
+  \textrm{correttezza totale}
+    = \textrm{correttezza parziale} + \textrm{terminazione}.
+\]
 
 \section{Logica di specifica}\marginpar{Lombardi}
 \input{logica}
