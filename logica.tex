@@ -317,14 +317,14 @@ Si dimostra per induzione strutturale sull'albero che dimostra \{P\}C\{Q\}:
 \[
  \prooftree
  \justifies
-    \{P\}\mathrm{skip}\{P\}
+    \{P\}\kw{skip}\{P\}
  \thickness=0.08em
  \shiftright 2em
  \using
  \endprooftree
 \]
 \begin{align*}
-   \llbracket \{P\}\mathrm{skip}\{P\} \rrbracket \Leftrightarrow \forall t \in \Gamma_{\FV(P)}\itc
+   \llbracket \{P\}\kw{skip}\{P\} \rrbracket \Leftrightarrow \forall t \in \Gamma_{\FV(P)}\itc
       &\forall s,s'\in \Sigma \itc(\llbracket P \rrbracket(s,t) = \ttv\\
       &\land \config{skip}{s} \ssarrow ^*\config{skip}{s'}\\
       &\Rightarrow\llbracket P \rrbracket(s',t)=\ttv);
@@ -445,3 +445,4 @@ Questo grazie al \textit{Lemma 2}.
    \land n = n_1 + n_2.
 \end{align*}
 \end{lemma}
+[Segalini]
