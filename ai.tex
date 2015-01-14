@@ -463,25 +463,21 @@ scelta per presentare tale semantica è quella operazionale small-step.
 
 \subsection{Semantica di $\AExp$}
 
-\[
+\begin{gather*}
         \rulename{ABS-EXP.LEFT}
         \prooftree
                 \langle E_1, s \rangle \rightarrow \langle E_1', s' \rangle
                 \justifies
                 \langle (E_1 + E_2), s \rangle \rightarrow \langle (E_1 + E_2'), s \rangle              
         \endprooftree
-\]
-
-\[
+\\
         \rulename{ABS-EXP.RIGHT}
         \prooftree
                 \langle E_2, s \rangle \rightarrow \langle E_2', s' \rangle
                 \justifies
                 \langle (a + E_2), s \rangle \rightarrow \langle (a + E_2'), s\rangle
         \endprooftree
-\]
-
-\[
+\\
         \rulename{ABS-ADD}
         \prooftree
                 \nohyp
@@ -489,7 +485,7 @@ scelta per presentare tale semantica è quella operazionale small-step.
                 \langle (a_1 + a_2), s \rangle \rightarrow \langle a_3, s \rangle 
                 \using a_3 = a_1 \absadd a_2
         \endprooftree
-\]
+\end{gather*}
 
 \subsection{Semantica di $\BExp$}
 
@@ -509,81 +505,67 @@ definiamo un operatore di controllo cortocircuitato.
         \end{tabular}
 \end{center} 
 \subsubsection{Semantica}
-\[
+\begin{gather*}
         \rulename{AND-SHORT.LEFT}
         \prooftree
                 \langle B_1, s \rangle \rightarrow \langle B_1', s' \rangle
                 \justifies
                 \langle (B_1 \land B_2), s \rangle \rightarrow \langle (B_1' \land B_2), s' \rangle
         \endprooftree
-\]
-
-\[
+\\
         \rulename{AND-SHORT.TOP}
         \prooftree
                 \langle B_2, s \rangle \rightarrow \langle B_2', s' \rangle
                 \justifies
                 \langle (\top \land B_2), s \rangle \rightarrow \langle (\top \land B_2'), s' \rangle
         \endprooftree
-\]
-
-\[
+\\
         \rulename{AND-SHORT.TRUE}
         \prooftree
                 \nohyp
                 \justifies
                 \langle (1 \land B_2), s \rangle \rightarrow \langle B_2, s \rangle
         \endprooftree
-\]
-
-\[
+\\
         \rulename{AND-SHORT.FALSE}
         \prooftree
                 \nohyp
                 \justifies
                 \langle (0 \land B_2), s \rangle \rightarrow \langle 0, s \rangle
         \endprooftree
-\]
-
-\[
+\\
         \rulename{ABS-AND-SHORT.TOP}
         \prooftree
                 \nohyp
                 \justifies
                 \langle (\top \land b_2), s \rangle \rightarrow \langle (\top \absand b_2), s \rangle
         \endprooftree
-\]
+\end{gather*}
 
 \subsection{Semantica di $\Com$}
 
-\[
+\begin{gather*}
         \rulename{ASSIGN}
         \prooftree
                 \langle E, s \rangle \rightarrow \langle E', s' \rangle
                 \justifies
                 \langle x \weq E, s \rangle \rightarrow \langle x \weq E', s' \rangle
         \endprooftree
-\]
-
-\[
+\\
         \rulename{ASSIGN-SKIP}
         \prooftree
                 \nohyp
                 \justifies
-                \langle x \weq a, s \rangle \rightarrow \langle \kw{skip}, s[x \mapsto a] \rangle
+                \langle x \weq a, s \rangle \rightarrow \langle \kw{skip}, \assign{s}{x}{a} \rangle
         \endprooftree
-\]
-
-\[
+\\
         \rulename{COND-BOOL}
         \prooftree
                 \langle B, s \rangle \rightarrow \langle B', s' \rangle
                 \justifies
                 \langle \condif{B}{C_1}{C_2}, s \rangle \rightarrow \langle \condif{B'}{C_1}{C_2}, s' \rangle
         \endprooftree
-\]
-
-\[
+\\
         \rulename{IF-TRUE}
         \prooftree
                 \nohyp
@@ -591,9 +573,7 @@ definiamo un operatore di controllo cortocircuitato.
                 \langle \condif{b}{C_1}{C_2}, s \rangle \rightarrow \langle C_1, s \rangle
                 \using b \sqsubseteq_B 1
         \endprooftree
-\]
-
-\[
+\\
         \rulename{IF-FALSE}
         \prooftree
                 \nohyp
@@ -601,4 +581,4 @@ definiamo un operatore di controllo cortocircuitato.
                 \langle \condif{b}{C_1}{C_2}, s \rangle \rightarrow \langle C_2, s \rangle
                 \using b \sqsubseteq_B 0
         \endprooftree
-\]
+\end{gather*}
