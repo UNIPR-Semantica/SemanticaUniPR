@@ -217,8 +217,8 @@ lanciata oppure è indefinita se la modalità di esecuzione è non
 eccezionale.
 
 \begin{align*}
-  &\$ecc \not \in \Var \\
-  &\Var' \defeq \Var \union \{\$ecc\}.
+  &\ecc \not \in \Var \\
+  &\Var' \defeq \Var \union \{\ecc\}.
 \end{align*}
 l'insieme degli store è quindi definito come:
 
@@ -227,7 +227,7 @@ l'insieme degli store è quindi definito come:
 \]
 \emph{N.B.:} nella sintassi delle espressioni ($E \in \AExp ::= \dots
 \vbar x$) la $x$ appartiene a $\Var$ e non $\Var'$ (questo
-impedisce l'uso della varibile $\$ecc$ nel programma).
+impedisce l'uso della varibile $\ecc$ nel programma).
 
 \subsection{Sintassi}
 Aggiungiamo alla sintassi del WHILE i comandi try-catch e throw:
@@ -244,72 +244,72 @@ Siano $x \in \Var$ e $E \in \AExp$
   \justifies \config{\kw{throw} E}{s} \ssarrow 
     \config{\kw{throw} E'}{s'}
   \thickness=0.08em
-  \using s(\$ecc) \divrg
+  \using s(\ecc) \divrg
   \endprooftree
-  \\
+  \pts
   &\prooftree
   \nohyp
   \justifies \config{\kw{throw} n}{s} \ssarrow 
-    \config{\kw{skip}}{s \substt{n}{\$ecc}}
+    \config{\kw{skip}}{s \substt{n}{\ecc}}
   \thickness=0.08em
-  \using s(\$ecc) \divrg
+  \using s(\ecc) \divrg
   \endprooftree
-  \\
+  \pts
   &\prooftree
   \nohyp
   \justifies \config{x \weq E}{s} \ssarrow \config{\kw{skip}}{s}
   \thickness=0.08em
-  \using s(\$ecc) \convrg
+  \using s(\ecc) \convrg
   \endprooftree 
-  \\
+  \pts
   &\prooftree
   \nohyp
   \justifies \config{C_1 \weq C_2}{s} \ssarrow \config{\kw{skip}}{s}
   \thickness=0.08em
-  \using s(\$ecc) \convrg
+  \using s(\ecc) \convrg
   \endprooftree
-  \\
+  \pts
   &\prooftree
   \nohyp
   \justifies \config{\kw{if} B \kw{then} C_1 \kw{else} C_2}{s} 
     \ssarrow \config{\kw{skip}}{s}
   \thickness=0.08em
-  \using s(\$ecc) \convrg
+  \using s(\ecc) \convrg
   \endprooftree
-  \\
+  \pts
   &\prooftree
   \nohyp
   \justifies \config{\kw{while} B \kw{do} C}{s}
      \ssarrow \config{\kw{skip}}{s}
   \thickness=0.08em
-  \using s(\$ecc) \convrg
+  \using s(\ecc) \convrg
   \endprooftree
-  \\
+  \pts
   &\prooftree
   \nohyp
   \justifies \config{\kw{try} C_1 \kw{catch}(x) C_2}{s}
      \ssarrow \config{\kw{skip}}{s}
   \thickness=0.08em
-  \using s(\$ecc) \convrg
+  \using s(\ecc) \convrg
   \endprooftree
-  \\
+  \pts
   &\prooftree
   \nohyp
   \justifies \config{\kw{throw} E}{s} \ssarrow \config{\kw{skip}}{s}
   \thickness=0.08em
-  \using s(\$ecc) \convrg
+  \using s(\ecc) \convrg
   \endprooftree
 \end{align*}
 Quando viene eseguito il blocco catch, per uscire dalla modalità
-eccezionale, dobbiamo riportare la variabile $\$ecc$ ad uno stato
+eccezionale, dobbiamo riportare la variabile $\ecc$ ad uno stato
 indefinito. \'E necessario definire un operatore di
 uccisione di variabile:
 \[
-  \fund{\backslash}{\Sigma \times \Var'}{\Sigma} 
+  \fund{\unvar}{\Sigma \times \Var'}{\Sigma} 
 \]
 \[
   \forall s \in \Sigma \itc \forall x \in \Var' \itc 
-    \forall y \in \Var' \itc (s \backslash x)(y) = \begin{cases}
+    \forall y \in \Var' \itc (s \unvar x)(y) = \begin{cases}
         s(y),   &\text{se $x \neq y$;} \\
         \divrg, &\text{se $x = y$.}   
       \end{cases}
@@ -320,20 +320,20 @@ uccisione di variabile:
   \justifies \config{\kw{try} \kw{skip} \kw{catch}(x) C}{s} \ssarrow
     \config{\kw{skip}}{s}
   \thickness=0.08em
-  \using s(\$ecc) \divrg
+  \using s(\ecc) \divrg
   \endprooftree
-  \\ \\ 
+  \pts
   &\prooftree \config{C_1}{s} \ssarrow \config{C_1'}{s'}
   \justifies \config{\kw{try} C_1 \kw{catch}(x) C_2}{s} \ssarrow
     \config{\kw{try} C_1' \kw{catch}(x) C_2}{s'}
   \thickness=0.08em
-  \using s(\$ecc) \divrg \land\ s'(\$ecc) \divrg
+  \using s(\ecc) \divrg \land\ s'(\ecc) \divrg
   \endprooftree
-  \\ \\
+  \pts
   &\prooftree \config{C_1}{s} \ssarrow \config{C_1'}{s'}
   \justifies \config{\kw{try} C_1 \kw{catch}(x) C_2}{s} \ssarrow
-    \config{C_2}{\bigl(s'\substt{s'(\$ecc)}{x}\bigr) \backslash \$ecc}
+    \config{C_2}{\bigl(s'\substt{s'(\ecc)}{x}\bigr) \unvar \ecc}
   \thickness=0.08em
-  \using s(\$ecc) \divrg \land\ s'(\$ecc) \convrg
+  \using s(\ecc) \divrg \land\ s'(\ecc) \convrg
   \endprooftree
 \end{align*}
