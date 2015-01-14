@@ -40,7 +40,11 @@ In logica matematica e in particolare in un linguaggio del primo ordine si dice 
 Definiamo due funzioni con lo stesso nome (sovraccaricate) per calcolare le variabili libere in una formula.
 
 \begin{definizione} \summary{($\FV$ per $\LExp$.)}
-Definiamo la funzione $\fund{\FV}{\LExp}{\wp(\Ghost)}$ per catturare le variabili libere in una espressione della logica, definita per induzione strutturale :
+Definiamo la funzione per catturare le variabili libere in una espressione della logica,
+\[
+  \fund{\FV}{\LExp}{\wp(\Ghost)}
+\] 
+definita per induzione strutturale su $\LExp$:
 \begin{align*}
    \FV(x)
       &=
@@ -64,9 +68,12 @@ Definiamo la funzione $\fund{\FV}{\LExp}{\wp(\Ghost)}$ per catturare le variabil
 \end{definizione}
 
 \begin{definizione} \summary{($\FV$ per $\Pred$.)}
-Definiamo la funzione $\fund{\FV}{\Pred}{\wp(\Ghost)}$ per catturare
+Definiamo la funzione per catturare
 le variabili libere nei predicati della logica,
-definita per induzione strutturale:
+\[
+  \fund{\FV}{\Pred}{\wp(\Ghost)} 
+\]
+definita per induzione strutturale su $\Pred$:
 \begin{align*}
    \FV(\true)
       &= \emptyset;\\
@@ -274,28 +281,10 @@ Dove:
 \end{align*}
 \end{definizione}
 
-\subsection{Verità di una tripla di Floyd-Hoare}
+\subsection{Correttezza della logica di Floyd-Hoare}
+
+\begin{definizione} \summary{(Verità di una tripla di Floyd-Hoare.)}
 Ora che abbiamo tutti gli elementi, possiamo definire quando una tripla di Floyd-Hoare è vera.
-\[
-   \llbracket \{P\}C\{Q\} \rrbracket = \ttv;
-\]
-\textit{Esempio del caso semplice.}Supponiamo quindi di non avere variabili $\Ghost$:
-\[
-   \FV(P) \union \FV(Q)= \emptyset;
-\]
-Quindi :
-\begin{align*}
-   \llbracket \{P\} C\{Q\} \rrbracket 
-      = \ttv \Leftrightarrow (\forall s,s'\in \Sigma \itc(
-      &\llbracket P \rrbracket( s,\emptyset) = \ttv\land \config{C}{s} \ssarrow ^*\config{skip}{s'}\\
-      \Rightarrow&\llbracket Q \rrbracket(s',\emptyset)=\ttv);
-\end{align*}
-\textit{Esempio del caso completo.}Sono effettivamente presenti variabili $\Ghost$, ma prima riflettiamo.
-Nelle triple di Floyd-Hoare se ci sono variabili non quantificate, esse vengono universalmente quantificate con un $\forall$ in maniera implicita.
-\[
-   \FV(P) \union \FV(Q) \neq \emptyset;
-\]
-Quindi :
 \begin{align*}
     \llbracket \{P\} C\{Q\} \rrbracket 
        = \ttv \Leftrightarrow \forall t \in \Gamma_{\FV(P)\union \FV(Q)}\itc
@@ -307,11 +296,14 @@ Dove:
 \[
    \forall v \subset \Ghost,\Gamma_{v} =\{t \in \Gamma \text{ t.c; $\dom(t) = v$\}}.
 \]
-\subsection{Correttezza della logica di Floyd-Hoare}
+\end{definizione}
+
+\begin{teorema} \summary{(Correttezza della logica di Floyd-Hoare.)}
 Se la tripla di Floyd-Hoare ha dimostrazione, allora essa è vera.
 \[
    \forall P,Q \in \Pred \itc \forall C \in \Com : \vdash \{P\}C\{Q\} \Rightarrow \llbracket \{P\}C\{Q\}\rrbracket;
 \]
+\begin{proof}
 Si dimostra per induzione strutturale sull'albero che dimostra \{P\}C\{Q\}:
 \textbf{Skip}
 \[
@@ -330,12 +322,11 @@ Si dimostra per induzione strutturale sull'albero che dimostra \{P\}C\{Q\}:
       &\Rightarrow\llbracket P \rrbracket(s',t)=\ttv);
 \end{align*}
 
-\begin{proof}
 Dato che la premessa è vera abbiamo che $s=s'$, dunque:
 \[
    \llbracket P \rrbracket(s,t)= \ttv = \llbracket P \rrbracket(s',t).
 \]
-\end{proof}
+
 \textbf{Assegnamento}
 \[
  \prooftree
@@ -446,3 +437,5 @@ Questo grazie al \textit{Lemma 2}.
 \end{align*}
 \end{lemma}
 [Segalini]
+\end{proof}
+\end{teorema}
