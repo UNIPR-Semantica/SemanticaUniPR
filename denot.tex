@@ -1,3 +1,6 @@
+\externaldocument{prelim.tex}
+% Importo tutti i riferimenti del file prelim.tex
+
 \chapter{Semantica denotazionale}
 
 \section{Introduzione} \marginpar{Marano}
@@ -126,7 +129,7 @@ Quindi prendiamo un qualsiasi State Transformer $f_i \in C$ e dimostriamo che è
 Perciò $\forall j \in I \itc f_j \sqsubseteq f_l$ dunque  $f_l = \lub C$. Visto che $(ST, \sqsubseteq)$ ha minimo e ogni sua catena ha $\lub$ è un CPO.
 \end{proof}
 
-\section{Continuità del comando While}\marginpar{Mancino}
+\section{Continuità di $F$}\marginpar{Mancino}
 In questo paragrafo dimostreremo il seguente risultato:
 
 \begin{teorema}
@@ -299,9 +302,9 @@ Abbiamo dimostrato allora la continuità della funzione $F$:
 \[
   \forall b \in PT, \forall g,h \in ST \quad \lambda f \st \cond(b,f \circ h,g)
 \]
-Per il teorema di Tarski possiede un minimo
-punto fisso che è possibile trovare facendo le iterate
-successive a partire da $\perp$.
+Per il teorema di Tarski, presentato in \autoref{sec:Tarski},
+possiede un minimo punto fisso che è possibile trovare 
+facendo le iterate successive a partire da $\perp$.
 Allora possiamo concludere che:
 \[ \calC \llbracket \kw{while} B \kw{do} C \rrbracket = \lfp F \]
 E che:
