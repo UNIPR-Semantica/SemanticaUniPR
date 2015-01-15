@@ -2,24 +2,11 @@
 \marginpar{Marano}
 In questo capitolo parleremo della semantica operazionale ``small-step'', una semantica che descrive formalmente dopo ogni piccolo passo di calcolo
 che comando viene eseguito e come viene modificato lo store. Per fare ciò sfrutta assiomi e regole che hanno la stessa forma di quelle viste nel
-capitolo precedente
-
-\[
-\rulename{nome regola}
-\prooftree
-  \textrm{premessa}_1
-  \quad\cdots\quad
-  \textrm{premessa}_k
-\justifies
-  \textrm{conclusione}
-\using
-  (\textrm{side condition})
-\endprooftree
-\]
+capitolo precedente.
 
 \section{Introduzione}\marginpar{Marano}
 Se quindi abbiamo un linguaggio con la seguente sintassi
-$$ Exp \ni E ::= n \bigm| (E+E) \bigm| \cdots $$
+$$ \AExp \ni E ::= n \vbar (E+E)$$
 in cui i puntini di indicano, come al solito, che si può inserire una qualsiasi espressione arricchendo così la sintassi e dandone successivamente una
 semantica. Considerando che $n \in \Zset$, una possibile semantica small step è:
 
@@ -53,9 +40,8 @@ semantica. Considerando che $n \in \Zset$, una possibile semantica small step è
 \endprooftree
 \end{gather*}
 
-L'operatore $\ssarrow$ quindi rappresenta a tutti gli effetti un passo di computazione.
-Con questa semantica abbiamo lo stesso potere espressivo della semantica Big step ma,
-essendo più verbosa, da più informazione sulla sequenzialità e sui "risultati intermedi".
+La relazione $\ssarrow$ quindi rappresenta a tutti gli effetti un passo di computazione.
+Con questa semantica abbiamo lo stesso potere espressivo della semantica big-step ma, forzando la valutazione di tutte le espressioni da destra a sinistra un passo alla volta, da più informazione sulla sequenzialità e sui "risultati intermedi".
 Vediamo un esempio di dimostrazione:
 
 \begin{gather*}
@@ -87,7 +73,7 @@ Vediamo un esempio di dimostrazione:
 
 Possiamo subito osservare che differentemente dalla semantica big-step
 nella semantica small-step si usano tanti alberi di dimostrazione più piccoli per dimostrare
-ogni asserzione.
+ogni asserzione. Perciò per definire compiutamente la semantica di $\AExp$ dobbiamo considerare la chiusura transitiva e riflessiva.
 
 \section{Determinatezza della semantica small-step} \marginpar{Marano}
 Dimostriamo ora che la semantica small-step gode della proprietà della
@@ -100,7 +86,7 @@ allora $E_1 = E_2$.
 \end{teorema}
 
 \begin{proof}
-La dimostrazone è per induzione strutturale su $E \in \AExp$.
+La dimostrazione è per induzione strutturale su $E \in \AExp$.
 
 Caso base: $E = n \in \Zset$.
 In tal caso abbiamo $E \nssarrow$, dunque l'antecedente dell'implicazione
@@ -171,264 +157,12 @@ $E \in \AExp$ perciò esistono $E_1, E_2 \in AExp . E = E_1 + E_2$, quindi $E_1 
 \end{proof}
 
 \section{Semantica small-step per WHILE} \marginpar{Marano}
-Diamo ora una semantica al linguaggio WHILE tramite la small-step, dovremo perciò valutare non più una singola espressione ma una coppia formata da comando e store. Per ora tralasciamo la possibilità di effetti collaterali e indichiamo in questa maniera la transizione tra una configurazione e la successiva.
+Diamo ora una semantica al linguaggio WHILE tramite la small-step, dovremo perciò valutare non più una singola espressione ma una coppia formata da comando e store. Consideriamo subito la possibile presenza di effetti collaterali visto che è semplicemente una generalizzazione del caso senza effetti collaterali. In questo caso quindi la valutazione di espressioni e di booleani può modificare lo store. Indichiamo in questa maniera la transizione tra una configurazione e la successiva:
 $
 \config{C}{s} \ssarrow \config{C'}{s'}
 $
 
-Indichiamo perciò con $E$ la generica espressione appartenente a $\AExp$, con $C$ il generico comando appartenente a $\Com$ e con $s$ il generico store appartenente a $\Sigma$:
-
-\subsection*{}
-\[
-\rulename{S-EXP.NUM}
-\prooftree
-        \nohyp
-\justifies
-        \config{x}{s} \ssarrow \config{n}{s}
-\using
-   s(x) = n
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-EXP.LEFT}
-\prooftree
-        \config{E_1}{s} \ssarrow \config{E_1'}{s}
-\justifies
-        \config{(E_1 + E_2)}{s} \ssarrow \config{(E_1' + E_2)}{s}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-EXP.RIGHT}
-\prooftree
-        \config{E_2}{s} \ssarrow \config{E_2'}{s}
-\justifies
-        \config{(E_1 + E_2)}{s} \ssarrow \config{(E_1 + E_2')}{s}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-ADD}
-\prooftree
-        \nohyp
-\justifies
-        \config{(n_1 + n_2)}{s} \ssarrow \config{n_3}{s}
-\using
-        n_3 = n_1 + n_2
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-SKIP}
-\prooftree
-        \nohyp
-\justifies
-        \config{\kw{skip}}{s} \ssarrow s
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-ASS.EXP}
-\prooftree
-        \config{E}{s} \ssarrow \config{E'}{s}
-\justifies
-        \config{x \weq E}{s} \ssarrow \config{x \weq E'}{s}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-ASS.NUM}
-\prooftree
-        \nohyp
-\justifies
-        \config{x \weq n}{s} \ssarrow \config{\kw{skip}}{\assign{s}{x}{n}}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-SEQ.LEFT}
-\prooftree
-        \config{C_1}{s} \ssarrow \config{C_1'}{s'}
-\justifies
-        \config{C_1 ; C_2}{s} \ssarrow \config{C_1' ; C_2}{s'}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-SEQ.SKIP}
-\prooftree
-        \nohyp
-\justifies
-        \config{\kw{skip} ; C_2}{s} \ssarrow \config{C_2}{s'}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-COND.BOOL}
-\prooftree
-        \config{B}{s} \ssarrow \config{B'}{s}
-\justifies
-        \config{\condif{B}{C_1}{C_2}}{s} \ssarrow \config{\condif{B'}{C_1}{C_2}}{s}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-COND.TRUE}
-\prooftree
-        \nohyp
-\justifies
-        \config{\condif{\true}{C_1}{C_2}}{s} \ssarrow \config{C_1}{s}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-COND.FALSE}
-\prooftree
-        \nohyp
-\justifies
-        \config{\condif{\false}{C_1}{C_2}}{s} \ssarrow \config{C_2}{s}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-WHILE.BOOL}
-\prooftree
-        \config{B}{s} \ssarrow \config{B'}{s}
-\justifies
-        \config{\while{B}{C}}{s} \ssarrow \config{\while{B'}{C}}{s}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-WHILE.FALSE}
-\prooftree
-        \nohyp
-\justifies
-        \config{\while{\false}{C}}{s} \ssarrow \config{\kw{skip}}{s}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-WHILE}
-\prooftree
-        \nohyp
-\justifies
-        \config{\while{B}{C}}{s} \ssarrow \config{\condif{B}{(C ; \while{B}{C})}{\kw{skip}}}{s}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-LOG.AND.BOOl}
-\prooftree
-        \config{B_1}{s} \ssarrow \config{B_1'}{s}
-\justifies
-        \config{B_1\ \land\ B_2}{s} \ssarrow \config{B_1'\ \land\ B_2}{s}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-LOG.AND.TRUE}
-\prooftree
-        \config{B_2}{s} \ssarrow \config{B_2'}{s}
-\justifies
-        \config{\true\ \land\ B_2}{s} \ssarrow \config{\true\ \land\ B_2'}{s}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-LOG.AND.FALSE}
-\prooftree
-        \config{B_2}{s} \ssarrow \config{B_2'}{s}
-\justifies
-        \config{\false\ \land\ B_2}{s} \ssarrow \config{\false\ \land\ B_2'}{s}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-LOG.OR.BOOl}
-\prooftree
-        \config{B_1}{s} \ssarrow \config{B_1'}{s}
-\justifies
-        \config{B_1\ \lor\ B_2}{s} \ssarrow \config{B_1'\ \lor\ B_2}{s}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-LOG.OR.TRUE}
-\prooftree
-        \config{B_2}{s} \ssarrow \config{B_2'}{s}
-\justifies
-        \config{\true\ \lor\ B_2}{s} \ssarrow \config{\true\ \lor\ B_2'}{s}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-LOG.OR.FALSE}
-\prooftree
-        \config{B_2}{s} \ssarrow \config{B_2'}{s}
-\justifies
-        \config{\false\ \lor\ B_2}{s} \ssarrow \config{\false\ \lor\ B_2'}{s}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-CORT.AND.BOOl}
-\prooftree
-        \config{B_1}{s} \ssarrow \config{B_1'}{s}
-\justifies
-        \config{B_1\ \& \&\ B_2}{s} \ssarrow \config{B_1'\ \& \&\ B_2}{s}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-CORT.AND.TRUE}
-\prooftree
-        \config{B_2}{s} \ssarrow \config{B_2'}{s}
-\justifies
-        \config{\true\ \& \&\ B_2}{s} \ssarrow \config{B_2'}{s}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-CORT.AND.FALSE}
-\prooftree
-        \config{B_2}{s} \ssarrow \config{B_2'}{s}
-\justifies
-        \config{\false\ \& \&\ B_2}{s} \ssarrow \config{\false}{s}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-CORT.OR.BOOl}
-\prooftree
-        \config{B_1}{s} \ssarrow \config{B_1'}{s}
-\justifies
-        \config{B_1\ ||\ B_2}{s} \ssarrow \config{B_1'\ ||\ B_2}{s}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-CORT.OR.TRUE}
-\prooftree
-        \config{B_2}{s} \ssarrow \config{B_2'}{s}
-\justifies
-        \config{\true\ ||\ B_2}{s} \ssarrow \config{\true}{s}
-\endprooftree
-\]
-\subsection*{}
-\[
-\rulename{S-CORT.OR.FALSE}
-\prooftree
-        \config{B_2}{s} \ssarrow \config{B_2'}{s}
-\justifies
-        \config{\false\ ||\ B_2}{s} \ssarrow \config{B_2'}{s}
-\endprooftree
-\]
-
-\section{Effetti collaterali}\marginpar{Marano}
-Cerchiamo ora di considerare gli effetti collaterali e osservare come viene modificata la semantica del linguaggio
-WHILE. Fino ad ora solo i comandi potevano modificare lo store ma adesso anche la valutazione di espressioni e di booleani ma non l'accesso in memoria. Abbiamo già visto nel paragrafo precedente la definizione di effetto collaterale e cosa comporta. Ecco quindi la nuova semantica del linguaggio WHILE:
+Indichiamo perciò con $E$ la generica espressione appartenente a $\AExp$, con $C$ il generico comando appartenente a $\Com$, con $B$ il generico booleano appartenente a $\BExp$ e con $s$ il generico store appartenente a $\Sigma$:
 
 \subsection*{}
 \[
@@ -571,7 +305,7 @@ WHILE. Fino ad ora solo i comandi potevano modificare lo store ma adesso anche l
 \]
 \subsection*{}
 \[
-\rulename{S-LOG.AND.BOOl}
+\rulename{S-LOG.AND.BOOL}
 \prooftree
         \config{B_1}{s} \ssarrow \config{B_1'}{s'}
 \justifies
@@ -598,7 +332,7 @@ WHILE. Fino ad ora solo i comandi potevano modificare lo store ma adesso anche l
 \]
 \subsection*{}
 \[
-\rulename{S-LOG.OR.BOOl}
+\rulename{S-LOG.OR.BOOL}
 \prooftree
         \config{B_1}{s} \ssarrow \config{B_1'}{s'}
 \justifies
@@ -625,7 +359,7 @@ WHILE. Fino ad ora solo i comandi potevano modificare lo store ma adesso anche l
 \]
 \subsection*{}
 \[
-\rulename{S-CORT.AND.BOOl}
+\rulename{S-CORT.AND.BOOL}
 \prooftree
         \config{B_1}{s} \ssarrow \config{B_1'}{s'}
 \justifies
@@ -636,23 +370,23 @@ WHILE. Fino ad ora solo i comandi potevano modificare lo store ma adesso anche l
 \[
 \rulename{S-CORT.AND.TRUE}
 \prooftree
-        \config{B_2}{s} \ssarrow \config{B_2'}{s'}
+	\nohyp
 \justifies
-        \config{\true\ \& \&\ B_2}{s} \ssarrow \config{B_2'}{s'}
+        \config{\true\ \& \&\ B_2}{s} \ssarrow \config{B_2}{s}
 \endprooftree
 \]
 \subsection*{}
 \[
 \rulename{S-CORT.AND.FALSE}
 \prooftree
-        \config{B_2}{s} \ssarrow \config{B_2'}{s'}
+	\nohyp
 \justifies
-        \config{\false\ \& \&\ B_2}{s} \ssarrow \config{\false}{s'}
+        \config{\false\ \& \&\ B_2}{s} \ssarrow \config{\false}{s}
 \endprooftree
 \]
 \subsection*{}
 \[
-\rulename{S-CORT.OR.BOOl}
+\rulename{S-CORT.OR.BOOL}
 \prooftree
         \config{B_1}{s} \ssarrow \config{B_1'}{s'}
 \justifies
@@ -663,17 +397,17 @@ WHILE. Fino ad ora solo i comandi potevano modificare lo store ma adesso anche l
 \[
 \rulename{S-CORT.OR.TRUE}
 \prooftree
-        \config{B_2}{s} \ssarrow \config{B_2'}{s'}
+	\nohyp
 \justifies
-        \config{\true\ ||\ B_2}{s} \ssarrow \config{\true}{s'}
+        \config{\true\ ||\ B_2}{s} \ssarrow \config{\true}{s}
 \endprooftree
 \]
 \subsection*{}
 \[
 \rulename{S-CORT.OR.FALSE}
 \prooftree
-        \config{B_2}{s} \ssarrow \config{B_2'}{s'}
+	\nohyp
 \justifies
-        \config{\false\ ||\ B_2}{s} \ssarrow \config{B_2'}{s'}
+        \config{\false\ ||\ B_2}{s} \ssarrow \config{B_2}{s}
 \endprooftree
 \]
