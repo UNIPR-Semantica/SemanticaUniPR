@@ -81,7 +81,6 @@ Semantica di $x(E)$ small step su di un array:
     \config{E}{s} \ssarrow \config{E'}{s'}
   \justifies
     \config{x(E)}{s} \ssarrow \config{x(E')}{s'}
-    \thickness=0.08em
   \endprooftree
 \intertext{%
 se $x$ è un array:
@@ -90,7 +89,6 @@ se $x$ è un array:
   \nohyp
   \justifies
     \config{x(n)}{s} \ssarrow \config{s(x)(n)}{s}
-  \thickness=0.08em
   \using
     s(x) \in \Lambda
   \endprooftree
@@ -101,7 +99,6 @@ se $x$ è uno scalare:
   \nohyp
   \justifies
     \config{x(n)}{s} \ssarrow \config{0}{s'}
-  \thickness=0.08em
   \using
     s(x) \in \Zset \land s' = \substt{a}{x}
   \endprooftree
@@ -118,7 +115,6 @@ posizione $n$-ma la quale conterrà il valore di $x$:
   \nohyp
   \justifies
     \config{x(n)}{s} \ssarrow \config{s(x)}{s'}
-  \thickness=0.08em
   \using
     s(x) \in \Zset \land s' = \substt{a}{x}
   \endprooftree
@@ -137,14 +133,12 @@ scalare in un array:
   \prooftree
     \config{E_0}{s} \ssarrow \config{E_0'}{s'}
   \justifies
-    \config{x(E_0) \weq E_1}{s} \ssarrow \config{x(E_0') \weq E_1}{s'}
-    \thickness=0.08em
+    \config{x(E_0) \weq E_1}{s} \ssarrow \config{x(E_0') \weq E_1}{s'}m
   \endprooftree \\[12pt]
   \prooftree
     \config{E_1}{s} \ssarrow \config{E_1'}{s'}
   \justifies
     \config{x(n) \weq E_1}{s} \ssarrow \config{x(n) \weq E_1'}{s'}
-    \thickness=0.08em
   \endprooftree
 \end{gather*}
 se $x$ è un array:
@@ -153,7 +147,6 @@ se $x$ è un array:
   \nohyp
   \justifies
     \config{x(n)\ \weq\ k}{s} \ssarrow \config{\kw{skip}}{s'}
-  \thickness=0.08em
   \using
     s(x) \in \Lambda \land s' = \substt{a}{x}
   \endprooftree
@@ -171,7 +164,6 @@ se $x$ è uno scalare (assegnamento distruttivo):
   \nohyp
   \justifies
     \config{x(n)\ \weq\ k}{s} \ssarrow \config{\kw{skip}}{s'}
-  \thickness=0.08em
   \using
     s(x) \in \Zset \land s' = \substt{a}{x}
   \endprooftree
@@ -190,7 +182,6 @@ alla posizione~0 del nuovo array:
   \nohyp
   \justifies
     \config{x(n)\ \weq\ k}{s} \ssarrow \config{\kw{skip}}{s'}
-  \thickness=0.08em
   \using
     s(x) \in \Zset \land s' = \substt{a}{x}
   \endprooftree
@@ -243,7 +234,6 @@ Siano $x \in \Var$ e $E \in \AExp$
   &\prooftree \config{E}{s} \ssarrow \config{E'}{s'}
   \justifies \config{\kw{throw} E}{s} \ssarrow 
     \config{\kw{throw} E'}{s'}
-  \thickness=0.08em
   \using s(\ecc) \divrg
   \endprooftree
   \pts
@@ -251,21 +241,18 @@ Siano $x \in \Var$ e $E \in \AExp$
   \nohyp
   \justifies \config{\kw{throw} n}{s} \ssarrow 
     \config{\kw{skip}}{s \substt{n}{\ecc}}
-  \thickness=0.08em
   \using s(\ecc) \divrg
   \endprooftree
   \pts
   &\prooftree
   \nohyp
   \justifies \config{x \weq E}{s} \ssarrow \config{\kw{skip}}{s}
-  \thickness=0.08em
   \using s(\ecc) \convrg
   \endprooftree 
   \pts
   &\prooftree
   \nohyp
   \justifies \config{C_1 \weq C_2}{s} \ssarrow \config{\kw{skip}}{s}
-  \thickness=0.08em
   \using s(\ecc) \convrg
   \endprooftree
   \pts
@@ -273,7 +260,6 @@ Siano $x \in \Var$ e $E \in \AExp$
   \nohyp
   \justifies \config{\kw{if} B \kw{then} C_1 \kw{else} C_2}{s} 
     \ssarrow \config{\kw{skip}}{s}
-  \thickness=0.08em
   \using s(\ecc) \convrg
   \endprooftree
   \pts
@@ -281,7 +267,6 @@ Siano $x \in \Var$ e $E \in \AExp$
   \nohyp
   \justifies \config{\kw{while} B \kw{do} C}{s}
      \ssarrow \config{\kw{skip}}{s}
-  \thickness=0.08em
   \using s(\ecc) \convrg
   \endprooftree
   \pts
@@ -289,14 +274,12 @@ Siano $x \in \Var$ e $E \in \AExp$
   \nohyp
   \justifies \config{\kw{try} C_1 \kw{catch}(x) C_2}{s}
      \ssarrow \config{\kw{skip}}{s}
-  \thickness=0.08em
   \using s(\ecc) \convrg
   \endprooftree
   \pts
   &\prooftree
   \nohyp
   \justifies \config{\kw{throw} E}{s} \ssarrow \config{\kw{skip}}{s}
-  \thickness=0.08em
   \using s(\ecc) \convrg
   \endprooftree
 \end{align*}
@@ -319,21 +302,18 @@ uccisione di variabile:
   \nohyp
   \justifies \config{\kw{try} \kw{skip} \kw{catch}(x) C}{s} \ssarrow
     \config{\kw{skip}}{s}
-  \thickness=0.08em
   \using s(\ecc) \divrg
   \endprooftree
   \pts
   &\prooftree \config{C_1}{s} \ssarrow \config{C_1'}{s'}
   \justifies \config{\kw{try} C_1 \kw{catch}(x) C_2}{s} \ssarrow
     \config{\kw{try} C_1' \kw{catch}(x) C_2}{s'}
-  \thickness=0.08em
   \using s(\ecc) \divrg \land\ s'(\ecc) \divrg
   \endprooftree
   \pts
   &\prooftree \config{C_1}{s} \ssarrow \config{C_1'}{s'}
   \justifies \config{\kw{try} C_1 \kw{catch}(x) C_2}{s} \ssarrow
     \config{C_2}{\bigl(s'\substt{s'(\ecc)}{x}\bigr) \unvar \ecc}
-  \thickness=0.08em
   \using s(\ecc) \divrg \land\ s'(\ecc) \convrg
   \endprooftree
 \end{align*}
