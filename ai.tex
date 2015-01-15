@@ -134,7 +134,8 @@ che si comporta nel seguente modo, per ogni $n \in \Zset$:
     \end{cases} 
 \end{align*}
 Quindi, la funzione $\alpha$ rappresenta il $\lub$ della
-funzione $\beta$ applicata ad ogni elemento di $S \in \wp(\Zset)$ arbitrario:
+funzione $\beta$ applicata ad ogni elemento di un insieme
+$S \in \wp(\Zset)$ arbitrario:
 \[
   \alpha(S) = \sqcup \{\, \beta(n) \mid n \in S \,\}
 \]
@@ -142,36 +143,46 @@ Questo fatto giustifica le approssimazioni compiute nel processo
 di astrazione.
 \end{definizione}
 
-\begin{proposizione}
-La funzione $\alpha$ è monotona.
-\end{proposizione}
+\begin{teorema}
+Siano $S_1, S_2 \in \wp(\Zset)$ arbitrari; allora la funzione $\alpha$
+è monotona:
+\[
+  S_1 \subseteq S_2 \implies \alpha(S_1) \sqsubseteq \alpha(S_2).
+\]
+\end{teorema}
 \begin{proof}
-Siano $S_1, S_2 \in \wp(\Zset)$ arbitrari; allora
   \begin{align*}
     S_1 \subseteq S_2
-      &\implies \beta(S_1) \sqsubseteq \beta(S_2)
-      &\law{per definizione di funzione} \\
+      &\implies \bigl\{\beta(n_1) \bigm| n_1 \in S_1\bigr\}
+        \sqsubseteq \bigl\{\beta(n_2) \bigm| n_2 \in S_2\bigr\}
+      &\law{per definizione di $\beta$} \\
+      &\implies \sqcup \bigl\{\beta(n_1) \bigm| n_1 \in S_1\bigr\}
+        \sqsubseteq \sqcup \bigl\{\beta(n_2) \bigm| n_2 \in S_2\bigr\}
+      &\law{per proprietà del $\lub$} \\
       &\implies \alpha(S_1) \sqsubseteq \alpha(S_2)
-      &\law{per proprietà del $\lub$.}
+      &\law{per definizione di $\alpha$.}
   \end{align*}
 \end{proof}
 
 \subsection{Inserzione di Galois}
 
 Oltre alla monotonia delle funzioni di astrazione e concretizzazione,
-è interessante sapere se stiamo lavorando con un'inserzione di Galois.
-Mostrare questo fatto vuol dire, per prima cosa,
-verificare è che $\compfun{\gamma}{\alpha}$ è estensiva. 
+è interessante sapere se stiamo lavorando in una
+``inserzione di Galois''.
+Mostrare questo fatto vuol dire anche verificare che
+$\compfun{\gamma}{\alpha}$ è estensiva. 
 Per dimostrare l'estensività di $\compfun{\gamma}{\alpha}$, conviene
-considerare $\gamma$ additiva.
+prima considerare $\gamma$ additiva.
 \begin{proposizione}
 $\gamma$ è additiva.
 \end{proposizione}
+\begin{proof}
 Per verificarlo, si mostrano nel seguito alcuni esempi, tutti banali:
 \begin{itemize}
   \item $\gamma(=) \union \gamma(<) = \gamma(\leq)$;
   \item $\gamma(=) \union \gamma(=) = \gamma(=)$.
 \end{itemize}
+\end{proof}
 Avendo l'additività di $\gamma$, possiamo procedere alla dimostrazione
 dell'estensività di $\compfun{\gamma}{\alpha}$, dunque che,
 per un qualunque $S \in \wp(\Zset)$:
@@ -181,7 +192,7 @@ per un qualunque $S \in \wp(\Zset)$:
 Per dimostrare quest'ultima affermazione ci serve il seguente lemma:
 \begin{lemma}
   Sia $n \in \Zset$ arbitrario; allora
-  $n \in \gamma\bigl(\beta(n)\bigr) $ ,
+  $n \in \gamma\bigl(\beta(n)\bigr)$.
 \end{lemma}
 
 \begin{proposizione}
