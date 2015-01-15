@@ -303,75 +303,15 @@ Dove:
 \]
 \end{definizione}
 
-\begin{teorema} \summary{(Correttezza della logica di Floyd-Hoare.)}
-Per ogni $P,Q \in \Pred$ e per ogni $C \in \Com$ se la tripla di Hoare
-$\vdash\{P\}C\{Q\}$ è dimostrabile allora $\llbracket \{P\}C\{Q\}\rrbracket$ è vera.
+Ora verrà introdotto un lemma che verrà usato nel \emph{teorema 8} per 
+dimostrare la correttezza del comando di assegnamento.
+\begin{lemma} \summary{(Assegnamento.)}
+Per ogni $k \in \Nset $ tali che $\config{x:=\LE}{s} \ssarrow^k\config{\kw{skip}}{s'}$, 
+allora esiste un $n \in \Zset$ tali che $\config{\LE}{s} \ssarrow ^{k-1}\config{n}{s}$
+e $s'=s \substt{n}{x}$.
 
 \begin{proof}
-Si dimostra per induzione strutturale sull'albero di prova per $\{P\}C\{Q\}$.
-
-Caso base: $C = \kw{skip}$.
-L'albero di prova è necessariamente della forma
-\[
-  \prooftree
-    \nohyp
-  \justifies
-    \{P\}\kw{skip}\{P\}
- \endprooftree
-\]
-e dunque $P = Q$, da cui
-\[
-  \bigl\llbracket \{P\} \kw{skip} \{Q\} \bigr\rrbracket
-    = \bigl\llbracket \{P\} \kw{skip} \{P\} \bigr\rrbracket
-    = \ttv
-\]
-se e solo se
-\begin{multline*}
-  \forall t \in \Gamma_{\FV(P)}
-    \itc
-      \forall s, s' \in \Sigma
-        \itc \llbracket P \rrbracket(s,t) = \ttv
-         \land \config{\kw{skip}}{s} \ssarrow^* \config{\kw{skip}}{s'} \\
-      \implies \llbracket P \rrbracket(s',t)=\ttv.
-\end{multline*}
-Dal momento che $\config{\kw{skip}}{s} \ssarrow^* \config{\kw{skip}}{s'}$
-vale se e solo se $s = s'$, se l'antecedente dell'implicazione è vero,
-è dunque vero che
-\[
-  \llbracket P \rrbracket(s', t)
-    = \llbracket P \rrbracket(s, t)
-    = \ttv.
-\]
-
-Caso base: $C = x:=\LE$.
-L'albero di prova è necessariamente della forma
-\[
-  \prooftree
-    \nohyp
-   \justifies
-     \{Q\substt{\LE}{x}\}x:=\LE\{Q\}
-  \endprooftree
-\]
-
-$\bigl \llbracket \{Q\substt{\LE}{x}\}x:=\LE\{Q\} \bigr \rrbracket$ è vera
-se e solo se
-\begin{multline*}
-  \forall t \in \Gamma_{\FV(\LE) \union \FV(Q)} \itc \forall s,s' \in \Sigma \itc
-    \llbracket Q \rrbracket \substt{\LE}{x}(s,t) = \ttv \\
-      \land \config{x:=\LE}{s} \ssarrow^*\config{\kw{skip}}{s'}
-       \implies \llbracket Q \rrbracket(s',t) = \ttv;
-\end{multline*}
-Questo grazie al \textit{Lemma 1}.
-
-\begin{lemma}
-\begin{multline*}
-   \forall k \in \Nset \itc
-       \config{x:=\LE}{s} \ssarrow ^k\config{\kw{skip}}{s'}\\
-        \implies \exists n \in \Zset\st \config{\LE}{s} \ssarrow ^{k-1}\config{n}{s}
-         \land s'=s \substt{n}{x};
-\end{multline*}
-\begin{proof}
-Caso base: con $k = 0$ è banalmente vera poiché l'antecedente è falso;\\
+Caso base: $k = 0$ è banalmente vera poiché l'antecedente è falso;\\
 Con: $k = 1$ abbiamo:
 \[
    \config{x:=\LE}{s} \ssarrow ^{1}\config{\kw{skip}}{s'};
@@ -415,6 +355,74 @@ Allora:
 \end{proof}
 \end{lemma}
 
+Ora verrà introdotto un ulteriore lemma che verrà usato nel \emph{teorema 8} per 
+dimostrare la correttezza del comando di composizione sequenziale.
+\begin{lemma} \summary{(Composizione sequenziale.)}
+Per ogni $C_1,C_2 \in \Com$, per ogni $s,s' \in \Sigma$ e per ogni $ n \in \Nset$
+tali che $\config{C_1;C_2}{s} \ssarrow^n\config{\kw{skip}}{s'}$ implica che esiste $n_1,n_2 \in \Nset$ e un $s'' \in \Sigma$ tali che $\config{C_1}{s} \ssarrow ^{n_1}\config{\kw{skip}}{s'}$ e $\config{C_2}{s'} \ssarrow ^{n_2}\config{\kw{skip}}{s''}$ e $n = n_1 + n_2$.
+[Segalini]
+\end{lemma}
+
+\begin{teorema} \summary{(Correttezza della logica di Floyd-Hoare.)}
+Per ogni $P,Q \in \Pred$ e per ogni $C \in \Com$ se la tripla di Hoare
+$\vdash\{P\}C\{Q\}$ è dimostrabile allora $\llbracket \{P\}C\{Q\}\rrbracket$ è vera.
+
+\begin{proof}
+Si dimostra per induzione strutturale sull'albero di prova per $\{P\}C\{Q\}$.
+
+Caso base: $C = \kw{skip}$.
+L'albero di prova è necessariamente della forma
+\[
+  \prooftree
+    \nohyp
+  \justifies
+    \{P\}\kw{skip}\{P\}
+ \endprooftree
+\]
+e dunque $P = Q$, da cui
+\[
+  \bigl\llbracket \{P\} \kw{skip} \{Q\} \bigr\rrbracket
+    = \bigl\llbracket \{P\} \kw{skip} \{P\} \bigr\rrbracket
+    = \ttv
+\]
+se e solo se
+\begin{multline*}
+  \forall t \in \Gamma_{\FV(P)}
+    \itc
+      \forall s, s' \in \Sigma
+        \itc \llbracket P \rrbracket(s,t) = \ttv
+         \land \config{\kw{skip}}{s} \ssarrow^* \config{\kw{skip}}{s'} \\
+      \implies \llbracket P \rrbracket(s',t)=\ttv.
+\end{multline*}
+Dal momento che $\config{\kw{skip}}{s} \ssarrow^* \config{\kw{skip}}{s'}$
+vale se e solo se $s = s'$, se l'antecedente dell'implicazione è vero,
+è dunque vero che
+\[
+  \llbracket P \rrbracket(s', t)
+    = \llbracket P \rrbracket(s, t)
+    = \ttv.
+\]
+
+Caso base: $C = (x:=\LE)$.
+L'albero di prova è necessariamente della forma
+\[
+  \prooftree
+    \nohyp
+   \justifies
+     \{Q\substt{\LE}{x}\}x:=\LE\{Q\}
+  \endprooftree
+\]
+
+Allora $\bigl \llbracket \{Q\substt{\LE}{x}\}x:=\LE\{Q\} \bigr \rrbracket$ è vera
+se e solo se
+\begin{multline*}
+  \forall t \in \Gamma_{\FV(\LE) \union \FV(Q)} \itc \forall s,s' \in \Sigma \itc
+    \llbracket Q \rrbracket \substt{\LE}{x}(s,t) = \ttv \\
+      \land \config{x:=\LE}{s} \ssarrow^*\config{\kw{skip}}{s'}
+       \implies \llbracket Q \rrbracket(s',t) = \ttv;
+\end{multline*}
+Questo grazie al \textit{Lemma 1}.
+
 Passo induttivo: $C = C_1;C_2$
 \[
   \prooftree
@@ -426,14 +434,16 @@ Passo induttivo: $C = C_1;C_2$
   \endprooftree
 \]
 
-$\bigl \llbracket \{P\} C_1;C_2\{R\} \bigr \rrbracket$ è vera se e solo se
+Allora $\bigl \llbracket \{P\} C_1;C_2\{R\} \bigr \rrbracket$ è vera se e solo se
 \begin{multline*}
     \forall t \in \Gamma_{\FV(P)\union\FV(R)}\itc
       \forall s,s'\in \Sigma \itc \llbracket P \rrbracket(s,t) = \ttv
        \land \config{C_1;C_2}{s} \ssarrow^* \config{\kw{skip}}{s'}\\
         \implies \llbracket R \rrbracket(s',t)=\ttv;
 \end{multline*}
-Ma questo è possibile solo se le ipotesi $\bigl \llbracket \{P\}C_1\{Q\} \bigr \rrbracket$ e $\bigl \llbracket \{Q\}C_2\{R\} \bigr \rrbracket$ 
+
+Ma questo è possibile solo se le ipotesi $\bigl \llbracket \{P\}C_1\{Q\} \bigr \rrbracket$ e $\bigl \llbracket \{Q\}C_2\{R\} \bigr \rrbracket$ sono vere, ma questo se e solo se
+
 \begin{multline*}
       \forall t \in \Gamma_{\FV(P)\union\FV(R)\union\FV(Q)}\itc
       \forall s,s'\in \Sigma \itc      
@@ -443,16 +453,7 @@ Ma questo è possibile solo se le ipotesi $\bigl \llbracket \{P\}C_1\{Q\} \bigr 
          \land \config{C_2}{s'} \ssarrow^* \config{\kw{skip}}{s''})\\
       \implies \exists s'' \in \Sigma \st \llbracket R \rrbracket(s'',t) = \ttv;
 \end{multline*}
+
 Questo grazie al \textit{Lemma 2}.
-\begin{lemma}
-\begin{align*}
-   \forall C_1,C_2 \in \Com \itc 
-   &\forall s,s' \in \Sigma \itc \forall n \in \Nset \config{C_1;C_2}{s} \ssarrow ^n\config{\kw{skip}}{s'} \\
-   &\Rightarrow \exists n_1,n_2 \in \Nset \st \exists s'' \in \Sigma \st \\
-   &\config{C_1}{s} \ssarrow ^{n_1}\config{\kw{skip}}{s'} \land \config{C_2}{s'} \ssarrow ^{n_2}\config{\kw{skip}}{s''}
-   \land n = n_1 + n_2.
-\end{align*}
-\end{lemma}
-[Segalini]
 \end{proof}
 \end{teorema}
