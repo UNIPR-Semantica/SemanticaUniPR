@@ -250,10 +250,10 @@ Ci rimane da dimostrare la tripla di Hoare:
 Applicando la regola derivata del While si ottengono le seguenti VCs:
 \begin{itemize}
   \item $ y=2^{n-x} \land x \geq 0 
-        \Rightarrow y=2^{n-x} \land x \geq 0 $ \\
+        \Rightarrow y=2^{n-x} \land x \geq 0 $,
         che è banalmente vera.
   \item $ y=2^{n-x} \land x \geq 0 \land x \leq 0
-        \Rightarrow y = \lfloor 2^n \rfloor $ \\
+        \Rightarrow y = \lfloor 2^n \rfloor $,
         ed è vera in quanto
         $ x \geq 0 \land x \leq 0\Rightarrow x = 0 $
         e quindi dall'antecedente si ottiene il conseguente.
@@ -270,7 +270,7 @@ Applicando la regola derivata del While si ottengono le seguenti VCs:
         che si può semplificare in:
         \[ y=2^{n-x} \land x>0
         \Rightarrow
-        \; y = 2^{n-x} \land x-1 \geq 0 \]
+        y = 2^{n-x} \land x-1 \geq 0 \]
         che ancora una volta è vera.
 \end{itemize}
 Quindi la correttezza parziale della tripla è dimostrata. Ci rimane da dimostrare la totalità e per farlo dobbiamo provare che valgono le seguenti:
@@ -304,7 +304,7 @@ Questo prova la correttezza totale.
 \subsection{Esercizio 5}
 Estendere la regola del blocco vista a lezione, svincolandola dalla condizione secondo la quale nessuna variabile che compare all'interno del blocco possa comparire in precondizione o in postcondizione.
 
-\begin{proof}[Svolgimento]
+\begin{proof}
 Possiamo, a livello di preprocessore, rinominare tutte le variabili di blocco con un nome univoco $ y_1,\dots ,y_n $, facendo attenzione al fatto che abbiano un identificatore univoco. La regola allora è riscrivibile come:
 \[
 \prooftree
