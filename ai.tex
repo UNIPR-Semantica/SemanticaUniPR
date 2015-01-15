@@ -22,6 +22,9 @@ $\Sign$ cattura semplici relazioni rispetto al
 numero $0$, ad esempio $\cdot < 0$, $\cdot = 0$, \dots
 L'ordinamento del dominio è indicato nel diagramma di Hasse di
 figura~\ref{fig:ordering-rels-lattice}.
+\[
+  (\Sign, \sqsubseteq).
+\]
 
 \begin{figure}
 \begin{center}
@@ -146,7 +149,7 @@ La funzione $\alpha$ è monotona.
 Siano $S_1, S_2 \in \wp(\Zset)$ arbitrari; allora
   \begin{align*}
     S_1 \subseteq S_2
-      &\implies \beta(S_1) \subseteq \beta(S_2)
+      &\implies \beta(S_1) \sqsubseteq \beta(S_2)
       &\law{per definizione di funzione} \\
       &\implies \alpha(S_1) \sqsubseteq \alpha(S_2)
       &\law{per proprietà del $\lub$.}
@@ -166,8 +169,8 @@ $\gamma$ è additiva.
 \end{proposizione}
 Per verificarlo, si mostrano nel seguito alcuni esempi, tutti banali:
 \begin{itemize}
-  \item $\gamma\bigl(\{=, <\}\bigr) = \gamma(=) \union \gamma(<) = \gamma(\leq)$;
-  \item $\gamma\bigl(\{=, =\}\bigr) = \gamma(=) \union \gamma(=) = \gamma(=)$.
+  \item $\gamma(=) \union \gamma(<) = \gamma(\leq)$;
+  \item $\gamma(=) \union \gamma(=) = \gamma(=)$.
 \end{itemize}
 Avendo l'additività di $\gamma$, possiamo procedere alla dimostrazione
 dell'estensività di $\compfun{\gamma}{\alpha}$, dunque che,
@@ -421,7 +424,7 @@ Per definire l'operazione astratta di diverso basta definire quella di negato as
 \[
   \absleq \defeq \lambda a_1,a_2 \in \Sign \st \alpha\bigl(\gamma(a_1) \conineq \gamma(a_2)\bigr)
 \]
-con $\conineq$ uguaglianza concreta, definita come segue:
+con $\conineq$ disuguaglianza concreta, definita come segue:
 \[
   S_1 \conineq S_2 \defeq \{\, n_1 \leq n_2 \mid n_1 \in S_1, n_2 \in S_2 \,\}
 \]
@@ -466,14 +469,14 @@ le variabili di tipo intero.
 
 \begin{definizione}\summary{Semantica concreta.}
 La semantica concreta di un programma in linguaggio WHILE
-consisteva in una serie di transizioni per ridurre il programma
+consisteva in una serie di transizioni per ridurre il programma $P$
 alla configurazione terminale $\kw{skip}$:
 \[      
   \llbracket P \rrbracket (s) = s' \text{, se } \config{P}{s} \ssarrow^* \config{\kw{skip}}{s'}
 \]
 \end{definizione}
-La semantica concreta il programma $P$ aveva un solo insieme di passi
-per poter raggiungere la configurazione $\kw{skip}$;
+La semantica concreta del programma prevede un solo insieme di passi
+per poter raggiungere la configurazione terminale;
 la semantica astratta introduce invece il non determinismo, in quanto
 approssimazione della semantica concreta.
 \begin{definizione}\summary{Semantica astratta.}
@@ -483,10 +486,9 @@ ad una funzione parziale tra l'insieme degli stati astratti $\Sigma^\#:$
   \llbracket \cdot \rrbracket^\# : \Com^\# \mapsto (\Sigma^\# \rightarrowtail \Sigma^\#)
 \]
 La semantica astratta di un programma diventa dunque la miglior
-approssimazione (grazie alle proprietà del $\lub$) del programma,
-dunque può essere vista come l'astrazione più precisa del programma:
+approssimazione (grazie alle proprietà del $\lub$) del programma:
 \[
-  \llbracket P \rrbracket^\# (s) =  \sqcup _{\Sigma^\#} \bigl\{ s^\#_1 \in \Sigma^\# \mid \config{\alpha(P)}{s^\#} \ssarrow \config{\kw{skip}}{s^\#_1} \bigr\}
+  \llbracket P \rrbracket^\# (s) =  \sqcup \bigl\{ s^\#_1 \in \Sigma^\# \mid \config{\alpha(P)}{s^\#} \ssarrow \config{\kw{skip}}{s^\#_1} \bigr\}
 \]
 \end{definizione}
 
@@ -540,7 +542,7 @@ scelta per presentare tale semantica è quella operazionale small-step.
 
 \begin{definizione}\summary{And cortocircuitato astratto.}
 Prima di definire la semantica per le espressioni booleane,
-definiamo un operatore di controllo cortocircuitato.
+definiamo un operatore di congiunzione cortocircuitato.
 \end{definizione}
 
 \begin{center}
