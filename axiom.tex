@@ -85,21 +85,24 @@ Dare una dimostrazione per la seguente tripla di Hoare:
 
 \begin{proof}
 Dimostriamo la tripla partendo dal fondo. Applicando l'assioma dell'assegnamento si ha:
-\[ \{S[\nicefrac{X-Y}{X}] \}  X:=X-Y  \{Y=a  \land  X=b\} \]
-\[ \Downarrow \]
-\[ \{Y=a  \land X-Y=b \}  X:=X-Y  \{Y=a  \land  X=b\} \]
-Risaliamo ora di un "livello" applicando ancora l'assioma dell'assegnamento:
-\[ \{S[\nicefrac{X-Y}{Y}] \}  Y:=X-Y  \{Y=a  \land  X-Y=b\} \]
-\[ \Downarrow \]
-\[ \{X-Y=a  \land X-(X-Y)=b \}  Y:=X-Y  \{Y=a  \land  X-Y=b\} \]
+\begin{align*}
+  \bigl\{S[\nicefrac{X-Y}{X}] \bigr\} &  X:=X-Y  \bigl\{Y=a  \land  X=b\bigr\}\\
+  \bigl\{Y=a  \land X-Y=b \bigr\} & X:=X-Y  \bigl\{Y=a  \land  X=b\bigr\}
+\end{align*} 
+Risaliamo ora di un livello applicando ancora l'assioma dell'assegnamento:
+\begin{align*}
+  \bigl\{S[\nicefrac{X-Y}{Y}] \bigr\} & Y:=X-Y \bigl\{Y=a  \land  X-Y=b\bigr\}\\
+  \bigl\{X-Y=a  \land X-(X-Y)=b \bigr\} & Y:=X-Y \bigl\{Y=a  \land  X-Y=b\bigr\}
+\end{align*}
 Semplificando la precondizione si ottiene:
-\[ \{X-Y=a  \land Y=b \}  Y:=X-Y  \{Y=a  \land  X-Y=b\} \]
+\[ \bigl\{X-Y=a  \land Y=b \bigr\}  Y:=X-Y  \bigl\{Y=a  \land  X-Y=b\bigr\} \]
 Risaliamo ulteriormente di un livello, applicando l'assioma dell'assegnamento. Si ha:
-\[ \{S[\nicefrac{X+Y}{Y}] \}  X:=X+Y  \{X-Y=a  \land  Y=b\} \]
-\[ \Downarrow \]
-\[ \{(X+Y)-Y=a  \land Y=b \}  X:=X+Y  \{X-Y=a  \land  Y=b\} \]
+\begin{align*}
+  \bigl\{S[\nicefrac{X+Y}{Y}] \bigr\} & X:=X+Y \bigl\{X-Y=a  \land  Y=b\bigr\}\\
+  \bigl\{(X+Y)-Y=a  \land Y=b \bigr\} & X:=X+Y \bigl\{X-Y=a  \land  Y=b\bigr\}
+\end{align*}
 Semplificando ancora una volta la precondizione si ottiene:
-\[ \{X=a  \land Y=b \}  X:=X+Y  \{X-Y=a  \land  Y=b\} \]
+\[ \bigl\{X=a  \land Y=b \bigr\}  X:=X+Y  \bigl\{X-Y=a  \land  Y=b\bigr\} \]
 Che è quanto volevamo dimostrare.
 \end{proof}
 
@@ -113,17 +116,19 @@ Dare una dimostrazione per la seguente tripla di Hoare:
 \begin{proof}
 Come nell'esercizio precedente, procediamo dal fondo.\\
 Applichiamo quindi l'assioma dell'assegnamento:
-\[ \{S[\nicefrac{Q+1}{Q}] \} Q:=Q+1 \{X=R+(Y \times Q)\} \]
-\[ \Downarrow \]
-\[ \{X=R+(Y \times (Q+1)) \} Q:=Q+1 \{X=R+(Y \times Q)\} \]
+\begin{align*}
+  \bigl\{S[\nicefrac{Q+1}{Q}] \bigr\} & Q:=Q+1 \bigl\{X=R+(Y \times Q)\bigr\}\\
+  \bigl\{X=R+(Y \times (Q+1)) \bigr\} & Q:=Q+1 \bigl\{X=R+(Y \times Q)\bigr\}
+\end{align*}
 Semplificando la precondizione si ottiene:
-\[ \{X=R+Y \times Q + Y \} Q:=Q+1 \{X=R+(Y \times Q)\} \]
+\[ \bigl\{X=R+Y \times Q + Y \bigr\} Q:=Q+1 \bigl\{X=R+(Y \times Q)\bigr\} \]
 Risalendo di un livello e applicando ancora l'assioma dell'assegnamento si trova:
-\[ \{S[\nicefrac{R-Y}{R}] \} R:=R-Y \{X=R+Y \times Q + Y \} \]
-\[ \Downarrow \]
-\[ \{X= R-Y+Y \times Q+Y \} R:=R-Y \{X=R+Y \times Q + Y \} \]
+\begin{align*}
+\bigl\{S[\nicefrac{R-Y}{R}] \bigr\} & R:=R-Y \bigl\{X=R+Y \times Q + Y \bigr\}\\
+\bigl\{X= R-Y+Y \times Q+Y \bigr\} & R:=R-Y \bigl\{X=R+Y \times Q + Y \bigr\}
+\end{align*}
 Semplificando la precondizione si ottiene:
-\[ \{X= R+(Y \times Q) \} R:=R-Y \{X=R+Y \times Q + Y \} \]
+\[ \bigl\{X= R+(Y \times Q) \bigr\} R:=R-Y \bigl\{X=R+Y \times Q + Y \bigr\} \]
 Che è quanto volevamo dimostrare.
 \end{proof}
 
@@ -145,75 +150,75 @@ realizza lo scambio dei valori tra le variabili \texttt{X} e \texttt{Y} se quest
 \begin{proof}
 Dobbiamo dimostrare che la seguente tripla di Hoare è corretta:
 \[
-  \{ \mactext{X=a } \land \mactext{ Y=b} \} 
+  \bigl\{ \mactext{X=a } \land \mactext{ Y=b} \bigr\} 
   \mactext{X := X XOR Y; Y := X XOR Y; X := X XOR Y}
-  \{\mactext{X=b } \land \mactext{ Y=a} \}
+  \bigl\{\mactext{X=b } \land \mactext{ Y=a} \bigr\}
 \]
 Procediamo, al solito, partendo dal fondo. Applichiamo dunque l'assioma dell'assegnamento:
-\begin{gather*}
-  \{ S[\nicefrac{\mactext{X XOR Y}}{\mactext{X}}] \}
+\begin{align*}
+  \bigl\{ S[\nicefrac{\mactext{X XOR Y}}{\mactext{X}}] \bigr\} &
   \mactext{X := X XOR Y}
-  \{\mactext{X=b} \; \land \; \mactext{Y=a} \} 
-\\
-  \{\mactext{X XOR Y = b } \land \mactext{ Y=a}  \} 
+  \bigl\{\mactext{X=b} \; \land \; \mactext{Y=a} \bigr\} 
+  \\
+  \bigl\{\mactext{X XOR Y = b } \land \mactext{ Y=a}  \bigr\} &
   \mactext{X := X XOR Y}
-  \{\mactext{X=b } \land \mactext{ Y=a} \}
-\end{gather*}
+  \bigl\{\mactext{X=b } \land \mactext{ Y=a} \bigr\}
+\end{align*}
 Passiamo al successivo assegnamento:
-\begin{gather*}
-  \{ S[\nicefrac{\mactext{X XOR Y}}{\mactext{Y}} ] \}
+\begin{align*}
+  \bigl\{ S[\nicefrac{\mactext{X XOR Y}}{\mactext{Y}} ] \bigr\} &
   \mactext{Y := X XOR Y}
-  \{\mactext{X XOR Y = b } \land \mactext{ Y=a} \}
-\\
-  \{ \mactext{X XOR (X XOR Y) = b } \land \mactext{ X XOR Y = a} \}
+  \bigl\{\mactext{X XOR Y = b } \land \mactext{ Y=a} \bigr\}
+  \\
+  \bigl\{ \mactext{X XOR (X XOR Y) = b } \land \mactext{ X XOR Y = a} \bigr\} &
   \mactext{Y := X XOR Y}
-  \{ \mactext{X XOR Y = b } \land \mactext{ Y=a} \}
-\end{gather*}
+  \bigl\{ \mactext{X XOR Y = b } \land \mactext{ Y=a} \bigr\}
+\end{align*}
 Applichiamo la proprietà di associatività dello XOR in precondizione:
 \[
-  \{ \mactext{(X XOR X) XOR Y = b } \land \mactext{ X XOR Y = a} \}
+  \bigl\{ \mactext{(X XOR X) XOR Y = b } \land \mactext{ X XOR Y = a} \bigr\}
   \texttt{Y := X XOR Y}
-  \{ \mactext{X XOR Y = b } \land \mactext{ Y=a} \}
+  \bigl\{ \mactext{X XOR Y = b } \land \mactext{ Y=a} \bigr\}
 \]
 Applichiamo la proprietà di nipotenza dello XOR in precondizione:
 \[
-  \{ \mactext{0 XOR Y = b } \land \mactext{ X XOR Y = a} \}
+  \bigl\{ \mactext{0 XOR Y = b } \land \mactext{ X XOR Y = a} \bigr\}
   \mactext{Y := X XOR Y}
-  \{ \mactext{X XOR Y = b } \land \mactext{ Y=a} \}
+  \bigl\{ \mactext{X XOR Y = b } \land \mactext{ Y=a} \bigr\}
 \]
 Applichiamo la proprietà di elemento neutro dello XOR in precondizione:
 \[
-  \{ \mactext{Y=b } \land \mactext{ X XOR Y = a} \}
+  \bigl\{ \mactext{Y=b } \land \mactext{ X XOR Y = a} \bigr\}
   \mactext{Y := X XOR Y}
-  \{ \mactext{X XOR Y = b } \land \mactext{ Y=a} \}
+  \bigl\{ \mactext{X XOR Y = b } \land \mactext{ Y=a} \bigr\}
 \]
 Passiamo ora al successivo, e ultimo, assegnamento della tripla:
-\begin{gather*}
-  \{ S[\nicefrac{\mactext{X XOR Y}}{\mactext{X}} ] \}
+\begin{align*}
+  \bigl\{ S[\nicefrac{\mactext{X XOR Y}}{\mactext{X}} ] \bigr\} &
   \mactext{X := X XOR Y}
-  \{ \mactext{Y=b } \land \mactext{ X XOR Y = a} \}
-\\
-  \{ \mactext{Y=b } \land \mactext{ (X XOR Y) XOR Y = a} \}
+  \bigl\{ \mactext{Y=b } \land \mactext{ X XOR Y = a} \bigr\}
+  \\
+ \bigl\{ \mactext{Y=b } \land \mactext{ (X XOR Y) XOR Y = a} \bigr\} &
   \mactext{X := X XOR Y}
-  \{ \mactext{Y=b } \land \mactext{ X XOR Y = a} \}
-\end{gather*}
+  \bigl\{ \mactext{Y=b } \land \mactext{ X XOR Y = a} \bigr\}
+\end{align*}
 Applichiamo la proprietà di associatività dello XOR in precondizione:
 \[
-  \{ \mactext{Y=b } \land \mactext{ X XOR (Y XOR Y) = a} \}
+  \bigl\{ \mactext{Y=b } \land \mactext{ X XOR (Y XOR Y) = a} \bigr\}
   \mactext{X := X XOR Y}
-  \{ \mactext{Y=b } \land \mactext{ X XOR Y = a} \}
+  \bigl\{ \mactext{Y=b } \land \mactext{ X XOR Y = a} \bigr\}
 \]
 Applichiamo la proprietà di nipotenza dello XOR in precondizione:
 \[
-  \{ \mactext{Y=b } \land \mactext{ X XOR 0 = a} \}
+  \bigl\{ \mactext{Y=b } \land \mactext{ X XOR 0 = a} \bigr\}
   \texttt{X := X XOR Y}
-  \{ \mactext{Y=b } \land \mactext{ X XOR Y = a} \}
+  \bigl\{ \mactext{Y=b } \land \mactext{ X XOR Y = a} \bigr\}
 \]
 Applichiamo la proprietà di elemento neutro dello XOR in precondizione:
 \[
-  \{ \mactext{Y=b } \land \mactext{ X=a} \}
+  \bigl\{ \mactext{Y=b } \land \mactext{ X=a} \bigr\}
   \texttt{X := X XOR Y}
-  \{ \mactext{Y=b } \land \mactext{ X XOR Y = a} \}
+  \bigl\{ \mactext{Y=b } \land \mactext{ X XOR Y = a} \bigr\}
 \]
 Otteniamo dunque quello che volevamo dimostrare.
 \end{proof}
