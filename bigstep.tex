@@ -57,7 +57,7 @@ giunga al termine della propria computazione.
 
 Le definizioni semantiche date sono dette ``schemi'' perché vanno
 opportunamente instanziate. Vediamone alcuni esempi; la seguente è
-un'istanza corretta della B-NUM:
+un'istanza dimostrabile della B-NUM:
 
 \[
 \rulename{B-NUM}
@@ -68,21 +68,14 @@ un'istanza corretta della B-NUM:
 \endprooftree
 \]
 
-La seguente è invece un'istanza corretta della B-ADD:
+La seguente è invece un'istanza dimostrabile della B-ADD:
 
 \[
+\rulename{B-ADD}
 \prooftree
-  \prooftree
-    \nohyp
-  \justifies
-     3 \Downarrow 3
-  \endprooftree
+  3 \Downarrow 3
   \quad
-  \prooftree
-    \nohyp
-  \justifies
-     2 \Downarrow 2
-  \endprooftree
+  2 \Downarrow 2
 \justifies
   (3+2) \Downarrow 5
 \using
@@ -90,7 +83,7 @@ La seguente è invece un'istanza corretta della B-ADD:
 \endprooftree
 \]
 
-La seguente è invece un'istanza scorretta (cioè non dimostrabile) della B-ADD:
+La seguente è ancora un'istanza della B-ADD, ma non dimostrabile:
 
 \[
 \rulename{B-ADD}
@@ -106,7 +99,7 @@ La seguente è invece un'istanza scorretta (cioè non dimostrabile) della B-ADD:
 \]
 
 
-Operando in questo modo, ci è possibile realizzare dimostrazioni ad albero
+Combinando le regole date, è possibile realizzare dimostrazioni ad albero
 come la seguente:
 
 \[
@@ -138,10 +131,13 @@ come la seguente:
 \endprooftree
 \]
 
-La dimostrazione, come si vede, è un albero che va dal basso verso l'alto, dove
-in fondo troviamo ciò che vogliamo dimostrare e, applicando le due regole date precedentemente,
-giungiamo a degli assiomi (le foglie dell'albero) che quindi provano quanto volevamo.
-In sostanza, per dimostrare la conclusione dobbiamo far valere tutte le premesse che ricaviamo
+La dimostrazione è un albero che va dal basso verso l'alto, dove
+in fondo viene posto ciò che vogliamo dimostrare e,
+applicando le due regole date precedentemente,
+si giunge a degli assiomi (le foglie dell'albero) che
+quindi provano quanto volevamo.
+In sostanza, per dimostrare la conclusione dobbiamo far
+valere tutte le premesse che si ricavano
 applicando le regole.
 
 \section{Determinatezza}\marginpar{Mancino}
@@ -192,7 +188,7 @@ Osserviamo che, in generale, ci sono esempi in cui non è possibile normalizzare
 \[ \textrm{ $\kw{while}$ true $\kw{do}$ $\kw{skip}$ $\Downarrow$ ?} \]
 A destra dell'operatore di ``valuta a'' non posso scriverci nulla, il ciclo non termina.
 Un altro esempio è il seguente:
-$$ \nicefrac{5}{0} \; \Downarrow \; ? $$
+\[ 5/0 \; \Downarrow \; ? \]
 A destra dell'operatore di ``valuta a'' posso scrivere la codifica del disastro (se esiste)
 altrimenti, come nel caso precedente, non possiamo scriverci nulla.
 
@@ -247,14 +243,14 @@ quale afferma che $n_3 = n_1 + n_2$:
 \]
 \end{proof}
 
-\section{Semantica big-step per While}\marginpar{Mancino}
+\section{Semantica big-step per WHILE}\marginpar{Mancino}
 Invece di usare un semplice frammento di linguaggio come quello descritto nel capitolo
 precedente possiamo definire tramite la big-step la semantica del linguaggio WHILE.
 Precisiamo allora che una coppia (\emph{comando, stato}) viene valutata ad un
 nuovo stato, ossia, dato un comando $C$ e uno stato $s$, in generale:
 
 \[
-\langle C,s \rangle \Downarrow s'
+\config{C}{s} \Downarrow s'
 \]
 
 Con questa premessa, definendo con $E$ la generica espressione, con $C$
@@ -264,59 +260,59 @@ il generico comando e con $s$ il generico stato,
 \begin{align*}
 \prooftree
   \justifies
-    \langle \kw{skip},s \rangle \Downarrow s
+    \config{\kw{skip}}{s} \Downarrow s
 \endprooftree
 &&
 \prooftree
   E \Downarrow n
   \justifies
-        \langle x:=E,s \rangle \Downarrow s[n \rightarrow x]
+        \config{x:=E}{s} \Downarrow \assign{s}{x}{n}
 \endprooftree
 \end{align*}
 
 \begin{align*}
 \prooftree
-   B \Downarrow \textrm{true} 
-   \quad \langle C_1,s \rangle \Downarrow s'
+   B \Downarrow \textrm{tt}
+   \quad \config{C_1}{s} \Downarrow s'
    \justifies
-         \langle \textrm{$\kw{if}$ $B$ $\kw{then}$ $C_1$ $\kw{else}$ $C_2$}, s \rangle \Downarrow s'
+         \config{\textrm{$\kw{if}$ $B$ $\kw{then}$ $C_1$ $\kw{else}$ $C_2$}}{s} \Downarrow s'
 \endprooftree
 &&
 \prooftree
    B \Downarrow \textrm{ff} 
-   \quad \langle C_2,s \rangle \Downarrow s'
+   \quad \config{C_2}{s} \Downarrow s'
    \justifies
-         \langle \textrm{$\kw{if}$ $B$ $\kw{then}$ $C_1$ $\kw{else}$ $C_2$}, s \rangle \Downarrow s'
+         \config{\textrm{$\kw{if}$ $B$ $\kw{then}$ $C_1$ $\kw{else}$ $C_2$}}{s} \Downarrow s'
 \endprooftree
 \end{align*}
 
 \begin{align*}
 \prooftree
-  \langle C_1,s \rangle \Downarrow s' 
-  \quad \langle C_2,s' \rangle \Downarrow s''
+  \config{C_1}{s} \Downarrow s' 
+  \quad \config{C_2}{s'} \Downarrow s''
   \justifies
-        \langle \textrm{$C_1$; $C_2$},s \rangle \Downarrow s''
+        \config{\textrm{$C_1$; $C_2$}}{s} \Downarrow s''
 \endprooftree
 \end{align*}
 
-Infine rimane la regola del while, da cui il linguaggio prende il nome,
+Infine rimane la regola del while,
 per la quale abbiamo due comportamenti distinti:
 
-\begin{align*}
+\begin{gather*}
 \prooftree
-  B \Downarrow \textrm{true} 
-  \quad \langle C;s \rangle \Downarrow s' 
-  \quad \langle \textrm{$\kw{while}$ $B$ $\kw{do}$ $C$}, s' \rangle \Downarrow s''
+  B \Downarrow \textrm{tt} 
+  \quad \config{C}{s} \Downarrow s'
+  \quad \config{\textrm{$\kw{while}$ $B$ $\kw{do}$ $C$}}{s'} \Downarrow s''
   \justifies
-        \langle \textrm{$\kw{while}$ $B$ $\kw{do}$ $C$,$s$} \rangle \Downarrow s''
+        \config{\textrm{$\kw{while}$ $B$ $\kw{do}$ $C$}}{s} \Downarrow s''
 \endprooftree
-&&
+\\[2em]
 \prooftree
   B \Downarrow \textrm{ff}
   \justifies
-        \langle \textrm{$\kw{while}$ $B$ $\kw{do}$ $C$, $s$} \rangle \Downarrow s
+        \config{\textrm{$\kw{while}$ $B$ $\kw{do}$ $C$}}{s} \Downarrow s
 \endprooftree
-\end{align*}
+\end{gather*}
 
 \section{Espressioni con effetti collaterali}\marginpar{Mancino}
 
@@ -329,44 +325,66 @@ valutazione (oltre a restituire un valore) provoca la modifica
 dello store.
 \end{definizione}
 
+Arricchiamo il linguaggio con l'espressione $\kw{do}$ $C$ $\kw{return}(x)$. 
+In questo modo, possiamo ottenere espressioni con effetti collaterali
+come la seguente:
+
+\[
+	\bigl( \kw{do} x := x+1; \kw{return}(x) \bigr) +
+	\bigl( \kw{do} x := x*2; \kw{return}(x) \bigr)
+\]
+
+Il $\kw{return}$ assicura che venga usato il valore di $x$
+aggiornato. Nell'esempio precedente diviene importante, dunque,
+l'ordine di valutazione. Assumendo che sia $x=0$ prima
+dell'esecuzione dell'espressione, si ha:
+\begin{itemize}
+  \item valutando da sinistra a destra, x=2
+        dopo l'esecuzione dell'espressione;
+  \item valutando da destra a sinistra, x=1
+        dopo l'esecuzione dell'espressione.
+\end{itemize}
+Dal momento che l'espressione ha modificato lo store allora
+l'espressione presenta un effetto collaterale.
+
 Dobbiamo dunque modificare la relazione $\Downarrow$:
 nel paragrafo precedente si trattava di
 $\reld{\Downarrow}{(\AExp \times \Sigma)}{\Nset}$,
 qui diventa
 $\reld{\Downarrow}{(\AExp \times \Sigma)}{(\Nset \times \Sigma)}$.
 Scriveremo quindi giudizi della forma
-$\langle E,s \rangle \Downarrow \langle n, s \rangle$.
+$\config{E}{s} \Downarrow \config{n}{s'}$.
 
 Partendo da questa osservazione non è difficile definire la semantica:
 
 \begin{align*}
 \prooftree
   \justifies
-        \langle \kw{skip},s \rangle \Downarrow s
+        \config{\kw{skip}}{s} \Downarrow s
 \endprooftree
 &&
 \prooftree
-  \langle E,s \rangle \Downarrow \langle n,s' \rangle
+  \config{E}{s} \Downarrow \config{n}{s'}
   \justifies
-        \langle x:=E,s \rangle \Downarrow s'[n \rightarrow x]
+        \config{x:=E}{s} \Downarrow \assign{s'}{x}{n}
 \endprooftree
 \end{align*}
 
-\begin{align*}
+\begin{gather*}
 \prooftree
-  \langle B,s \rangle \Downarrow \langle \textrm{tt},s' \rangle 
-  \quad \langle C_1,s' \rangle \Downarrow s''
+  \config{B}{s} \Downarrow \config{\textrm{tt}}{s'} 
+  \quad \config{C_1}{s'} \Downarrow s''
   \justifies
-        \langle \textrm{$\kw{if}$ $B$ $\kw{then}$ $C_1$ $\kw{else}$ $C_2$, $s$} \rangle \Downarrow s''
+        \config{\textrm{$\kw{if}$ $B$ $\kw{then}$ $C_1$ $\kw{else}$ $C_2$}}{s} \Downarrow s''
 \endprooftree
-&&
+\\[2em]
 \prooftree
-  \langle B,s \rangle \Downarrow \langle \textrm{tt},s' \rangle
-  \quad \langle C;s' \rangle \Downarrow s''
-  \quad \langle \textrm{$\kw{while}$ $B$ $\kw{do}$ $C$, $s'$} \rangle \Downarrow s'''
+  \config{B}{s} \Downarrow \config{\textrm{tt}}{s'}
+  \quad \config{C}{s'} \Downarrow s''
+  \quad \config{\textrm{$\kw{while}$ $B$ $\kw{do}$ $C$}}{s'} \Downarrow s'''
   \justifies
-        \langle \textrm{$\kw{while}$ $B$ $\kw{do}$ $C$,$s$} \rangle \Downarrow s'''
+        \config{\textrm{$\kw{while}$ $B$ $\kw{do}$ $C$}}{s} \Downarrow s'''
 \endprooftree
-\end{align*}
+\end{gather*}
 
 E così via per i restanti schemi.

@@ -242,14 +242,14 @@ Poniamo attenzione ai due casi particolari:
    \llbracket\forall x \itc P\rrbracket(s,t)
       &=
         \begin{cases}
-                \ttv, &\text{se $\forall k\in\Zset\itc(\llbracket P\rrbracket(s,t\substt{k}{x}) = \ttv$});\\
-                \ffv, &\text{se $\exists k\in\Zset\st(\llbracket P\rrbracket(s,t\substt{k}{x}) = \ffv$});
+                \ttv, &\text{se $\forall k \in \Zset \itc \llbracket P \rrbracket \bigl(s,t\substt{k}{x}\bigr) = \ttv$};\\
+                \ffv, &\text{se $\exists k \in \Zset \st \llbracket P \rrbracket \bigl(s,t\substt{k}{x}\bigr) = \ffv$};
         \end{cases}\\
    \llbracket \exists x \st P\rrbracket(s,t)
       &=
         \begin{cases}
-                \ttv,  &\text{se $\exists k\in \Zset\st(\llbracket P\rrbracket(s,t\substt{k}{x}) = \ttv$});\\
-                \ffv,  &\text{se $\forall k\in \Zset\itc(\llbracket P\rrbracket(s,t\substt{k}{x}) = \ffv$});
+                \ttv,  &\text{se $\exists k \in \Zset \st \llbracket P \rrbracket \bigl(s,t\substt{k}{x} \bigr) = \ttv$};\\
+                \ffv,  &\text{se $\forall k \in \Zset \itc \llbracket P \rrbracket \bigl(s,t\substt{k}{x} \bigr) = \ffv$};
         \end{cases}
 \end{align*}
 Dove:
@@ -285,27 +285,28 @@ Dove:
 \end{definizione}
 
 \subsection{Correttezza della logica di Floyd-Hoare}
+Ora che abbiamo tutti gli elementi, possiamo definire quando una tripla di Floyd-Hoare è vera.
 
 \begin{definizione} \summary{(Verità di una tripla di Floyd-Hoare.)}
-Ora che abbiamo tutti gli elementi, possiamo definire quando una tripla di Floyd-Hoare è vera.
-\begin{align*}
-    \llbracket \{P\} C\{Q\} \rrbracket 
-       = \ttv \Leftrightarrow \forall t \in \Gamma_{\FV(P)\union \FV(Q)}\itc
-       &(\forall  s,s'\in \Sigma\itc(\llbracket P \rrbracket(s,t) = \ttv\\
-       &\land \config{C}{s} \ssarrow ^*\config{skip}{s'}\\
-       &\Rightarrow\llbracket Q \rrbracket(s',t)=\ttv);
-\end{align*}
+Sia $P,Q \in \Pred$ e $C \in \Com$, allora la tripla
+$\llbracket \{P\} C\{Q\} \rrbracket$ è vera se e solo se:
+
+\begin{multline*}
+       \forall t \in \Gamma_{\FV(P) \union \FV(Q)} \itc 
+       \forall  s,s'\in \Sigma \itc \llbracket P \rrbracket(s,t) = \ttv
+       \land \config{C}{s} \ssarrow ^*\config{\kw{skip}}{s'}\\
+       \implies \llbracket Q \rrbracket(s',t)=\ttv;
+\end{multline*}
 Dove:
 \[
-   \forall v \subset \Ghost,\Gamma_{v} =\{t \in \Gamma \text{ t.c; $\dom(t) = v$\}}.
+   v \subset \Ghost \quad \Gamma_{v} \defeq \{t \in \Gamma \mid \dom(t) = v \}.
 \]
 \end{definizione}
 
 \begin{teorema} \summary{(Correttezza della logica di Floyd-Hoare.)}
-Se la tripla di Floyd-Hoare ha dimostrazione, allora essa è vera.
-\[
-   \forall P,Q \in \Pred \itc \forall C \in \Com : \vdash \{P\}C\{Q\} \Rightarrow \llbracket \{P\}C\{Q\}\rrbracket;
-\]
+Per ogni $P,Q \in \Pred$ e per ogni $C \in \Com$ se la tripla di Hoare
+$\vdash\{P\}C\{Q\}$ è dimostrabile allora $\llbracket \{P\}C\{Q\}\rrbracket$ è vera.
+
 \begin{proof}
 Si dimostra per induzione strutturale sull'albero di prova per $\{P\}C\{Q\}$.
 
@@ -318,8 +319,7 @@ L'albero di prova è necessariamente della forma
     \{P\}\kw{skip}\{P\}
  \endprooftree
 \]
-e dunque $P = Q$,
-da cui
+e dunque $P = Q$, da cui
 \[
   \bigl\llbracket \{P\} \kw{skip} \{Q\} \bigr\rrbracket
     = \bigl\llbracket \{P\} \kw{skip} \{P\} \bigr\rrbracket
@@ -343,38 +343,38 @@ vale se e solo se $s = s'$, se l'antecedente dell'implicazione è vero,
     = \ttv.
 \]
 
-\textbf{Assegnamento}
+Caso base: $C = x:=\LE$.
+L'albero di prova è necessariamente della forma
 \[
- \prooftree
- \justifies
-    \{Q\substt{\LE}{x}\}x:=\LE\{Q\}
- \thickness=0.08em
- \shiftright 2em
- \using
- \endprooftree
+  \prooftree
+    \nohyp
+   \justifies
+     \{Q\substt{\LE}{x}\}x:=\LE\{Q\}
+  \endprooftree
 \]
-\begin{align*}
-   \llbracket \{Q\substt{\LE}{x}\}x:=\LE\{Q\} \rrbracket \Leftrightarrow
-      &\forall t \in \Gamma_{\FV(\LE)\union \FV(Q)}\itc\forall s,s'\in \Sigma \itc\\
-      &(\llbracket Q \rrbracket\substt{\LE}{x}(s,t) = \ttv\\
-      &\land \config{x:=\LE}{s} \ssarrow ^*\config{skip}{s'}\\
-      &\Rightarrow\llbracket Q \rrbracket(s',t)=\ttv);
-\end{align*}
-Questo grazie al \textit{Lemma 1}.
-\begin{lemma}
-\begin{align*}
-   \forall k \in \Nset \itc
-      &( \config{x:=\LE}{s} \ssarrow ^k\config{skip}{s'}\\
-      &\Rightarrow \exists n \in \Zset\st \config{\LE}{s} \ssarrow ^{k-1}\config{n}{s}
-      \land s'=s \substt{n}{x});
-\end{align*}
-\end{lemma}
 
+$\bigl \llbracket \{Q\substt{\LE}{x}\}x:=\LE\{Q\} \bigr \rrbracket$ è vera
+se e solo se
+\begin{multline*}
+  \forall t \in \Gamma_{\FV(\LE) \union \FV(Q)} \itc \forall s,s' \in \Sigma \itc
+    \llbracket Q \rrbracket \substt{\LE}{x}(s,t) = \ttv \\
+      \land \config{x:=\LE}{s} \ssarrow^*\config{\kw{skip}}{s'}
+       \implies \llbracket Q \rrbracket(s',t) = \ttv;
+\end{multline*}
+Questo grazie al \textit{Lemma 1}.
+
+\begin{lemma}
+\begin{multline*}
+   \forall k \in \Nset \itc
+       \config{x:=\LE}{s} \ssarrow ^k\config{\kw{skip}}{s'}\\
+        \implies \exists n \in \Zset\st \config{\LE}{s} \ssarrow ^{k-1}\config{n}{s}
+         \land s'=s \substt{n}{x};
+\end{multline*}
 \begin{proof}
 Caso base: con $k = 0$ è banalmente vera poiché l'antecedente è falso;\\
 Con: $k = 1$ abbiamo:
 \[
-   \config{x:=\LE}{s} \ssarrow ^{1}\config{skip}{s'};
+   \config{x:=\LE}{s} \ssarrow ^{1}\config{\kw{skip}}{s'};
 \]
 ma allora $\LE \in \Zset$ e $s'=s\substt{n}{x},$ quindi $\exists n=\LE$ tali che:
 \[
@@ -383,7 +383,7 @@ ma allora $\LE \in \Zset$ e $s'=s\substt{n}{x},$ quindi $\exists n=\LE$ tali che
 Questo per definizione di $\rightarrow ^0$ chiusura riflessiva.\\
 Passo induttivo: $k = h+1$
 \[
-   \config{x:=\LE}{s} \ssarrow ^{h+1}\config{skip}{s'};
+   \config{x:=\LE}{s} \ssarrow ^{h+1}\config{\kw{skip}}{s'};
 \]
 Allora si può ricondurre ad $h+1$ passi per poi applicare l'ipotesi induttiva:
 \[
@@ -391,7 +391,7 @@ Allora si può ricondurre ad $h+1$ passi per poi applicare l'ipotesi induttiva:
 \]
 Ora:
 \[
-   \config{x:=\LE'}{s} \ssarrow ^{h}\config{skip}{s'};
+   \config{x:=\LE'}{s} \ssarrow ^{h}\config{\kw{skip}}{s'};
 \]
 per ipotesi induttiva si ha che:
 \[
@@ -403,52 +403,53 @@ e inoltre:
 \]
 Allora aggiungendo l'ultimo passo:
 \[
-   \config{x:=\LE}{s} \ssarrow ^{1}\config{x:=\LE'}{s} \ssarrow ^{h} \config{skip}{s'};
+   \config{x:=\LE}{s} \ssarrow ^{1}\config{x:=\LE'}{s} \ssarrow ^{h} \config{\kw{skip}}{s'};
 \]
 \[
    \config{\LE}{s} \ssarrow ^{1}\config{\LE'}{s} \ssarrow ^{h-1} \config{n}{s'};
 \]
 Allora:
 \[
-   \config{\LE}{s} \ssarrow ^{h} \config{skip}{s'}.
+   \config{\LE}{s} \ssarrow ^{h} \config{\kw{skip}}{s'}.
 \]
 \end{proof}
+\end{lemma}
 
-\textbf{Composizione Sequenziale}
+Passo induttivo: $C = C_1;C_2$
 \[
   \prooftree
-     \{P\} C_1\{Q\}
-   \hspace{1mm}
-     \{Q\} C_2\{R\}
+    \{P\} C_1\{Q\}
+    \quad
+    \{Q\} C_2\{R\}
    \justifies
      \{P\}C_1;C_2\{R\}
-   \thickness=0.08em
-   \shiftright 0em
-   \using
   \endprooftree
 \]
-\begin{align*}
-   \llbracket \{P\} C_1;C_2\{R\} \rrbracket \Leftrightarrow \forall t \in \Gamma_{\FV(P)\union\FV(R)}\itc
-      &(\forall s,s'\in \Sigma \itc(\llbracket P \rrbracket(s,t) = \ttv\\
-      &\land    \config{C_1;C_2}{s} \ssarrow ^*\config{skip}{s'}\\
-      &\Rightarrow\llbracket R \rrbracket(s',t)=\ttv);
-\end{align*}
-\begin{align*}
-   \llbracket \{P\}C_1\{Q\} \rrbracket \land \llbracket \{Q\}C_2\{R\} \rrbracket \Leftrightarrow
-      &\forall t \in \Gamma_{\FV(P)\union\FV(R)\union\FV(Q)}\itc\\
-      &\forall s,s'\in \Sigma \itc(\llbracket P \rrbracket(s,t) = \ttv\\
-      &\land \config{C_1}{s} \ssarrow ^*\config{skip}{s'}\\
-      &\land \llbracket Q\rrbracket(s',t)=\ttv \\
-      &\land \config{C_2}{s'} \ssarrow ^*\config{skip}{s''})\\
-      &\Rightarrow \llbracket R \rrbracket(s'',t)=\ttv;
-\end{align*}
+
+$\bigl \llbracket \{P\} C_1;C_2\{R\} \bigr \rrbracket$ è vera se e solo se
+\begin{multline*}
+    \forall t \in \Gamma_{\FV(P)\union\FV(R)}\itc
+      \forall s,s'\in \Sigma \itc \llbracket P \rrbracket(s,t) = \ttv
+       \land \config{C_1;C_2}{s} \ssarrow^* \config{\kw{skip}}{s'}\\
+        \implies \llbracket R \rrbracket(s',t)=\ttv;
+\end{multline*}
+Ma questo è possibile solo se le ipotesi $\bigl \llbracket \{P\}C_1\{Q\} \bigr \rrbracket$ e $\bigl \llbracket \{Q\}C_2\{R\} \bigr \rrbracket$ 
+\begin{multline*}
+      \forall t \in \Gamma_{\FV(P)\union\FV(R)\union\FV(Q)}\itc
+      \forall s,s'\in \Sigma \itc      
+      (\llbracket P \rrbracket(s,t) = \ttv 
+         \land \config{C_1}{s} \ssarrow^* \config{\kw{skip}}{s'} \\
+         \land \llbracket Q \rrbracket(s',t) = \ttv
+         \land \config{C_2}{s'} \ssarrow^* \config{\kw{skip}}{s''})\\
+      \implies \exists s'' \in \Sigma \st \llbracket R \rrbracket(s'',t) = \ttv;
+\end{multline*}
 Questo grazie al \textit{Lemma 2}.
 \begin{lemma}
 \begin{align*}
    \forall C_1,C_2 \in \Com \itc 
-   &\forall s,s' \in \Sigma \itc \forall n \in \Nset \config{C_1;C_2}{s} \ssarrow ^n\config{skip}{s'} \\
+   &\forall s,s' \in \Sigma \itc \forall n \in \Nset \config{C_1;C_2}{s} \ssarrow ^n\config{\kw{skip}}{s'} \\
    &\Rightarrow \exists n_1,n_2 \in \Nset \st \exists s'' \in \Sigma \st \\
-   &\config{C_1}{s} \ssarrow ^{n_1}\config{skip}{s'} \land \config{C_2}{s'} \ssarrow ^{n_2}\config{skip}{s''}
+   &\config{C_1}{s} \ssarrow ^{n_1}\config{\kw{skip}}{s'} \land \config{C_2}{s'} \ssarrow ^{n_2}\config{\kw{skip}}{s''}
    \land n = n_1 + n_2.
 \end{align*}
 \end{lemma}

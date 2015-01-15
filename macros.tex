@@ -7,7 +7,9 @@
 %% configurazioni della semantica <skip, s>
 \newcommand*{\config}[2]{\langle\ #1,\ #2\ \rangle}
 %% configurazione della semantica denotazionale C[com](s)
-\newcommand*{\denot}[3]{#1 \llbracket #2 \rrbracket (#3)}
+\newcommand*{\denotC}[2]{\calC \llbracket #1 \rrbracket (#2)}
+\newcommand*{\denotE}[2]{\calE \llbracket #1 \rrbracket (#2)}
+\newcommand*{\denotB}[2]{\calB \llbracket #1 \rrbracket (#2)}
 %% assegnamento del while :=
 \newcommand*{\weq}{:=}
 \newcommand*{\assign}[3]{#1[#2\mapsto#3]} % comodo per s[x -> n]

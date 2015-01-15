@@ -33,11 +33,11 @@ Vediamo quindi le funzioni semantiche per il linguaggio WHILE, queste sono funzi
 
 \section{Definizione delle semantica di AExp} \marginpar{Marano}
 Abbiamo visto come è fatta la funzione semantica per le espressioni ma ora dobbiamo vedere cosa accade nei vari casi di espressione. La semantica della costante associa semplicemente alla costante $n$ il suo valore numerico.
-$$ \denot{\calE}{n}{s} \defeq \llbracket n \rrbracket_{Num}$$
+$$ \denotE{n}{s} \defeq \llbracket n \rrbracket_{\Integer}$$
 La semantica della somma invece associa alla somma di due espressioni la somma della semantica di queste due espressioni, se tali semantiche esistono:
-$$ \denot{\calE}{E_1 + E_2}{s} \defeq \begin{cases}
-        \denot{\calE}{E_1}{s} + \denot{\calE}{E_2}{s} & \text{se } \denot{\calE}{E_1}{s} \neq \bot \land \denot{\calE}{E_2}{s} \neq \bot;\\
-        \bot & \text{se } \denot{\calE}{E_1}{s} = \bot \lor \denot{\calE}{E_2}{s} = \bot;\\
+$$ \denotE{E_1 + E_2}{s} \defeq \begin{cases}
+        \denotE{E_1}{s} + \denotE{E_2}{s}, &\text{se $\denotE{E_1}{s} \neq \bot$ e $\denotE{E_2}{s} \neq \bot$;}\\
+      	\bot, &\text{altrimenti.}\\
         \end{cases}
 $$
 Vedremo in seguito come poter eliminare questa e altre funzioni per casi definendo nuove funzioni come per esempio la somma $\conadd$ in $\Nset_\bot$.
@@ -46,63 +46,67 @@ Vedremo in seguito come poter eliminare questa e altre funzioni per casi definen
 Ora vediamo la semantica dei vari comandi presenti nel linguaggio WHILE:
 
 \begin{align*}
-&\denot{\calC}{x \weq E}{s} \defeq \begin{cases}
-        \assign{s}{x}{\denot{\calE}{E}{s}} & \text{se } \denot{\calE}{E}{s} \neq \bot;\\
-        \bot & \text{altrimenti};
+&\denotC{x \weq E}{s} \defeq \begin{cases}
+        \bigassign{s}{x}{\denotE{E}{s}}, &\text{se $\denotE{E}{s} \neq \bot$;}\\
+        \bot, &\text{altrimenti.}
         \end{cases}
 \pts
-&\denot{\calC}{\kw{skip}}{s} \defeq s
+&\denotC{\kw{skip}}{s} \defeq s;
 \pts
-&\denot{\calC}{C_1 ; C_2}{s} \defeq \begin{cases}
-        \bot & \text{se } \denot{\calC}{C_1}{s} = \bot;\\
-        \denot{\calC}{C_2}{\denot{\calC}{C_1}{s}} & \text{altrimenti};\\
+&\denotC{C_1 ; C_2}{s} \defeq \begin{cases}
+        \bot, &\text{se $\denotC{C_1}{s} = \bot$;}\\
+        \denotC{C_2}{\denotC{C_1}{s}}, &\text{altrimenti.}\\
         \end{cases}
 \pts
-&\denot{\calC}{\condif{B}{C_1}{C_2}}{s} \defeq \begin{cases}
-        \denot{\calC}{C_1}{s} & \text{se } \denot{\calB}{B}{s} = \ttv ;\\
-        \denot{\calC}{C_2}{s} & \text{se } \denot{\calB}{B}{s} = \ffv ;\\
-        \bot & \text{altrimenti};
+&\denotC{\condif{B}{C_1}{C_2}}{s} \defeq \begin{cases}
+        \denotC{C_1}{s}, &\text{se $\denotB{B}{s} = \ttv$;}\\
+        \denotC{C_2}{s}, &\text{se $\denotB{B}{s} = \ffv$;}\\
+        \bot, &\text{altrimenti.}
         \end{cases}
 \pts
-&\denot{\calC}{\while{B}{C}}{s} \defeq \denot{\calC}{\condif{B}{(C ; \while{B}{C}}{\kw{skip}}}{s}
 \end{align*}
 
-Daremo in seguito una semantica più precisa del comando while e vedremo anche che tale comando, che come abbiamo detto sopra è una funzione, è continuo.
+Daremo in seguito una semantica più precisa del comando while, per ora possiamo solo stabilire l'uguaglianza
+$$\denotC{\while{B}{C}}{s} = \denotC{\condif{B}{(C ; \while{B}{C}}{\kw{skip}}}{s}$$
 
 \section{Eliminazione funzioni per casi} \marginpar{Marano}
 Vediamo ora come ridefinire alcune di queste semantiche in modo da non avere funzioni per casi, per ottenere tale risultato basta ampliare la definizione di alcuni operatori. Prendiamo per esempio la semantica della somma, in tal caso basta definire l'operatore di somma tra $\Nset_\bot$ in modo che se sommo due numeri naturali ottengo lo stesso risultato che otterrei normalmente con la somma che conosciamo, mentre se sommo $\bot$ con un naturale o con un altro $\bot$ ottengo ancora $\bot$:
 $$\fund{\conadd}{\Nset_\bot \times \Nset_\bot}{\Nset_\bot} \defeq \lambda n_1, n_2 \in \Nset_\bot . \begin{cases}
-        n_1 + n_2 & \text{se } n_1, n_2 \in \Nset;\\
-        \bot & \text{altrimenti;}
+        n_1 + n_2, &\text{se $n_1, n_2 \in \Nset$;}\\
+        \bot, &\text{altrimenti.}
         \end{cases}$$
 Ora quindi possiamo semplicemente dire che la semantica della somma è:
-$$\denot{\calE}{E_1 + E_2}{s} = \denot{\calE}{E_1}{s} \conadd \denot{\calE}{E_2}{s}$$
+$$\denotE{E_1 + E_2}{s} = \denotE{E_1}{s} \conadd \denotE{E_2}{s}$$
 
 Esattamente allo stesso modo ora definiremo delle funzioni che mappano State Transformer in State Transformer e che non hanno bisogno di trattare in maniera separata i vari casi:
 \begin{gather*}
 \fund{\mathrm{seq}}{\ST \times \ST}{\ST} \\
 \mathrm{seq}(f,g)(s) \defeq \begin{cases}
-        \bot & \text{se } f(s) = \bot;\\
-        g(f(s)) & \text{altrimenti};
+        \bot, &\text{se $f(s) = \bot$;}\\
+        g(f(s)), &\text{altrimenti.}
         \end{cases}\\
 \pts
 \fund{\mathrm{cond}}{P \times \ST \times \ST}{\ST} \\
 \mathrm{cond}(p,f,g)(s) \defeq \begin{cases}
-        f(s) & \text{se } p(s) = \ttv;\\
-        g(s) & \text{se } p(s) = \ffv;\\
-        \bot & \text{altrimenti};
+        f(s), &\text{se $p(s) = \ttv$;}\\
+        g(s), &\text{se $p(s) = \ffv$;}\\
+        \bot, &\text{altrimenti.}
         \end{cases}\\
 \end{gather*}
 
 Perciò rivediamo le semantiche di questi due comandi:
-$$ \denot{\calC}{C_1 ; C_2}{s} = \mathrm{seq}(\calC \llbracket C_1 \rrbracket, \calC \llbracket C_2 \rrbracket)(s)$$
+$$ \denotC{C_1 ; C_2}{s} = \mathrm{seq}(\calC \llbracket C_1 \rrbracket, \calC \llbracket C_2 \rrbracket)(s)$$
 
-$$\denot{\calC}{\condif{B}{C_1}{C_2}}{s} = \mathrm{cond}(\calB \llbracket B \rrbracket, \calC \llbracket C_1 \rrbracket, \calC \llbracket C_2 \rrbracket)(s)$$.
+$$\denotC{\condif{B}{C_1}{C_2}}{s} = \mathrm{cond}(\calB \llbracket B \rrbracket, \calC \llbracket C_1 \rrbracket, \calC \llbracket C_2 \rrbracket)(s)$$.
 
 Proviamo a riscrivere anche la semantica del comando while e otteniamo un risultato molto interessante:
-$$ \denot{\calC}{\while{B}{C}}{s} = \denot{\calC}{\condif{B}{(C ; \while{B}{C}}{\kw{skip}}}{s}$$
+$$ \denotC{\while{B}{C}}{s} = \denotC{\condif{B}{(C ; \while{B}{C}}{\kw{skip}}}{s}$$
 ma ponendo ora $f = \mathrm{cond}(\calB \llbracket B \rrbracket, \mathrm{seq}(\calC \llbracket C \rrbracket, f), \mathrm{id})$ dove con $id$ intendiamo la semantica del comando $\kw{skip}$.
-Otteniamo quindi, definendo $\fund{F}{\ST}{\ST}$ come $F(f) \defeq \mathrm{cond}(\calB \llbracket B \rrbracket, \mathrm{seq}(\calC \llbracket C \rrbracket, f), \mathrm{id})$ che $f$ è un punto fisso di $F$, ovvero che per trovare la semantica del comando while ci basta trovare il punto fisso di tale funzione, per fare ciò sfrutteremo il Teorema di Tarski visto precedentemente. Per usare però tale teorema dobbiamo prima dimostrare che $\ST$ è effettivamente un CPO:
+Definiamo $\fund{F}{\ST}{\ST}$ come:
+\[
+F(f) \defeq \mathrm{cond}(\calB \llbracket B \rrbracket, \mathrm{seq}(\calC \llbracket C \rrbracket, f), \mathrm{id})
+\]
+e otteniamo quindi che $f$ è un punto fisso di $F$, ovvero che per trovare la semantica del comando while ci basta trovare il punto fisso di tale funzione, per fare ciò sfrutteremo il Teorema di Tarski visto precedentemente. Per usare però tale teorema dobbiamo prima dimostrare che $\ST$ è effettivamente un CPO:
 
 \begin{proposizione} \summary{($(ST, \sqsubseteq)$ è un CPO.)}
 Sia ST l'insieme degli State Transformer e sia $\reld{\sqsubseteq}{ST}{ST}$ una relazione binaria di ordinamento parziale che presi due State Transformer $f$ e $g$ si ha che $f \sqsubseteq g$ se $g$ è più definita di $f$, ovvero in simboli: $\forall f,g \in ST \itc f \sqsubseteq g \Longleftrightarrow \forall s \in \Sigma \itc f(s)\convrg \Rightarrow f(s) = g(s)$. Allora $(ST, \sqsubseteq)$ è un CPO.
@@ -112,35 +116,14 @@ Poniamo dunque $\bot$ minimo di ST visto che è lo State Transformer meno defini
 Sia $I \subseteq \Nset \itc C = \left\{a_i\right\}_{i \in I}$ allora se $I$ è numerabile ($|I| < \aleph_0$) allora il $\lub$ è l'elemento massimo nella catena. Se invece $|I| = \aleph_0$ definisco:
         $\forall x \in \Sigma \itc f_l(x) =
     \begin{cases}
-      f_h(x) & \text{se } \exists i \in I : f_h(x)\convrg;\\
-      \divrg & \text{altrimenti}
+      f_h(x), &\text{se $\exists i \in I \itc f_h(x)\convrg$;}\\
+      \divrg, &\text{altrimenti.}
     \end{cases}\\ $
-È ovvio che quello appena definito è proprio il $\lub$ visto che è definito almeno come ogni altro State Transformer, dimostriamolo applicando la deifinizione di $\lub$.
-$u = lub\ C \Longleftrightarrow (\forall i \in I \itc f_i \sqsubseteq u) \land (\forall u' \in ST \itc (\forall j \in I \itc f_j \sqsubseteq u') \Rightarrow u \sqsubseteq u')$.
+È ovvio che quello appena definito è proprio il $\lub$ visto che è definito almeno come ogni altro State Transformer, dimostriamolo applicando la definizione di $\lub$.
+$u = \lub C \Longleftrightarrow (\forall i \in I \itc f_i \sqsubseteq u) \land (\forall u' \in ST \itc (\forall j \in I \itc f_j \sqsubseteq u') \Rightarrow u \sqsubseteq u')$.
 Quindi prendiamo un qualsiasi State Transformer $f_i \in C$ e dimostriamo che è minore di $f_l$ tramite la relazione sopra definita, dobbiamo quindi dimostrare che se converge per un qualsiasi store $s \in \Sigma$ allora anche $f_l$ converge. Sia $i \in I \itc \forall s \in \sum \itc f_i(s)\convrg$ allora esiste un $i \in I$ per il quale $f_i$ converge, perciò $f_l$ convergerà a quello stesso valore per definizione: $(f_l(s)\convrg \land f_l(s)=f_i(s))$\\
 Perciò $\forall j \in I \itc f_j \sqsubseteq f_l$ dunque  $f_l = \lub C$. Visto che $(ST, \sqsubseteq)$ ha minimo e ogni sua catena ha $\lub$ è un CPO.
 \end{proof}
-
-\section{Effetti collaterali} \marginpar{Marano}
-Finora abbiamo tralasciato gli effetti collaterali ovvero, come già detto nei capitoli precedenti, abbiamo escluso (per semplificare la spiegazione) la possibilità che la valutazione di espressioni o di booleani cambi lo store. Se volessimo introdurre gli effetti collaterali dovremmo semplicemente modificare leggermente le definizioni viste sopra:
-$$ \denot{\calE}{n}{s} \defeq \llbracket n \rrbracket_{Num}$$
-La semantica della valutazione di una costante ovviamente non varia, come non varia quella dello $\kw{skip}$ e quella della composizione sequenziale visto che non contengono né espressioni né booleani.
-
-\begin{align*}
-&\denot{\calE}{E_1 + E_2}{s} \defeq \denot{\calE}{E_1}{s} \conadd \denot{\calE}{E_2}{\denot{\calE}{E_1}{s}}\\
-&\denot{\calC}{x \weq E}{s} \defeq \begin{cases}\\
-        \assign{\denot{\calE}{E}{s}}{x}{\denot{\calE}{E}{s}} & \text{se } \denot{\calE}{E}{s} \neq \bot;\\
-        \bot & \text{altrimenti};
-        \end{cases}\\
-&\denot{\calC}{\kw{skip}}{s} \defeq s\\
-&\denot{\calC}{C_1 ; C_2}{s} \defeq \mathrm{seq}(\calC \llbracket C_1 \rrbracket, \calC \llbracket C_2 \rrbracket)(s)\\
-&\denot{\calC}{\condif{B}{C_1}{C_2}}{s} \defeq \begin{cases}\\
-        \denot{\calC}{C_1}{\denot{\calB}{B}{s}} & \text{se } \denot{\calB}{B}{s} = \ttv ;\\
-        \denot{\calC}{C_2}{\denot{\calB}{B}{s}} & \text{se } \denot{\calB}{B}{s} = \ffv ;\\
-        \bot & \text{altrimenti};
-        \end{cases}\\
-&\denot{\calC}{\while{B}{C}}{s} \defeq \denot{\calC}{\condif{B}{(C ; \while{B}{C}}{\kw{skip}}}{\denot{\calB}{B}{s}}
-\end{align*}
 
 \section{Continuità del comando While}\marginpar{Mancino}
 Il comando $ while\; B\; do\; C $ è continuo.
