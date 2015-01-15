@@ -3,6 +3,198 @@ In questo capitolo verranno introdotti alcuni esercizi e alcune osservazioni
 che non riguardano una specifica semantica vista nei capitoli precedenti,
 ma le affrontano un po' tutte.
 
+\subsection{Conservazione passi small step rispetto a denotazionale}
+\marginpar{Segalini}
+
+\begin{proposizione}[Conservazione passi small step per espressioni]
+\label{conservazione-passi-small-step-expr}
+\[
+  \forall E \in \AExp \itc \config{E}{s} \ssarrow \config{E'}{s} 
+  \implies \calE\llbracket E \rrbracket(s) = \calE\llbracket E' \rrbracket(s)
+\]
+
+\begin{proof}
+Per induzione strutturale sulla costruzione di $\AExp$ (consideriamo
+espressioni senza ``side effects'' nella semantica small step poichè sono
+definite in talo modo anche nella denotazionale):
+
+Caso base: $E = x$.
+
+Per ipotesi abbiamo che:
+\[
+  \config{x}{s} \ssarrow \config{n}{s} \land s(x) = n,
+\]
+dunque:
+\begin{align*}
+  \calE\llbracket x \rrbracket(s) &= s(x),
+    &\law{per def. della denotazionale} \\
+  &= n,
+    &\law{per ipotesi} \\
+  &= \calE\llbracket n \rrbracket(s).
+\end{align*}
+
+Caso base: $E = n_1 + n_2$.
+
+Per ipotesi abbiamo che:
+\[
+  \config{n_1 + n_2}{s} \ssarrow \config{n_3}{s} \land n_1 + n_2 = n_3,
+\]
+dunque:
+\begin{align*}
+  \calE\llbracket n_1 + n_2 \rrbracket(s) 
+  &= \calE\llbracket n_1 \rrbracket(s) 
+  + \calE\llbracket n_2 \rrbracket(s),
+    &\law{per def. della denotazionale} \\
+  &= n_1 + n_2,
+    &\law{per def. della denotazionale} \\
+  &= n_3,
+    &\law{per ipotesi} \\
+  &= \calE\llbracket n_3 \rrbracket(s).
+\end{align*}
+
+Passo induttivo: $E = E_1 + E_2$.
+
+Per ipotesi abbiamo che:
+\[
+  \config{E_1 + E_2}{s} \ssarrow \config{E_1' + E_2}{s} \land
+  \config{E_1}{s} \ssarrow \config{E_1'}{s}
+\]
+dunque:
+\begin{align*}
+  \calE\llbracket E_1 + E_2 \rrbracket(s)
+  &= \calE\llbracket E_1 \rrbracket(s) +  \calE\llbracket E_2
+    \rrbracket(s),
+    &\law{per def. della denotazionale} \\
+  &= \calE\llbracket E_1' \rrbracket(s) +  \calE\llbracket E_2
+    \rrbracket(s),
+    &\law{per ipotesi induttiva} \\
+  &= \calE\llbracket E_1' + E_2 \rrbracket(s).
+\end{align*}
+\end{proof}
+\end{proposizione}
+
+\begin{proposizione}[Conservazione passi small step per comandi]
+\[
+  \forall C \in \Com \itc \config{C}{s} \ssarrow \config{C'}{s'} 
+  \implies \calC\llbracket C \rrbracket(s) = \calC\llbracket C' \rrbracket(s')
+\]
+\begin{proof}
+Per induzione sulla struttura di $\Com$ (come per il lemma precedente
+la semantica small step delle espressioni data è senza ``side effects'':
+
+Caso base: $C = (x \weq n)$.
+
+Per definizione della semantica small step:
+\[
+  \config{x \weq n}{s} \ssarrow \config{\kw{skip}}{\assign{s}{n}{x}},
+\]
+dunque:
+\begin{align*}
+  \calC\llbracket x \weq n \rrbracket(s)
+  &= \assign{s}{n}{x},
+    &\law{per def. della denotazionale} \\
+  &= \id(\assign{s}{n}{x}),
+    &\law{per def. di $\id$} \\ 
+  &= \calC\llbracket \kw{skip} \rrbracket(\assign{s}{n}{x}).
+     &\law{per def. della denotazionale} \\
+\end{align*}
+
+Caso base: $C = (x \weq E)$.
+
+Per definizione della semantica small step:
+\begin{align*}
+  &\config{x \weq E}{s} \ssarrow \config{x \weq E'}{s}, \\
+  &\config{E}{s} \ssarrow \config{E'}{s},
+\end{align*}
+dunque:
+\begin{align*}
+  \calC\llbracket x \weq E \rrbracket(s)
+  &= \assign{s}{\calE\llbracket E \rrbracket(s)}{x},
+    &\law{per def. della denotazionale} \\
+  &= \assign{s}{\calE\llbracket E' \rrbracket(s)}{x},
+    &\law{per il lemma
+      \ref{conservazione-passi-small-step-expr}: 
+      $\calE\llbracket E \rrbracket(s) 
+      = \calE\llbracket E' \rrbracket(s)$} \\
+  &= \calC\llbracket x \weq E' \rrbracket(s).
+    &\law{per def. della denotazionale}
+\end{align*}
+
+Caso base: $C = (\kw{if} \ttv \kw{then} C_1 \kw{else} C_2)$.
+
+Per definizione della semantica small step:
+\[
+  \config{\kw{if} \ttv \kw{then} C_1 \kw{else} C_2}{s} \ssarrow \config{C_1}{s}
+\]
+dunque:
+\begin{align*}
+  \calC\llbracket \kw{if} \ttv \kw{then} C_1 \kw{else} C_2 \rrbracket(s)
+  &= \calC\llbracket C_1 \rrbracket(s).
+    &\law{per def. della denotazionale} \\
+\end{align*}
+Analogo il caso per $\false$.
+
+Caso base: $C = (\kw{if} B \kw{then} C_1 \kw{else} C_2)$.
+
+Per definizione della semantica small step:
+\begin{align*}
+  &\config{\kw{if} B \kw{then} C_1 \kw{else} C_2}{s} \ssarrow 
+  \config{\kw{if} B' \kw{then} C_1 \kw{else} C_2}{s}, \\
+  &\config{B}{s} \ssarrow \config{B'}{s},
+\end{align*}
+dunque:
+\begin{align*}
+  \calC\llbracket \kw{if} B \kw{then} C_1 \kw{else} C_2 \rrbracket(s)
+  &= \cond(\calB\llbracket B \rrbracket, 
+    \calC\llbracket C_1 \rrbracket,
+    \calC\llbracket C_2 \rrbracket),
+    &\law{def. denotazionale} \\
+  &= \cond(\calB\llbracket B' \rrbracket, 
+    \calC\llbracket C_1 \rrbracket,
+    \calC\llbracket C_2 \rrbracket),
+    &\law{lemma  
+      \ref{conservazione-passi-small-step-expr}: 
+      $\calE\llbracket E \rrbracket(s) 
+      = \calE\llbracket E' \rrbracket(s)$} \\
+  &= \calC\llbracket \kw{if} B' \kw{then} C_1 \kw{else} C_2 \rrbracket(s).
+     &\law{def. denotazionale}
+\end{align*}
+
+Caso base:  $C = (\kw{while} B \kw{do} C)$.
+
+Per definizione della semantica small step:
+\[
+  \config{\kw{while} B \kw{do} C}{s} \ssarrow 
+    \config{\kw{if} B \kw{then} (C ; \kw{while} B \kw{do} C) \kw{else} C_2}{s},
+\]
+dunque per definizione di $\kw{while} B \kw{do} C$ nella denotazionale:
+\[
+  \calC\llbracket \kw{while} B \kw{do} C \rrbracket(s)
+    =  \calC\llbracket \kw{if} B \kw{then} (C ; \kw{while} B \kw{do} C)
+    \kw{else} C_2 \rrbracket(s).
+\]
+
+
+Passo induttivo: $C = (C_1; C_2)$.
+
+Per definizione della semantica small step:
+\begin{align*}
+  &\config{C_1; C_2}{s} \ssarrow \config{C_1'; C_2}{s'}, \\
+  &\config{C_1}{s} \ssarrow \config{C_1'}{s'},
+\end{align*}
+dunque:
+\begin{align*}
+  \calC\llbracket C_1; C_2 \rrbracket(s)
+  &= \compfun{\calC\llbracket C_2 \rrbracket(s)}{\calC\llbracket C_1
+    \rrbracket(s)}, \\
+  &= \compfun{\calC\llbracket C_2 \rrbracket(s)}{\calC\llbracket C_1'
+    \rrbracket(s')},
+    &\law{per ipotesi induttiva} \\
+  &= \calC\llbracket C_1'; C_2 \rrbracket(s').
+\end{align*}
+\end{proof}
+\end{proposizione}
+
 \subsection{Esercizio 1} \marginpar{Mancino}
 Aggiungere al linguaggio WHILE visto a lezione l'espressione:
 \[ Exp \ni E ::= \dots \vbar \textrm{$B$ ? $E_2$ : $E_3$} \]
