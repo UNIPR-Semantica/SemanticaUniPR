@@ -20,11 +20,11 @@ Il dominio astratto cattura alcune caratteristiche del dominio concreto,
 tralasciando quelle restanti; in questo caso
 $\Sign$ cattura semplici relazioni rispetto al
 numero $0$, ad esempio $\cdot < 0$, $\cdot = 0$, \dots
-L'ordinamento del dominio è indicato nel diagramma di Hasse di
-figura~\ref{fig:ordering-rels-lattice}.
 \[
   (\Sign, \sqsubseteq).
 \]
+L'ordinamento del dominio è indicato nel diagramma di Hasse di
+figura~\ref{fig:ordering-rels-lattice}.
 
 \begin{figure}
 \begin{center}
@@ -120,7 +120,8 @@ La funzione $\gamma$ è monotona.
 \begin{definizione} \summary{($\fund{\alpha}{\wp(\Zset)}{\Sign}$.)}
 La funzione $\fund{\alpha}{\wp(\Zset)}{\Sign}$ mappa un insieme
 di elementi concreti nel più preciso valore astratto che rappresenta
-tale insieme; viene definita attraverso la funzione $\beta$:
+tale insieme; per poterla definire usiamo una funzione ausiliaria
+$\beta$:
 \[
   \fund{\beta}{\Zset}{\Sign}
 \]
