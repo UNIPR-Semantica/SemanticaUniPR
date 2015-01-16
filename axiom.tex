@@ -39,7 +39,123 @@ Definire la verità/falsità di tali giudizi è quindi il modo
 per definire tale semantica che va sotto il nome di
 \emph{semantica assiomatica}.
 
-\section{Correttezza totale}\marginpar{Lombardi}
+Introduciamo alcuni schemi di assiomi:
+\[
+  \rulename {H-SKIP}
+  \prooftree
+    \nohyp
+  \justifies
+    \{P\}\kw{skip}\{P\}
+  \endprooftree
+\]
+\pts
+\[
+  \rulename {H-ASS}
+  \prooftree
+    \nohyp
+   \justifies
+     \{Q\substt{\LE}{x}\}x:=\LE\{Q\}
+  \endprooftree
+\]
+\pts
+\[
+  \rulename {H-SEQ}
+  \prooftree
+    \{P\} C_1\{Q\}
+    \quad
+    \{Q\} C_2\{R\}
+   \justifies
+     \{P\}C_1;C_2\{R\}
+  \endprooftree
+\]
+\pts
+\[
+  \rulename {H-COND}
+  \prooftree
+    \{P \land B\} C_1\{Q\}
+    \quad
+    \{P \land \neg B\} C_2\{Q\}
+   \justifies
+     \{P\}\kw{if} B \kw{then} C_1 \kw{else} C_2\{Q\}
+  \endprooftree
+\]
+Per poter esprimere lo schema di assioma per il WHILE, abbiamo bisogno di introdurre l'invariante di ciclo.
+L'invariante è una proprietà delle variabili che valgono subito prima che venga eseguita 
+l'operazione da iterare ,alla fine di ogni ripetizione del ciclo, in particolare
+vale alla fine dell'intero ciclo e l'invariante in congiunzione con la guardia negata deve essere ciò che ci serve.
+Il predicato $P$ è un \emph{invariante di ciclo} per il ciclo
+$\kw{while} B \kw{DO} C $ se $\{P \land B\} C\{P\}$, vuol dire che $P$
+è vero dopo ogni iterazione del ciclo e in particolare alla fine del ciclo.
+\[
+  \rulename {H-WHILE}
+  \prooftree
+    \{P \land B\} C \{P\}
+   \justifies
+     \{P\}\kw{while} B \kw{do} C \{P \land \neg B\}
+  \endprooftree
+\]
+La \emph{regola della conseguenza} dice che è sempre possibile rafforzare la precondizione
+e indebolire la postcondizione.
+\[
+  \rulename {H-CONS}
+  \prooftree
+    P \implies P'
+    \quad
+    \{P'\}C\{Q'\}
+    \quad
+    Q' \implies Q
+   \justifies
+     \{P\}C\{Q\}
+  \endprooftree
+\]
+Disgiunzione in precondizione:
+\[
+  \rulename {H-PRE.OR}
+  \prooftree
+    \{P_1\} C\{Q\}
+    \quad
+    \dots
+    \quad
+    \{P_n\} C\{Q\}
+   \justifies
+     \{P_1 \lor \dots \lor P_n\}C\{Q\}
+  \endprooftree
+\]
+\pts
+\[
+  \rulename {H-PRE.TRUE}
+  \prooftree
+    \nohyp
+   \justifies
+     \{false\}C\{Q\}
+  \endprooftree
+\]
+La precondizione $false$ non è mai soddisfatta quindi $C$ e $Q$ possono essere qualsiasi cosa
+Congiunzione in postcondizione:
+\[
+  \rulename {H-POST.AND}
+  \prooftree
+    \{P\} C\{Q_1\}
+    \quad
+    \dots
+    \quad
+    \{P\} C\{Q_n\}
+   \justifies
+     \{P\}C\{Q_1 \land \dots \land Q_n\}
+  \endprooftree
+\]
+\pts
+\[
+  \rulename {H-POST.TRUE}
+  \prooftree
+    \nohyp
+   \justifies
+     \{P\}C\{true\}
+  \endprooftree
+\]
+La postcondizione $true$ è sempre soddisfatta quindi $P$ e $C$ possono essere qualsiasi cosa.
+
+\section{Correttezza totale} \marginpar{Lombardi}
 \begin{definizione}\summary{(Correttezza totale)}
 Un \emph{giudizio di correttezza totale} è una tripla della forma
 \[
