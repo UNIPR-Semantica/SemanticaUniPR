@@ -348,7 +348,11 @@ può essere riscritta come:
 
 \section{Dominio astratto dei booleani}
 
-Consideriamo ora come dominio astratto quello dei booleani.
+Consideriamo ora come dominio astratto quello dei booleani,
+con il suo ordinamento:
+\[
+  (\AbBool, \subseteqq).
+\]
 Il dominio astratto dei booleani $\AbBool$ viene definito per poter
 estendere l'insieme delle operazioni su $\Sign$; alcune operazioni,
 in particolare quelle di confronto tra elementi di $\Sign$,
@@ -517,7 +521,7 @@ e per ogni $x \in \dom(s_1^\#)$:
 \]
 se e solo se:
 \[
-	\dom(s_1^\#) = \dom(s_2^\#) \land s_1^\#(x) \sqsubseteq_\Sign s_2^\#(x)
+	\dom(s_1^\#) = \dom(s_2^\#) \land s_1^\#(x) \sqsubseteq s_2^\#(x)
 \]
 
 Completate tali definizioni, è possibile ipotizzare un insieme di regole
@@ -635,14 +639,14 @@ definiamo un operatore di congiunzione cortocircuitato.
     \nohyp
   \justifies
     \config{\condif{b}{C_1}{C_2}}{s} \ssarrow \config{C_1}{s}
-    \using b \sqsubseteq_B 1
+    \using b \subsetneqq 0
   \endprooftree
   \\
   \rulename{IF-FALSE}
   \prooftree
     \nohyp
   \justifies
-    \langle \condif{b}{C_1}{C_2}, s \rangle \ssarrow \langle C_2, s \rangle
-    \using b \sqsubseteq_B 0
+    \langle \condif{b}{C_1}{C_2}, s \rangle \ssarrow \config{C_2}{s}
+    \using b \subsetneqq 1
   \endprooftree
 \end{gather*}
