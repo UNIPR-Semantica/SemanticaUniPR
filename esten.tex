@@ -317,3 +317,44 @@ uccisione di variabile:
   \using s(\ecc) \divrg \land\ s'(\ecc) \convrg
   \endprooftree
 \end{align*}
+
+\section{Comando ``$\repeatuntil{C}{B}$''} \marginpar{Trombi}
+
+Nel seguito viene aggiunto il costrutto $\repeatuntil{C}{B}$.
+Si dia per assodato che tale costrutto è equivalente a
+$C;\kw{while} \kw{not} B \kw{do} C$
+
+\subsection{Sintassi}
+
+Aggiungiamo alla sintassi del linguaggio WHILE il comando
+$\repeatuntil{C}{B}$:
+
+sia $B \in \BExp$;
+
+\[
+  \Com \ni C ::= \dots \vbar \repeatuntil{C}{B}.
+\]
+
+\subsection{Semantica operazionale big-step}
+
+\begin{gather*}
+  \rulename{REPEAT-UNTIL.TRUE}
+  \prooftree
+    \config{C}{s} \Downarrow s' \quad B \Downarrow \ttv
+    \justifies \config{\repeatuntil{C}{B}}{s} \Downarrow s'
+  \endprooftree
+  \\
+  \rulename{REPEAT-UNTIL.FALSE}
+  \prooftree
+    \config{C}{s} \Downarrow s' \quad B \Downarrow \ffv \quad \config{\repeatuntil{C}{B}}{s'} \Downarrow s''
+    \justifies \config{\repeatuntil{C}{B}}{s} \Downarrow s''
+  \endprooftree
+\end{gather*}
+
+\subsection{Semantica operazionale small-step}
+
+\subsection{Semantica denotazionale}
+
+\subsection{Correttezza parziale nella logica di Floyd-Hoare}
+
+\subsection{Correttezza totale nella logica di Floyd-Hoare}

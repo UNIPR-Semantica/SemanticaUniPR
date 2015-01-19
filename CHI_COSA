@@ -4,7 +4,7 @@ Mancino: nozioni preliminari, continuità del comando while, esercizi logica
 Marano: esercizi CPO, Teorema di Tarski
 Segalini: semantica degli array, teorema conservazione passi small step in denotazionale,
           normalizzazione big step, semantica delle eccezioni, if correttezza logica floyd hoare
-Trombi: interpretazione astratta
+Trombi: interpretazione astratta, semantica del comando "repeat C until B"
 Lombardi: logica di specifica, definizione sintattica, variabili libere,
           Valutazione semantica di LExp, Valutazione semantica di Pred,
 		  Verità di una tripla di Floyd-Hoare, Correttezza della logica di Floyd-Hoare
