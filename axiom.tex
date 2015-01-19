@@ -39,6 +39,7 @@ Definire la verità/falsità di tali giudizi è quindi il modo
 per definire tale semantica che va sotto il nome di
 \emph{semantica assiomatica}.
 
+\section{Regole assiomatiche} \marginpar{Lombardi}
 Introduciamo alcuni schemi di assiomi:
 \[
   \rulename {H-SKIP}
@@ -48,16 +49,20 @@ Introduciamo alcuni schemi di assiomi:
     \{P\}\kw{skip}\{P\}
   \endprooftree
 \]
-\pts
+Con questo assioma vorremmo poter dire che $\kw{skip}$ termina sempre,
+ma la correttezza parziale non ci permette di farlo. 
+Quindi possiamo concludere che $\kw{skip}$ lascia lo stato invariato.
 \[
   \rulename {H-ASS}
   \prooftree
     \nohyp
    \justifies
-     \{Q\substt{\LE}{x}\}x:=\LE\{Q\}
+     \{Q\substt{E}{x}\}x:=E\{Q\}
   \endprooftree
 \]
-\pts
+L'assegnamento prevede la modifica dello stato, assegnando il valore del termine $E$ alla variabile $x$.
+La notazione $Q\substt{E}{x}$ indica il risultato della sostituzione del termine $E$
+per tutte le occorrenze della variabile $x$ nell'istruzione $Q$.
 \[
   \rulename {H-SEQ}
   \prooftree
@@ -68,7 +73,17 @@ Introduciamo alcuni schemi di assiomi:
      \{P\}C_1;C_2\{R\}
   \endprooftree
 \]
-\pts
+La composizione sequenziale prevede l'esecuzione in ordine dei comandi $C_1$ e $C_2$.
+In correttezza parziale, non possiamo sapere se $C_1$ e $C_2$ terminano,ma se questo avviene allora sappiamo che i comandi vengono eseguiti e in ordine.
+\[
+  \rulename {H-BLOCK}
+  \prooftree
+    \{P\} C\{Q\}
+   \justifies
+     \{P\}\kw{begin}\kw{var}V_1;\dots ;\kw{var} V_n;C\kw{end}\{Q\}
+  \endprooftree
+\]
+La regola del blocco è utile per introdurre le variabili $\Ghost$ dette anche "variabili fantasma", queste hanno lo scopo di portare informazioni dalla precondizione alla postcondizione; pertanto verranno definite nei capitoli seguenti. Il significato della regola è: se il comando $C$ termina allora dopo l'esecuzione i valori delle variabili $V_1;\dots;V_n$ vengono ripristinati ai valori che avevano prima del blocco.
 \[
   \rulename {H-COND}
   \prooftree
@@ -79,13 +94,27 @@ Introduciamo alcuni schemi di assiomi:
      \{P\}\kw{if} B \kw{then} C_1 \kw{else} C_2\{Q\}
   \endprooftree
 \]
-Per poter esprimere lo schema di assioma per il WHILE, abbiamo bisogno di introdurre l'invariante di ciclo.
-L'invariante è una proprietà delle variabili che valgono subito prima che venga eseguita 
-l'operazione da iterare ,alla fine di ogni ripetizione del ciclo, in particolare
-vale alla fine dell'intero ciclo e l'invariante in congiunzione con la guardia negata deve essere ciò che ci serve.
+La regola del condizionale $\kw{if} B \kw{then} C_1 \kw{else} C_2$ tiene conto delle due possibili evoluzione dell'esecuzione di tale comando, che corrispondono al caso in cui:
+\begin{itemize}
+    \item
+     la guardia $B$ è vera nello stato corrente, allora esegue $C_1$
+    \item
+     la guardia $B$ è falsa, allora esegue $C_2$.
+\end{itemize}
+
+Per poter esprimere lo schema di assioma per il WHILE, abbiamo bisogno di introdurre, l'invariante di ciclo.
+L'invariante è una proprietà delle variabili che valgono:
+\begin{itemize}
+    \item
+     subito prima che venga eseguita l'operazione da iterare
+    \item
+     alla fine di ogni ripetizione del ciclo
+    \item
+     alla fine dell'intero ciclo.
+\end{itemize}
+
 Il predicato $P$ è un \emph{invariante di ciclo} per il ciclo
-$\kw{while} B \kw{DO} C $ se $\{P \land B\} C\{P\}$, vuol dire che $P$
-è vero dopo ogni iterazione del ciclo e in particolare alla fine del ciclo.
+$\kw{while} B \kw{do} C $ se $P$ in congiunzione con la guardia del ciclo $B$ esegue il comando $C$ e lascia invariato $P$ ovvero, vuol dire che $P$ è vero dopo ogni iterazione del ciclo e in particolare alla fine del ciclo.
 \[
   \rulename {H-WHILE}
   \prooftree
@@ -94,8 +123,7 @@ $\kw{while} B \kw{DO} C $ se $\{P \land B\} C\{P\}$, vuol dire che $P$
      \{P\}\kw{while} B \kw{do} C \{P \land \neg B\}
   \endprooftree
 \]
-La \emph{regola della conseguenza} dice che è sempre possibile rafforzare la precondizione
-e indebolire la postcondizione.
+La \emph{regola della conseguenza} dice che è sempre possibile rafforzare la precondizione e indebolire la postcondizione.
 \[
   \rulename {H-CONS}
   \prooftree
@@ -108,7 +136,19 @@ e indebolire la postcondizione.
      \{P\}C\{Q\}
   \endprooftree
 \]
-Disgiunzione in precondizione:
+Il significato della regola è immediato ricordando che:
+\begin{itemize}
+    \item
+     $P \implies P'$ significa che l'insieme $\{P\}$ è un sottoinsieme di $\{P'\}$
+    \item
+     $R' \implies R$ significa che l'insieme $\{R'\}$ è un sottoinsieme di $\{R\}$
+    \item
+     $\{P'\} C \{R'\}$ significa che l'esecuzione di $C$, a partire da uno stato in $\{P\}$ termina in uno stato in $\{R'\}$.
+\end{itemize}
+
+La conclusione della regola stabilisce che l'esecuzione di $C$, a partire da uno stato in $\{P\}$, e dunque in $\{P'\}$, termina in uno stato in $\{R'\}$, e dunque in $\{R\}$.
+
+La regola della disgiunzione in precondizione:
 \[
   \rulename {H-PRE.OR}
   \prooftree
@@ -130,8 +170,8 @@ Disgiunzione in precondizione:
      \{false\}C\{Q\}
   \endprooftree
 \]
-La precondizione $false$ non è mai soddisfatta quindi $C$ e $Q$ possono essere qualsiasi cosa
-Congiunzione in postcondizione:
+La precondizione $false$ non è mai soddisfatta quindi $C$ e $Q$ possono essere qualsiasi cosa.
+La regola della congiunzione in postcondizione:
 \[
   \rulename {H-POST.AND}
   \prooftree
