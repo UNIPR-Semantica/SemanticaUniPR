@@ -40,61 +40,107 @@ per definire tale semantica che va sotto il nome di
 \emph{semantica assiomatica}.
 
 \section{Regole assiomatiche} \marginpar{Lombardi}
+
+Il significato intuitivo di una tripla si può riassumere dicendo che essa è soddisfatta se
+valgono i seguenti due fatti: per ogni stato $s \in \Sigma$ che soddisfa $P$
+\begin{itemize}
+  \item
+     l'esecuzione del comando $C$, a partire dallo stato $s$, termina;
+   \item
+	 detto $s'$ lo stato in cui termina l'esecuzione di $C$ a partire da $s$ allora $s'$ soddisfa $Q$.
+\end{itemize}
+Gli assiomi della logica Floyd-Hoare sono specificati da schemi e 
+le regole sono specificate con un notazione della forma:
+\[
+  \rulename {nome}
+  \prooftree
+    \vdash S_1, \dots ,\vdash S_n
+  \justifies
+    \vdash S
+  \endprooftree
+\]
+Questo significa che la conclusione $\vdash S$ viene dedotta dalle ipotesi $\vdash S_1, \dots ,\vdash S_n$.
+Le ipotesi possono essere teoremi della logica di Floyd-Hoare o teoremi per il calcolo di predicati.
 Introduciamo alcuni schemi di assiomi:
 \[
   \rulename {H-SKIP}
   \prooftree
     \nohyp
   \justifies
-    \{P\}\kw{skip}\{P\}
+    \vdash \{P\}\kw{skip}\{P\}
   \endprooftree
 \]
-Con questo assioma vorremmo poter dire che $\kw{skip}$ termina sempre,
-ma la correttezza parziale non ci permette di farlo. 
-Quindi possiamo concludere che $\kw{skip}$ lascia lo stato invariato.
+\emph{La regola dello $\kw{skip}$} lascia lo stato invariato.
+\[
+  \rulename {H-PS}
+  \prooftree
+    \vdash P \implies P'
+    \vdash \{P'\}C\{Q\}
+   \justifies
+     \vdash \{P\}C\{Q\}
+  \endprooftree
+\]
+\emph{La regola del precondition strengthening} afferma che è sempre possibile rafforzare la precondizione.
+
+\[
+  \rulename {H-PW}
+  \prooftree
+    \vdash \{P\}C\{Q'\}
+    \vdash Q' \implies Q
+   \justifies
+     \vdash \{P\}C\{Q\}
+  \endprooftree
+\]
+\emph{La regola del postcondition weakening } afferma che è sempre possibile indebolire la postcondizione.
 \[
   \rulename {H-ASS}
   \prooftree
     \nohyp
    \justifies
-     \{Q\substt{E}{x}\}x:=E\{Q\}
+     \vdash \{Q\substt{E}{x}\}x:=E\{Q\}
   \endprooftree
 \]
-L'assegnamento prevede la modifica dello stato, assegnando il valore del termine $E$ alla variabile $x$.
+
+\emph{La regola dell'assegnamento} prevede la modifica dello stato, assegnando il valore del termine $E$ alla variabile $x$.
 La notazione $Q\substt{E}{x}$ indica il risultato della sostituzione del termine $E$
 per tutte le occorrenze della variabile $x$ nell'istruzione $Q$.
 \[
   \rulename {H-SEQ}
   \prooftree
-    \{P\} C_1\{Q\}
+    \vdash \{P\} C_1\{Q\}
     \quad
-    \{Q\} C_2\{R\}
+    \vdash \{Q\} C_2\{R\}
    \justifies
-     \{P\}C_1;C_2\{R\}
+     \vdash \{P\}C_1;C_2\{R\}
   \endprooftree
 \]
-La composizione sequenziale prevede l'esecuzione in ordine dei comandi $C_1$ e $C_2$.
-In correttezza parziale, non possiamo sapere se $C_1$ e $C_2$ terminano,ma se questo avviene allora sappiamo che i comandi vengono eseguiti e in ordine.
+\emph{La regola della composizione sequenziale} prevede l'esecuzione in ordine dei comandi $C_1$ e $C_2$.
+In correttezza parziale, non possiamo sapere se $C_1$ e $C_2$ terminano,
+ma se questo avviene allora sappiamo che i comandi vengono eseguiti in ordine.
 \[
   \rulename {H-BLOCK}
   \prooftree
-    \{P\} C\{Q\}
+    \vdash \{P\} C\{Q\}
    \justifies
-     \{P\}\kw{begin}\kw{var}V_1;\dots ;\kw{var} V_n;C\kw{end}\{Q\}
+     \vdash \{P\}\kw{begin}\kw{var}V_1;\dots ;\kw{var} V_n;C\kw{end}\{Q\}
   \endprooftree
 \]
-La regola del blocco è utile per introdurre le variabili $\Ghost$ dette anche "variabili fantasma", queste hanno lo scopo di portare informazioni dalla precondizione alla postcondizione; pertanto verranno definite nei capitoli seguenti. Il significato della regola è: se il comando $C$ termina allora dopo l'esecuzione i valori delle variabili $V_1;\dots;V_n$ vengono ripristinati ai valori che avevano prima del blocco.
+\emph{La regola del blocco} è utile per introdurre le variabili $\Ghost$ dette anche "variabili fantasma",
+queste hanno lo scopo di portare informazioni dalla precondizione alla postcondizione;
+pertanto verranno poi definite nei capitoli seguenti.
+Il significato della regola è: se il comando $C$ termina allora dopo l'esecuzione
+i valori delle variabili $V_1;\dots;V_n$ vengono ripristinati ai valori che avevano prima del blocco.
 \[
   \rulename {H-COND}
   \prooftree
-    \{P \land B\} C_1\{Q\}
+    \vdash \{P \land B\} C_1\{Q\}
     \quad
-    \{P \land \neg B\} C_2\{Q\}
+    \vdash \{P \land \neg B\} C_2\{Q\}
    \justifies
-     \{P\}\kw{if} B \kw{then} C_1 \kw{else} C_2\{Q\}
+     \vdash \{P\}\kw{if} B \kw{then} C_1 \kw{else} C_2\{Q\}
   \endprooftree
 \]
-La regola del condizionale $\kw{if} B \kw{then} C_1 \kw{else} C_2$ tiene conto delle due possibili evoluzione dell'esecuzione di tale comando, che corrispondono al caso in cui:
+\emph{La regola del condizionale} $\kw{if} B \kw{then} C_1 \kw{else} C_2$ tiene conto delle due possibili evoluzioni dell'esecuzione di tale comando, che corrispondono al caso in cui:
 \begin{itemize}
     \item
      la guardia $B$ è vera nello stato corrente, allora esegue $C_1$
@@ -102,7 +148,7 @@ La regola del condizionale $\kw{if} B \kw{then} C_1 \kw{else} C_2$ tiene conto d
      la guardia $B$ è falsa, allora esegue $C_2$.
 \end{itemize}
 
-Per poter esprimere lo schema di assioma per il WHILE, abbiamo bisogno di introdurre, l'invariante di ciclo.
+Per poter esprimere lo schema di assioma per il WHILE, abbiamo bisogno di introdurre, \emph{l'invariante di ciclo}.
 L'invariante è una proprietà delle variabili che valgono:
 \begin{itemize}
     \item
@@ -112,28 +158,28 @@ L'invariante è una proprietà delle variabili che valgono:
     \item
      alla fine dell'intero ciclo.
 \end{itemize}
-
-Il predicato $P$ è un \emph{invariante di ciclo} per il ciclo
-$\kw{while} B \kw{do} C $ se $P$ in congiunzione con la guardia del ciclo $B$ esegue il comando $C$ e lascia invariato $P$ ovvero, vuol dire che $P$ è vero dopo ogni iterazione del ciclo e in particolare alla fine del ciclo.
 \[
   \rulename {H-WHILE}
   \prooftree
-    \{P \land B\} C \{P\}
+    \vdash \{P \land B\} C \{P\}
    \justifies
-     \{P\}\kw{while} B \kw{do} C \{P \land \neg B\}
+     \vdash \{P\}\kw{while} B \kw{do} C \{P \land \neg B\}
   \endprooftree
 \]
-La \emph{regola della conseguenza} dice che è sempre possibile rafforzare la precondizione e indebolire la postcondizione.
+Il predicato $P$ è un \emph{invariante di ciclo} per il ciclo
+$\kw{while} B \kw{do} C $ se $P$ in congiunzione con la guardia del ciclo $B$ esegue il comando $C$ e lascia invariato $P$ ovvero, vuol dire che $P$ è vero dopo ogni iterazione del ciclo e in particolare alla fine del ciclo.
+
+La \emph{regola della conseguenza} dice che è sempre possibile rafforzare la precondizione e indebolire la postcondizione:
 \[
   \rulename {H-CONS}
   \prooftree
-    P \implies P'
+    \vdash P \implies P'
     \quad
-    \{P'\}C\{Q'\}
+    \vdash \{P'\}C\{Q'\}
     \quad
-    Q' \implies Q
+    \vdash Q' \implies Q
    \justifies
-     \{P\}C\{Q\}
+     \vdash \{P\}C\{Q\}
   \endprooftree
 \]
 Il significato della regola è immediato ricordando che:
@@ -152,13 +198,13 @@ La regola della disgiunzione in precondizione:
 \[
   \rulename {H-PRE.OR}
   \prooftree
-    \{P_1\} C\{Q\}
+    \vdash \{P_1\} C\{Q\}
     \quad
     \dots
     \quad
-    \{P_n\} C\{Q\}
+    \vdash \{P_n\} C\{Q\}
    \justifies
-     \{P_1 \lor \dots \lor P_n\}C\{Q\}
+     \vdash \{P_1 \lor \dots \lor P_n\}C\{Q\}
   \endprooftree
 \]
 \pts
@@ -167,7 +213,7 @@ La regola della disgiunzione in precondizione:
   \prooftree
     \nohyp
    \justifies
-     \{false\}C\{Q\}
+     \vdash \{false\}C\{Q\}
   \endprooftree
 \]
 La precondizione $false$ non è mai soddisfatta quindi $C$ e $Q$ possono essere qualsiasi cosa.
@@ -175,13 +221,13 @@ La regola della congiunzione in postcondizione:
 \[
   \rulename {H-POST.AND}
   \prooftree
-    \{P\} C\{Q_1\}
+    \vdash \{P\} C\{Q_1\}
     \quad
     \dots
     \quad
-    \{P\} C\{Q_n\}
+    \vdash \{P\} C\{Q_n\}
    \justifies
-     \{P\}C\{Q_1 \land \dots \land Q_n\}
+     \vdash \{P\}C\{Q_1 \land \dots \land Q_n\}
   \endprooftree
 \]
 \pts
@@ -190,10 +236,66 @@ La regola della congiunzione in postcondizione:
   \prooftree
     \nohyp
    \justifies
-     \{P\}C\{true\}
+     \vdash \{P\}C\{true\}
   \endprooftree
 \]
 La postcondizione $true$ è sempre soddisfatta quindi $P$ e $C$ possono essere qualsiasi cosa.
+
+\section{Regole derivate} \marginpar{Lombardi}
+Elenchiamo in questo paragrafo ulteriori regole utili nella dimostrazione di formule di correttezza. Tali
+regole non sono essenziali, nel senso che la loro validità può essere dimostrata utilizzando le regole già
+date, ma semplificano le dimostrazioni di correttezza, in quanto consentono di "combinare" differenti
+formule di correttezza per uno stesso programma che siano state dimostrate separatamente.
+
+Assegnamento
+\[
+  \rulename {H-D.ASS}
+  \prooftree
+    \vdash \{P\} \implies Q\substt{E}{x}
+   \justifies
+     \vdash \{P\}x:=E\{Q\}
+  \endprooftree
+\]
+Possiamo generalizzare questo schema di prova:
+\begin{itemize}
+  \item 
+    $\vdash \{Q\substt{E}{x}\} x :=E \{Q\}$ per l'assioma di assegnamento.
+  \item 
+    $\vdash \{P\} \implies Q\substt{E}{x}$ per ipotesi.
+  \item 
+    $\vdash \{P\}C\{Q\}$ per l'assioma del precondition strengthening.
+\end{itemize}
+
+Skip
+\[
+  \rulename {H-D.SKIP}
+  \prooftree
+    \vdash P \implies Q
+  \justifies
+    \vdash \{P\}\kw{skip}\{Q\}
+  \endprooftree
+\]
+Lo schema si può giustificare applicando le seguenti regole:
+\begin{itemize}
+  \item 
+    $\vdash P \implies Q$ per ipotesi.
+  \item 
+    $\vdash \{P\}\kw{skip}\{Q\}$ per l'assioma dello $\kw{skip}$.
+  \item 
+    $\vdash \{P\}C\{Q\}$ per l'assioma del precondition strengthening.
+\end{itemize}
+
+While
+\[
+  \rulename {H-D.WHILE}
+  \prooftree
+    \vdash P \implies R
+    \vdash \{R \land S\} C \{R\}
+    \vdash R \land \neg S \implies Q
+   \justifies
+     \vdash \{P\}\kw{while} S \kw{do} C \{Q\}
+  \endprooftree
+\]
 
 \section{Correttezza totale} \marginpar{Lombardi}
 \begin{definizione}\summary{(Correttezza totale)}

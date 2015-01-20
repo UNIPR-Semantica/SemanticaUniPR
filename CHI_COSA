@@ -6,5 +6,6 @@ Segalini: semantica degli array, teorema conservazione passi small step in denot
           normalizzazione big step, semantica delle eccezioni, if correttezza logica floyd hoare
 Trombi: interpretazione astratta, semantica del comando "repeat C until B"
 Lombardi: logica di specifica, definizione sintattica, variabili libere,
-          Valutazione semantica di LExp, Valutazione semantica di Pred,
-		  Verità di una tripla di Floyd-Hoare, Correttezza della logica di Floyd-Hoare
+          valutazione semantica di LExp, valutazione semantica di Pred,
+		  verità di una tripla di Floyd-Hoare, correttezza della logica di Floyd-Hoare,
+		  regole assiomatiche, regole derivate
