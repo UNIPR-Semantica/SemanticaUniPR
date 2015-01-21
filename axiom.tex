@@ -75,6 +75,7 @@ Introduciamo alcuni schemi di assiomi:
   \rulename {H-PS}
   \prooftree
     \vdash P \implies P'
+    \quad
     \vdash \{P'\}C\{Q\}
    \justifies
      \vdash \{P\}C\{Q\}
@@ -86,6 +87,7 @@ Introduciamo alcuni schemi di assiomi:
   \rulename {H-PW}
   \prooftree
     \vdash \{P\}C\{Q'\}
+    \quad
     \vdash Q' \implies Q
    \justifies
      \vdash \{P\}C\{Q\}
@@ -251,7 +253,7 @@ Assegnamento
 \[
   \rulename {H-D.ASS}
   \prooftree
-    \vdash \{P\} \implies Q\substt{E}{x}
+    \vdash P \implies Q\substt{E}{x}
    \justifies
      \vdash \{P\}x:=E\{Q\}
   \endprooftree
@@ -290,7 +292,9 @@ While
   \rulename {H-D.WHILE}
   \prooftree
     \vdash P \implies R
+    \quad
     \vdash \{R \land S\} C \{R\}
+    \quad
     \vdash R \land \neg S \implies Q
    \justifies
      \vdash \{P\}\kw{while} S \kw{do} C \{Q\}
