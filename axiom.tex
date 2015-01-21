@@ -93,7 +93,7 @@ Introduciamo alcuni schemi di assiomi:
      \vdash \{P\}C\{Q\}
   \endprooftree
 \]
-\emph{La regola del postcondition weakening } afferma che è sempre possibile indebolire la postcondizione.
+\emph{La regola del postcondition weakening} afferma che è sempre possibile indebolire la postcondizione.
 \[
   \rulename {H-ASS}
   \prooftree
@@ -169,9 +169,10 @@ L'invariante è una proprietà delle variabili che valgono:
   \endprooftree
 \]
 Il predicato $P$ è un \emph{invariante di ciclo} per il ciclo
-$\kw{while} B \kw{do} C $ se $P$ in congiunzione con la guardia del ciclo $B$ esegue il comando $C$ e lascia invariato $P$ ovvero, vuol dire che $P$ è vero dopo ogni iterazione del ciclo e in particolare alla fine del ciclo.
+$\kw{while} B \kw{do} C $ se $P$ in congiunzione con la guardia $B$, esegue il comando $C$ e lascia invariato $P$. Ovvero, $P$ è vero dopo ogni iterazione del ciclo e in particolare alla fine del ciclo.
 
-La \emph{regola della conseguenza} dice che è sempre possibile rafforzare la precondizione e indebolire la postcondizione:
+La \emph{regola della conseguenza} dice che è sempre possibile rafforzare la precondizione e indebolire la postcondizione, questa regola è ottenuta mettendo insieme la precondition strengthening e postcondition weakening.
+Ovvero:
 \[
   \rulename {H-CONS}
   \prooftree
