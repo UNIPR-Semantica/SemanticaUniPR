@@ -322,7 +322,7 @@ uccisione di variabile:
 
 Nel seguito viene aggiunto il costrutto $\repeatuntil{C}{B}$.
 Si dia per assodato che tale costrutto è equivalente a
-$C;\kw{while} \kw{not} B \kw{do} C$
+$C;\while{\neg B}{C}$.
 
 \subsection{Sintassi}
 
@@ -338,23 +338,69 @@ sia $B \in \BExp$;
 \subsection{Semantica operazionale big-step}
 
 \begin{gather*}
-  \rulename{REPEAT-UNTIL.TRUE}
+  \rulename{B-REP-UNTIL.TRUE}
   \prooftree
-    \config{C}{s} \Downarrow s' \quad B \Downarrow \ttv
+    \config{C}{s} \Downarrow s' \quad \config{B}{s'} \Downarrow \ttv
     \justifies \config{\repeatuntil{C}{B}}{s} \Downarrow s'
   \endprooftree
   \\
-  \rulename{REPEAT-UNTIL.FALSE}
+  \rulename{B-REP-UNTIL.FALSE}
   \prooftree
-    \config{C}{s} \Downarrow s' \quad B \Downarrow \ffv \quad \config{\repeatuntil{C}{B}}{s'} \Downarrow s''
+    \config{C}{s} \Downarrow s' \quad \config{B}{s'} \Downarrow \ffv \quad \config{\repeatuntil{C}{B}}{s'} \Downarrow s''
     \justifies \config{\repeatuntil{C}{B}}{s} \Downarrow s''
   \endprooftree
 \end{gather*}
 
 \subsection{Semantica operazionale small-step}
 
+\[
+  \rulename{S-REP-UNTIL}
+  \prooftree
+    \config{C}{s} \ssarrow \config{C'}{s'}
+    \justifies \config{\repeatuntil{C}{B}}{s} \ssarrow \config{C;\condif{B}{\kw{skip}}{\repeatuntil{C}{B}}}{s'}
+  \endprooftree
+\]
+
 \subsection{Semantica denotazionale}
+Per definire la semantica denotazionale del costrutto
+$\repeatuntil{C}{B}$ usufruiremo delle funzioni $\seq$, $\id$ e $\cond$,
+definite nel capitolo della semantica denotazionale del linguaggio
+WHILE; inoltre sfrutteremo l'equivalenza presentata precedentemente,
+cioè che:
+\[
+  \repeatuntil{C}{B} = C; \while{\neg B}{C}.
+\]
+Definiamo dunque la semantica denotazionale del comando:
+\begin{align*}
+  \denotC{\repeatuntil{C}{B}}{s}
+  &\defeq \denotC{C; \while{\neg B}{C}}{s}\\
+  &= \seq\bigl( \denotCsl{C}, \denotCsl{\while{\neg B}{C}} \bigr)(s)
+\end{align*}
+Per le definizioni delle funzioni $f$ e $F$ viste nel capitolo
+della semantica denotazionale e per le proprietà che queste funzioni
+sottolineano per il comando $\kw{while}$, possiamo affermare che:\\
+\[  
+  \denotC{\repeatuntil{C}{B}}{s} = \seq\bigl( \denotCsl{C}, \lfp F^n \bigr)(s).
+\]
 
 \subsection{Correttezza parziale nella logica di Floyd-Hoare}
 
+\[
+  \rulename {FH-REP-UNTIL}
+  \prooftree
+    \vdash \{ P \} C \{ I \} \quad \vdash \{ I \land \neg B \} C \{ I \}
+  \justifies
+    \vdash \{ P \} \repeatuntil{C}{B} \{ Q \land B \}
+  \endprooftree
+\]
+
 \subsection{Correttezza totale nella logica di Floyd-Hoare}
+
+\[
+  \rulename {FH-REP-UNTIL.TOT}
+  \prooftree
+    \vdash [ P ] C [ I ] \quad \vdash [ I \land \neg B \land (E = n)] C [ I \land (E < n) ]
+  \justifies
+    \vdash [ P ] \repeatuntil{C}{B} [ Q \land B ]
+  \endprooftree
+\]

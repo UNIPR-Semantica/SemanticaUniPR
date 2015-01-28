@@ -10,6 +10,10 @@
 \newcommand*{\denotC}[2]{\calC \llbracket #1 \rrbracket (#2)}
 \newcommand*{\denotE}[2]{\calE \llbracket #1 \rrbracket (#2)}
 \newcommand*{\denotB}[2]{\calB \llbracket #1 \rrbracket (#2)}
+%% configurazione della semantica denotazionale C[com] senza stato
+\newcommand*{\denotCsl}[1]{\calC \llbracket #1 \rrbracket}
+\newcommand*{\denotEsl}[2]{\calE \llbracket #1 \rrbracket}
+\newcommand*{\denotBsl}[2]{\calB \llbracket #1 \rrbracket}
 %% assegnamento del while :=
 \newcommand*{\weq}{:=}
 \newcommand*{\assign}[3]{#1[#2\mapsto#3]} % comodo per s[x -> n]
@@ -35,6 +39,8 @@
 \newcommand*{\id}{\mathrm{id}}
 % macro per funzione cond: PT x ST x ST -> ST
 \newcommand*{\cond}{\mathrm{cond}}
+% per funzione seq
+\newcommand*{\seq}{\mathrm{seq}}
 
 % Comando per scrivere con texttt dentro una formula matematica
 \newcommand{\mactext}[1]{\text{\texttt{#1}}}
