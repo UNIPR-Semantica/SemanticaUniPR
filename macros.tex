@@ -12,8 +12,6 @@
 \newcommand*{\denotB}[2]{\calB \llbracket #1 \rrbracket (#2)}
 %% configurazione della semantica denotazionale C[com] senza stato
 \newcommand*{\denotCsl}[1]{\calC \llbracket #1 \rrbracket}
-\newcommand*{\denotEsl}[2]{\calE \llbracket #1 \rrbracket}
-\newcommand*{\denotBsl}[2]{\calB \llbracket #1 \rrbracket}
 %% assegnamento del while :=
 \newcommand*{\weq}{:=}
 \newcommand*{\assign}[3]{#1[#2\mapsto#3]} % comodo per s[x -> n]
@@ -27,10 +25,10 @@
 % macro da verificare per la composizione funzionale (trombi)
 \newcommand*{\compfun}[2]{\mathrm{#1}\mathop{\circ}\mathrm{#2}}
 % e per if then else
-\newcommand*{\condif}[3]{\kw{if}\mathrm{#1}\kw{then}\mathrm{#2}\kw{else}\mathrm{#3}}
-\newcommand*{\while}[2]{\kw{while}\mathrm{#1}\kw{do}\mathrm{#2}}
+\newcommand*{\condif}[3]{\kw{if} #1 \kw{then} #2 \kw{else} #3}
+\newcommand*{\while}[2]{\kw{while} #1 \kw{do} #2}
 % macro per repeat C until B
-\newcommand*{\repeatuntil}[2]{\kw{repeat}\mathrm{#1}\kw{until}\mathrm{#2}}
+\newcommand*{\repeatuntil}[2]{\kw{repeat} #1 \kw{until} #2}
 % macro per $ecc
 \newcommand*{\ecc}{\mathrm{\$ecc}}
 % macro per operatore di anullamento var /

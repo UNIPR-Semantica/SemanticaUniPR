@@ -357,7 +357,7 @@ sia $B \in \BExp$;
   \rulename{S-REP-UNTIL}
   \prooftree
     \config{C}{s} \ssarrow \config{C'}{s'}
-    \justifies \config{\repeatuntil{C}{B}}{s} \ssarrow \config{C;\condif{B}{\kw{skip}}{\repeatuntil{C}{B}}}{s'}
+    \justifies \config{\repeatuntil{C}{B}}{s} \ssarrow \config{C';\condif{B}{\kw{skip}}{\repeatuntil{C}{B}}}{s'}
   \endprooftree
 \]
 
