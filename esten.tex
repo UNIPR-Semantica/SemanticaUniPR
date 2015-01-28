@@ -376,9 +376,21 @@ Definiamo dunque la semantica denotazionale del comando:
   &\defeq \denotC{C; \while{\neg B}{C}}{s}\\
   &= \seq\bigl( \denotCsl{C}, \denotCsl{\while{\neg B}{C}} \bigr)(s)
 \end{align*}
-Per le definizioni delle funzioni $f$ e $F$ viste nel capitolo
-della semantica denotazionale e per le proprietà che queste funzioni
-sottolineano per il comando $\kw{while}$, possiamo affermare che:\\
+Consideriamo la definizione della funzione $f$ vista nel capitolo della
+semantica denotazionale; nel caso del comando $\repeatuntil{C}{B}$ la
+guardia del $\kw{while}$ è negata rispetto a quella del comando
+$\kw{while}$ usato nei capitoli precedenti, dunque la ridefiniamo come
+segue:
+\[
+  f \defeq \cond \bigl( \denotBsl{B}, \id, \seq(\denotCsl{C}, f) \bigr).
+\]
+Ridefiniamo dunque anche la funzione $F$ come:
+\[
+  F(f) \defeq \cond \bigl( \denotBsl{B}, \id, \seq(\denotCsl{C}, f) \bigr)
+\]
+Utilizzando le proprietà che queste funzioni sottolineano per il comando
+$\kw{while}$, definiamo la semantica denotazionale del comando
+$\repeatuntil{C}{B}$:
 \[  
   \denotC{\repeatuntil{C}{B}}{s} = \seq\bigl( \denotCsl{C}, \lfp F^n \bigr)(s).
 \]
@@ -390,10 +402,9 @@ sottolineano per il comando $\kw{while}$, possiamo affermare che:\\
   \prooftree
     \vdash \{ P \} C \{ I \} \quad \vdash \{ I \land \neg B \} C \{ I \}
   \justifies
-    \vdash \{ P \} \repeatuntil{C}{B} \{ Q \land B \}
+    \vdash \{ P \} \repeatuntil{C}{B} \{ P \land B \}
   \endprooftree
 \]
-con $I$ invariante.
 con $I$ invariante.
 
 \subsection{Correttezza totale nella logica di Floyd-Hoare}
@@ -403,7 +414,7 @@ con $I$ invariante.
   \prooftree
     \vdash [ P ] C [ I ] \quad \vdash [ I \land \neg B \land (E = n)] C [ I \land (E < n) ]
   \justifies
-    \vdash [ P ] \repeatuntil{C}{B} [ Q \land B ]
+    \vdash [ P ] \repeatuntil{C}{B} [ P \land B ]
   \endprooftree
 \]
 con $I$ invariante e $E$ variante.
