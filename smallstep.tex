@@ -1,10 +1,10 @@
 \chapter{Semantica operazionale ``small-step''}
-\marginpar{Marano}
+
 In questo capitolo parleremo della semantica operazionale ``small-step'', una semantica che descrive formalmente dopo ogni piccolo passo di calcolo
 che comando viene eseguito e come viene modificato lo store. Per fare ciò sfrutta assiomi e regole che hanno la stessa forma di quelle viste nel
 capitolo precedente.
 
-\section{Introduzione}\marginpar{Marano}
+\section{Introduzione}
 Se quindi abbiamo un linguaggio con la seguente sintassi
 $$ \AExp \ni E ::= n \vbar (E+E)$$
 in cui i puntini di indicano, come al solito, che si può inserire una qualsiasi espressione arricchendo così la sintassi e dandone successivamente una
@@ -75,7 +75,7 @@ Possiamo subito osservare che differentemente dalla semantica big-step
 nella semantica small-step si usano tanti alberi di dimostrazione più piccoli per dimostrare
 ogni asserzione. Perciò per definire compiutamente la semantica di $\AExp$ dobbiamo considerare la chiusura transitiva e riflessiva.
 
-\section{Determinatezza della semantica small-step} \marginpar{Marano}
+\section{Determinatezza della semantica small-step}
 Dimostriamo ora che la semantica small-step gode della proprietà della
 determinatezza: ogni oggetto sintattico può avere perciò al massimo
 una semantica. Prima dimostriamo però il seguente
@@ -119,7 +119,7 @@ Sappiamo che $E \ssarrow E_1^{(1)} \ssarrow E_1^{(2)} \ssarrow \dots \ssarrow E_
 Ma per il lemma appena dimostrato sappiamo dunque che $E_1^{(k)} = E_2^{(h)} \text{ con } h = k$, perciò possiamo affermare che $n_1 = n_2$
 \end{proof}
 
-\section{Normalizzazione della semantica small-step} \marginpar{Marano}
+\section{Normalizzazione della semantica small-step}
 Altra proprietà molto importante per una semantica è la normalizzazione: tale proprietà afferma che
 ogni oggetto semantico ha almeno una semantica. Perciò per ogni espressione $E$
 esiste almeno un risultato $n$ tale che $E \ssarrow ^* n$.
@@ -156,7 +156,7 @@ $E \in \AExp$ perciò esistono $E_1, E_2 \in AExp . E = E_1 + E_2$, quindi $E_1 
   La proprietà deriva direttamente dai due lemmi dimostrati precedentemente.
 \end{proof}
 
-\section{Semantica small-step per WHILE} \marginpar{Marano}
+\section{Semantica small-step per WHILE}
 Diamo ora una semantica al linguaggio WHILE tramite la small-step, dovremo perciò valutare non più una singola espressione ma una coppia formata da comando e store. Consideriamo subito la possibile presenza di effetti collaterali visto che è semplicemente una generalizzazione del caso senza effetti collaterali. In questo caso quindi la valutazione di espressioni e di booleani può modificare lo store. Indichiamo in questa maniera la transizione tra una configurazione e la successiva:
 $
 \config{C}{s} \ssarrow \config{C'}{s'}

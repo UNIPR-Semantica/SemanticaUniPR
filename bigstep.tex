@@ -1,5 +1,5 @@
 \chapter{Semantica operazionale ``big-step''}
-\marginpar{Mancino}
+
 
 In questo capitolo introduciamo la semantica operazionale \emph{big-step}
 (letteralmente ``a grandi passi''),
@@ -23,7 +23,7 @@ La semantica di questa scrittura è che la congiunzione logica di
 `$\textrm{premessa}_1$', \dots, `$\textrm{premessa}_k$' implica
 `$\textrm{conclusione}$' a patto che valga `$\textrm{side condition}$'.
 
-\section{Un primo esempio di semantica big-step}\marginpar{Mancino}
+\section{Un primo esempio di semantica big-step}
 \label{sec:primo-esempio-semantica-big-step}
 Consideriamo il frammento di WHILE con la seguente sintassi:
 \[
@@ -140,7 +140,7 @@ In sostanza, per dimostrare la conclusione dobbiamo far
 valere tutte le premesse che si ricavano
 applicando le regole.
 
-\section{Determinatezza}\marginpar{Mancino}
+\section{Determinatezza}
 
 La proprietà di determinatezza asserisce che un qualunque oggetto
 sintattico non può avere due semantiche differenti. In particolare,
@@ -180,7 +180,7 @@ Da cui deduciamo che $ m_1 + m_2 = p_1 + p_2$, per cui
 $m_3 = p_3$ come volevamo dimostrare.
 \end{proof}
 
-\section{Normalizzazione}\marginpar{Mancino}
+\section{Normalizzazione}
 La proprietà di normalizzazione asserisce che per ogni espressione $E$ esiste almeno un risultato
 $n$ tale che $E \Downarrow n$.
 
@@ -199,7 +199,7 @@ gode della proprietà di normalizzazione, ossia per ogni
 $E \in Exp$ esiste  $n \in \Zset$ tale che $E \Downarrow n$.
 \end{teorema}
 
-\begin{proof} \marginpar{Segalini}
+\begin{proof}
 Per induzione sulla struttura di $\AExp$:
 
 Caso base: $n \in \Zset$.
@@ -243,7 +243,7 @@ quale afferma che $n_3 = n_1 + n_2$:
 \]
 \end{proof}
 
-\section{Semantica big-step per WHILE}\marginpar{Mancino}
+\section{Semantica big-step per WHILE}
 Invece di usare un semplice frammento di linguaggio come quello descritto nel capitolo
 precedente possiamo definire tramite la big-step la semantica del linguaggio WHILE.
 Precisiamo allora che una coppia (\emph{comando, stato}) viene valutata ad un
@@ -279,7 +279,7 @@ il generico comando e con $s$ il generico stato,
 \endprooftree
 &&
 \prooftree
-   B \Downarrow \textrm{ff} 
+   B \Downarrow \textrm{ff}
    \quad \config{C_2}{s} \Downarrow s'
    \justifies
          \config{\textrm{$\kw{if}$ $B$ $\kw{then}$ $C_1$ $\kw{else}$ $C_2$}}{s} \Downarrow s'
@@ -288,7 +288,7 @@ il generico comando e con $s$ il generico stato,
 
 \begin{align*}
 \prooftree
-  \config{C_1}{s} \Downarrow s' 
+  \config{C_1}{s} \Downarrow s'
   \quad \config{C_2}{s'} \Downarrow s''
   \justifies
         \config{\textrm{$C_1$; $C_2$}}{s} \Downarrow s''
@@ -300,7 +300,7 @@ per la quale abbiamo due comportamenti distinti:
 
 \begin{gather*}
 \prooftree
-  B \Downarrow \textrm{tt} 
+  B \Downarrow \textrm{tt}
   \quad \config{C}{s} \Downarrow s'
   \quad \config{\textrm{$\kw{while}$ $B$ $\kw{do}$ $C$}}{s'} \Downarrow s''
   \justifies
@@ -314,7 +314,7 @@ per la quale abbiamo due comportamenti distinti:
 \endprooftree
 \end{gather*}
 
-\section{Espressioni con effetti collaterali}\marginpar{Mancino}
+\section{Espressioni con effetti collaterali}
 
 In questo paragrafo ridefiniamo la semantica data precedentemente
 per il linguaggio WHILE ammettendo espressioni con effetti collaterali.
@@ -325,7 +325,7 @@ valutazione (oltre a restituire un valore) provoca la modifica
 dello store.
 \end{definizione}
 
-Arricchiamo il linguaggio con l'espressione $\kw{do}$ $C$ $\kw{return}(x)$. 
+Arricchiamo il linguaggio con l'espressione $\kw{do}$ $C$ $\kw{return}(x)$.
 In questo modo, possiamo ottenere espressioni con effetti collaterali
 come la seguente:
 
@@ -372,7 +372,7 @@ Partendo da questa osservazione non è difficile definire la semantica:
 
 \begin{gather*}
 \prooftree
-  \config{B}{s} \Downarrow \config{\textrm{tt}}{s'} 
+  \config{B}{s} \Downarrow \config{\textrm{tt}}{s'}
   \quad \config{C_1}{s'} \Downarrow s''
   \justifies
         \config{\textrm{$\kw{if}$ $B$ $\kw{then}$ $C_1$ $\kw{else}$ $C_2$}}{s} \Downarrow s''

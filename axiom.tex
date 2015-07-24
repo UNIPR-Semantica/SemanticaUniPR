@@ -3,7 +3,7 @@
 In questo capitolo introdurremo la semantica assiomatica, un particolare
 tipo di semantica che permette di dimostrare proprietà di programmi.
 
-\section{Correttezza parziale}\marginpar{Mancino}
+\section{Correttezza parziale}
 \begin{definizione}\summary{(Correttezza parziale)}
 Un \emph{giudizio di correttezza parziale} è una tripla
 della forma
@@ -39,7 +39,7 @@ Definire la verità/falsità di tali giudizi è quindi il modo
 per definire tale semantica che va sotto il nome di
 \emph{semantica assiomatica}.
 
-\section{Regole assiomatiche} \marginpar{Lombardi}
+\section{Regole assiomatiche}
 
 Il significato intuitivo di una tripla si può riassumere dicendo che essa è soddisfatta se
 valgono i seguenti due fatti: per ogni stato $s \in \Sigma$ che soddisfa $P$
@@ -49,7 +49,7 @@ valgono i seguenti due fatti: per ogni stato $s \in \Sigma$ che soddisfa $P$
    \item
 	 detto $s'$ lo stato in cui termina l'esecuzione di $C$ a partire da $s$ allora $s'$ soddisfa $Q$.
 \end{itemize}
-Gli assiomi della logica Floyd-Hoare sono specificati da schemi e 
+Gli assiomi della logica Floyd-Hoare sono specificati da schemi e
 le regole sono specificate con un notazione della forma:
 \[
   \rulename {nome}
@@ -244,7 +244,7 @@ La regola della congiunzione in postcondizione:
 \]
 La postcondizione $true$ è sempre soddisfatta quindi $P$ e $C$ possono essere qualsiasi cosa.
 
-\section{Regole derivate} \marginpar{Lombardi}
+\section{Regole derivate}
 Elenchiamo in questo paragrafo ulteriori regole utili nella dimostrazione di formule di correttezza. Tali
 regole non sono essenziali, nel senso che la loro validità può essere dimostrata utilizzando le regole già
 date, ma semplificano le dimostrazioni di correttezza, in quanto consentono di "combinare" differenti
@@ -261,11 +261,11 @@ Assegnamento
 \]
 Possiamo generalizzare questo schema di prova:
 \begin{itemize}
-  \item 
+  \item
     $\vdash \{Q\substt{E}{x}\} x :=E \{Q\}$ per l'assioma di assegnamento.
-  \item 
+  \item
     $\vdash \{P\} \implies Q\substt{E}{x}$ per ipotesi.
-  \item 
+  \item
     $\vdash \{P\}C\{Q\}$ per l'assioma del precondition strengthening.
 \end{itemize}
 
@@ -280,11 +280,11 @@ Skip
 \]
 Lo schema si può giustificare applicando le seguenti regole:
 \begin{itemize}
-  \item 
+  \item
     $\vdash P \implies Q$ per ipotesi.
-  \item 
+  \item
     $\vdash \{P\}\kw{skip}\{Q\}$ per l'assioma dello $\kw{skip}$.
-  \item 
+  \item
     $\vdash \{P\}C\{Q\}$ per l'assioma del precondition strengthening.
 \end{itemize}
 
@@ -302,7 +302,7 @@ While
   \endprooftree
 \]
 
-\section{Correttezza totale} \marginpar{Lombardi}
+\section{Correttezza totale}
 \begin{definizione}\summary{(Correttezza totale)}
 Un \emph{giudizio di correttezza totale} è una tripla della forma
 \[
@@ -327,10 +327,10 @@ dall'altro.  Informalmente si può scrivere l'equazione:
     = \textrm{correttezza parziale} + \textrm{terminazione}.
 \]
 
-\section{Logica di specifica}\marginpar{Lombardi}
+\section{Logica di specifica}
 \input{logica}
 
-\subsection{Programma propriamente annotato}\marginpar{Mancino}
+\subsection{Programma propriamente annotato}
 \begin{definizione}
 Un programma si dice \emph{propriamente annotato} se ci sono annotazioni nei seguenti punti:
 \begin{itemize}
@@ -340,7 +340,7 @@ Un programma si dice \emph{propriamente annotato} se ci sono annotazioni nei seg
 \end{definizione}
 
 
-\section{Esercizi}\marginpar{Mancino}
+\section{Esercizi}
 
 \subsection{Esercizio 1}
 Dare una dimostrazione per la seguente tripla di Hoare:
@@ -351,7 +351,7 @@ Dimostriamo la tripla partendo dal fondo. Applicando l'assioma dell'assegnamento
 \begin{align*}
   \bigl\{S[\nicefrac{X-Y}{X}] \bigr\} &  X:=X-Y  \bigl\{Y=a  \land  X=b\bigr\}\\
   \bigl\{Y=a  \land X-Y=b \bigr\} & X:=X-Y  \bigl\{Y=a  \land  X=b\bigr\}
-\end{align*} 
+\end{align*}
 Risaliamo ora di un livello applicando ancora l'assioma dell'assegnamento:
 \begin{align*}
   \bigl\{S[\nicefrac{X-Y}{Y}] \bigr\} & Y:=X-Y \bigl\{Y=a  \land  X-Y=b\bigr\}\\
@@ -371,9 +371,9 @@ Che è quanto volevamo dimostrare.
 
 \subsection{Esercizio 2}
 Dare una dimostrazione per la seguente tripla di Hoare:
-\[ 
+\[
   \{X=R+(Y \times Q) \} \mactext{BEGIN } R:=R-Y; Q:=Q+1
-  \mactext{ END} \{X=R+(Y \times Q)\} 
+  \mactext{ END} \{X=R+(Y \times Q)\}
 \]
 
 \begin{proof}
@@ -413,7 +413,7 @@ realizza lo scambio dei valori tra le variabili \texttt{X} e \texttt{Y} se quest
 \begin{proof}
 Dobbiamo dimostrare che la seguente tripla di Hoare è corretta:
 \[
-  \bigl\{ \mactext{X=a } \land \mactext{ Y=b} \bigr\} 
+  \bigl\{ \mactext{X=a } \land \mactext{ Y=b} \bigr\}
   \mactext{X := X XOR Y; Y := X XOR Y; X := X XOR Y}
   \bigl\{\mactext{X=b } \land \mactext{ Y=a} \bigr\}
 \]
@@ -421,7 +421,7 @@ Procediamo, al solito, partendo dal fondo. Applichiamo dunque l'assioma dell'ass
 \begin{align*}
   \bigl\{ S[\nicefrac{\mactext{X XOR Y}}{\mactext{X}}] \bigr\} &
   \mactext{X := X XOR Y}
-  \bigl\{\mactext{X=b} \; \land \; \mactext{Y=a} \bigr\} 
+  \bigl\{\mactext{X=b} \; \land \; \mactext{Y=a} \bigr\}
   \\
   \bigl\{\mactext{X XOR Y = b } \land \mactext{ Y=a}  \bigr\} &
   \mactext{X := X XOR Y}
@@ -517,7 +517,7 @@ Ci rimane da dimostrare la tripla di Hoare:
 \[ \{ y=2^{n-x} \land x>0 \} \mactext{ while} \texttt{\dots } \{y= \lfloor 2^n \rfloor \} \]
 Applicando la regola derivata del While si ottengono le seguenti VCs:
 \begin{itemize}
-  \item $ y=2^{n-x} \land x \geq 0 
+  \item $ y=2^{n-x} \land x \geq 0
         \Rightarrow y=2^{n-x} \land x \geq 0 $,
         che è banalmente vera.
   \item $ y=2^{n-x} \land x \geq 0 \land x \leq 0

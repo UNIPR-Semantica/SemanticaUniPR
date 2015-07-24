@@ -1,6 +1,6 @@
 \chapter{Estensioni}
 
-\section{Array} \marginpar{Segalini}
+\section{Array}
 
 Aggiungere nel linguaggio while gli array.
 
@@ -195,7 +195,7 @@ alla posizione~0 del nuovo array:
   \end{cases}
 \end{align*}
 
-\section{Eccezioni} \marginpar{Segalini}
+\section{Eccezioni}
 
 Aggungiamo le \emph{eccezioni} nel linguaggio WHILE. Le eccezioni in
 questo linguaggio sono identificate da interi ($\kw{throw} E$).
@@ -232,14 +232,14 @@ Siano $x \in \Var$ e $E \in \AExp$
 
 \begin{align*}
   &\prooftree \config{E}{s} \ssarrow \config{E'}{s'}
-  \justifies \config{\kw{throw} E}{s} \ssarrow 
+  \justifies \config{\kw{throw} E}{s} \ssarrow
     \config{\kw{throw} E'}{s'}
   \using s(\ecc) \divrg
   \endprooftree
   \pts
   &\prooftree
   \nohyp
-  \justifies \config{\kw{throw} n}{s} \ssarrow 
+  \justifies \config{\kw{throw} n}{s} \ssarrow
     \config{\kw{skip}}{s \substt{n}{\ecc}}
   \using s(\ecc) \divrg
   \endprooftree
@@ -248,7 +248,7 @@ Siano $x \in \Var$ e $E \in \AExp$
   \nohyp
   \justifies \config{x \weq E}{s} \ssarrow \config{\kw{skip}}{s}
   \using s(\ecc) \convrg
-  \endprooftree 
+  \endprooftree
   \pts
   &\prooftree
   \nohyp
@@ -258,7 +258,7 @@ Siano $x \in \Var$ e $E \in \AExp$
   \pts
   &\prooftree
   \nohyp
-  \justifies \config{\kw{if} B \kw{then} C_1 \kw{else} C_2}{s} 
+  \justifies \config{\kw{if} B \kw{then} C_1 \kw{else} C_2}{s}
     \ssarrow \config{\kw{skip}}{s}
   \using s(\ecc) \convrg
   \endprooftree
@@ -288,17 +288,17 @@ eccezionale, dobbiamo riportare la variabile $\ecc$ ad uno stato
 indefinito. \'E necessario definire un operatore di
 uccisione di variabile:
 \[
-  \fund{\unvar}{\Sigma \times \Var'}{\Sigma} 
+  \fund{\unvar}{\Sigma \times \Var'}{\Sigma}
 \]
 \[
-  \forall s \in \Sigma \itc \forall x \in \Var' \itc 
+  \forall s \in \Sigma \itc \forall x \in \Var' \itc
     \forall y \in \Var' \itc (s \unvar x)(y) = \begin{cases}
         s(y),   &\text{se $x \neq y$;} \\
-        \divrg, &\text{se $x = y$.}   
+        \divrg, &\text{se $x = y$.}
       \end{cases}
 \]
 \begin{align*}
-  &\prooftree 
+  &\prooftree
   \nohyp
   \justifies \config{\kw{try} \kw{skip} \kw{catch}(x) C}{s} \ssarrow
     \config{\kw{skip}}{s}
@@ -318,7 +318,7 @@ uccisione di variabile:
   \endprooftree
 \end{align*}
 
-\section{Comando ``$\repeatuntil{C}{B}$''} \marginpar{Trombi}
+\section{Comando ``$\repeatuntil{C}{B}$''}
 
 Nel seguito viene aggiunto il costrutto $\repeatuntil{C}{B}$.
 Si dia per assodato che tale costrutto è equivalente a
@@ -391,7 +391,7 @@ Ridefiniamo dunque anche la funzione $F$ come:
 Utilizzando le proprietà che queste funzioni sottolineano per il comando
 $\kw{while}$, definiamo la semantica denotazionale del comando
 $\repeatuntil{C}{B}$:
-\[  
+\[
   \denotC{\repeatuntil{C}{B}}{s} = \seq\bigl( \denotCsl{C}, \lfp F^n \bigr)(s).
 \]
 

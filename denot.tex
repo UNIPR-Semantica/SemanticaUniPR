@@ -3,25 +3,25 @@
 
 \chapter{Semantica denotazionale}
 
-\section{Introduzione} \marginpar{Marano}
+\section{Introduzione}
 % Aggiustare intro
 In questo capitolo daremo una semantica denotazionale al linguaggio WHILE. Vedremo quindi la semantica di ogni elemento sintattico sotto forma di struttura matematica, per fare ciò definiremo varie funzioni che manipolano funzioni.
 Ogni comando è perciò visto come uno \emph{State Transformer}, ovvero una funzione che prende uno store come argomento e, se per tale store è definita, allora mi restituisce un altro store. È quindi una funzione parziale, possiamo farla diventare totale ampliando il codominio con un nuovo simbolo $\bot$ che rappresenta il caso indefinito di stack o di ciclo infinito. Definiamo quindi il nuovo codominio $\Sigma_\bot = \Sigma \cup \left\{\bot\right\}$.
 \begin{align*}
         &\pard{\ST}{\Sigma}{\Sigma}
-        &\fund{\ST}{\Sigma}{\Sigma_\bot} 
+        &\fund{\ST}{\Sigma}{\Sigma_\bot}
 \end{align*}
 
 Questo è dunque il dominio semantico dei comandi del linguaggio WHILE, vediamo ora i domini semantici per le espressioni e per i booleani che sono definiti in modo esattamente analogo.
 
 \begin{align*}
         &\pard{P}{\Sigma}{B}
-        &\fund{P}{\Sigma}{B_\bot} 
+        &\fund{P}{\Sigma}{B_\bot}
 \end{align*}
 
 \begin{align*}
         &\pard{E}{\Sigma}{\Nset}
-        &\fund{E}{\Sigma}{\Nset_\bot} 
+        &\fund{E}{\Sigma}{\Nset_\bot}
 \end{align*}
 
 Vediamo quindi le funzioni semantiche per il linguaggio WHILE, queste sono funzioni di ordine superiore che prendono come argomento una funzione e restituiscono un'altra funzione. Ciò accade sempre visto che si tratta di funzioni totali poiché tutti i comandi, i booleani e le espressioni hanno una semantica (tralasciamo per semplicità quelli sintatticamente errati).
@@ -29,12 +29,12 @@ Vediamo quindi le funzioni semantiche per il linguaggio WHILE, queste sono funzi
 \begin{gather*}
 \fund{\calC \llbracket - \rrbracket}{\Com}{\ST}
 \pts
-\fund{\calB \llbracket - \rrbracket}{\BExp}{P} 
+\fund{\calB \llbracket - \rrbracket}{\BExp}{P}
 \pts
-\fund{\calE \llbracket - \rrbracket}{\AExp}{E} 
+\fund{\calE \llbracket - \rrbracket}{\AExp}{E}
 \end{gather*}
 
-\section{Definizione delle semantica di AExp} \marginpar{Marano}
+\section{Definizione delle semantica di AExp}
 Abbiamo visto come è fatta la funzione semantica per le espressioni ma ora dobbiamo vedere cosa accade nei vari casi di espressione. La semantica della costante associa semplicemente alla costante $n$ il suo valore numerico.
 $$ \denotE{n}{s} \defeq \llbracket n \rrbracket_{\Integer}$$
 La semantica della somma invece associa alla somma di due espressioni la somma della semantica di queste due espressioni, se tali semantiche esistono:
@@ -45,7 +45,7 @@ $$ \denotE{E_1 + E_2}{s} \defeq \begin{cases}
 $$
 Vedremo in seguito come poter eliminare questa e altre funzioni per casi definendo nuove funzioni come per esempio la somma $\conadd$ in $\Nset_\bot$.
 
-\section{Definizione della semantica di Com} \marginpar{Marano}
+\section{Definizione della semantica di Com}
 Ora vediamo la semantica dei vari comandi presenti nel linguaggio WHILE:
 
 \begin{align*}
@@ -72,7 +72,7 @@ Ora vediamo la semantica dei vari comandi presenti nel linguaggio WHILE:
 Daremo in seguito una semantica più precisa del comando while, per ora possiamo solo stabilire l'uguaglianza
 $$\denotC{\while{B}{C}}{s} = \denotC{\condif{B}{(C ; \while{B}{C}}{\kw{skip}}}{s}$$
 
-\section{Eliminazione funzioni per casi} \marginpar{Marano}
+\section{Eliminazione funzioni per casi}
 \label{sec:definizione di F}
 Vediamo ora come ridefinire alcune di queste semantiche in modo da non avere funzioni per casi, per ottenere tale risultato basta ampliare la definizione di alcuni operatori. Prendiamo per esempio la semantica della somma, in tal caso basta definire l'operatore di somma tra $\Nset_\bot$ in modo che se sommo due numeri naturali ottengo lo stesso risultato che otterrei normalmente con la somma che conosciamo, mentre se sommo $\bot$ con un naturale o con un altro $\bot$ ottengo ancora $\bot$:
 $$\fund{\conadd}{\Nset_\bot \times \Nset_\bot}{\Nset_\bot} \defeq \lambda n_1, n_2 \in \Nset_\bot . \begin{cases}
@@ -116,7 +116,7 @@ e otteniamo quindi che $f$ è un punto fisso di $F$, ovvero che per trovare la s
 Sia ST l'insieme degli State Transformer e sia $\reld{\sqsubseteq}{ST}{ST}$ una relazione binaria di ordinamento parziale che presi due State Transformer $f$ e $g$ si ha che $f \sqsubseteq g$ se $g$ è più definita di $f$, ovvero in simboli: $\forall f,g \in ST \itc f \sqsubseteq g \Longleftrightarrow \forall s \in \Sigma \itc f(s)\convrg \Rightarrow f(s) = g(s)$. Allora $(ST, \sqsubseteq)$ è un CPO.
 \end{proposizione}
 \begin{proof}
-Poniamo dunque $\bot$ minimo di ST visto che è lo State Transformer meno definito: $\bot \in ST \itc \forall s \in \Sigma \itc \bot(s)\divrg$ perciò è ovvio che $\forall f \in ST \itc \bot \sqsubseteq f$, dunque $\bot = \min ST$. 
+Poniamo dunque $\bot$ minimo di ST visto che è lo State Transformer meno definito: $\bot \in ST \itc \forall s \in \Sigma \itc \bot(s)\divrg$ perciò è ovvio che $\forall f \in ST \itc \bot \sqsubseteq f$, dunque $\bot = \min ST$.
 Sia $I \subseteq \Nset \itc C = \left\{a_i\right\}_{i \in I}$ allora se $I$ è numerabile ($|I| < \aleph_0$) allora il $\lub$ è l'elemento massimo nella catena. Se invece $|I| = \aleph_0$ definisco:
         $\forall x \in \Sigma \itc f_l(x) =
     \begin{cases}
@@ -129,7 +129,7 @@ Quindi prendiamo un qualsiasi State Transformer $f_i \in C$ e dimostriamo che è
 Perciò $\forall j \in I \itc f_j \sqsubseteq f_l$ dunque  $f_l = \lub C$. Visto che $(ST, \sqsubseteq)$ ha minimo e ogni sua catena ha $\lub$ è un CPO.
 \end{proof}
 
-\section{Continuità di $F$}\marginpar{Mancino}
+\section{Continuità di $F$}
 In questo paragrafo dimostreremo il seguente risultato:
 
 \begin{teorema}
@@ -195,7 +195,7 @@ Dobbiamo dimostrare che il $\lub$ è proprio lui e che:
   \lub \bigl(\cond(b,X,g)\bigr) = \cond(b, \lub X, g)
 \]
 In questo modo avremo provato formalmente che $\cond$ è continuo
-sul secondo argomento. 
+sul secondo argomento.
 Per semplicità notazionale, sia:
 \[
   h(s) \defeq
@@ -262,8 +262,8 @@ Quindi $\cond$ è effettivamente continuo sul secondo argomento.
 Ci rimane da far vedere che se $X$ è una catena e
 componendo tutti gli elementi della catena con uno $\ST$
 ottengo sempre una catena, cioè:
-\[ 
-  \forall g \in ST \st \forall X \subseteq ST 
+\[
+  \forall g \in ST \st \forall X \subseteq ST
   \st \chain(X) \Rightarrow \chain\bigl(\{ f \circ g | f \in X \} \bigr)
 \]
 In particolare se $f = \perp$ l'insieme è un singoletto.
@@ -271,7 +271,7 @@ Dimostriamolo:
 \begin{itemize}
   \item L'insieme è enumerabile (banalmente vero).
   \item Per dimostrare che è totalmente ordinato devo far vedere che:
-  \[ 
+  \[
     \forall f_1 , f_2 \in X \st f \circ g \sqsubseteq f_2 \lor f_2
     \circ g \sqsubseteq f_1
   \]
@@ -284,16 +284,16 @@ Dimostriamolo:
     \label{eq:5.1}
   \end{equation}
    Voglio dimostrare che:
-   \[ 
+   \[
      \forall s \in \Sigma \st f_1 \circ g(s) \downarrow
      \; \Rightarrow f_2 \circ g(s) \downarrow \land f_2
      \circ g(s) = f_1 \circ g(s)
     \]
     Che sarebbe:
-    \[ 
+    \[
       \forall s \in \Sigma \st f_{1}(g(s)) \downarrow
       \; \Rightarrow f_{2}(g(s)) \downarrow \land f_{1}(g(s))
-      = f_{2}(g(s)) 
+      = f_{2}(g(s))
     \]
     che è vera per la \ref{eq:5.1} ed è proprio quello che ci serve.
     L'altro caso è assolutamente duale.
@@ -303,7 +303,7 @@ Abbiamo dimostrato allora la continuità della funzione $F$:
   \forall b \in PT, \forall g,h \in ST \quad \lambda f \st \cond(b,f \circ h,g)
 \]
 Per il teorema di Tarski, presentato in \autoref{sec:Tarski},
-possiede un minimo punto fisso che è possibile trovare 
+possiede un minimo punto fisso che è possibile trovare
 facendo le iterate successive a partire da $\perp$.
 Allora possiamo concludere che:
 \[ \calC \llbracket \kw{while} B \kw{do} C \rrbracket = \lfp F \]

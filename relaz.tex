@@ -4,12 +4,11 @@ che non riguardano una specifica semantica vista nei capitoli precedenti,
 ma le affrontano un po' tutte.
 
 \subsection{Conservazione passi small step rispetto a denotazionale}
-\marginpar{Segalini}
 
 \begin{proposizione}[Conservazione passi small step per espressioni]
 \label{conservazione-passi-small-step-expr}
 \[
-  \forall E \in \AExp \itc \config{E}{s} \ssarrow \config{E'}{s} 
+  \forall E \in \AExp \itc \config{E}{s} \ssarrow \config{E'}{s}
   \implies \calE\llbracket E \rrbracket(s) = \calE\llbracket E' \rrbracket(s)
 \]
 
@@ -41,8 +40,8 @@ Per ipotesi abbiamo che:
 \]
 dunque:
 \begin{align*}
-  \calE\llbracket n_1 + n_2 \rrbracket(s) 
-  &= \calE\llbracket n_1 \rrbracket(s) 
+  \calE\llbracket n_1 + n_2 \rrbracket(s)
+  &= \calE\llbracket n_1 \rrbracket(s)
   + \calE\llbracket n_2 \rrbracket(s),
     &\law{per def. della denotazionale} \\
   &= n_1 + n_2,
@@ -75,7 +74,7 @@ dunque:
 
 \begin{proposizione}[Conservazione passi small step per comandi]
 \[
-  \forall C \in \Com \itc \config{C}{s} \ssarrow \config{C'}{s'} 
+  \forall C \in \Com \itc \config{C}{s} \ssarrow \config{C'}{s'}
   \implies \calC\llbracket C \rrbracket(s) = \calC\llbracket C' \rrbracket(s')
 \]
 \begin{proof}
@@ -94,7 +93,7 @@ dunque:
   &= \assign{s}{n}{x},
     &\law{per def. della denotazionale} \\
   &= \id(\assign{s}{n}{x}),
-    &\law{per def. di $\id$} \\ 
+    &\law{per def. di $\id$} \\
   &= \calC\llbracket \kw{skip} \rrbracket(\assign{s}{n}{x}).
      &\law{per def. della denotazionale} \\
 \end{align*}
@@ -113,8 +112,8 @@ dunque:
     &\law{per def. della denotazionale} \\
   &= \assign{s}{\calE\llbracket E' \rrbracket(s)}{x},
     &\law{per il lemma
-      \ref{conservazione-passi-small-step-expr}: 
-      $\calE\llbracket E \rrbracket(s) 
+      \ref{conservazione-passi-small-step-expr}:
+      $\calE\llbracket E \rrbracket(s)
       = \calE\llbracket E' \rrbracket(s)$} \\
   &= \calC\llbracket x \weq E' \rrbracket(s).
     &\law{per def. della denotazionale}
@@ -138,23 +137,23 @@ Caso base: $C = (\kw{if} B \kw{then} C_1 \kw{else} C_2)$.
 
 Per definizione della semantica small step:
 \begin{align*}
-  &\config{\kw{if} B \kw{then} C_1 \kw{else} C_2}{s} \ssarrow 
+  &\config{\kw{if} B \kw{then} C_1 \kw{else} C_2}{s} \ssarrow
   \config{\kw{if} B' \kw{then} C_1 \kw{else} C_2}{s}, \\
   &\config{B}{s} \ssarrow \config{B'}{s},
 \end{align*}
 dunque:
 \begin{align*}
   \calC\llbracket \kw{if} B \kw{then} C_1 \kw{else} C_2 \rrbracket(s)
-  &= \cond(\calB\llbracket B \rrbracket, 
+  &= \cond(\calB\llbracket B \rrbracket,
     \calC\llbracket C_1 \rrbracket,
     \calC\llbracket C_2 \rrbracket),
     &\law{def. denotazionale} \\
-  &= \cond(\calB\llbracket B' \rrbracket, 
+  &= \cond(\calB\llbracket B' \rrbracket,
     \calC\llbracket C_1 \rrbracket,
     \calC\llbracket C_2 \rrbracket),
-    &\law{lemma  
-      \ref{conservazione-passi-small-step-expr}: 
-      $\calE\llbracket E \rrbracket(s) 
+    &\law{lemma
+      \ref{conservazione-passi-small-step-expr}:
+      $\calE\llbracket E \rrbracket(s)
       = \calE\llbracket E' \rrbracket(s)$} \\
   &= \calC\llbracket \kw{if} B' \kw{then} C_1 \kw{else} C_2 \rrbracket(s).
      &\law{def. denotazionale}
@@ -164,7 +163,7 @@ Caso base:  $C = (\kw{while} B \kw{do} C)$.
 
 Per definizione della semantica small step:
 \[
-  \config{\kw{while} B \kw{do} C}{s} \ssarrow 
+  \config{\kw{while} B \kw{do} C}{s} \ssarrow
     \config{\kw{if} B \kw{then} (C ; \kw{while} B \kw{do} C) \kw{else} C_2}{s},
 \]
 dunque per definizione di $\kw{while} B \kw{do} C$ nella denotazionale:
@@ -195,7 +194,7 @@ dunque:
 \end{proof}
 \end{proposizione}
 
-\subsection{Esercizio 1} \marginpar{Mancino}
+\subsection{Esercizio 1}
 Aggiungere al linguaggio WHILE visto a lezione l'espressione:
 \[ Exp \ni E ::= \dots \vbar \textrm{$B$ ? $E_2$ : $E_3$} \]
 definendone la semantica operazionale Big Step, Small Step e denotazionale.
@@ -209,7 +208,7 @@ Di seguito illustriamo le regole e gli assiomi in semantica Small Step:
     \langle \textrm{$B$ ? $E_2$ : $E_3$, $s$ $\rangle$
     $\rightarrow$ $\langle$ $B'$ ? $E_2$ : $E_3$, $s'$ $\rangle$}
   \thickness=0.08em
-\endprooftree 
+\endprooftree
 \]
 
 \[
@@ -221,7 +220,7 @@ Di seguito illustriamo le regole e gli assiomi in semantica Small Step:
 \endprooftree
 \]
 
-\[ 
+\[
 \prooftree
   \justifies
     \textrm{$\langle$ ff ? $E_2$ : $E_3$, $s$

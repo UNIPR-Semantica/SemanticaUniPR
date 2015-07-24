@@ -132,7 +132,7 @@ che si comporta nel seguente modo, per ogni $n \in \Zset$:
       >,      &\text{se $n  >  0$;} \\
       =,      &\text{se $n = 0$;} \\
       <,      &\text{se $n < 0$.}
-    \end{cases} 
+    \end{cases}
 \end{align*}
 Quindi, la funzione $\alpha$ rappresenta il $\lub$ della
 funzione $\beta$ applicata ad ogni elemento di un insieme
@@ -171,7 +171,7 @@ Oltre alla monotonia delle funzioni di astrazione e concretizzazione,
 è interessante sapere se stiamo lavorando in una
 ``inserzione di Galois''.
 Mostrare questo fatto vuol dire anche verificare che
-$\compfun{\gamma}{\alpha}$ è estensiva. 
+$\compfun{\gamma}{\alpha}$ è estensiva.
 Per dimostrare l'estensività di $\compfun{\gamma}{\alpha}$, conviene
 prima considerare $\gamma$ additiva.
 \begin{proposizione}
@@ -487,7 +487,7 @@ le variabili di tipo intero.
 La semantica concreta di un programma in linguaggio WHILE
 consisteva in una serie di transizioni per ridurre il programma $P$
 alla configurazione terminale $\kw{skip}$:
-\[      
+\[
   \llbracket P \rrbracket (s) = s' \text{, se } \config{P}{s} \ssarrow^* \config{\kw{skip}}{s'}
 \]
 \end{definizione}
@@ -517,7 +517,7 @@ Si definisce ora l'ordinamento sull'insieme degli store astratti:
 Nel dettaglio, per ogni $s_1^\#,\ s_2^\# \in \Sigma^\#$
 e per ogni $x \in \dom(s_1^\#)$:
 \[
-	s_1^\# \sqsubseteq_{\Sigma^\#} s_2^\# 
+	s_1^\# \sqsubseteq_{\Sigma^\#} s_2^\#
 \]
 se e solo se:
 \[
@@ -549,7 +549,7 @@ scelta per presentare tale semantica è quella operazionale small-step.
   \prooftree
     \nohyp
   \justifies
-    \config{a_1 + a_2}{s} \ssarrow \config{a_3}{s} 
+    \config{a_1 + a_2}{s} \ssarrow \config{a_3}{s}
     \using a_3 = a_1 \absadd a_2
   \endprooftree
 \end{gather*}
@@ -570,7 +570,7 @@ definiamo un operatore di congiunzione cortocircuitato.
     0 & 0 & 0 & 0 & $\bot$ \\
     $\bot$ & $\bot$ & $\bot$ & $\bot$ & $\bot$
   \end{tabular}
-\end{center} 
+\end{center}
 
 \subsubsection{Semantica}
 \begin{gather*}

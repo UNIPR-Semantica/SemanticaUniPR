@@ -46,7 +46,7 @@ Definiamo due funzioni con lo stesso nome (sovraccaricate) per calcolare le vari
 Definiamo la funzione per catturare le variabili libere in una espressione della logica,
 \[
   \fund{\FV}{\LExp}{\wp(\Ghost)}
-\] 
+\]
 definita per induzione strutturale su $\LExp$:
 \begin{align*}
    \FV(x)
@@ -74,7 +74,7 @@ definita per induzione strutturale su $\LExp$:
 Definiamo la funzione per catturare
 le variabili libere nei predicati della logica,
 \[
-  \fund{\FV}{\Pred}{\wp(\Ghost)} 
+  \fund{\FV}{\Pred}{\wp(\Ghost)}
 \]
 definita per induzione strutturale su $\Pred$:
 \begin{align*}
@@ -174,7 +174,7 @@ abbiamo bisogno di: un insieme degli stati denotato con $\Sigma$ utile in quanto
 definita come $\fund{\Gamma}{\Ghost}{\Zset}$.
 
 \begin{definizione} \summary{(Valutazione semantica per $\LExp$.)}
-Definiamo la funzione di valutazione semantica delle espressioni 
+Definiamo la funzione di valutazione semantica delle espressioni
 \[
    \fund{\llbracket \cdot \rrbracket ^\LExp}{\LExp}{((\Sigma \times \Gamma) \rightarrow \Zset)}
 \]
@@ -292,7 +292,7 @@ Sia $P,Q \in \Pred$ e $C \in \Com$, allora la tripla
 $\llbracket \{P\} C\{Q\} \rrbracket$ è vera se e solo se:
 
 \begin{multline*}
-       \forall t \in \Gamma_{\FV(P) \union \FV(Q)} \itc 
+       \forall t \in \Gamma_{\FV(P) \union \FV(Q)} \itc
        \forall  s,s'\in \Sigma \itc \llbracket P \rrbracket(s,t) = \ttv
        \land \config{C}{s} \ssarrow ^*\config{\kw{skip}}{s'}\\
        \implies \llbracket Q \rrbracket(s',t)=\ttv;
@@ -303,10 +303,10 @@ Dove:
 \]
 \end{definizione}
 
-Ora verrà introdotto un lemma che verrà usato nel \emph{teorema 8} per 
+Ora verrà introdotto un lemma che verrà usato nel \emph{teorema 8} per
 dimostrare la correttezza del comando di assegnamento.
 \begin{lemma} \summary{(Assegnamento.)}
-Per ogni $k \in \Nset $ tali che $\config{x:=\LE}{s} \ssarrow^k\config{\kw{skip}}{s'}$, 
+Per ogni $k \in \Nset $ tali che $\config{x:=\LE}{s} \ssarrow^k\config{\kw{skip}}{s'}$,
 allora esiste un $n \in \Zset$ tali che $\config{\LE}{s} \ssarrow ^{k-1}\config{n}{s}$
 e $s'=s \substt{n}{x}$.
 
@@ -355,7 +355,7 @@ Allora:
 \end{proof}
 \end{lemma}
 
-Ora verrà introdotto un ulteriore lemma che verrà usato nel \emph{teorema 8} per 
+Ora verrà introdotto un ulteriore lemma che verrà usato nel \emph{teorema 8} per
 dimostrare la correttezza del comando di composizione sequenziale.
 \begin{lemma} \summary{(Composizione sequenziale.)}
 Per ogni $C_1,C_2 \in \Com$, per ogni $s,s' \in \Sigma$ e per ogni $ n \in \Nset$
@@ -445,8 +445,8 @@ Ma questo è possibile solo se le ipotesi $\bigl \llbracket \{P\}C_1\{Q\} \bigr 
 
 \begin{multline*}
       \forall t \in \Gamma_{\FV(P)\union\FV(R)\union\FV(Q)}\itc
-      \forall s,s'\in \Sigma \itc      
-      (\llbracket P \rrbracket(s,t) = \ttv 
+      \forall s,s'\in \Sigma \itc
+      (\llbracket P \rrbracket(s,t) = \ttv
          \land \config{C_1}{s} \ssarrow^* \config{\kw{skip}}{s'} \\
          \land \llbracket Q \rrbracket(s',t) = \ttv
          \land \config{C_2}{s'} \ssarrow^* \config{\kw{skip}}{s''})\\
@@ -480,11 +480,11 @@ $\config{B}{s} \ssarrow^* \config{b}{s}$ con $b \in \{\ttv, \ffv\}$
 che ci porta ad avere due casi:
 
 \begin{enumerate}
-\item se $b = \ttv$, per ipotesi induttiva 
-$\{P \land B\} C_1\{Q\}$ implica la verità di 
+\item se $b = \ttv$, per ipotesi induttiva
+$\{P \land B\} C_1\{Q\}$ implica la verità di
 $\bigl \llbracket \{P \land B\} C_1 \{Q\} \bigr \rrbracket$ ovvero che:
 \[
-  \llbracket P \land B \rrbracket(s, t) \land 
+  \llbracket P \land B \rrbracket(s, t) \land
     \config{C_1}{s} \ssarrow^* \config{\kw{skip}}{s'}
       \implies \llbracket Q \rrbracket(s', t).
 \]
@@ -497,16 +497,16 @@ mentre $\llbracket P \land B \rrbracket(s, t)$ vale se e solo se
     \land \llbracket B \rrbracket(s, t)
 \]
 $\llbracket P \rrbracket(s, t)$ vale poiché è premessa
-dell'implicazione da dimostrare mentre $\llbracket B \rrbracket(s, t)$ 
+dell'implicazione da dimostrare mentre $\llbracket B \rrbracket(s, t)$
 vale poiché in questo caso $\config{B}{s} \ssarrow^* \config{\ttv}{s}$.
 Otteniamo dunque $\llbracket Q \rrbracket(s', t)$
 cioè la tesi.
 
-\item se $b = \ffv$, per ipotesi induttiva 
-$\{P \land \neg B\} C_2\{Q\}$ implica la verità di 
+\item se $b = \ffv$, per ipotesi induttiva
+$\{P \land \neg B\} C_2\{Q\}$ implica la verità di
 $\bigl \llbracket \{P \land \neg B\} C_2 \{Q\} \bigr \rrbracket$ ovvero che:
 \[
-  \llbracket P \land \neg B \rrbracket(s, t) \land 
+  \llbracket P \land \neg B \rrbracket(s, t) \land
     \config{C_2}{s} \ssarrow^* \config{\kw{skip}}{s'}
       \implies \llbracket Q \rrbracket(s', t).
 \]
@@ -516,11 +516,11 @@ C_2}{s} \ssarrow^* \config{\kw{skip}}{s'}$ ci permette di dedurre che
 $\config{C_2}{s} \ssarrow^* \config{\kw{skip}}{s'}$
 mentre $\llbracket P \land \neg B \rrbracket(s, t)$ vale se e solo se
 \[
-  \llbracket P \rrbracket(s, t) = 
+  \llbracket P \rrbracket(s, t) =
     \land \llbracket \neg B \rrbracket(s, t)
 \]
 $\llbracket P \rrbracket(s, t)$ vale poiché è premessa
-dell'implicazione da dimostrare mentre $\llbracket \neg B \rrbracket(s, t)$ 
+dell'implicazione da dimostrare mentre $\llbracket \neg B \rrbracket(s, t)$
 vale poiché in questo caso $\config{B}{s} \ssarrow^* \config{\ffv}{s}$.
 Otteniamo dunque $\llbracket Q \rrbracket(s', t)$
 cioè la tesi.
