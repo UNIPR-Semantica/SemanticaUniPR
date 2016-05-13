@@ -126,7 +126,7 @@ esiste almeno un risultato $n$ tale che $E \ssarrow ^* n$.
 Dimostriamo prima però il seguente
 
 \begin{teorema}
-$\forall E \in Exp \itc E \in \Zset \land \exists E' \in \Zset \Rightarrow E \ssarrow E'$
+$\forall E \in Exp \itc E \not \in \Zset \Rightarrow \exists E' \in Exp . E \ssarrow E'$
 Questa proprietà ci aiuterà nella dimostrazione del successivo teorema ma dobbiamo anche dimostrare che le espressioni non possono transire per sempre, ovvero che $\forall E \in Exp \itc \exists k \in \Nset . E \ssarrow ^k F \land F \nssarrow$
 \end{teorema}
 
@@ -144,7 +144,7 @@ Dimostriamo ora che questa funzione calcola proprio ciò che volevamo, ovviament
 Caso Base: $E = n \in \Zset$.
 Come detto sopra $n$ non può transire perciò $f(n) = 0$.
 
-Passo Induttivo: $E = \not \in \Zset$.
+Passo Induttivo: $E \not \in \Zset$.
 $E \in \AExp$ perciò esistono $E_1, E_2 \in AExp . E = E_1 + E_2$, quindi $E_1 + E_2 \ssarrow ^i n_1 + E_2 \ssarrow ^j n_1 + n_2 \ssarrow n$. Ma allora è ovvio che $k = i + j + 1 = f(E_1) + f(E_2) + 1 = f(E_1 + E_2) = f(E)$ e che $k$ è proprio il numero di "+" presenti in $E$.
 \end{proof}
 
@@ -213,6 +213,9 @@ Indichiamo perciò con $E$ la generica espressione appartenente a $\AExp$, con $
         \config{\kw{skip}}{s} \ssarrow s
 \endprooftree
 \]
+Nota: La transizione $\config{\kw{skip}}{s} \ssarrow s$ non viola 
+la definizione di $\ssarrow$ perchè $s$ è una abbreviazione di
+$\config{\epsilon}{s}$
 \subsection*{}
 \[
 \rulename{S-ASS.EXP}
