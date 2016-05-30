@@ -5,19 +5,11 @@ che comando viene eseguito e come viene modificato lo store. Per fare ciò sfrut
 capitolo precedente.
 
 \section{Introduzione}
-Se quindi abbiamo un linguaggio con la seguente sintassi
+Se quindi abbiamo un linguaggio con la seguente sintassi:
 $$ \AExp \ni E ::= n \vbar (E+E)$$
-in cui i puntini di indicano, come al solito, che si può inserire una qualsiasi espressione arricchendo così la sintassi e dandone successivamente una
-semantica. Considerando che $n \in \Zset$, una possibile semantica small step è:
+Considerando che $n \in \Zset$, una possibile semantica small step è:
 
 \begin{gather*}
-\rulename{S-NUM}
-\prooftree
-        \nohyp
-\justifies
-  n \ssarrow n
-\endprooftree
-\qquad
 \rulename{S-LEFT}
 \prooftree
         E_1 \ssarrow E_1'
@@ -29,19 +21,21 @@ semantica. Considerando che $n \in \Zset$, una possibile semantica small step è
 \prooftree
         E_2 \ssarrow E_2'
 \justifies
-        (E_1 + E_2) \ssarrow (E_1 + E_2')
+        (n_1 + E_2) \ssarrow (n_1 + E_2')
 \endprooftree
 \qquad
 \rulename{S-ADD}
 \prooftree
         \nohyp
 \justifies
-        (1 + 2) \ssarrow 3
+        (n_1 + n_2) \ssarrow n_3
+\using
+        n_3 = n_1 + n_2
 \endprooftree
 \end{gather*}
 
 La relazione $\ssarrow$ quindi rappresenta a tutti gli effetti un passo di computazione.
-Con questa semantica abbiamo lo stesso potere espressivo della semantica big-step ma, forzando la valutazione di tutte le espressioni da destra a sinistra un passo alla volta, da più informazione sulla sequenzialità e sui "risultati intermedi".
+Con questa semantica abbiamo lo stesso potere espressivo della semantica big-step ma, forzando la valutazione di tutte le espressioni da destra a sinistra un passo alla volta, da più informazione sulla sequenzialità e sui ``risultati intermedi''.
 Vediamo un esempio di dimostrazione:
 
 \begin{gather*}
@@ -131,10 +125,10 @@ Questa proprietà ci aiuterà nella dimostrazione del successivo teorema ma dobb
 \end{teorema}
 
 \begin{proof}
-Definiamo perciò una funzione $\fund{f}{\AExp}{\Nset}$ che calcola il numero di "+", ovvero il numero di passi da fare per arrivare fino a una espressione che non possa più transire, $f$ restituisce ovvero il $k$ definito nella tesi del teorema. Definiamo per induzione strutturale:
+Definiamo perciò una funzione $\fund{f}{\AExp}{\Nset}$ che calcola il numero di ``+'', ovvero il numero di passi da fare per arrivare fino a una espressione che non possa più transire, $f$ restituisce ovvero il $k$ definito nella tesi del teorema. Definiamo per induzione strutturale:
 
 Caso Base: $E = n \in \Zset$.
-Visto che $n$ non può transire è ovvio che $f(n) = 0$, infatti in $n$ non è presente alcun "+".
+Visto che $n$ non può transire è ovvio che $f(n) = 0$, infatti in $n$ non è presente alcun ``+''.
 
 Passo Induttivo: $E = \not \in \Zset$.
 $E \in \AExp$ perciò esistono $E_1, E_2 \in \AExp . E = E_1 + E_2$, in tal caso $f(E) = f(E_1 + E_2) = f(E_1) + f(E_2) + 1$
@@ -145,7 +139,7 @@ Caso Base: $E = n \in \Zset$.
 Come detto sopra $n$ non può transire perciò $f(n) = 0$.
 
 Passo Induttivo: $E \not \in \Zset$.
-$E \in \AExp$ perciò esistono $E_1, E_2 \in AExp . E = E_1 + E_2$, quindi $E_1 + E_2 \ssarrow ^i n_1 + E_2 \ssarrow ^j n_1 + n_2 \ssarrow n$. Ma allora è ovvio che $k = i + j + 1 = f(E_1) + f(E_2) + 1 = f(E_1 + E_2) = f(E)$ e che $k$ è proprio il numero di "+" presenti in $E$.
+$E \in \AExp$ perciò esistono $E_1, E_2 \in AExp . E = E_1 + E_2$, quindi $E_1 + E_2 \ssarrow ^i n_1 + E_2 \ssarrow ^j n_1 + n_2 \ssarrow n$. Ma allora è ovvio che $k = i + j + 1 = f(E_1) + f(E_2) + 1 = f(E_1 + E_2) = f(E)$ e che $k$ è proprio il numero di ``+'' presenti in $E$.
 \end{proof}
 
 \begin{teorema}[Normalizzazione]
