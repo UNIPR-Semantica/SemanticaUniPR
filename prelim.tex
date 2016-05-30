@@ -141,11 +141,17 @@ Quando il poset $(P, \preceq)$ \`e implicito dal contesto
 e $A \sseq P$ scriveremo $\chain(A)$ intendendo con questo
 che $(A, \preceq)$ \`e una catena.
 
-\begin{proposizione} \summary{(Ogni catena finita ha un massimo.)}
-Sia $(C, \preceq)$ una catena finita, allora sicuramente tale catena ammette massimo.
+\begin{proposizione}
+Ogni catena finita ha un elemento massimo.
 \end{proposizione}
 \begin{proof}
-Essendo $C$ finita siamo sicuri che $|C| < \aleph_0$, definiamo dunque un insieme I $\subseteq \Nset \itc C = \left\{a_i\right\}_{i \in I}$. Dunque esiste un $i \in I \itc \forall j \in I \itc a_j \preceq a_i$. Ma allora $a_i = max\ C$.
+Sia $(C, \preceq)$ una catena tale che $|C| < \aleph_0$.
+Esiste quindi $k \in \Nset$ tale che $C = \{ a_1, \dots, a_k \}$
+e $a_1 \prec \cdots \prec a_k$.
+Dalla transitivit\`a di $\preceq$ discende la transitivit\`a di $\prec$,
+la quale implica $a_i \prec a_k$, per ogni $i = 1$, \dots,~$k-1$.
+Poich\'e $a_i \prec a_k$ implica $a_i \preceq a_k$, abbiamo
+$a_i \preceq a_k$ per ogni $i = 1$, \dots,~$k$, ovvero $a_k = \max_\preceq C$.
 \end{proof}
 
 
