@@ -110,23 +110,85 @@ Definiamo $\fund{F}{\ST}{\ST}$ come:
 \[
 F(f) \defeq \mathrm{cond}(\calB \llbracket B \rrbracket, \mathrm{seq}(\calC \llbracket C \rrbracket, f), \mathrm{id})
 \]
-e otteniamo quindi che $f$ è un punto fisso di $F$, ovvero che per trovare la semantica del comando while ci basta trovare il punto fisso di tale funzione, per fare ciò sfrutteremo il Teorema di Tarski visto precedentemente. Per usare però tale teorema dobbiamo prima dimostrare che $\ST$ è effettivamente un CPO:
+e otteniamo quindi che $f$, la semantica di $\while{B}{C}$ è un punto fisso
+di $F$.
+A priori, non \`e detto che un tale punto fisso esista e, se esiste,
+non \`e detto che ne esista solo uno.
+In realt\`a, come vedremo, siccome $\fund{F}{\ST}{\ST}$ \`e continua
+sul CPO $(ST, \sqsubseteq)$, $F$ ha un minimo punto fisso e proprio
+quello corrisponde alla semantica di $\while{B}{C}$.
 
-\begin{proposizione} \summary{($(ST, \sqsubseteq)$ è un CPO.)}
-Sia ST l'insieme degli State Transformer e sia $\reld{\sqsubseteq}{ST}{ST}$ una relazione binaria di ordinamento parziale che presi due State Transformer $f$ e $g$ si ha che $f \sqsubseteq g$ se $g$ è più definita di $f$, ovvero in simboli: $\forall f,g \in ST \itc f \sqsubseteq g \Longleftrightarrow \forall s \in \Sigma \itc f(s)\convrg \Rightarrow f(s) = g(s)$. Allora $(ST, \sqsubseteq)$ è un CPO.
+Iniziamo col definire $(ST, \sqsubseteq)$.
+
+\begin{definizione} \summary{($(\ST, \sqsubseteq)$.)}
+La relazione binaria $\reld{\sqsubseteq}{\ST}{\ST}$ \`e tale che,
+per ogni $f, g \in \ST$,  $f \sqsubseteq g$ se e solo se
+\[
+  \forall s \in \Sigma \itc f(s)\convrg \implies f(s) = g(s).
+\]
+\end{definizione}
+Informalmente, $f$ precede nell'ordine o \`e uguale a $g$ se e solo se
+$g$ è non meno definita di $f$, e $f$ e $g$ coincidono quando sono entrambe
+definite.
+
+\begin{proposizione}
+$(\ST, \sqsubseteq)$ \`e un CPO.
 \end{proposizione}
 \begin{proof}
-Poniamo dunque $\bot$ minimo di ST visto che è lo State Transformer meno definito: $\bot \in ST \itc \forall s \in \Sigma \itc \bot(s)\divrg$ perciò è ovvio che $\forall f \in ST \itc \bot \sqsubseteq f$, dunque $\bot = \min ST$.
-Sia $I \subseteq \Nset \itc C = \left\{a_i\right\}_{i \in I}$ allora se $I$ è numerabile ($|I| < \aleph_0$) allora il $\lub$ è l'elemento massimo nella catena. Se invece $|I| = \aleph_0$ definisco:
-        $\forall x \in \Sigma \itc f_l(x) =
-    \begin{cases}
-      f_h(x), &\text{se $\exists i \in I \itc f_h(x)\convrg$;}\\
+La relazione $\sqsubseteq$ \`e chiaramente di ordinamento parziale su $\ST$:
+la riflessivit\`a e l'antisimmetria  valgono banalmente;
+per la transitivit\`a, se $f \sqsubseteq g$ e $g \sqsubseteq h$,
+allora, per ogni $s \in \Sigma$, abbiamo $f(s)\convrg \implies g(s)\convrg$
+e dunque $f(s)\convrg \implies f(s) = g(s) = h(s)$ da cui
+$f \sqsubseteq h$.
+
+La funzione $\pard{\bot}{\Sigma}{\Sigma}$, tale che $\bot(s)\divrg$
+per ogni $s \in \Sigma$, \`e l'elemento minimo di $(\ST, \sqsubseteq)$:
+infatti, per ogni $g \in \ST$ e per ogni $s \in \Sigma$, l'implicazione
+$f(s)\convrg \implies \bot(s) = g(s)$ vale, essendo il suo
+antecedente falso.
+
+Sia ora $I \subseteq \Nset$ e consideriamo la catena
+$C = \{f_i\}_{i \in I}$ dove $f_j \sqsubseteq f_k$ se $j \leq k$.
+Se $|I| < \aleph_0$, allora,
+per la Proposizione~\ref{prop:catena-finita-ha-elemento-massimo},
+$f_{\max I} = \max_{\sqsubseteq} C = \lub_{\sqsubseteq} C$.
+Se invece $|I| = \aleph_0$, definiamo $\pard{f}{\Sigma}{\Sigma}$
+come segue, per ogni $s \in \Sigma$:
+\[
+  f(s)
+    \defeq
+      \begin{cases}
+        s', &\text{se $\exists i \in I, s' \in \Sigma \st f_i(s) = s'$;}  \\
       \divrg, &\text{altrimenti.}
-    \end{cases}\\ $
-È ovvio che quello appena definito è proprio il $\lub$ visto che è definito almeno come ogni altro State Transformer, dimostriamolo applicando la definizione di $\lub$.
-$u = \lub C \Longleftrightarrow (\forall i \in I \itc f_i \sqsubseteq u) \land (\forall u' \in ST \itc (\forall j \in I \itc f_j \sqsubseteq u') \Rightarrow u \sqsubseteq u')$.
-Quindi prendiamo un qualsiasi State Transformer $f_i \in C$ e dimostriamo che è minore di $f_l$ tramite la relazione sopra definita, dobbiamo quindi dimostrare che se converge per un qualsiasi store $s \in \Sigma$ allora anche $f_l$ converge. Sia $i \in I \itc \forall s \in \sum \itc f_i(s)\convrg$ allora esiste un $i \in I$ per il quale $f_i$ converge, perciò $f_l$ convergerà a quello stesso valore per definizione: $(f_l(s)\convrg \land f_l(s)=f_i(s))$\\
-Perciò $\forall j \in I \itc f_j \sqsubseteq f_l$ dunque  $f_l = \lub C$. Visto che $(ST, \sqsubseteq)$ ha minimo e ogni sua catena ha $\lub$ è un CPO.
+    \end{cases}
+\]
+La definizione \`e ben data: per ogni $i, j \in I$ abbiamo $i \leq j$
+o $j \leq i$;  se avessimo $f_i(s) = s'$ e $f_j(s) = s''$ dovrebbe
+necessariamente essere $s' = s''$.
+Resta da mostrare che $f = \lub_{\sqsubseteq} C$.
+Sia $j \in I$: per definizione di $f$ abbiamo che
+\[
+  \forall s \in \Sigma \itc f_j(s)\convrg \implies f_j(s) = f(s),
+\]
+e dunque $f_j \sqsubseteq f$, da cui $f$ \`e un upper bound per $C$.
+Sia ora $g$ un upper bound per $C$, ovvero
+\begin{equation}
+\label{eq:denot-cpo-g-ub}
+  \forall h \in I
+    \itc \forall s \in \Sigma \itc f_h(s)\convrg \implies f_h(s) = g(s).
+\end{equation}
+Sia $s \in \Sigma$, e supponiamo che $f(s)\convrg$;
+dunque esiste $i \in I$ tale che $f_i(s)\convrg$ e $f(s) = f_i(s)$.
+Per la \eqref{eq:denot-cpo-g-ub} possiamo quindi scrivere
+$f(s) = f_i(s) = g(s)$ e quindi
+\[
+  \forall s \in \Sigma \itc f(s)\convrg \implies f(s) = g(s),
+\]
+ovvero $f \sqsubseteq g$ e $f = \lub_{\sqsubseteq} C$.
+
+$(\ST, \sqsubseteq)$ \`e dunque un CPO, avendo elemento minimo
+e il least upper bound di ogni catena.
 \end{proof}
 
 \section{Continuità di $F$}
