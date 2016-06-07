@@ -149,10 +149,10 @@ $f(s)\convrg \implies \bot(s) = g(s)$ vale, essendo il suo
 antecedente falso.
 
 Sia ora $I \subseteq \Nset$ e consideriamo la catena
-$C = \{f_i\}_{i \in I}$ dove $f_j \sqsubseteq f_k$ se $j \leq k$.
+$X = \{f_i\}_{i \in I}$ dove $f_j \sqsubseteq f_k$ se $j \leq k$.
 Se $|I| < \aleph_0$, allora,
 per la Proposizione~\ref{prop:catena-finita-ha-elemento-massimo},
-$f_{\max I} = \max_{\sqsubseteq} C = \lub_{\sqsubseteq} C$.
+$f_{\max I} = \max_{\sqsubseteq} X = \lub_{\sqsubseteq} X$.
 Se invece $|I| = \aleph_0$, definiamo $\pard{f}{\Sigma}{\Sigma}$
 come segue, per ogni $s \in \Sigma$:
 \[
@@ -166,13 +166,13 @@ come segue, per ogni $s \in \Sigma$:
 La definizione \`e ben data: per ogni $i, j \in I$ abbiamo $i \leq j$
 o $j \leq i$;  se avessimo $f_i(s) = s'$ e $f_j(s) = s''$ dovrebbe
 necessariamente essere $s' = s''$.
-Resta da mostrare che $f = \lub_{\sqsubseteq} C$.
+Resta da mostrare che $f = \lub_{\sqsubseteq} X$.
 Sia $j \in I$: per definizione di $f$ abbiamo che
 \[
   \forall s \in \Sigma \itc f_j(s)\convrg \implies f_j(s) = f(s),
 \]
-e dunque $f_j \sqsubseteq f$, da cui $f$ \`e un upper bound per $C$.
-Sia ora $g$ un upper bound per $C$, ovvero
+e dunque $f_j \sqsubseteq f$, da cui $f$ \`e un upper bound per $X$.
+Sia ora $g$ un upper bound per $X$, ovvero
 \begin{equation}
 \label{eq:denot-cpo-g-ub}
   \forall h \in I
@@ -185,7 +185,7 @@ $f(s) = f_i(s) = g(s)$ e quindi
 \[
   \forall s \in \Sigma \itc f(s)\convrg \implies f(s) = g(s),
 \]
-ovvero $f \sqsubseteq g$ e $f = \lub_{\sqsubseteq} C$.
+ovvero $f \sqsubseteq g$ e $f = \lub_{\sqsubseteq} X$.
 
 $(\ST, \sqsubseteq)$ \`e dunque un CPO, avendo elemento minimo
 e il least upper bound di ogni catena.
@@ -257,184 +257,103 @@ La monotonia di $\fund{\cond}{P \times \ST \times \ST}{\ST}$
 sul secondo argomento è quindi dimostrata, e cos\`\i la monotonia
 di $\fund{F}{\ST}{\ST}$ in quanto composizione di $\cond$ e $\seq$.
 
-Sia ora $C \subseteq \ST$ una catena e mostriamo che l'insieme
+Sia ora $X \subseteq \ST$ una catena e mostriamo che l'insieme
 \[
-  F(C) \defeq \bigl\{\, F(f) \bigm| f \in C \,\bigr\}
+  F(X) \defeq \bigl\{\, F(f) \bigm| f \in X \,\bigr\}
 \]
 \`e una catena.
-Per cominciare, abbiamo che $\bigl|F(C)\bigr| \leq |C| \leq \aleph_0$.
-Prendiamo poi due elementi qualsiasi $h_1, h_2 \in F(C)$:
-devono esistere $f_1, f_2 \in C$ tali che $h_1 = F(f_1)$ e $h_2 = F(f_2)$.
-Essendo $C$ una catena, deve essere $f_1 \sqsubseteq f_2$
+Per cominciare, abbiamo che $\bigl|F(X)\bigr| \leq |X| \leq \aleph_0$.
+Prendiamo poi due elementi qualsiasi $h_1, h_2 \in F(X)$:
+devono esistere $f_1, f_2 \in X$ tali che $h_1 = F(f_1)$ e $h_2 = F(f_2)$.
+Essendo $X$ una catena, deve essere $f_1 \sqsubseteq f_2$
 o $f_2 \sqsubseteq f_1$: nel primo caso, per monotonia di $F$, abbiamo
 $h_1 = F(f_1) \sqsubseteq F(f_2) = h_2$;
 nel secondo caso,
 $h_2 = F(f_2) \sqsubseteq F(f_1) = h_1$.
-Dunque $C$ \`e totalmente ordinato ed \`e una catena.
-Essendo $\ST$ \`e un CPO, abbiamo mostrato che esiste $\lub_{\sqsubseteq} F(C)$.
-
--------------------------------------
-
-
-Dimostriamo in primo luogo che il $\lub$ esiste.
-Per farlo, sia $ X \subseteq ST$ e valga $\chain(X)$.
-
-
-facciamo vedere che $\fund{\cond}{P \times \ST \times \ST}{\ST}$
-è monotono sul
-secondo argomento, tenendo fissi il primo e il terzo argomento:
+Dunque $X$ \`e totalmente ordinato ed \`e una catena.
+Essendo $\ST$ \`e un CPO, abbiamo mostrato che esiste $\lub_{\sqsubseteq} F(X)$.
+Più precisamente, \`e facile vedere, usando i risultati di monotonia
+appena dimostrati, che $\lub_{\sqsubseteq} F(X) = h$,
+dove $h \in \ST$ è definito da
+\begin{align*}
+  h &\defeq \cond\bigl(p, \seq(g, \lub_{\sqsubseteq} X), \id\bigr), \\
+  p &\defeq \calB \llbracket B \rrbracket, \\
+  g &\defeq \calC \llbracket C \rrbracket.
+\end{align*}
+Infatti, sia $f \in X$:
+\begin{align*}
+  F(f)
+    &=
+      \cond\bigl(p, \seq(g, f), \id\bigr) \\
+    &\sqsubseteq
+      \cond\bigl(p, \seq(g, \lub_{\sqsubseteq} X), \id\bigr) \\
+    &= h,
+\end{align*}
+e quindi $h$ \`e un upper bound per $F(X)$.
+Sia ora $u$ un qualsiasi upper bound per $F(X)$,
+dunque $f \in X$ implica $F(f) \sqsubseteq u$:
+mostreremo che $h \sqsubseteq u$.
+Sia $s \in \Sigma$:
+se $h(s)\divrg$ non c'\`e nulla da dimostrare;
+altrimenti sappiamo che $X \neq \emptyset$ e
+ci sono due casi:
+\begin{description}
+\item[$p(s) = \false:$]
+dunque $h(s) = s$ e, se $f \in X$, allora $F(f)(s) = s$,
+ma, poich\'e $F(f) \sqsubseteq u$, anche $u(s) = s$;
+\item[$p(s) = \true:$]
+dunque, se $f \in X$, abbiamo
 \[
-  (f_1 \sqsubseteq f_2) \Rightarrow \cond(b,f_{1},g) \sqsubseteq \cond(b,f_{2},g)
+  h(s) = \seq(g, \lub_{\sqsubseteq} X)(s) = \seq(g, f)(s) = u(s).
 \]
-
-Sia ora $ X \subseteq ST$ tale che $\chain(X) $. Allora dimostriamo che:
+\end{description}
+Abbiamo quindi
 \[
-  \chain\bigl( \{\cond(b,f,g) | f \in X\}\bigr)
+  \lub_{\sqsubseteq} F(X) = h = F(\lub_{\sqsubseteq} X),
 \]
-La cardinalità di questo insieme è minore o uguale
-a quella di $X$, e quindi di $\aleph_0$.
-In particolare se $X$ è infinito c'è almeno un elemento
-che è $g$ (quando $b$ è falso). Quindi l'insieme è numerabile.
-Rimane da dimostrare che è totalmente ordinato.
-Siano $f_1,f_2 \in X$ generiche tali che $\chain(X)$.
-Per quanto dimostrato prima, allora:
-\begin{enumerate}
-  \item $\cond(b,f_1,g) \sqsubseteq \cond(b,f_2,g)$, oppure
-  \item $\cond(b,f_2,g) \sqsubseteq \cond(b,f_1,g)$.
-\end{enumerate}
-Dato che $X$ è una catena, $f_1 \sqsubseteq f_2$ oppure
-$f_2 \sqsubseteq f_1 $. E otteniamo nel primo caso la (1)
-mentre la (2) nel secondo caso.
-Siccome siamo in un $CPO$ (in cui per ogni catena esiste
-un $\lub$) concludiamo che il $\lub$ esiste.
-
-A questo punto, ci è necessario dare un aspetto al $\lub$,
-definendolo esplicitamente. Intuitivamente è:
-\[
-  \lub\bigl( \{ \cond(b,f,g) \; | \; f \in X \}\bigr)=
-  \begin{cases}
-    \uparrow , & \textrm{se } b(s)=true \land \forall f \in X f(s) \uparrow \\
-    g(s), & \textrm{se } b(s)=false \\
-    f(s), & \textrm{se } b(s)=true \land f \in X \textrm{ tale che } f(s) \downarrow
-  \end{cases}
-\]
-Dobbiamo dimostrare che il $\lub$ è proprio lui e che:
-\[
-  \lub \bigl(\cond(b,X,g)\bigr) = \cond(b, \lub X, g)
-\]
-In questo modo avremo provato formalmente che $\cond$ è continuo
-sul secondo argomento.
-Per semplicità notazionale, sia:
-\[
-  h(s) \defeq
-  \begin{cases}
-    \uparrow , & \textrm{se } b(s)=true \land \forall f \in X f(s) \uparrow \\
-    g(s), & \textrm{se } b(s)=false \\
-    f(s), & \textrm{se } b(s)=true \land f \in X \textrm{ tale che } f(s) \downarrow
-  \end{cases}
-\]
-Dimostriamo allora che:
-\[
-  h(s) = \lub \{\cond(b,f,g) | f \in X \}
-\]
-Si ha che $\forall b \in B, \forall g \in \ST, \forall f \in X$
-vale $\cond(b,f,g) \sqsubseteq h $, cioè che:
-\begin{multline*}
-  \forall f_1, f_2 \in \ST : f_1 \sqsubseteq f_2 \Leftrightarrow \\
-  \Leftrightarrow \forall s \in \Sigma \textrm{ tale che } f_{1}(s) \downarrow
-  \, \Rightarrow f_{2}(s) \downarrow \land f_{2}(s) = f_{1}(s)
-\end{multline*}
-Applicando la suddetta definizione:
-\begin{itemize}
-  \item Se $h(s)$ diverge non c'è nulla da dimostrare;
-  \item Supponiamo che $\cond(b,f,g)$ converga. Dobbiamo dimostrare che
-    per ogni $s \in \Sigma$ tale che $\cond(b,f,g)(s) \downarrow$
-    si ha $h(s) \downarrow$ e  anche $\cond(b,f,g)(s) = h(s)$.
-  Ci sono due ulteriori casi:
-  \begin{enumerate}
-    \item Se $b(s) = \false$ per definizione di $\cond$:
-    \[ \cond(b,f,g)(s) = g(s) \land h(s) = g(s) \]
-    \item Se $b(s) = \true$ per definizione di $\cond$:
-    \[ \cond(b,f,g)(s) = f(s) \Rightarrow f(s) \downarrow \]
-    Poiché $f \in X$ e sappiamo che termina, siamo nel terzo caso della
-    definizione di $\lub$. Ma allora:
-    \[ h(s) = f(s) \]
-   \end{enumerate}
-\end{itemize}
-
-Da queste considerazioni, sappiamo che è un upper bound.
-Dobbiamo solo dimostrare che è il $\lub$. Dobbiamo cioè dimostrare che:
-\[
-  \lub \bigl\{ \bigl(\cond(b,f,g)\bigr) | f \in X \bigr\} = \cond(b, \lub X, g)
-\]
-Sia $s \in \Sigma$ arbitrario. Sia:
-\[ h(s) = \cond(b,\lub X, g)(s) \]
-Scartiamo la possibilità di non terminazione. Allora abbiamo due casi:
-\begin{enumerate}
-  \item $b(s) = \false \Rightarrow h(s) = g(s)$
-    e, per definizione di $\cond$,
-    $g(s) = \cond(b,\lub X, g)(s) $.
-  \item $b(s)=\true$, abbiamo due ulteriori casi:
-    \begin{itemize}
-      \item $b(s) = \true \land \forall f \in X \st f(s)
-      \uparrow \; \Rightarrow \lub X \uparrow$,
-      cioè se non termina da un lato, non termina neanche dall'altro.
-      \item $b(s)=\true \land f \in X \st f(s) \downarrow$
-      Allora:
-      \[ \lub \; X(s) = f(s) \]
-      Come ci si aspettava.
-    \end{itemize}
-\end{enumerate}
-Quindi $\cond$ è effettivamente continuo sul secondo argomento.
-
-Ci rimane da far vedere che se $X$ è una catena e
-componendo tutti gli elementi della catena con uno $\ST$
-ottengo sempre una catena, cioè:
-\[
-  \forall g \in ST \st \forall X \subseteq ST
-  \st \chain(X) \Rightarrow \chain\bigl(\{ f \circ g | f \in X \} \bigr)
-\]
-In particolare se $f = \perp$ l'insieme è un singoletto.
-Dimostriamolo:
-\begin{itemize}
-  \item L'insieme è enumerabile (banalmente vero).
-  \item Per dimostrare che è totalmente ordinato devo far vedere che:
-  \[
-    \forall f_1 , f_2 \in X \st f \circ g \sqsubseteq f_2 \lor f_2
-    \circ g \sqsubseteq f_1
-  \]
-  Facciamo vedere che vale una delle due, per esempio la prima:
-  \[ f_1 \sqsubseteq s_2 \Rightarrow f_1 \circ g \sqsubseteq f_2 \circ g \]
-  Applicando la definizione di $ \sqsubseteq $ si ha:
-  \begin{equation}
-    \forall s \in \Sigma \st f_{1}(s) \downarrow \; \Rightarrow f_{2}(s) \downarrow
-    \land f{1}(s)=f_{2}(s)
-    \label{eq:5.1}
-  \end{equation}
-   Voglio dimostrare che:
-   \[
-     \forall s \in \Sigma \st f_1 \circ g(s) \downarrow
-     \; \Rightarrow f_2 \circ g(s) \downarrow \land f_2
-     \circ g(s) = f_1 \circ g(s)
-    \]
-    Che sarebbe:
-    \[
-      \forall s \in \Sigma \st f_{1}(g(s)) \downarrow
-      \; \Rightarrow f_{2}(g(s)) \downarrow \land f_{1}(g(s))
-      = f_{2}(g(s))
-    \]
-    che è vera per la \ref{eq:5.1} ed è proprio quello che ci serve.
-    L'altro caso è assolutamente duale.
-\end{itemize}
-Abbiamo dimostrato allora la continuità della funzione $F$:
-\[
-  \forall b \in PT, \forall g,h \in ST \quad \lambda f \st \cond(b,f \circ h,g)
-\]
-Per il teorema di Tarski, presentato in \autoref{sec:Tarski},
-possiede un minimo punto fisso che è possibile trovare
-facendo le iterate successive a partire da $\perp$.
-Allora possiamo concludere che:
-\[ \calC \llbracket \kw{while} B \kw{do} C \rrbracket = \lfp F \]
-E che:
-\[ \lfp F = \lub \bigl\{ F^n(\perp ) \bigm| n \in \Nset \bigr\} \]
+dove la seconda uguaglianza discende immediatamente dalle definizioni
+di $h$ e di $F$.
 \end{proof}
+
+Per il Teorema~\ref{teo:Tarski} (di Tarski)
+$F_{B,C}$ possiede un minimo punto fisso che si ottiene come
+limite delle iterate a partire da $\bot$.
+Possiamo quindi definire
+\[
+  \calC \llbracket \kw{while} B \kw{do} C \rrbracket
+    \defeq \lfp F_{B,C}
+    = \lub_{\sqsubseteq} \bigl\{\, F_{B,C}^n(\bot) \bigm| n \in \Nset \,\bigr\}.
+\]
+
+E' importante osservare che la scelta del \emph{minimo} punto fisso,
+e non gi\`a di un qualsiasi punto fisso, \`e fondamentale
+per la semantica del while.
+Si consideri, ad esempio, il ciclo $\while{i \neq 10}{i := i+1}$.
+Abbiamo, per ogni $s \in \Sigma$,
+\[
+  \denotC{\while{i \neq 10}{i := i+1}}{s}
+    \defeq
+      \begin{cases}
+        s[10/i], &\text{se $s(i) \leq 10$;} \\
+        \divrg, &\text{altrimenti.}
+      \end{cases}
+\]
+E' facile mostrare che la funzione $F_{B,C}$ ha infiniti altri punti fissi,
+ad esempio $d \in \ST$ definito, per ogni $s \in \Sigma$, come
+\begin{align}
+  d(s)
+    \defeq
+      \begin{cases}
+        s[10/i], &\text{se $s(i) \leq 10$;} \\
+        s[666/i], &\text{altrimenti.}
+      \end{cases}
+\end{align}
+D'altra parte, solo il minimo punto fisso esprime correttamente
+le non terminazioni del while considerato.
+I punti fissi non minimi, invece, rappresentano delle terminazioni
+che in realt\`a non avvengono.
+
+\begin{esercizio}
+Si dimostri che $d$ \`e un punto fisso per $F_{B,C}$
+con $B \equiv (i \neq 10)$ e $C \equiv (i := i+1)$.
+\end{esercizio}
