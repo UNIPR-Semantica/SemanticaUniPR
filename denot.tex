@@ -84,14 +84,14 @@ $$\denotE{E_1 + E_2}{s} = \denotE{E_1}{s} \conadd \denotE{E_2}{s}$$
 
 Esattamente allo stesso modo ora definiremo delle funzioni che mappano State Transformer in State Transformer e che non hanno bisogno di trattare in maniera separata i vari casi:
 \begin{gather*}
-\fund{\mathrm{seq}}{\ST \times \ST}{\ST} \\
-\mathrm{seq}(f,g)(s) \defeq \begin{cases}
+\fund{\seq}{\ST \times \ST}{\ST} \\
+\seq(f,g)(s) \defeq \begin{cases}
         \bot, &\text{se $f(s) = \bot$;}\\
         g(f(s)), &\text{altrimenti.}
         \end{cases}\\
 \pts
-\fund{\mathrm{cond}}{P \times \ST \times \ST}{\ST} \\
-\mathrm{cond}(p,f,g)(s) \defeq \begin{cases}
+\fund{\cond}{P \times \ST \times \ST}{\ST} \\
+  \cond(p,f,g)(s) \defeq \begin{cases}
         f(s), &\text{se $p(s) = \ttv$;}\\
         g(s), &\text{se $p(s) = \ffv$;}\\
         \bot, &\text{altrimenti.}
@@ -99,16 +99,16 @@ Esattamente allo stesso modo ora definiremo delle funzioni che mappano State Tra
 \end{gather*}
 
 Perciò rivediamo le semantiche di questi due comandi:
-$$ \denotC{C_1 ; C_2}{s} = \mathrm{seq}(\calC \llbracket C_1 \rrbracket, \calC \llbracket C_2 \rrbracket)(s)$$
+$$ \denotC{C_1 ; C_2}{s} = \seq(\calC \llbracket C_1 \rrbracket, \calC \llbracket C_2 \rrbracket)(s)$$
 
-$$\denotC{\condif{B}{C_1}{C_2}}{s} = \mathrm{cond}(\calB \llbracket B \rrbracket, \calC \llbracket C_1 \rrbracket, \calC \llbracket C_2 \rrbracket)(s)$$.
+$$\denotC{\condif{B}{C_1}{C_2}}{s} = \cond(\calB \llbracket B \rrbracket, \calC \llbracket C_1 \rrbracket, \calC \llbracket C_2 \rrbracket)(s)$$.
 
 Proviamo a riscrivere anche la semantica del comando while e otteniamo un risultato molto interessante:
 $$ \denotC{\while{B}{C}}{s} = \denotC{\condif{B}{(C ; \while{B}{C}}{\kw{skip}}}{s}$$
-ma ponendo ora $f = \mathrm{cond}(\calB \llbracket B \rrbracket, \mathrm{seq}(\calC \llbracket C \rrbracket, f), \mathrm{id})$ dove con $id$ intendiamo la semantica del comando $\kw{skip}$.
+ma ponendo ora $f = \cond(\calB \llbracket B \rrbracket, \seq(\calC \llbracket C \rrbracket, f), \mathrm{id})$ dove con $id$ intendiamo la semantica del comando $\kw{skip}$.
 Definiamo $\fund{F}{\ST}{\ST}$ come:
 \[
-F(f) \defeq \mathrm{cond}(\calB \llbracket B \rrbracket, \mathrm{seq}(\calC \llbracket C \rrbracket, f), \mathrm{id})
+F(f) \defeq \cond(\calB \llbracket B \rrbracket, \seq(\calC \llbracket C \rrbracket, f), \mathrm{id})
 \]
 e otteniamo quindi che $f$, la semantica di $\while{B}{C}$ è un punto fisso
 di $F$.
@@ -191,35 +191,101 @@ $(\ST, \sqsubseteq)$ \`e dunque un CPO, avendo elemento minimo
 e il least upper bound di ogni catena.
 \end{proof}
 
-\section{Continuità di $F$}
-In questo paragrafo dimostreremo il seguente risultato:
+\begin{definizione}
+Sia $\while{B}{C}$ un ciclo while qualsiasi.
+La funzione $\fund{F_{B,C}}{\ST}{\ST}$ \`e definita,
+per ogni $f \in \ST$, da
+\[
+  F_{B,C}(f)
+    \defeq
+      \cond\bigl(\calB \llbracket B \rrbracket,
+                         \seq(\calC \llbracket C \rrbracket, f),
+                         \mathrm{id}\bigr)
+\]
+\end{definizione}
 
 \begin{teorema}
-La funzione $\fund{F}{\ST}{\ST}$ definita in sezione~\textup{\ref{sec:definizione di F}} è continua.
+La funzione $\fund{F_{B,C}}{\ST}{\ST}$ è continua.
 \end{teorema}
 
 \begin{proof}
+Nel seguito assumeremo che $B$ e $C$ siano definiti dal contesto e scriveremo
+$F$ invece di $F_{B,C}$.
+
+Iniziamo mostrando che $\fund{\seq}{\ST \times \ST}{\ST}$
+è monotona sul secondo argomento.
+Siano $f, g_1, g_2 \in \ST$ arbitrari e tali che
+$f_1 \sqsubseteq f_2$;  dobbiamo mostrare che
+\[
+  \seq(f, g_1) \sqsubseteq \seq(f, g_2).
+\]
+Sia $s \in \Sigma$ arbitrario.
+Se $\seq(f, g_1)(s)$ \`e indefinito, non c'\`e nulla da dimostrare.
+Se invece $\seq(f, g_1)(s)$ \`e definito,
+allora anche $f(s)$, $g_1\bigl(f(s)\bigr)$ e $g_s\bigl(f(s)\bigr)$
+lo sono;  inoltre
+\[
+    \seq(f, g_1)(s) = g_1\bigl(f(s)\bigr)
+                    = g_2\bigl(f(s)\bigr)
+  = \seq(f, g_2)(s)
+\]
+come volevasi.
+
+Mostriamo ora che $\fund{\cond}{P \times \ST \times \ST}{\ST}$
+è monotona sul secondo argomento.
+Siano $p \in P$ e $f_1, f_2, g \in \ST$ arbitrari e tali che
+$f_1 \sqsubseteq f_2$;  dobbiamo mostrare che
+\[
+  \cond(b, f_1, g) \sqsubseteq \cond(b, f_2, g).
+\]
+Consideriamo $s \in \Sigma$ arbitrario.
+Se $\cond(p, f_1, g)(s)$ \`e indefinito, non c'\`e nulla da dimostrare.
+Se invece $\cond(p, f_1, g)(s)$ \`e definito,
+allora ci sono due possibilità:
+\begin{description}
+\item[$p(s) = \false:$] dunque
+\(
+  \cond(p, f_1, g)(s) = g(s) = \cond(p, f_2, g)(s)
+\).
+\item[$p(s) = \true:$], dunque
+\(
+  \cond(p, f_1, g)(s) = f_1(s) = f_2(s) = \cond(p, f_2, g)(s),
+\)
+dove $f_1(s) = f_2(s)$ è vera per ipotesi.
+\end{description}
+La monotonia di $\fund{\cond}{P \times \ST \times \ST}{\ST}$
+sul secondo argomento è quindi dimostrata, e cos\`\i la monotonia
+di $\fund{F}{\ST}{\ST}$ in quanto composizione di $\cond$ e $\seq$.
+
+Sia ora $C \subseteq \ST$ una catena e mostriamo che l'insieme
+\[
+  F(C) \defeq \bigl\{\, F(f) \bigm| f \in C \,\bigr\}
+\]
+\`e una catena.
+Per cominciare, abbiamo che $\bigl|F(C)\bigr| \leq |C| \leq \aleph_0$.
+Prendiamo poi due elementi qualsiasi $h_1, h_2 \in F(C)$:
+devono esistere $f_1, f_2 \in C$ tali che $h_1 = F(f_1)$ e $h_2 = F(f_2)$.
+Essendo $C$ una catena, deve essere $f_1 \sqsubseteq f_2$
+o $f_2 \sqsubseteq f_1$: nel primo caso, per monotonia di $F$, abbiamo
+$h_1 = F(f_1) \sqsubseteq F(f_2) = h_2$;
+nel secondo caso,
+$h_2 = F(f_2) \sqsubseteq F(f_1) = h_1$.
+Dunque $C$ \`e totalmente ordinato ed \`e una catena.
+Essendo $\ST$ \`e un CPO, abbiamo mostrato che esiste $\lub_{\sqsubseteq} F(C)$.
+
+-------------------------------------
+
+
 Dimostriamo in primo luogo che il $\lub$ esiste.
 Per farlo, sia $ X \subseteq ST$ e valga $\chain(X)$.
-Allora, presi $b \in P$ e $g \in \ST$ generici,
-facciamo vedere che $ \cond(b,X,g) $ è monotono sul
+
+
+facciamo vedere che $\fund{\cond}{P \times \ST \times \ST}{\ST}$
+è monotono sul
 secondo argomento, tenendo fissi il primo e il terzo argomento:
 \[
   (f_1 \sqsubseteq f_2) \Rightarrow \cond(b,f_{1},g) \sqsubseteq \cond(b,f_{2},g)
 \]
-Preso $s \in \Sigma $ generico, ipotizzo che $\cond(b,f_1,g)(s)$
-sia definito. Allora ci sono due possibilità:
-\begin{enumerate}
-  \item $b(s) = \false$, e dunque:
-        \[ \cond(b,f_1,g)(s)=g(s)=\cond(b,f_2,g)(s) \]
-  \item $ b(s) = \true $, e dunque:
-        \[
-          \cond(b,f_1,g)(s) = f_{1}(s)
-          \sqsubseteq f_{2}(s) = \cond(b,f_2,g)(s)
-        \]
-        dove $f_{1}(s) \sqsubseteq f_{2}(s)$ è vera per ipotesi.
-\end{enumerate}
-La monotonia è allora dimostrata.
 
 Sia ora $ X \subseteq ST$ tale che $\chain(X) $. Allora dimostriamo che:
 \[
