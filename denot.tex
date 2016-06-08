@@ -103,9 +103,9 @@ $$ \denotC{C_1 ; C_2}{s} = \seq(\calC \llbracket C_1 \rrbracket, \calC \llbracke
 
 $$\denotC{\condif{B}{C_1}{C_2}}{s} = \cond(\calB \llbracket B \rrbracket, \calC \llbracket C_1 \rrbracket, \calC \llbracket C_2 \rrbracket)(s)$$.
 
-Proviamo a riscrivere anche la semantica del comando while e otteniamo un risultato molto interessante:
-$$ \denotC{\while{B}{C}}{s} = \denotC{\condif{B}{(C ; \while{B}{C}}{\kw{skip}}}{s}$$
-ma ponendo ora $f = \cond(\calB \llbracket B \rrbracket, \seq(\calC \llbracket C \rrbracket, f), \mathrm{id})$ dove con $id$ intendiamo la semantica del comando $\kw{skip}$.
+Riscrivendo anche la semantica del comando while si ottiene un risultato molto interessante:
+$$ \denotC{\while{B}{C}}{s} = \denotC{\condif{B}{(C ; \while{B}{C})}{\kw{skip}}}{s}$$
+Ma poniamo ora $f = \cond(\calB \llbracket B \rrbracket, \seq(\calC \llbracket C \rrbracket, f), \mathrm{id})$ dove con $\mathrm{id}$ intendiamo la semantica del comando $\kw{skip}$.
 Definiamo $\fund{F}{\ST}{\ST}$ come:
 \[
 F(f) \defeq \cond(\calB \llbracket B \rrbracket, \seq(\calC \llbracket C \rrbracket, f), \mathrm{id})
@@ -145,7 +145,7 @@ $f \sqsubseteq h$.
 La funzione $\pard{\bot}{\Sigma}{\Sigma}$, tale che $\bot(s)\divrg$
 per ogni $s \in \Sigma$, \`e l'elemento minimo di $(\ST, \sqsubseteq)$:
 infatti, per ogni $g \in \ST$ e per ogni $s \in \Sigma$, l'implicazione
-$f(s)\convrg \implies \bot(s) = g(s)$ vale, essendo il suo
+$\bot(s)\convrg \implies \bot(s) = g(s)$ vale, essendo il suo
 antecedente falso.
 
 Sia ora $I \subseteq \Nset$ e consideriamo la catena
@@ -215,14 +215,14 @@ $F$ invece di $F_{B,C}$.
 Iniziamo mostrando che $\fund{\seq}{\ST \times \ST}{\ST}$
 è monotona sul secondo argomento.
 Siano $f, g_1, g_2 \in \ST$ arbitrari e tali che
-$f_1 \sqsubseteq f_2$;  dobbiamo mostrare che
+$g_1 \sqsubseteq g_2$;  dobbiamo mostrare che
 \[
   \seq(f, g_1) \sqsubseteq \seq(f, g_2).
 \]
 Sia $s \in \Sigma$ arbitrario.
 Se $\seq(f, g_1)(s)$ \`e indefinito, non c'\`e nulla da dimostrare.
 Se invece $\seq(f, g_1)(s)$ \`e definito,
-allora anche $f(s)$, $g_1\bigl(f(s)\bigr)$ e $g_s\bigl(f(s)\bigr)$
+allora anche $f(s)$, $g_1\bigl(f(s)\bigr)$ e $g_2\bigl(f(s)\bigr)$
 lo sono;  inoltre
 \[
     \seq(f, g_1)(s) = g_1\bigl(f(s)\bigr)
@@ -236,7 +236,7 @@ Mostriamo ora che $\fund{\cond}{P \times \ST \times \ST}{\ST}$
 Siano $p \in P$ e $f_1, f_2, g \in \ST$ arbitrari e tali che
 $f_1 \sqsubseteq f_2$;  dobbiamo mostrare che
 \[
-  \cond(b, f_1, g) \sqsubseteq \cond(b, f_2, g).
+  \cond(p, f_1, g) \sqsubseteq \cond(p, f_2, g).
 \]
 Consideriamo $s \in \Sigma$ arbitrario.
 Se $\cond(p, f_1, g)(s)$ \`e indefinito, non c'\`e nulla da dimostrare.
