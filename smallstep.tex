@@ -183,7 +183,7 @@ Indichiamo perciò con $E$ la generica espressione appartenente a $\AExp$, con $
 &\prooftree
         \config{E_2}{s} \ssarrow \config{E_2'}{s'}
 \justifies
-        \config{(E_1 + E_2)}{s} \ssarrow \config{(E_1 + E_2')}{s'}
+        \config{(n_1 + E_2)}{s} \ssarrow \config{(n_1 + E_2')}{s'}
 \endprooftree
 \\
 \rulename{S-ADD}
@@ -197,7 +197,7 @@ Indichiamo perciò con $E$ la generica espressione appartenente a $\AExp$, con $
 \end{align}
 \endgroup
 
-Le regole relative agli altri operatori binari sono analoghe.
+Le regole di transizione relative agli altri operatori binari sono analoghe.
 
 \subsection{Comandi}
 
@@ -269,14 +269,14 @@ $\config{\epsilon}{s}$.
 &\prooftree
         \nohyp
 \justifies
-        \config{\condif{\true}{C_1}{C_2}}{s} \ssarrow \config{C_1}{s}
+        \config{\condif{\ttv}{C_1}{C_2}}{s} \ssarrow \config{C_1}{s}
 \endprooftree
 \\
 \rulename{S-COND.FALSE}
 &\prooftree
         \nohyp
 \justifies
-        \config{\condif{\false}{C_1}{C_2}}{s} \ssarrow \config{C_2}{s}
+        \config{\condif{\ffv}{C_1}{C_2}}{s} \ssarrow \config{C_2}{s}
 \endprooftree
 \end{align}
 \endgroup
@@ -310,8 +310,8 @@ $\config{\epsilon}{s}$.
 \endprooftree
 \end{align}
 
-\subsection{Espressioni Booleane (Valutazione senza Corto Circuito)}
-\subsubsection{And}
+\subsection{Espressioni Booleane}
+\subsubsection{And (valutazione senza corto circuito)}
 \begingroup
 \setlength{\jot}{1em}
 \begin{align}
@@ -349,7 +349,7 @@ $\config{\epsilon}{s}$.
 \end{align}
 \endgroup
 
-\subsubsection{Or}
+\subsubsection{Or (valutazione senza corto circuito)}
 \begingroup
 \setlength{\jot}{1em}
 \begin{align}
@@ -378,8 +378,29 @@ $\config{\epsilon}{s}$.
 \end{align}
 \endgroup
 
-\subsection{Espressioni Booleane (Valutazione con Corto Circuito)}
-\subsubsection{And}
+\subsubsection{Not}
+\begingroup
+\setlength{\jot}{1em}
+\begin{align}
+\rulename{S-LOG.NOT.BEXP}
+&\prooftree
+        \config{B}{s} \ssarrow \config{B'}{s'}
+\justifies
+        \config{\kw{not} B}{s} \ssarrow \config{\kw{not} B'}{s'}
+\endprooftree
+\\
+\rulename{S-LOG.NOT.BOOL}
+&\prooftree
+        \nohyp
+\justifies
+        \config{\kw{not} b}{s} \ssarrow \config{b'}{s}
+\using
+        b' = \lnot b
+\endprooftree
+\end{align}
+\endgroup
+
+\subsubsection{And (valutazione con corto circuito)}
 \begingroup
 \setlength{\jot}{1em}
 \begin{align}
@@ -394,19 +415,19 @@ $\config{\epsilon}{s}$.
 &\prooftree
 	\nohyp
 \justifies
-        \config{\true\ \& \&\ B_2}{s} \ssarrow \config{B_2}{s}
+        \config{\ttv\ \& \&\ B_2}{s} \ssarrow \config{B_2}{s}
 \endprooftree
 \\
 \rulename{S-CORT.AND.FALSE}
 &\prooftree
 	\nohyp
 \justifies
-        \config{\false\ \& \&\ B_2}{s} \ssarrow \config{\false}{s}
+        \config{\ffv\ \& \&\ B_2}{s} \ssarrow \config{\ffv}{s}
 \endprooftree
 \end{align}
 \endgroup
 
-\subsubsection{Or}
+\subsubsection{Or (valutazione con corto circuito)}
 \begingroup
 \setlength{\jot}{1em}
 \begin{align}
@@ -421,14 +442,50 @@ $\config{\epsilon}{s}$.
 &\prooftree
 	\nohyp
 \justifies
-        \config{\true\ ||\ B_2}{s} \ssarrow \config{\true}{s}
+        \config{\ttv\ ||\ B_2}{s} \ssarrow \config{\ttv}{s}
 \endprooftree
 \\
 \rulename{S-CORT.OR.FALSE}
 &\prooftree
 	\nohyp
 \justifies
-        \config{\false\ ||\ B_2}{s} \ssarrow \config{B_2}{s}
+        \config{\ffv\ ||\ B_2}{s} \ssarrow \config{B_2}{s}
 \endprooftree
 \end{align}
 \endgroup
+
+\subsubsection{Espressioni di confronto}
+\begingroup
+\setlength{\jot}{1em}
+\begin{align}
+  \rulename{S-COMP.EQ.LEFT}
+  &\prooftree
+  \config{E_1}{s} \ssarrow \config{E_1'}{s'}
+  \justifies
+  \config{E_1 = E_2}{s} \ssarrow \config{E_1' = E_2}{s'}
+  \endprooftree
+  \\
+  \rulename{S-COMP.EQ.RIGHT}
+  &\prooftree
+  \config{E_2}{s} \ssarrow \config{E_2'}{s'}
+  \justifies
+  \config{n_1 = E_2}{s} \ssarrow \config{n_1 = E_2'}{s'}
+  \endprooftree
+  \\
+  \rulename{S-COMP.EQ.COMP}
+  &\prooftree
+  \nohyp
+  \justifies
+  \config{n_1 = n_2}{s} \ssarrow \config{b}{s}
+  \using
+  b =
+  \begin{cases}
+    \ttv & \text{se } n_1 = n_2 \\
+    \ffv & \text{se } n_1 \neq n_2
+  \end{cases}
+  \endprooftree
+\end{align}
+\endgroup
+
+Le regole di transizione per gli altri operatori di confronto tra interi
+($<$, $>$, ecc\ldots) si definiscono in modo analogo.
